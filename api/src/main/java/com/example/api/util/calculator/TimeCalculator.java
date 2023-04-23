@@ -1,0 +1,18 @@
+package com.example.api.util.calculator;
+import org.springframework.stereotype.Component;
+
+@Component
+public class TimeCalculator {
+
+    public long getElapsedTime(long timeStartMillis) {
+        return System.currentTimeMillis() - timeStartMillis;
+    }
+
+    public long getTimeRemaining(long timeStartMillis, long timeToSolveMillis) {
+        return timeToSolveMillis - getElapsedTime(timeStartMillis);
+    }
+
+    public long getTimeLeftAfterLastAnswer(long timeStartMillis, long timeToSolveMillis, long timeSendMillis){
+        return timeToSolveMillis - (timeSendMillis - timeStartMillis);
+    }
+}

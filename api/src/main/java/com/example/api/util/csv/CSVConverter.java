@@ -1,0 +1,70 @@
+package com.example.api.util.csv;
+
+import com.example.api.model.user.User;
+import com.example.api.service.user.GradeService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+@Component
+@RequiredArgsConstructor
+public class CSVConverter implements Converter<Map<User, List<CSVTaskResult>>> {
+    private final GradeService gradeService;
+
+    private final static String institution = "Akademia Górniczo-Hutnicza";
+    private final static String department = "Wydział Informatyki, Elektroniki i Telekomunikacji";
+
+    @Override
+    public byte[] convertToByteArray(Map<User, List<CSVTaskResult>> data, List<String> firstRow) {
+        List<List<String>> csv = new ArrayList<>();
+        csv.add(firstRow);
+        for (User user: data.keySet()) {
+            List<CSVTaskResult> csvTaskResults = data.get(user);
+            Double studentGrade = gradeService.getStudentFinalGrade(user).getGrade();
+            List<String> userData = List.of(user.getFirstName(),
+                    user.getLastName(),
+                    user.getIndexNumber().toString(),
+                    institution,
+                    department,
+                    user.getEmail());
+            List<String> row = csvTaskResults.stream()
+                    .map(CSVTaskResult::toStringList)
+                    .flatMap(List::stream)
+                    .toList();
+            row = Stream.of(userData, row, studentGrade == null ? List.of("-") : List.of(studentGrade.toString()))
+                    .flatMap(List::stream)
+                    .toList();
+            csv.add(row);
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (PrintWriter pw = new PrintWriter(out)){
+            csv.stream()
+                    .map(this::convertToCSV)
+                    .forEach(pw::println);
+        }
+        return out.toByteArray();
+    }
+
+    private String convertToCSV(List<String> row) {
+        return Stream.of(row)
+                .flatMap(List::stream)
+                .map(this::escapeSpecialCharacters)
+                .collect(Collectors.joining(","));
+    }
+
+    private String escapeSpecialCharacters(String data) {
+        String escapedData = data.replaceAll("\\R", " ");
+        if (data.contains(",") || data.contains("\"") || data.contains("'")) {
+            data = data.replace("\"", "\"\"");
+            escapedData = "\"" + data + "\"";
+        }
+        return escapedData;
+    }
+}

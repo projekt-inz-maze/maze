@@ -1,0 +1,46 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.7'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
+    implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.11'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4'
+    implementation 'com.auth0:java-jwt:4.0.0'
+    implementation 'junit:junit:4.13.2'
+    implementation group: 'net.bytebuddy', name: 'byte-buddy', version: '1.12.10'
+    implementation 'com.mailjet:mailjet-client:4.2.0'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.mockito:mockito-core:4.8.0'
+    testImplementation group: 'net.bytebuddy', name: 'byte-buddy-agent', version: '1.12.10'
+    testImplementation group: 'org.objenesis', name: 'objenesis', version: '3.2'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
