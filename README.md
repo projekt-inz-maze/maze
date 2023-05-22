@@ -78,7 +78,7 @@ Authors: **Julia Szpak, Ewa Miklewska, Jakub Stępień**.
 
 <!-- GETTING STARTED -->
 
-## Getting Started (TODO)
+## Getting Started
 
 To get a local copy up and running follow these simple steps.
 
