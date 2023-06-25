@@ -15,6 +15,7 @@ import {
   faUserGroup,
   faUsers
 } from '@fortawesome/free-solid-svg-icons'
+
 import { GeneralRoutes, StudentRoutes, TeacherRoutes } from '../routes/PageRoutes'
 
 export const UserSidebarTitles = [

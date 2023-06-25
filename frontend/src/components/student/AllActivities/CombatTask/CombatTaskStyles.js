@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Button } from 'react-bootstrap'
+import styled from 'styled-components'
 
 export const SendTaskButton = styled(Button)`
   bottom: 0;

@@ -1,9 +1,11 @@
 import React from 'react'
-import { CustomCard } from '../../../student/GameCardPage/GameCardStyles'
-import CardHeader from 'react-bootstrap/CardHeader'
+
 import { Card } from 'react-bootstrap'
+import CardHeader from 'react-bootstrap/CardHeader'
 import { connect } from 'react-redux'
+
 import { isMobileView } from '../../../../utils/mobileHelper'
+import { CustomCard } from '../../../student/GameCardPage/GameCardStyles'
 
 function ContentCard(props) {
   const isMobileDisplay = isMobileView()
@@ -26,7 +28,7 @@ function ContentCard(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

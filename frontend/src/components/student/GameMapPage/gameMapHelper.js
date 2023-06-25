@@ -12,7 +12,7 @@ export const getNodePosition = (chapterPosition, mapContainerSize) => {
 
   const scaleX = 10
   const scaleY = 8
-  const padding = 10 //px
+  const padding = 10 // px
   const mapContainerSizeWithPadding = { x: mapContainerSize.x - 2 * padding, y: mapContainerSize.y - 2 * padding }
 
   const x = (mapContainerSizeWithPadding.x / scaleX) * (chapterPosition.x - 0.5)

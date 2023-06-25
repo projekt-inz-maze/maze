@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react'
+
 import cytoscape from 'cytoscape'
 import klay from 'cytoscape-klay'
+
 import { cytoscapeStylesheet } from './cytoscapeStyle'
-import { getLayoutConfig } from './layoutConfigs'
 import { createLabelsAndNodes } from './graphHelper'
+import { getLayoutConfig } from './layoutConfigs'
 import { errorToast } from '../../../utils/toasts'
 
 /* @props
@@ -75,9 +77,7 @@ function Graph(props) {
   }, [props])
 
   // before unmount component
-  useEffect(() => {
-    return () => graph.current?.destroy()
-  }, [])
+  useEffect(() => () => graph.current?.destroy(), [])
 
   return <div style={{ height: props.height }} ref={container} />
 }

@@ -1,6 +1,7 @@
-import { AccountType } from './userRole'
-import { parseJwt } from './Api'
 import moment from 'moment'
+
+import { parseJwt } from './Api'
+import { AccountType } from './userRole'
 
 export const isStudent = (user) => (user ? parseJwt(user.access_token).roles.includes(AccountType.STUDENT) : false)
 

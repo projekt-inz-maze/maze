@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Button, Card, Modal } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
@@ -10,9 +11,9 @@ function DeletionModal(props) {
           <Card.Title>{props.modalTitle}</Card.Title>
         </Card.Header>
         <Card.Body>{props.modalBody}</Card.Body>
-        <Card.Footer className={'text-center'}>
+        <Card.Footer className="text-center">
           <Button
-            className={'me-1'}
+            className="me-1"
             style={{ backgroundColor: props.theme.secondary, borderColor: props.theme.secondary }}
             onClick={() => props.setModalOpen(false)}
           >
@@ -31,7 +32,7 @@ function DeletionModal(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

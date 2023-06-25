@@ -1,6 +1,5 @@
-import { QuestionType } from '../../../../../utils/constants'
 import ExpeditionService from '../../../../../services/expedition.service'
-import { EXPEDITION_STATUS } from '../../../../../utils/constants'
+import { QuestionType , EXPEDITION_STATUS } from '../../../../../utils/constants'
 
 const getAnswerForm = (questionType, userAnswer) => {
   let idList = null
@@ -14,7 +13,7 @@ const getAnswerForm = (questionType, userAnswer) => {
       idList = userAnswer.map((answer) => answer.id)
       return { optionIds: idList, openAnswer: null }
     default:
-      return
+
   }
 }
 
@@ -30,7 +29,7 @@ export default function answerSaver(userAnswer, questionType, expeditionId, ques
     const result = {
       status: EXPEDITION_STATUS.ANSWER,
       graphTaskId: expeditionId,
-      questionId: questionId,
+      questionId,
       answerForm: getAnswerForm(questionType, userAnswer)
     }
 

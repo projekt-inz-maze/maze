@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Content } from '../../App/AppGeneralStyles'
-import Ranking from '../../general/Ranking/Ranking'
+
 import { debounce } from 'lodash/function'
 import { Form } from 'react-bootstrap'
-import RankingService from '../../../services/ranking.service'
+
 import StudentPointsModal from './StudentPointsModal'
+import RankingService from '../../../services/ranking.service'
+import { Content } from '../../App/AppGeneralStyles'
+import Ranking from '../../general/Ranking/Ranking'
 
 function StudentsRanking() {
   const [ranking, setRanking] = useState(undefined)
@@ -50,10 +52,10 @@ function StudentsRanking() {
 
   return (
     <Content>
-      <Form.Group className={'py-3 px-4'}>
+      <Form.Group className="py-3 px-4">
         <Form.Control
-          type={'text'}
-          placeholder={'Wyszukaj po grupie lub studencie lub typie bohatera...'}
+          type="text"
+          placeholder="Wyszukaj po grupie lub studencie lub typie bohatera..."
           onChange={(e) => filterList(e.target.value)}
         />
       </Form.Group>

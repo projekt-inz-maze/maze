@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
+
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Spinner, Tab, Tabs } from 'react-bootstrap'
-import JSONEditor from '../../general/jsonEditor/JSONEditor'
 import { connect } from 'react-redux'
+
+import FileUpload from './AddActivity/FileUpload'
 import ActivityService from '../../../services/activity.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
-import FileUpload from './AddActivity/FileUpload'
+import JSONEditor from '../../general/jsonEditor/JSONEditor'
 
 function EditActivityModal(props) {
   const [placeholderJson, setPlaceholderJson] = useState(undefined)
@@ -36,17 +38,17 @@ function EditActivityModal(props) {
 
   return (
     <>
-      <Modal show={props.showModal} onHide={() => props.setShowModal(false)} size={'lg'}>
+      <Modal show={props.showModal} onHide={() => props.setShowModal(false)} size="lg">
         <ModalHeader>
-          <h4 className={'text-center w-100'}>{props.modalHeader}</h4>
+          <h4 className="text-center w-100">{props.modalHeader}</h4>
         </ModalHeader>
         <ModalBody>
-          <Tabs defaultActiveKey={'editor'}>
-            <p className={'fw-bold text-center'}>W polu "infoContent" możesz wpisywać tekst markdown.</p>
-            <Tab eventKey={'editor'} title={'Tryb edycji'}>
+          <Tabs defaultActiveKey="editor">
+            <p className="fw-bold text-center">W polu "infoContent" możesz wpisywać tekst markdown.</p>
+            <Tab eventKey="editor" title="Tryb edycji">
               <JSONEditor ref={jsonEditorRef} jsonConfig={placeholderJson} />
             </Tab>
-            <Tab eventKey={'file-upload'} title={'Dodawanie pliku'}>
+            <Tab eventKey="file-upload" title="Dodawanie pliku">
               <FileUpload
                 jsonToDownload={jsonEditorRef.current?.getJson()}
                 setPlaceholderJson={setPlaceholderJson}
@@ -55,7 +57,7 @@ function EditActivityModal(props) {
             </Tab>
           </Tabs>
         </ModalBody>
-        <ModalFooter className={'d-flex justify-content-center'}>
+        <ModalFooter className="d-flex justify-content-center">
           <Button
             style={{ backgroundColor: props.theme.danger, borderColor: props.theme.danger }}
             onClick={() => {
@@ -71,21 +73,21 @@ function EditActivityModal(props) {
             disabled={isSending}
             onClick={sendJsonConfig}
           >
-            {isSending ? <Spinner animation={'border'} size={'sm'} /> : <span>Zapisz zmiany</span>}
+            {isSending ? <Spinner animation="border" size="sm" /> : <span>Zapisz zmiany</span>}
           </Button>
         </ModalFooter>
         {errorMessage && (
-          <p className={'text-center'} style={{ color: props.theme.danger }}>
+          <p className="text-center" style={{ color: props.theme.danger }}>
             {errorMessage}
           </p>
         )}
       </Modal>
       <Modal show={successModalVisible} onHide={() => setSuccessModalVisible(false)}>
         <ModalHeader>
-          <h4 className={'text-center w-100'}>Edycja zakończona pomyślnie</h4>
+          <h4 className="text-center w-100">Edycja zakończona pomyślnie</h4>
         </ModalHeader>
         <ModalBody>{props.successModalBody}</ModalBody>
-        <ModalFooter className={'d-flex justify-content-center'}>
+        <ModalFooter className="d-flex justify-content-center">
           <Button
             style={{ backgroundColor: props.theme.success, borderColor: props.theme.success }}
             onClick={() => {
@@ -103,7 +105,7 @@ function EditActivityModal(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

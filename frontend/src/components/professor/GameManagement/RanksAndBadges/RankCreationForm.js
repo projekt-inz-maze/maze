@@ -1,11 +1,16 @@
 import React, { useState, useTransition } from 'react'
-import { ERROR_OCCURRED, FIELD_REQUIRED, FILE_INPUT_REQUIRED } from '../../../../utils/constants'
-import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
-import { FormCol } from '../../../general/LoginAndRegistrationPage/FormCol'
+
 import { Formik } from 'formik'
-import RankService from '../../../../services/rank.service'
-import { successToast } from '../../../../utils/toasts'
+import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
+
+import RankService from '../../../../services/rank.service'
+import { ERROR_OCCURRED, FIELD_REQUIRED, FILE_INPUT_REQUIRED } from '../../../../utils/constants'
+import { successToast } from '../../../../utils/toasts'
+import { FormCol } from '../../../general/LoginAndRegistrationPage/FormCol'
+
+
+
 
 function RankCreationForm(props) {
   const [isFetching, startAddition] = useTransition()
@@ -86,7 +91,7 @@ function RankCreationForm(props) {
               </Col>
             </Row>
             {errorMessage && (
-              <p className={'text-center mt-2'} style={{ color: props.theme.danger }}>
+              <p className="text-center mt-2" style={{ color: props.theme.danger }}>
                 {errorMessage}
               </p>
             )}
@@ -98,7 +103,7 @@ function RankCreationForm(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

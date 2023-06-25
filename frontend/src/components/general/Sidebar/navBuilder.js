@@ -1,7 +1,7 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export const NavLinkStyles = styled(Nav.Link)`
   color: ${(props) => props.$fontColor};

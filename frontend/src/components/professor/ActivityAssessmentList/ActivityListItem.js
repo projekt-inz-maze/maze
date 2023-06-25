@@ -1,11 +1,12 @@
 import { Row } from 'react-bootstrap'
-import styled from 'styled-components'
-import { getActivityImg, getActivityTypeName } from '../../../utils/constants'
-import { ActivityImg } from '../../student/AllActivities/ExpeditionTask/ActivityInfo/ActivityInfoStyles'
-import { useNavigate } from 'react-router-dom'
-import { TeacherRoutes } from '../../../routes/PageRoutes'
-import { Activity } from '../../../utils/constants'
 import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+
+import { TeacherRoutes } from '../../../routes/PageRoutes'
+import { getActivityImg, getActivityTypeName , Activity } from '../../../utils/constants'
+import { ActivityImg } from '../../student/AllActivities/ExpeditionTask/ActivityInfo/ActivityInfoStyles'
+
 
 // todo: move it to styles file
 const ActivityListItemRow = styled(Row)`
@@ -38,15 +39,15 @@ function ActivityListItem(props) {
         })
       }}
     >
-      <ActivityImg src={getActivityImg(Activity.TASK)}></ActivityImg>
+      <ActivityImg src={getActivityImg(Activity.TASK)} />
       <div>{`${getActivityTypeName(Activity.TASK)} - ${props.activity.activityName}`}</div>
-      <div style={{ marginLeft: 'auto' }}>{props.toGrade + ' do sprawdzenia'}</div>
+      <div style={{ marginLeft: 'auto' }}>{`${props.toGrade  } do sprawdzenia`}</div>
     </ActivityListItemRow>
   )
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

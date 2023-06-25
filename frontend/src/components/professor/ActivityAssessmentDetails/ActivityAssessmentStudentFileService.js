@@ -1,10 +1,11 @@
-import { Col, Button } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import download from 'downloadjs'
-import CombatTaskService from '../../../services/combatTask.service'
-import { ActivityAssessmentStudentFileRow } from './ActivityAssesmentDetailsStyles'
+import { Col, Button } from 'react-bootstrap'
 import { connect } from 'react-redux'
+
+import { ActivityAssessmentStudentFileRow } from './ActivityAssesmentDetailsStyles'
+import CombatTaskService from '../../../services/combatTask.service'
 
 function ActivityAssessmentStudentFileService(props) {
   const { activityResponseInfo } = props
@@ -40,7 +41,7 @@ function ActivityAssessmentStudentFileService(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

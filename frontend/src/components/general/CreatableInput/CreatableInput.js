@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import CreatableSelect from 'react-select/creatable'
+
 import { uniqBy } from 'lodash'
+import CreatableSelect from 'react-select/creatable'
 
 const createOption = (label) => ({
   label,

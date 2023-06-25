@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Tooltip } from 'react-bootstrap'
+import styled from 'styled-components'
 
 export const CustomTooltip = styled(Tooltip)`
   & > .tooltip-inner {

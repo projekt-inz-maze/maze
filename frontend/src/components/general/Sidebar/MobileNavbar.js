@@ -1,11 +1,13 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Nav } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { logout } from '../../../actions/auth'
+import { Link, useNavigate } from 'react-router-dom'
+
 import { NavLinkStylesMobile } from './navBuilder'
 import { MobileNav } from './SidebarStyles'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { logout } from '../../../actions/auth'
 import { isStudent } from '../../../utils/storageManager'
 
 function MobileNavbar(props) {
@@ -39,7 +41,7 @@ function MobileNavbar(props) {
 
 function mapStateToProps(state) {
   const { user } = state.auth
-  const theme = state.theme
+  const {theme} = state
   return { theme, user }
 }
 export default connect(mapStateToProps)(MobileNavbar)

@@ -1,6 +1,6 @@
 import { Button, Card } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 // TODO: refactor needed
 function GameButton(props) {
@@ -36,7 +36,7 @@ function GameButton(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

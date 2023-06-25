@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { parseJwt } from '../utils/Api'
+
 import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
 import { logout } from '../actions/auth'
+import { parseJwt } from '../utils/Api'
 import { refreshSessionToast } from '../utils/toasts'
 
 function AuthVerify(props) {
   const navigate = useNavigate()
-  let pathname = window.location.pathname
+  const {pathname} = window.location
 
   useEffect(() => {
     if (props.user && !JSON.parse(localStorage.getItem('user'))) {

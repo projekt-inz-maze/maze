@@ -1,10 +1,13 @@
 import React from 'react'
+
 import { Formik } from 'formik'
 import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
-import { FormCol } from '../../general/LoginAndRegistrationPage/FormCol'
-import { FIELD_REQUIRED } from '../../../utils/constants'
-import GroupService from '../../../services/group.service'
 import { connect } from 'react-redux'
+
+import GroupService from '../../../services/group.service'
+import { FIELD_REQUIRED } from '../../../utils/constants'
+import { FormCol } from '../../general/LoginAndRegistrationPage/FormCol'
+
 
 function GroupAdditionForm(props) {
   return (
@@ -67,7 +70,7 @@ function GroupAdditionForm(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

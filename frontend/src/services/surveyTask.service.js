@@ -1,5 +1,5 @@
-import { axiosApiGet, axiosApiPost } from '../utils/axios'
 import { GET_SURVEY, GET_SURVEY_CREATE, GET_SURVEY_RESULT, POST_SURVEY_CREATE, POST_SURVEY_RESULT } from './urls'
+import { axiosApiGet, axiosApiPost } from '../utils/axios'
 
 class SurveyTaskService {
   getSurveyTask(taskId) {
@@ -16,8 +16,8 @@ class SurveyTaskService {
 
   setSurveyTaskJson({ chapterId, form }) {
     return axiosApiPost(POST_SURVEY_CREATE, {
-      chapterId: chapterId,
-      form: form
+      chapterId,
+      form
     }).catch((error) => {
       throw error
     })

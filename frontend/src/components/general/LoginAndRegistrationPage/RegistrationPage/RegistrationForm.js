@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
+
 import { ErrorMessage, Field, Formik } from 'formik'
 import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
-import { FIELD_REQUIRED, HeroDescriptions, HeroImg, RegistrationLabelsAndTypes } from '../../../../utils/constants'
+import { connect } from 'react-redux'
+
 import { Description, Info } from './RegistrationStyle'
 import { validateConfirmPassword, validateEmail, validateIndex, validatePassword } from './validators'
 import { register } from '../../../../actions/auth'
+import { FIELD_REQUIRED, HeroDescriptions, HeroImg, RegistrationLabelsAndTypes } from '../../../../utils/constants'
 import { AccountType, HeroType } from '../../../../utils/userRole'
-import { connect } from 'react-redux'
+
 
 function RegistrationForm(props) {
   const [errorMessage, setErrorMessage] = useState()
@@ -94,7 +97,7 @@ function RegistrationForm(props) {
                           onChange={changeCharacter}
                           value={character}
                         >
-                          {/*//TODO: mapper and variable */}
+                          {/* //TODO: mapper and variable */}
                           <option id='warrior' value={HeroType.WARRIOR}>
                             Wojownik
                           </option>
@@ -133,7 +136,7 @@ function RegistrationForm(props) {
                 </Col>
               ))}
               {errorMessage && (
-                <p className={'text-center w-100'} style={{ color: props.theme.danger }}>
+                <p className="text-center w-100" style={{ color: props.theme.danger }}>
                   {errorMessage}
                 </p>
               )}
@@ -166,7 +169,7 @@ function RegistrationForm(props) {
 
 function mapStateToProps(state) {
   const { message } = state.message
-  const theme = state.theme
+  const {theme} = state
 
   return { message, theme }
 }

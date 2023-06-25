@@ -7,9 +7,9 @@ export const getGraphElements = (graphElements) => {
       id: nodeInfo.id ?? 0,
       position: nodeInfo.position,
       borderColor: nodeInfo.borderColor ?? 'black',
-      size: nodeInfo.size ? nodeInfo.size + 'px' : GRAPH_NODE_BASIC_SIZE + 'px',
-      padding: nodeInfo.size ? nodeInfo.size * 1.5 + 'px' : '30px',
-      fontSize: nodeInfo.size ? nodeInfo.size * 3.2 + 'px' : '64px',
+      size: nodeInfo.size ? `${nodeInfo.size  }px` : `${GRAPH_NODE_BASIC_SIZE  }px`,
+      padding: nodeInfo.size ? `${nodeInfo.size * 1.5  }px` : '30px',
+      fontSize: nodeInfo.size ? `${nodeInfo.size * 3.2  }px` : '64px',
       content: nodeInfo.content ?? nodeInfo.id ?? 0,
       backgroundColor: nodeInfo.backgroundColor ?? 'white',
       isBlocked: !!nodeInfo.isBlocked
@@ -61,7 +61,7 @@ export const createLabelsAndNodes = (cy, labels) => {
       Object.assign(labelChild.style, nodeLabelChildStyle(node))
 
       labelHtml = document.createElement('div')
-      labelHtml.id = 'labelHtml-' + node.id()
+      labelHtml.id = `labelHtml-${  node.id()}`
 
       labelHtml.appendChild(labelChild)
     }
@@ -74,7 +74,7 @@ export const createLabelsAndNodes = (cy, labels) => {
       Object.assign(nodeChild.style, gameNodeChildStyle(node))
 
       nodeHtml = document.createElement('div')
-      nodeHtml.id = 'nodeHtml-' + node.id()
+      nodeHtml.id = `nodeHtml-${  node.id()}`
 
       nodeHtml.appendChild(nodeChild)
     }

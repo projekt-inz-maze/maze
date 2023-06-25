@@ -1,9 +1,11 @@
 import React from 'react'
+
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import StudentService from '../../../services/student.service'
 import { useNavigate } from 'react-router-dom'
+
 import { logout } from '../../../actions/auth'
+import StudentService from '../../../services/student.service'
 import { successToast } from '../../../utils/toasts'
 
 function DeleteAccountModal(props) {
@@ -43,7 +45,7 @@ function DeleteAccountModal(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

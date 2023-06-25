@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ERROR_OCCURRED } from '../../../../utils/constants'
+
 import { Button, Tab, Tabs } from 'react-bootstrap'
-import JSONEditor from '../../../general/jsonEditor/JSONEditor'
 import { connect } from 'react-redux'
+
 import FileUpload from './FileUpload'
+import { ERROR_OCCURRED } from '../../../../utils/constants'
+import JSONEditor from '../../../general/jsonEditor/JSONEditor'
 import Loader from '../../../general/Loader/Loader'
 
 function AddActivity(props) {
@@ -29,7 +31,7 @@ function AddActivity(props) {
 
     if (form) {
       props
-        .setActivityJson({ chapterId: props.chapterId, form: form })
+        .setActivityJson({ chapterId: props.chapterId, form })
         .then(() => {
           props.onSuccess()
         })
@@ -47,11 +49,11 @@ function AddActivity(props) {
         <p>{errorMessage}</p>
       ) : (
         <>
-          <Tabs defaultActiveKey={'editor'}>
-            <Tab title={'Tryb edycji'} eventKey={'editor'}>
+          <Tabs defaultActiveKey="editor">
+            <Tab title="Tryb edycji" eventKey="editor">
               <JSONEditor ref={jsonEditorRef} jsonConfig={placeholderJson} />
             </Tab>
-            <Tab title={'Dodawanie pliku'} eventKey={'file-upload'}>
+            <Tab title="Dodawanie pliku" eventKey="file-upload">
               <FileUpload
                 jsonToDownload={jsonEditorRef.current?.getJson()}
                 setPlaceholderJson={setPlaceholderJson}
@@ -60,13 +62,13 @@ function AddActivity(props) {
             </Tab>
           </Tabs>
 
-          <div className={'d-flex flex-column justify-content-center align-items-center pt-4 gap-2'}>
+          <div className="d-flex flex-column justify-content-center align-items-center pt-4 gap-2">
             {errorMessage && (
-              <p style={{ color: props.theme.danger }} className={'h6'}>
+              <p style={{ color: props.theme.danger }} className="h6">
                 {errorMessage}
               </p>
             )}
-            <div className={'d-flex gap-2'}>
+            <div className="d-flex gap-2">
               <Button
                 style={{ backgroundColor: props.theme.danger, borderColor: props.theme.danger }}
                 onClick={props.onCancel}
@@ -88,7 +90,7 @@ function AddActivity(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

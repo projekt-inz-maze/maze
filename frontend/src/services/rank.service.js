@@ -1,5 +1,5 @@
-import { axiosApiDelete, axiosApiGet, axiosApiMultipartPut, axiosApiMultipartPost } from '../utils/axios'
 import { DELETE_RANK, GET_RANK_ALL, GET_RANK_CURRENT, POST_RANK, PUT_RANK_UPDATE } from './urls'
+import { axiosApiDelete, axiosApiGet, axiosApiMultipartPut, axiosApiMultipartPost } from '../utils/axios'
 
 class RankService {
   editRank(rankId, rankName, minPoints, image, rankType) {

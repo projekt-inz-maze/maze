@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
+
 import { Row } from 'react-bootstrap'
-import { SummaryContainer } from './ExpeditionSummaryStyle'
-import { ButtonRow } from '../QuestionAndOptions/QuestionAndOptionsStyle'
+import { connect } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import Loader from '../../../../general/Loader/Loader'
-
-import { Content } from '../../../../App/AppGeneralStyles'
+import { SummaryContainer } from './ExpeditionSummaryStyle'
+import { GeneralRoutes, StudentRoutes } from '../../../../../routes/PageRoutes'
 import ExpeditionService from '../../../../../services/expedition.service'
 import { getTimer } from '../../../../../utils/storageManager'
-import { GeneralRoutes, StudentRoutes } from '../../../../../routes/PageRoutes'
-import { connect } from 'react-redux'
+import { Content } from '../../../../App/AppGeneralStyles'
+import Loader from '../../../../general/Loader/Loader'
+import { ButtonRow } from '../QuestionAndOptions/QuestionAndOptionsStyle'
+
+
 
 function ExpeditionSummary(props) {
   const navigate = useNavigate()
@@ -43,10 +45,10 @@ function ExpeditionSummary(props) {
         .catch(() => setMaxPointsOpen(0))
 
       // TODO: For now we get points from /all, later we will get it from getActivityScore() when it gets fixed
-      //StudentService.getActivityScore()...
+      // StudentService.getActivityScore()...
       const promise2 = ExpeditionService.getExpeditionAllPoints(activityScore)
         .then((response) => {
-          setScoredPoints(!!response ? response?.toFixed(2) : 0)
+          setScoredPoints(response ? response?.toFixed(2) : 0)
         })
         .catch(() => setScoredPoints(0))
 
@@ -79,14 +81,14 @@ function ExpeditionSummary(props) {
     const seconds = timer[2]
     const minutes = timer[1]
     const hours = timer[0]
-    let timeString = seconds + 's'
+    let timeString = `${seconds  }s`
 
     if (minutes !== '00' || (minutes === '00' && hours !== '00')) {
-      timeString = minutes + 'min, ' + timeString
+      timeString = `${minutes  }min, ${  timeString}`
     }
 
     if (hours !== '00') {
-      timeString = hours + 'h, ' + timeString
+      timeString = `${hours  }h, ${  timeString}`
     }
 
     return timeString
@@ -112,13 +114,13 @@ function ExpeditionSummary(props) {
               </strong>
             </p>
             <p style={{ fontSize: 20 }}>
-              Punkty z pytań zamkniętych na wybranej ścieżce: {/* there will be a closed all endpoint later*/}
+              Punkty z pytań zamkniętych na wybranej ścieżce: {/* there will be a closed all endpoint later */}
               <strong>
                 {closedQuestionPoints}/{maxPointsClosed}
               </strong>
             </p>
             <p style={{ fontSize: 20 }}>
-              Punkty z pytań otwartych na wybranej ścieżce: {/* there will be a closed all endpoint later*/}
+              Punkty z pytań otwartych na wybranej ścieżce: {/* there will be a closed all endpoint later */}
               <strong>
                 {scoredPoints - closedQuestionPoints}/{maxPointsOpen}
               </strong>
@@ -146,7 +148,7 @@ function ExpeditionSummary(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

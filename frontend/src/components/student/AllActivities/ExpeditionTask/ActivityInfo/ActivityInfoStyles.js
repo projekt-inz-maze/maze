@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Col, Row } from 'react-bootstrap'
+import styled from 'styled-components'
 
 export const ActivityImg = styled.img`
   height: 30px;

@@ -1,5 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react'
+
+import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { hexToCSSFilter } from 'hex-to-css-filter'
+import moment from 'moment'
+import { Button, OffcanvasBody, OffcanvasHeader, OffcanvasTitle, Spinner } from 'react-bootstrap'
+import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+
+import { ActivityCol, CustomOffcanvas } from './ActivityFieldStyle'
+import ActivityService from '../../../../services/activity.service'
 import {
   ERROR_OCCURRED,
   getActivityImg,
@@ -7,16 +17,9 @@ import {
   getActivityTypeName,
   requirementValueConverter
 } from '../../../../utils/constants'
-import { ActivityCol, CustomOffcanvas } from './ActivityFieldStyle'
-import { Button, OffcanvasBody, OffcanvasHeader, OffcanvasTitle, Spinner } from 'react-bootstrap'
-import moment from 'moment'
-import { Tooltip } from '../../BadgesPage/BadgesStyle'
-import ActivityService from '../../../../services/activity.service'
-import { connect } from 'react-redux'
-import { hexToCSSFilter } from 'hex-to-css-filter'
 import { isStudent } from '../../../../utils/storageManager'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
+import { Tooltip } from '../../BadgesPage/BadgesStyle'
+
 
 function ActivityField(props) {
   const { activity, colClickable, colSize, isCompletedActivityAround, allActivitiesCompleted } = props
@@ -26,9 +29,7 @@ function ActivityField(props) {
   const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false)
   const [requirements, setRequirements] = useState(undefined)
 
-  const isActivityBlocked = () => {
-    return (student && !activity.isFulfilled) || (!student && activity.isActivityBlocked)
-  }
+  const isActivityBlocked = () => (student && !activity.isFulfilled) || (!student && activity.isActivityBlocked)
 
   useEffect(() => {
     if (activity) {
@@ -60,11 +61,11 @@ function ActivityField(props) {
         name: 'Stan aktywności',
         value: activity?.isCompleted ? (
           <span>
-            Ukończona <FontAwesomeIcon icon={faCircleCheck} color={props.theme.success} size={'lg'} />
+            Ukończona <FontAwesomeIcon icon={faCircleCheck} color={props.theme.success} size="lg" />
           </span>
         ) : (
           <span>
-            Nieukończona <FontAwesomeIcon icon={faCircleXmark} color={props.theme.danger} size={'lg'} />
+            Nieukończona <FontAwesomeIcon icon={faCircleXmark} color={props.theme.danger} size="lg" />
           </span>
         )
       }
@@ -87,19 +88,19 @@ function ActivityField(props) {
           </tr>
           {requirements === undefined ? (
             <tr>
-              <td colSpan={2} className={'text-center'}>
-                <Spinner animation={'border'} />
+              <td colSpan={2} className="text-center">
+                <Spinner animation="border" />
               </td>
             </tr>
           ) : requirements == null ? (
             <tr>
-              <td colSpan={2} className={'text-center'}>
+              <td colSpan={2} className="text-center">
                 <p>{ERROR_OCCURRED}</p>
               </td>
             </tr>
           ) : !requirements.length ? (
             <tr>
-              <td colSpan={2} className={'text-center'}>
+              <td colSpan={2} className="text-center">
                 <p>Brak wymagań dla aktywności</p>
               </td>
             </tr>
@@ -143,7 +144,7 @@ function ActivityField(props) {
         $background={props.theme.secondary}
         $fontColor={props.theme.font}
         $filter={hexToCSSFilter(props.theme.font)}
-        placement={'end'}
+        placement="end"
         show={isOffcanvasOpen}
         onHide={() => setIsOffcanvasOpen(false)}
       >
@@ -156,7 +157,7 @@ function ActivityField(props) {
             <Button
               style={{ backgroundColor: 'transparent', borderColor: props.theme.warning, color: props.theme.warning }}
               disabled={!activity?.isFulfilled && !activity?.isCompleted}
-              className={'position-relative start-50 translate-middle-x mt-3'}
+              className="position-relative start-50 translate-middle-x mt-3"
               onClick={startActivity}
             >
               Rozpocznij
@@ -169,7 +170,7 @@ function ActivityField(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   const { user } = state.auth
 
   return { theme, user }
