@@ -27,9 +27,9 @@ export const barConfig = (datasetLabels, datasets, backgroundColors, labels = ['
   }
 
   const data = {
-    labels: labels,
+    labels,
     datasets: datasetLabels.map((label, index) => ({
-      label: label,
+      label,
       data: typeof datasets[index] === 'number' || !datasets[index] ? [datasets[index]] : [...datasets[index]], // Yes, I know - it's stupid and ugly, so... TODO later
       backgroundColor: backgroundColors[index],
       minBarLength: 7
@@ -55,11 +55,11 @@ export const pieConfig = (labels, datasets, backgroundColors) => {
       },
       tooltip: {
         callbacks: {
-          label: function (context) {
-            let actualValue = context.raw
-            let sumValue = context.dataset.data.reduce((a, b) => a + b)
+          label (context) {
+            const actualValue = context.raw
+            const sumValue = context.dataset.data.reduce((a, b) => a + b)
 
-            return actualValue + ' - ' + Math.round(100 * (actualValue / sumValue)) + '%'
+            return `${actualValue  } - ${  Math.round(100 * (actualValue / sumValue))  }%`
           },
           title: (tooltipItem) => `${tooltipItem[0]?.label}`
         }
@@ -68,7 +68,7 @@ export const pieConfig = (labels, datasets, backgroundColors) => {
   }
 
   const data = {
-    labels: labels,
+    labels,
     datasets: [
       {
         data: datasets,
@@ -97,8 +97,8 @@ export const lineConfig = (labels, datasets, colors) => {
       },
       tooltip: {
         callbacks: {
-          label: function (context) {
-            return context.raw + '%'
+          label (context) {
+            return `${context.raw  }%`
           },
           title: (tooltipItem) => `${tooltipItem[0]?.label}`
         }
@@ -107,15 +107,13 @@ export const lineConfig = (labels, datasets, colors) => {
   }
 
   const data = {
-    labels: labels,
-    datasets: datasets.map((set, index) => {
-      return {
+    labels,
+    datasets: datasets.map((set, index) => ({
         label: set.label,
         data: set.data,
         borderColor: colors[index],
         backgroundColor: colors[index]
-      }
-    })
+      }))
   }
 
   return { options, data }

@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Col, Table } from 'react-bootstrap'
+import styled from 'styled-components'
 
 export const CustomTable = styled(Table)`
   margin: 0;

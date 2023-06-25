@@ -1,5 +1,11 @@
-import { Content } from '../../App/AppGeneralStyles'
+import { useEffect, useRef, useState, useMemo } from 'react'
+
+import { debounce } from 'lodash'
 import { Row, Col } from 'react-bootstrap'
+
+import { Activity } from '../../../utils/constants'
+import { connect } from 'react-redux'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
   AcceptButton,
   RemarksTextArea,
@@ -8,21 +14,17 @@ import {
   PointsInput,
   PointsMax
 } from './ActivityAssesmentDetailsStyles'
-import { useEffect, useRef, useState, useMemo } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import ProfessorService from '../../../services/professor.service'
-import Loader from '../../general/Loader/Loader'
-import { TeacherRoutes } from '../../../routes/PageRoutes'
-import ActivityAssessmentStudentFileService from './ActivityAssessmentStudentFileService'
 import { ActivityAssessmentProfessorFileService } from './ActivityAssessmentProfessorFileService'
-import { debounce } from 'lodash'
-import { HorizontalSpacer, VerticalSpacer, Header } from '../../general/TaskSharedComponents'
-import { ERROR_OCCURRED } from '../../../utils/constants'
-import { Activity } from '../../../utils/constants'
-import { connect } from 'react-redux'
-import { isMobileView } from '../../../utils/mobileHelper'
+import ActivityAssessmentStudentFileService from './ActivityAssessmentStudentFileService'
 import { SET_ASSESSMENT_NUMBERS } from '../../../actions/types'
+import { TeacherRoutes } from '../../../routes/PageRoutes'
+import ProfessorService from '../../../services/professor.service'
+import { ERROR_OCCURRED } from '../../../utils/constants'
+import { isMobileView } from '../../../utils/mobileHelper'
+import { Content } from '../../App/AppGeneralStyles'
 import GoBackButton from '../../general/GoBackButton/GoBackButton'
+import Loader from '../../general/Loader/Loader'
+import { HorizontalSpacer, VerticalSpacer, Header } from '../../general/TaskSharedComponents'
 
 function ActivityAssessmentDetails(props) {
   const navigate = useNavigate()
@@ -107,36 +109,35 @@ function ActivityAssessmentDetails(props) {
       .catch(() => {})
   }
 
-  const UserDetails = () => (
-    <Col className='m-auto'>
+  function UserDetails() {
+  return <Col className='m-auto'>
       <h5>
-        Autor rozwiązania - {activityResponseInfo.firstName + ' ' + activityResponseInfo.lastName} (
-        {'zadanie oddane ' + (activityResponseInfo.isLate ? 'ze spóźnieniem' : 'w terminie')})
+        Autor rozwiązania - {`${activityResponseInfo.firstName  } ${  activityResponseInfo.lastName}`} (
+        {`zadanie oddane ${  activityResponseInfo.isLate ? 'ze spóźnieniem' : 'w terminie'}`})
       </h5>
     </Col>
-  )
+}
 
-  const ResponseDetails = () => (
-    <Col>
+  function ResponseDetails() {
+  return <Col>
       <h4>Odpowiedź:</h4>
       <p>{activityResponseInfo.userAnswer}</p>
       <ActivityAssessmentStudentFileService activityResponseInfo={activityResponseInfo} />
     </Col>
-  )
+}
 
-  const ActivityDetails = () => (
-    <Col>
+  function ActivityDetails() {
+  return <Col>
       <h4>Treść:</h4>
       <p>{activityResponseInfo.activityDetails}</p>
       <h5 className='text-center'>Maksymalna liczba punktów: {activityResponseInfo.maxPoints}</h5>
       <p className='text-center'>Pozostało {activityResponseInfo.remaining} odpowiedzi do sprawdzenia</p>
     </Col>
-  )
+}
 
-  const contentBody = () => {
-    return (
+  const contentBody = () => (
       <>
-        <HorizontalSpacer height={'1vh'} />
+        <HorizontalSpacer height="1vh" />
         <Col
           className='m-0 pt-4 mx-auto'
           style={{
@@ -152,7 +153,7 @@ function ActivityAssessmentDetails(props) {
             <Header activityName={activityResponseInfo.activityName} activityType={Activity.TASK} />
           </Row>
 
-          <VerticalSpacer height={'1vh'} />
+          <VerticalSpacer height="1vh" />
 
           <Row
             className='p-2 rounded mx-2 overflow-auto text-center'
@@ -161,7 +162,7 @@ function ActivityAssessmentDetails(props) {
             <UserDetails />
           </Row>
 
-          <VerticalSpacer height={'1vh'} />
+          <VerticalSpacer height="1vh" />
 
           <Row
             className='p-2 rounded mx-2 overflow-auto'
@@ -170,7 +171,7 @@ function ActivityAssessmentDetails(props) {
             <ActivityDetails className='overflow-auto' />
           </Row>
 
-          <VerticalSpacer height={'1vh'} />
+          <VerticalSpacer height="1vh" />
 
           <Row
             className='p-2 rounded mx-2 overflow-auto'
@@ -179,13 +180,13 @@ function ActivityAssessmentDetails(props) {
             <ResponseDetails />
           </Row>
 
-          <VerticalSpacer height={'1vh'} />
+          <VerticalSpacer height="1vh" />
 
           <Row
             className='pb-3 rounded mx-2 overflow-auto'
             style={{ backgroundColor: props.theme.primary, height: isMobileDisplay ? 'auto' : '35vh' }}
           >
-            <Col className={'d-flex flex-column justify-content-center align-items-center'}>
+            <Col className="d-flex flex-column justify-content-center align-items-center">
               <h4>Uwagi:</h4>
               <RemarksTextArea
                 $fontColor={props.theme.font}
@@ -203,7 +204,7 @@ function ActivityAssessmentDetails(props) {
               </ActivityAssessmentProfessorFileCol>
               <PointsRow>
                 <p className='m-0'>Punkty: </p>
-                <Row className={'d-flex justify-content-center'}>
+                <Row className="d-flex justify-content-center">
                   <PointsInput
                     $fontColor={props.theme.font}
                     $borderColor={props.theme.warning}
@@ -213,7 +214,7 @@ function ActivityAssessmentDetails(props) {
                     max={activityResponseInfo.maxPoints}
                     onChange={debounceSetGivenPoints}
                     ref={pointRef}
-                  ></PointsInput>
+                   />
                   <PointsMax>/ {activityResponseInfo.maxPoints}</PointsMax>
                 </Row>
               </PointsRow>
@@ -229,7 +230,6 @@ function ActivityAssessmentDetails(props) {
         </Col>
       </>
     )
-  }
 
   return (
     <Content style={{ color: props.theme.font, marginBottom: isMobileDisplay ? 85 : 0 }}>
@@ -240,7 +240,7 @@ function ActivityAssessmentDetails(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

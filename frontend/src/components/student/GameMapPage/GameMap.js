@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Content } from '../../App/AppGeneralStyles'
-import ChapterService from '../../../services/chapter.service'
-import Loader from '../../general/Loader/Loader'
-import { ERROR_OCCURRED } from '../../../utils/constants'
-import { getGraphElements } from '../../general/Graph/graphHelper'
+
 import ChapterMapModal from './ChapterMapModal'
 import GameMapContainer from './GameMapContainer'
+import ChapterService from '../../../services/chapter.service'
+import { ERROR_OCCURRED } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
+import { Content } from '../../App/AppGeneralStyles'
+import { getGraphElements } from '../../general/Graph/graphHelper'
+import Loader from '../../general/Loader/Loader'
 
 function GameMap() {
   const [chaptersList, setChaptersList] = useState(undefined)
@@ -61,14 +62,14 @@ function GameMap() {
 
   return (
     <>
-      <Content className={'vh-100'}>
+      <Content className="vh-100">
         {chaptersList === undefined ? (
           <Loader />
         ) : chaptersList == null ? (
           <p>{ERROR_OCCURRED}</p>
         ) : (
           <>
-            <h2 className={'text-center pt-2'}>Mapa gry</h2>
+            <h2 className="text-center pt-2">Mapa gry</h2>
             <GameMapContainer
               elements={graphElements}
               nodeClickCallback={(nodeId) => setChosenChapterId({ id: nodeId })}

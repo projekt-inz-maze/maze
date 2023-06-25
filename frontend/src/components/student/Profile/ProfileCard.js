@@ -1,8 +1,10 @@
 import React from 'react'
-import { CustomCard } from '../GameCardPage/GameCardStyles'
-import CardHeader from 'react-bootstrap/CardHeader'
+
 import { Button, Card } from 'react-bootstrap'
+import CardHeader from 'react-bootstrap/CardHeader'
 import { connect } from 'react-redux'
+
+import { CustomCard } from '../GameCardPage/GameCardStyles'
 
 function ProfileCard(props) {
   const buttonColor = props.customButton ?? props.theme.warning
@@ -11,7 +13,7 @@ function ProfileCard(props) {
       <CardHeader>
         <h5>{props.header}</h5>
       </CardHeader>
-      <Card.Body className={'d-flex align-items-center justify-content-center flex-column'}>
+      <Card.Body className="d-flex align-items-center justify-content-center flex-column">
         <>{props.body}</>
         {props.showButton && (
           <Button style={{ backgroundColor: buttonColor, borderColor: buttonColor }} onClick={props.buttonCallback}>
@@ -23,7 +25,7 @@ function ProfileCard(props) {
   )
 }
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

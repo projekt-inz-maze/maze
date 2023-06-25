@@ -35,7 +35,7 @@ class StudentService {
   }
 
   setIndexNumber(newIndexNumber) {
-    return axiosApiPost(POST_USER_INDEX, { newIndexNumber: newIndexNumber }).catch((error) => {
+    return axiosApiPost(POST_USER_INDEX, { newIndexNumber }).catch((error) => {
       throw error
     })
   }

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { GraphContainer, GraphTrigger } from './InfoContainerStyle'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { faDiagramProject } from '@fortawesome/free-solid-svg-icons'
-import Graph from '../../../../general/Graph/Graph'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { connect } from 'react-redux'
+
+import { GraphContainer, GraphTrigger } from './InfoContainerStyle'
 import ExpeditionService from '../../../../../services/expedition.service'
-import { getGraphElements, getNodeColor } from '../../../../general/Graph/graphHelper'
 import { GRAPH_NODE_BASIC_SIZE, GRAPH_NODE_SPECIAL_SIZE } from '../../../../../utils/constants'
 import { isMobileView } from '../../../../../utils/mobileHelper'
-import { connect } from 'react-redux'
+import Graph from '../../../../general/Graph/Graph'
+import { getGraphElements, getNodeColor } from '../../../../general/Graph/graphHelper'
+
 
 const CLOSE_PREVIEW_CONTAINER_SIZE = 0
 const OPEN_PREVIEW_CONTAINER_SIZE = isMobileView() ? '95vw' : '40%'
@@ -58,14 +61,14 @@ function GraphPreview(props) {
         <FontAwesomeIcon icon={faDiagramProject} />
       </GraphTrigger>
       <GraphContainer style={{ width: size, height: size }}>
-        <Graph elements={graphElements} height={'100%'} layoutName={'klay'} onNodeClick={() => {}} ungrabify />
+        <Graph elements={graphElements} height="100%" layoutName="klay" onNodeClick={() => {}} ungrabify />
       </GraphContainer>
     </>
   )
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

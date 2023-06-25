@@ -1,17 +1,20 @@
 import { Container } from 'react-bootstrap'
 import { BrowserRouter } from 'react-router-dom'
 
+import './App.css'
+import { ToastContainer } from 'react-toastify'
+
+import { SidebarCol } from './AppGeneralStyles'
+
+import { connect } from 'react-redux'
+
+import AuthVerify from '../../common/auth-verify'
+import AppRoutes from '../../routes/AppRoutes'
+import { sidebarExcludedPaths } from '../../utils/constants'
+import { ProfessorSidebarTitles, UserSidebarTitles } from '../../utils/sidebarTitles'
+import { isStudent } from '../../utils/storageManager'
 import MobileNavbar from '../general/Sidebar/MobileNavbar'
 import Sidebar from '../general/Sidebar/Sidebar'
-import './App.css'
-import { SidebarCol } from './AppGeneralStyles'
-import { connect } from 'react-redux'
-import AuthVerify from '../../common/auth-verify'
-import { ToastContainer } from 'react-toastify'
-import { isStudent } from '../../utils/storageManager'
-import AppRoutes from '../../routes/AppRoutes'
-import { ProfessorSidebarTitles, UserSidebarTitles } from '../../utils/sidebarTitles'
-import { sidebarExcludedPaths } from '../../utils/constants'
 
 function App(props) {
   const student = isStudent(props.user)
@@ -19,7 +22,7 @@ function App(props) {
   return (
     <>
       <Container fluid className='p-0'>
-        <div className={'d-flex'} style={{ minHeight: '100vh', margin: 0 }}>
+        <div className="d-flex" style={{ minHeight: '100vh', margin: 0 }}>
           <BrowserRouter>
             <SidebarCol
               style={{ width: props.sidebar.isExpanded ? 400 : 60 }}
@@ -49,7 +52,7 @@ function App(props) {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme={'colored'}
+        theme="colored"
       />
     </>
   )
@@ -57,7 +60,7 @@ function App(props) {
 
 function mapStateToProps(state) {
   const { user } = state.auth
-  const sidebar = state.sidebar
+  const {sidebar} = state
   return {
     user,
     sidebar

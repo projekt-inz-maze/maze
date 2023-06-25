@@ -54,9 +54,9 @@ export const validateIndex = (index) => {
   const numbersRegex = /^[0-9]+$/
   if (!index) {
     return FIELD_REQUIRED
-  } else if (index.length !== 6) {
+  } if (index.length !== 6) {
     return WRONG_INDEX_LENGTH
-  } else if (!numbersRegex.test(index)) {
+  } if (!numbersRegex.test(index)) {
     return INDEX_WITH_CHARS
   }
   return ''

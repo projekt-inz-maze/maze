@@ -1,9 +1,9 @@
-import { axiosApiGet, axiosApiPost } from '../utils/axios'
 import { GET_INFO, GET_INFO_CREATE, POST_INFO_CREATE } from './urls'
+import { axiosApiGet, axiosApiPost } from '../utils/axios'
 
 class InfoTaskService {
   getInformation(infoId) {
-    return axiosApiGet(GET_INFO, { infoId: infoId }).catch((error) => {
+    return axiosApiGet(GET_INFO, { infoId }).catch((error) => {
       throw error
     })
   }
@@ -16,8 +16,8 @@ class InfoTaskService {
 
   setInfoTaskJson({ chapterId, form }) {
     return axiosApiPost(POST_INFO_CREATE, {
-      chapterId: chapterId,
-      form: form
+      chapterId,
+      form
     }).catch((error) => {
       throw error
     })

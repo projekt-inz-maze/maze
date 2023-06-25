@@ -1,22 +1,24 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Content } from '../../../App/AppGeneralStyles'
+
 import { Button, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, Tab } from 'react-bootstrap'
-import { TabsContainer } from '../../../general/LoginAndRegistrationPage/AuthStyle'
-import { HeroType } from '../../../../utils/userRole'
-import { base64Header, ERROR_OCCURRED, getHeroName } from '../../../../utils/constants'
-import ContentCard from './ContentCard'
-import Table from './Table'
-import EditionForm from './EditionForm'
 import { connect } from 'react-redux'
-import RankService from '../../../../services/rank.service'
-import RankCreationForm from './RankCreationForm'
-import { successToast } from '../../../../utils/toasts'
+
 import { isMobileView } from '../../../../utils/mobileHelper'
 import UserService from '../../../../services/user.service'
 import Loader from '../../../general/Loader/Loader'
 import BadgeCreationForm from './BadgeCreationForm'
-import GoBackButton from '../../../general/GoBackButton/GoBackButton'
+import ContentCard from './ContentCard'
+import EditionForm from './EditionForm'
+import RankCreationForm from './RankCreationForm'
+import Table from './Table'
 import { TeacherRoutes } from '../../../../routes/PageRoutes'
+import RankService from '../../../../services/rank.service'
+import { base64Header, ERROR_OCCURRED, getHeroName } from '../../../../utils/constants'
+import { successToast } from '../../../../utils/toasts'
+import { HeroType } from '../../../../utils/userRole'
+import { Content } from '../../../App/AppGeneralStyles'
+import GoBackButton from '../../../general/GoBackButton/GoBackButton'
+import { TabsContainer } from '../../../general/LoginAndRegistrationPage/AuthStyle'
 
 function RankAndBadgesManagement(props) {
   const isMobileDisplay = isMobileView()
@@ -99,16 +101,16 @@ function RankAndBadgesManagement(props) {
       <TabsContainer defaultActiveKey={HeroType.WARRIOR} style={{ fontSize: 20 }}>
         {ranksData.map((rank, index) => (
           <Tab
-            className={'text-center'}
+            className="text-center"
             key={index + Date.now()}
             eventKey={rank.heroType}
             title={getHeroName(rank.heroType)}
           >
-            <div className={'text-center'} style={{ maxHeight: '68.5vh', overflow: 'auto' }}>
+            <div className="text-center" style={{ maxHeight: '68.5vh', overflow: 'auto' }}>
               <Table
                 headers={['Ikona', 'Nazwa rangi', 'Zakres punktowy']}
                 body={rank.ranks.map((listElements) => [
-                  <img width={100} src={base64Header + listElements.image} alt={'rank-icon'} />,
+                  <img width={100} src={base64Header + listElements.image} alt="rank-icon" />,
                   <span>{listElements.name}</span>,
                   <span>{`> ${listElements.minPoints}`}</span>
                 ])}
@@ -124,7 +126,7 @@ function RankAndBadgesManagement(props) {
               />
             </div>
             <Button
-              className={'my-3'}
+              className="my-3"
               onClick={() => {
                 setSelectedHeroType(rank.heroType)
                 setIsRankAdditionModalOpen(true)
@@ -150,11 +152,11 @@ function RankAndBadgesManagement(props) {
 
     return (
       <>
-        <div className={'text-center'} style={{ maxHeight: '90%', overflow: 'auto' }}>
+        <div className="text-center" style={{ maxHeight: '90%', overflow: 'auto' }}>
           <Table
             headers={['Ikona', 'Nazwa odznaki', 'Opis']}
             body={badgesList.map((badge) => [
-              <img width={100} src={base64Header + badge.file.file} alt={'badge-icon'} />,
+              <img width={100} src={base64Header + badge.file.file} alt="badge-icon" />,
               <span>{badge.title}</span>,
               <span>{badge.description}</span>
             ])}
@@ -170,7 +172,7 @@ function RankAndBadgesManagement(props) {
           />
         </div>
         <Button
-          className={'my-3 start-50 translate-middle-x position-relative'}
+          className="my-3 start-50 translate-middle-x position-relative"
           onClick={() => {
             setIsBadgeAdditionModalOpen(true)
           }}
@@ -184,12 +186,12 @@ function RankAndBadgesManagement(props) {
 
   return (
     <Content>
-      <Row className={'w-100'} style={{ margin: isMobileDisplay ? '0 0 85px 0' : 0 }}>
-        <Col md={6} className={'pt-4'} style={{ padding: isMobileDisplay ? '5px' : 'auto' }}>
-          <ContentCard header={'Rangi'} body={ranksContent} />
+      <Row className="w-100" style={{ margin: isMobileDisplay ? '0 0 85px 0' : 0 }}>
+        <Col md={6} className="pt-4" style={{ padding: isMobileDisplay ? '5px' : 'auto' }}>
+          <ContentCard header="Rangi" body={ranksContent} />
         </Col>
-        <Col md={6} className={'pt-4'} style={{ padding: isMobileDisplay ? '5px' : 'auto' }}>
-          <ContentCard header={'Odznaki'} body={badgesContent} />
+        <Col md={6} className="pt-4" style={{ padding: isMobileDisplay ? '5px' : 'auto' }}>
+          <ContentCard header="Odznaki" body={badgesContent} />
         </Col>
       </Row>
       <GoBackButton goTo={TeacherRoutes.GAME_MANAGEMENT.MAIN} />
@@ -214,13 +216,13 @@ function RankAndBadgesManagement(props) {
           </Button>
         </ModalFooter>
         {errorMessage && (
-          <p className={'text-center mt-2'} style={{ color: props.theme.danger }}>
+          <p className="text-center mt-2" style={{ color: props.theme.danger }}>
             {errorMessage}
           </p>
         )}
       </Modal>
 
-      <Modal show={isEditModalOpen} onHide={() => setIsEditModalOpen(false)} size={'lg'}>
+      <Modal show={isEditModalOpen} onHide={() => setIsEditModalOpen(false)} size="lg">
         <ModalHeader>
           <h5>Edycja elementu</h5>
         </ModalHeader>
@@ -260,7 +262,7 @@ function RankAndBadgesManagement(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

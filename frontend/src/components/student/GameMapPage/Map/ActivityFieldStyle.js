@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Col, Offcanvas } from 'react-bootstrap'
+import styled from 'styled-components'
 
 export const ActivityCol = styled(Col)`
   border: 2px black solid;
@@ -8,8 +8,8 @@ export const ActivityCol = styled(Col)`
   padding: 0;
   flex-basis: auto;
   flex-grow: 0;
-  width: ${(props) => props.$colSize + 'px'};
-  height: ${(props) => props.$colSize + 'px'};
+  width: ${(props) => `${props.$colSize  }px`};
+  height: ${(props) => `${props.$colSize  }px`};
 
   & img {
     width: 85%;

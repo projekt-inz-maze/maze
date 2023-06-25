@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { faInfo } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Spinner, Table } from 'react-bootstrap'
-import { ERROR_OCCURRED, getHeroName } from '../../../utils/constants'
+import { connect } from 'react-redux'
+
 import { CustomIcon, TableContainer, TableRow } from './RankingStyle'
 import { getSortIcon, nextSortingOrder, sortArray } from './sortHelper'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInfo } from '@fortawesome/free-solid-svg-icons'
-import { connect } from 'react-redux'
+import { ERROR_OCCURRED, getHeroName } from '../../../utils/constants'
 import Tooltip from '../Tooltip/Tooltip'
 
 const headersWithSortedInfo = [
@@ -18,13 +20,9 @@ const headersWithSortedInfo = [
   { headerName: 'Punkty', sortedVar1: 'points' }
 ]
 
-const getStudentEmailByPosition = (position, ranking) => {
-  return ranking?.find((s) => s.position === position)?.email
-}
+const getStudentEmailByPosition = (position, ranking) => ranking?.find((s) => s.position === position)?.email
 
-const getStudentPositionByEmail = (email, ranking) => {
-  return ranking?.findIndex((s) => s.email === email) + 1
-}
+const getStudentPositionByEmail = (email, ranking) => ranking?.findIndex((s) => s.email === email) + 1
 
 function Ranking(props) {
   const [ranking, setRanking] = useState(props.rankingList)
@@ -34,9 +32,7 @@ function Ranking(props) {
     position: props.studentPosition
   })
 
-  const rowColor = (index) => {
-    return student?.position && index === student?.position ? props.theme.success : props.theme.secondary
-  }
+  const rowColor = (index) => student?.position && index === student?.position ? props.theme.success : props.theme.secondary
 
   useEffect(() => {
     setRanking(props.rankingList)
@@ -61,24 +57,21 @@ function Ranking(props) {
       const rankingAfterSorting = sortArray(ranking, sortingOrders[headerId], sortedVariables, options)
       setRanking(rankingAfterSorting)
       setStudent({ ...student, position: getStudentPositionByEmail(student.email, rankingAfterSorting) })
-      setSortingOrders((prevState) => {
-        return prevState.map((order, index) => {
+      setSortingOrders((prevState) => prevState.map((order, index) => {
           if (index === headerId) {
             return nextSortingOrder(order)
           }
           return order
-        })
-      })
+        }))
     },
     [ranking, sortingOrders, student]
   )
 
-  const tableHeaders = useMemo(() => {
-    return (
+  const tableHeaders = useMemo(() => (
       <tr>
         {headersWithSortedInfo.map((header, index) => (
           <th key={index + Date.now()}>
-            <span className={'me-2'}>{header.headerName}</span>
+            <span className="me-2">{header.headerName}</span>
             <CustomIcon
               icon={getSortIcon(sortingOrders[index])}
               onClick={() => sortBy(index, [header.sortedVar1, header.sortedVar2])}
@@ -87,8 +80,7 @@ function Ranking(props) {
         ))}
         {!!props.iconCallback && <th />}
       </tr>
-    )
-  }, [sortBy, sortingOrders, props])
+    ), [sortBy, sortingOrders, props])
 
   return (
     <TableContainer
@@ -96,18 +88,18 @@ function Ranking(props) {
       $fontColor={props.theme.font}
       $backgroundColor={props.theme.primary}
     >
-      <Table className={'my-0'}>
+      <Table className="my-0">
         <thead>{tableHeaders}</thead>
         <tbody>
           {ranking === undefined ? (
             <tr style={{ backgroundColor: props.theme.secondary }}>
-              <td colSpan='100%' className={'text-center'}>
-                <Spinner animation={'border'} />
+              <td colSpan='100%' className="text-center">
+                <Spinner animation="border" />
               </td>
             </tr>
           ) : ranking == null || ranking.length === 0 ? (
             <tr style={{ backgroundColor: props.theme.secondary }}>
-              <td colSpan='100%' className={'text-center'}>
+              <td colSpan='100%' className="text-center">
                 <p>{ranking == null ? ERROR_OCCURRED : 'Brak studentów do wyświetlenia'}</p>
               </td>
             </tr>
@@ -119,7 +111,7 @@ function Ranking(props) {
                 $hoverColor={props.theme.primary}
               >
                 <td>{student.position}</td>
-                <td>{student.firstName + ' ' + student.lastName}</td>
+                <td>{`${student.firstName  } ${  student.lastName}`}</td>
                 <td>{student.groupName}</td>
                 <td>{getHeroName(student.heroType)}</td>
                 <td>{student.rank}</td>
@@ -130,10 +122,10 @@ function Ranking(props) {
                     <FontAwesomeIcon
                       icon={faInfo}
                       onClick={() => props.iconCallback(student)}
-                      data-for={'info-icon'}
-                      data-tip={'Tabela punktów studenta'}
+                      data-for="info-icon"
+                      data-tip="Tabela punktów studenta"
                     />
-                    <Tooltip id={'info-icon'} />
+                    <Tooltip id="info-icon" />
                   </td>
                 )}
               </TableRow>
@@ -146,7 +138,7 @@ function Ranking(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import AddActivity from './AddActivity'
 import SurveyTaskService from '../../../../services/surveyTask.service'
 import { Activity } from '../../../../utils/constants'

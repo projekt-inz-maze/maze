@@ -25,7 +25,7 @@ export const SuperPowerButton = styled.div`
   }
 
   &:hover svg {
-    transform: ${(props) => (props.$isBlocked ? `scale(1)` : `scale(1.5)`)};
+    transform: ${(props) => (props.$isBlocked ? 'scale(1)' : 'scale(1.5)')};
   }
 
   @media (max-width: 575px) {

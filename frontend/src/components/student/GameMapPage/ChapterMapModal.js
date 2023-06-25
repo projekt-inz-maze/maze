@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
+
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
-import ChapterMap from './Map/ChapterMap'
 import { connect } from 'react-redux'
+
+import ChapterMap from './Map/ChapterMap'
 
 function ChapterMapModal(props) {
   const [mapContainerSize, setMapContainerSize] = useState({ x: 0, y: 0 })
@@ -27,7 +29,7 @@ function ChapterMapModal(props) {
   }, [])
 
   return (
-    <Modal show={props.show} onHide={() => props.setModalOpen(false)} size={'xl'}>
+    <Modal show={props.show} onHide={() => props.setModalOpen(false)} size="xl">
       <ModalHeader closeButton>
         <h5>Mapa aktywności rozdziału</h5>
       </ModalHeader>
@@ -48,7 +50,7 @@ function ChapterMapModal(props) {
   )
 }
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

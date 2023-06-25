@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+
 import { TabsContainer as Tabs } from '../../professor/GradeListAndExport/GradeListAndExportStyles'
 
 export const TabsContainer = styled(Tabs)`

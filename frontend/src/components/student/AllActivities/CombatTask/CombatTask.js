@@ -1,23 +1,25 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
-import { Content } from '../../../App/AppGeneralStyles'
-import Loader from '../../../general/Loader/Loader'
-import { Activity, ERROR_OCCURRED } from '../../../../utils/constants'
-import FileService from './FileService'
-import { RemarksTextArea } from '../../../professor/ActivityAssessmentDetails/ActivityAssesmentDetailsStyles'
-import { SendTaskButton } from './CombatTaskStyles'
-import CombatTaskService from '../../../../services/combatTask.service'
-import { Spinner, Row, Col } from 'react-bootstrap'
-import { debounce } from 'lodash'
+
 import { faHourglass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { debounce } from 'lodash'
 import FeedbackFileService from './FeedbackFileService'
-import { Header, VerticalSpacer, HorizontalSpacer, ActivityDetails } from '../../../general/TaskSharedComponents'
 import { Fade } from 'react-awesome-reveal'
+import { Spinner, Row, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { isMobileView } from '../../../../utils/mobileHelper'
-import GoBackButton from '../../../general/GoBackButton/GoBackButton'
+import { useLocation } from 'react-router-dom'
+
+import { SendTaskButton } from './CombatTaskStyles'
+import FileService from './FileService'
 import { StudentRoutes } from '../../../../routes/PageRoutes'
+import CombatTaskService from '../../../../services/combatTask.service'
+import { Activity, ERROR_OCCURRED } from '../../../../utils/constants'
+import { isMobileView } from '../../../../utils/mobileHelper'
+import { Content } from '../../../App/AppGeneralStyles'
+import GoBackButton from '../../../general/GoBackButton/GoBackButton'
+import Loader from '../../../general/Loader/Loader'
+import { Header, VerticalSpacer, HorizontalSpacer, ActivityDetails } from '../../../general/TaskSharedComponents'
+import { RemarksTextArea } from '../../../professor/ActivityAssessmentDetails/ActivityAssesmentDetailsStyles'
 
 const FIELD_DELAY = 600
 
@@ -38,9 +40,7 @@ function CombatTask(props) {
   const [answerWasSentNow, setAnswerWasSentNow] = useState(false)
 
   const textAreaRef = useRef(null)
-  const isReviewed = () => {
-    return task.points
-  }
+  const isReviewed = () => task.points
 
   const resetStates = () => {
     setIsFetching(false)
@@ -86,19 +86,18 @@ function CombatTask(props) {
     []
   )
 
-  const AwaitingFeedbackField = () => (
-    <Col md={6} className={'text-center p-4 my-auto'}>
+  function AwaitingFeedbackField() {
+  return <Col md={6} className="text-center p-4 my-auto">
       <Fade delay={FIELD_DELAY}>
-        <FontAwesomeIcon className={'m-2'} icon={faHourglass} size='5x' spin />
-        <h2 className={'m-2'}>Odpowiedź została przesłana, oczekiwanie na sprawdzenie przez prowadzącego</h2>
+        <FontAwesomeIcon className="m-2" icon={faHourglass} size='5x' spin />
+        <h2 className="m-2">Odpowiedź została przesłana, oczekiwanie na sprawdzenie przez prowadzącego</h2>
       </Fade>
     </Col>
-  )
+}
 
-  const contentBody = () => {
-    return (
+  const contentBody = () => (
       <>
-        <HorizontalSpacer height={'3vh'} />
+        <HorizontalSpacer height="3vh" />
         <Col
           className='pt-4 mx-auto'
           style={{
@@ -114,21 +113,21 @@ function CombatTask(props) {
           >
             <Header activityName={task.name} activityType={Activity.TASK} />
           </Row>
-          <VerticalSpacer height={'2vh'} />
+          <VerticalSpacer height="2vh" />
           <Row
             className='p-2 rounded mx-2 overflow-auto'
             style={{ backgroundColor: props.theme.primary, height: '25vh' }}
           >
             <ActivityDetails description={task.description} />
           </Row>
-          <VerticalSpacer height={'2vh'} />
+          <VerticalSpacer height="2vh" />
           <Row
             className='p-2 rounded mx-2'
             style={{ backgroundColor: props.theme.primary, height: isMobileDisplay ? 'auto' : '46vh' }}
           >
             <Col
               md={task.answer || answerWasSentNow ? MD_WHEN_TASK_SENT : MD_WHEN_TASK_NOT_SENT}
-              className={'h-100 overflow-auto'}
+              className="h-100 overflow-auto"
             >
               <Fade delay={FIELD_DELAY}>
                 <>
@@ -156,7 +155,7 @@ function CombatTask(props) {
                       />
                     </>
                   )}
-                  <Col className={'text-center'}>
+                  <Col className="text-center">
                     <FileService
                       task={task}
                       setFile={setFileBlob}
@@ -166,14 +165,14 @@ function CombatTask(props) {
                       isReviewed={isReviewed()}
                     />
                   </Col>
-                  <Col className={'w-100 text-center'}>
+                  <Col className="w-100 text-center">
                     <SendTaskButton
                       $background={props.theme.success}
                       disabled={task.points != null}
                       onClick={sendAnswer}
                     >
                       {isFetching ? (
-                        <Spinner animation={'border'} size={'sm'} />
+                        <Spinner animation="border" size="sm" />
                       ) : isReviewed() ? (
                         <span>Aktywność została oceniona</span>
                       ) : (
@@ -189,17 +188,17 @@ function CombatTask(props) {
               !isReviewed() ? (
                 <AwaitingFeedbackField />
               ) : (
-                <Col className={'border-left border-warning overflow-auto'}>
+                <Col className="border-left border-warning overflow-auto">
                   <h4>Aktywność została oceniona</h4>
-                  <VerticalSpacer height={'2vh'} />
+                  <VerticalSpacer height="2vh" />
                   <Col
-                    className={'text-center mx-auto border p-1 rounded'}
+                    className="text-center mx-auto border p-1 rounded"
                     style={{ width: '20%', borderColor: props.theme.warning }}
                   >
                     <h5>Punkty </h5>
                     <p>{task.points}</p>
                   </Col>
-                  <VerticalSpacer height={'2vh'} />
+                  <VerticalSpacer height="2vh" />
                   <h5>Uwagi:</h5>
                   {task.remarks ? <p>{task.remarks}</p> : 'Brak uwag'}
                   <FeedbackFileService feedbackFile={task.feedbackFile} />
@@ -211,10 +210,9 @@ function CombatTask(props) {
           </Row>
         </Col>
         <GoBackButton goTo={StudentRoutes.GAME_MAP.MAIN} />
-        <HorizontalSpacer height={'3vh'} />
+        <HorizontalSpacer height="3vh" />
       </>
     )
-  }
 
   return (
     <Content style={{ color: props.theme.font }}>
@@ -224,7 +222,7 @@ function CombatTask(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

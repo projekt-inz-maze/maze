@@ -1,6 +1,6 @@
-import styled from 'styled-components'
 import { Container, Nav, Navbar } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 export const SidebarEdit = styled(Navbar)`
   background-color: ${(props) => props.$backgroundColor};

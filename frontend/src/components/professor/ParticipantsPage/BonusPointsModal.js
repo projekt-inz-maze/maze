@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+
+import { Formik } from 'formik'
 import { Button, Col, Container, Form, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'react-bootstrap'
+import { connect } from 'react-redux'
+
+import ProfessorService from '../../../services/professor.service'
 import { FIELD_REQUIRED, NUMBER_FROM_RANGE } from '../../../utils/constants'
 import { FormCol } from '../../general/LoginAndRegistrationPage/FormCol'
-import { Formik } from 'formik'
-import ProfessorService from '../../../services/professor.service'
-import { connect } from 'react-redux'
+
 
 function BonusPointsModal(props) {
   const [isFinishModalOpen, setIsFinishModalOpen] = useState(false)
@@ -12,9 +15,9 @@ function BonusPointsModal(props) {
 
   return (
     <>
-      <Modal show={props.show} onHide={() => props.setModalOpen(false)} size={'lg'}>
+      <Modal show={props.show} onHide={() => props.setModalOpen(false)} size="lg">
         <ModalHeader>
-          <h4 className={'text-center w-100'}>Przyznaj dodatkowe punkty</h4>
+          <h4 className="text-center w-100">Przyznaj dodatkowe punkty</h4>
         </ModalHeader>
         <ModalBody>
           <Formik
@@ -53,7 +56,7 @@ function BonusPointsModal(props) {
                   <Row className='mt-4 d-flex justify-content-center'>
                     <Col sm={12} className='d-flex justify-content-center mb-2'>
                       <Button
-                        className={'me-2'}
+                        className="me-2"
                         style={{
                           backgroundColor: props.theme.danger,
                           borderColor: props.theme.danger
@@ -82,7 +85,7 @@ function BonusPointsModal(props) {
       </Modal>
       <Modal show={isFinishModalOpen} onHide={() => setFinishModalDescription(false)}>
         <ModalHeader>
-          <h4 className={'text-center'}>Zakończono proces.</h4>
+          <h4 className="text-center">Zakończono proces.</h4>
         </ModalHeader>
         <ModalBody>
           <p>{finishModalDescription}</p>
@@ -96,7 +99,7 @@ function BonusPointsModal(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

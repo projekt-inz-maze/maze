@@ -1,13 +1,15 @@
 import React, { useCallback, useState } from 'react'
+
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Tab } from 'react-bootstrap'
-import { TabsContainer } from '../ParticipantsPage/ParticipantsStyles'
-import { Activity, getActivityTypeName } from '../../../utils/constants'
-import AddGraphTask from './AddActivity/AddGraphTask'
+import { connect } from 'react-redux'
+
 import AddCombatTask from './AddActivity/AddCombatTask'
+import AddGraphTask from './AddActivity/AddGraphTask'
 import AddInfoTask from './AddActivity/AddInfoTask'
 import AddSurveyTask from './AddActivity/AddSurveyTask'
-import { connect } from 'react-redux'
+import { Activity, getActivityTypeName } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
+import { TabsContainer } from '../ParticipantsPage/ParticipantsStyles'
 
 function AddActivityModal(props) {
   const activities = Object.keys(Activity)
@@ -44,7 +46,7 @@ function AddActivityModal(props) {
 
   return (
     <>
-      <Modal show={props.showModal} onHide={() => props.setShow(false)} size={'xl'}>
+      <Modal show={props.showModal} onHide={() => props.setShow(false)} size="xl">
         <ModalHeader closeButton>
           <h5>Dodaj nową aktywność</h5>
         </ModalHeader>
@@ -82,7 +84,7 @@ function AddActivityModal(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

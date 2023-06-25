@@ -1,11 +1,13 @@
-import { Tab } from 'react-bootstrap'
-import UsersTable from './UsersTable'
-import { GradesContent } from './GradeListAndExportStyles'
-import { TabsContainer } from './GradeListAndExportStyles'
 import { useEffect, useState } from 'react'
+
+import { Tab } from 'react-bootstrap'
+import { connect } from 'react-redux'
+
+import { GradesContent , TabsContainer } from './GradeListAndExportStyles'
+import UsersTable from './UsersTable'
 import GroupService from '../../../services/group.service'
 import Loader from '../../general/Loader/Loader'
-import { connect } from 'react-redux'
+
 
 function GradeListAndExport(props) {
   const [allGroups, setAllGroups] = useState(undefined)
@@ -23,7 +25,7 @@ function GradeListAndExport(props) {
         $linkColor={props.theme.primary}
         $fontColor={props.theme.background}
       >
-        <Tab eventKey={'wszyscy'} title={'Wszyscy'}>
+        <Tab eventKey="wszyscy" title="Wszyscy">
           <UsersTable />
         </Tab>
 
@@ -40,7 +42,7 @@ function GradeListAndExport(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

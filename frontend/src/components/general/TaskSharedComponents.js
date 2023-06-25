@@ -1,18 +1,19 @@
+import { Row, Col } from 'react-bootstrap'
+
+import { getActivityImg, getActivityTypeName } from '../../utils/constants'
+import { isMobileView } from '../../utils/mobileHelper'
 import {
   ActivityImg,
   ActivityName,
   ActivityType
 } from '../student/AllActivities/ExpeditionTask/ActivityInfo/ActivityInfoStyles'
-import { getActivityImg, getActivityTypeName } from '../../utils/constants'
-import { Row, Col } from 'react-bootstrap'
-import { isMobileView } from '../../utils/mobileHelper'
 
 export function Header({ activityName, activityType }) {
   return (
     <div className={`d-flex justify-content-center ${isMobileView() ? 'flex-column' : 'flex-row'}`}>
-      <div className={'d-flex align-items-center justify-content-center'}>
+      <div className="d-flex align-items-center justify-content-center">
         <ActivityImg src={getActivityImg(activityType)} />
-        <ActivityType className={'m-0 ps-2'}>{getActivityTypeName(activityType)}</ActivityType>
+        <ActivityType className="m-0 ps-2">{getActivityTypeName(activityType)}</ActivityType>
       </div>
 
       <ActivityName>{activityName}</ActivityName>
@@ -21,11 +22,11 @@ export function Header({ activityName, activityType }) {
 }
 
 export function VerticalSpacer({ height }) {
-  return <Row style={{ height: height }} />
+  return <Row style={{ height }} />
 }
 
 export function HorizontalSpacer({ height }) {
-  return <Col style={{ height: height }} />
+  return <Col style={{ height }} />
 }
 
 export function ActivityDetails({ description }) {

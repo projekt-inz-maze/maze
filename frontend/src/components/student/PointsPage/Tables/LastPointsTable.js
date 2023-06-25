@@ -1,9 +1,11 @@
 import React from 'react'
-import { ERROR_OCCURRED, getActivityTypeName } from '../../../../utils/constants'
-import { TableContainer } from './TableStyle'
-import { Spinner } from 'react-bootstrap'
+
 import moment from 'moment'
+import { Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
+
+import { TableContainer } from './TableStyle'
+import { ERROR_OCCURRED, getActivityTypeName } from '../../../../utils/constants'
 
 function LastPointsTable(props) {
   const tableHeaders = ['Data', 'Liczba punktów', 'Typ aktywności', 'Nazwa/opis aktywności'].map((title, index) => (
@@ -28,14 +30,14 @@ function LastPointsTable(props) {
       <tbody>
         {props.pointsList === undefined ? (
           <tr>
-            <td colSpan='100%' className={'text-center'}>
-              <Spinner animation={'border'} />
+            <td colSpan='100%' className="text-center">
+              <Spinner animation="border" />
             </td>
           </tr>
         ) : props.pointsList == null || props.pointsList.length === 0 ? (
           <tr>
             <td colSpan='100%'>
-              <p className={'text-center h6'} style={{ color: props.theme.warning }}>
+              <p className="text-center h6" style={{ color: props.theme.warning }}>
                 {props.pointsList ? 'Brak punktów' : ERROR_OCCURRED}
               </p>
             </td>
@@ -56,7 +58,7 @@ function LastPointsTable(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
-import { Button, Col, Container, Form, Modal, ModalBody, ModalHeader, Row } from 'react-bootstrap'
+
 import { Formik } from 'formik'
+import { Button, Col, Container, Form, Modal, ModalBody, ModalHeader, Row } from 'react-bootstrap'
+import { connect } from 'react-redux'
+
+import AuthService from '../../../services/auth.service'
+import { FormCol } from '../../general/LoginAndRegistrationPage/FormCol'
 import {
   validateConfirmPassword,
   validatePassword
 } from '../../general/LoginAndRegistrationPage/RegistrationPage/validators'
-import { FormCol } from '../../general/LoginAndRegistrationPage/FormCol'
-import AuthService from '../../../services/auth.service'
-import { connect } from 'react-redux'
+
 
 function EditPasswordModal(props) {
   const [errorMessage, setErrorMessage] = useState('')
@@ -50,7 +53,7 @@ function EditPasswordModal(props) {
                   {FormCol('Powtórz hasło', 'password', 'passwordRepeat', 12, { errorColor: props.theme.danger })}
 
                   {errorMessage && (
-                    <p className={'text-center w-100'} style={{ color: 'red' }}>
+                    <p className="text-center w-100" style={{ color: 'red' }}>
                       {errorMessage}
                     </p>
                   )}
@@ -81,7 +84,7 @@ function EditPasswordModal(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react'
+
 import { Col, Row, Tab } from 'react-bootstrap'
-import { Content } from '../../App/AppGeneralStyles'
+import { connect } from 'react-redux'
+
 import PercentageCircle from './ChartAndStats/PercentageCircle'
-import LastPointsTable from './Tables/LastPointsTable'
 import { TabsContainer } from './PointsPageStyle'
 import BonusPointsTable from './Tables/BonusPointsTable'
+import LastPointsTable from './Tables/LastPointsTable'
 import StudentService from '../../../services/student.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
-import { connect } from 'react-redux'
+import { Content } from '../../App/AppGeneralStyles'
 import Loader from '../../general/Loader/Loader'
 
 function Points(props) {
@@ -58,7 +60,7 @@ function Points(props) {
               <strong>Twój wynik to: {totalPointsData.totalPointsReceived}pkt</strong>
             </h5>
             <h5>
-              <strong>{'Co stanowi: ' + calculatedPercentageValue()}%</strong>
+              <strong>{`Co stanowi: ${  calculatedPercentageValue()}`}%</strong>
             </h5>
             <h5>
               {/* not yet here */}
@@ -70,15 +72,15 @@ function Points(props) {
       <Row className='m-0 m-md-3'>
         <TabsContainer
           $linkColor={props.theme.primary}
-          className={'w-100'}
+          className="w-100"
           defaultActiveKey='last-points'
           id='points-tabs'
           style={{ padding: '50px 0 20px 0' }}
         >
-          <Tab className={'w-100'} eventKey='last-points' title='Ostatnio zdobyte punkty'>
+          <Tab className="w-100" eventKey='last-points' title='Ostatnio zdobyte punkty'>
             <LastPointsTable pointsList={pointsData} />
           </Tab>
-          <Tab eventKey={'bonus-points'} title={'Punkty dodatkowe'}>
+          <Tab eventKey="bonus-points" title="Punkty dodatkowe">
             <BonusPointsTable />
           </Tab>
         </TabsContainer>
@@ -88,7 +90,7 @@ function Points(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

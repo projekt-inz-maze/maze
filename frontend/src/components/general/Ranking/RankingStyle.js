@@ -1,6 +1,7 @@
-import styled from 'styled-components'
-import { GameCardOptionPick } from '../GameCardStyles'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import styled from 'styled-components'
+
+import { GameCardOptionPick } from '../GameCardStyles'
 
 export const TableContainer = styled(GameCardOptionPick)`
   position: relative;

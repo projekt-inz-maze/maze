@@ -1,11 +1,13 @@
 import React, { useEffect, useTransition, useRef } from 'react'
-import { Button, Col, Row, Spinner } from 'react-bootstrap'
-import { SmallDivider } from '../ExpeditionTask/ActivityInfo/ActivityInfoStyles'
+
 import { faDownload, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import download from 'downloadjs'
-import CombatTaskService from '../../../../services/combatTask.service'
+import { Button, Col, Row, Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
+
+import CombatTaskService from '../../../../services/combatTask.service'
+import { SmallDivider } from '../ExpeditionTask/ActivityInfo/ActivityInfoStyles'
 
 function FileService(props) {
   const { task, setFile, setFileName, setIsFetching, isFetching, isReviewed } = props
@@ -56,7 +58,7 @@ function FileService(props) {
                 disabled={isReviewed}
                 onClick={() => remove(idx)}
               >
-                {isRemoving ? <Spinner animation={'border'} size={'sm'} /> : <FontAwesomeIcon icon={faTrash} />}
+                {isRemoving ? <Spinner animation="border" size="sm" /> : <FontAwesomeIcon icon={faTrash} />}
               </Button>
               <Button
                 style={{ backgroundColor: props.theme.warning, borderColor: props.theme.warning }}
@@ -82,7 +84,7 @@ function FileService(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

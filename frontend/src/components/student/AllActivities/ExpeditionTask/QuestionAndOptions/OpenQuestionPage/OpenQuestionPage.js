@@ -1,14 +1,17 @@
 import React, { useRef } from 'react'
+
 import { Col, Row } from 'react-bootstrap'
-import { ButtonRow, QuestionCard } from '../QuestionAndOptionsStyle'
+import { connect } from 'react-redux'
+
 import { UserAnswerArea } from './OpenQuestionStyle'
 import answerSaver from '../answerSaver'
-import { connect } from 'react-redux'
+import { ButtonRow, QuestionCard } from '../QuestionAndOptionsStyle'
+
 
 function fitAreaToContent(text) {
   const maxHeight = 300 // px
   text.style.height = '0'
-  text.style.height = Math.min(text.scrollHeight, maxHeight) + 'px'
+  text.style.height = `${Math.min(text.scrollHeight, maxHeight)  }px`
 }
 
 function OpenQuestionPage(props) {
@@ -34,7 +37,7 @@ function OpenQuestionPage(props) {
           $borderColor={props.theme.primary}
           placeholder='Twoja odpowiedź...'
           onInput={() => fitAreaToContent(userAnswer.current)}
-        ></UserAnswerArea>
+         />
       </Col>
       <ButtonRow className='w-50' $background={props.theme.success}>
         <button style={{ marginBottom: '50px' }} onClick={() => saveAnswer()}>
@@ -46,7 +49,7 @@ function OpenQuestionPage(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

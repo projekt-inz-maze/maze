@@ -208,11 +208,11 @@ export const PercentageBar = styled.div`
   &::before {
     content: '';
     display: block;
-    height: ${(props) => (props.$height ? props.$height + 'px' : '10px')};
+    height: ${(props) => (props.$height ? `${props.$height  }px` : '10px')};
     border-radius: 50px;
   }
   &::after {
-    width: ${(props) => props.$greenBarWidth + 'px'};
+    width: ${(props) => `${props.$greenBarWidth  }px`};
     background-color: darkgreen;
     top: 0;
     position: absolute;
@@ -220,7 +220,7 @@ export const PercentageBar = styled.div`
 
   &::before {
     position: relative;
-    width: ${(props) => props.$grayBarWidth + 'px'};
+    width: ${(props) => `${props.$grayBarWidth  }px`};
     right: 50%;
     transform: translateX(50%);
     background-color: lightgray;

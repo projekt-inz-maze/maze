@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { Content } from '../../../App/AppGeneralStyles'
-import { TabsContainer } from '../../ParticipantsPage/ParticipantsStyles'
-import { Button, Form, Modal, ModalBody, ModalFooter, ModalHeader, Tab } from 'react-bootstrap'
-import Ranking from '../../../general/Ranking/Ranking'
+
 import { debounce } from 'lodash/function'
-import ActivityService from '../../../../services/activity.service'
-import { useLocation } from 'react-router-dom'
-import ActivityStats from './ActivityStats'
+import { Button, Form, Modal, ModalBody, ModalFooter, ModalHeader, Tab } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { isMobileView } from '../../../../utils/mobileHelper'
-import Requirements from '../Requirements/Requirements'
-import { Activity } from '../../../../utils/constants'
-import GoBackButton from '../../../general/GoBackButton/GoBackButton'
+import { useLocation } from 'react-router-dom'
+
+import ActivityStats from './ActivityStats'
 import { TeacherRoutes } from '../../../../routes/PageRoutes'
+import ActivityService from '../../../../services/activity.service'
+import { Activity } from '../../../../utils/constants'
+import { isMobileView } from '../../../../utils/mobileHelper'
+import { Content } from '../../../App/AppGeneralStyles'
+import Ranking from '../../../general/Ranking/Ranking'
+import { TabsContainer } from '../../ParticipantsPage/ParticipantsStyles'
+
+
+
+
+
+
+import Requirements from '../Requirements/Requirements'
+import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 
 function ActivityDetails(props) {
   const location = useLocation()
@@ -60,21 +68,21 @@ function ActivityDetails(props) {
         $background={props.theme.success}
         $fontColor={props.theme.background}
         $linkColor={props.theme.primary}
-        defaultActiveKey={'results'}
+        defaultActiveKey="results"
       >
-        <Tab eventKey={'results'} title={'Wyniki'}>
-          <Form.Group className={'py-3 px-4'}>
+        <Tab eventKey="results" title="Wyniki">
+          <Form.Group className="py-3 px-4">
             <Form.Control
-              type={'text'}
-              placeholder={'Wyszukaj po grupie lub studencie lub typie bohatera...'}
+              type="text"
+              placeholder="Wyszukaj po grupie lub studencie lub typie bohatera..."
               onChange={(e) => filterList(e.target.value)}
             />
           </Form.Group>
 
           <Ranking
             rankingList={filteredList}
-            customHeight={'75vh'}
-            noPointsMessage={'Nie wykonano'}
+            customHeight="75vh"
+            noPointsMessage="Nie wykonano"
             iconCallback={
               activityType === Activity.SURVEY
                 ? (student) => {
@@ -84,25 +92,23 @@ function ActivityDetails(props) {
                 : null
             }
           />
-          <GoBackButton goTo={TeacherRoutes.GAME_MANAGEMENT.CHAPTER.MAIN + `/${chapterName}/${chapterId}`} />
+          <GoBackButton goTo={`${TeacherRoutes.GAME_MANAGEMENT.CHAPTER.MAIN  }/${chapterName}/${chapterId}`} />
         </Tab>
-        <Tab eventKey={'statistics'} title={'Statystyki'}>
+        <Tab eventKey="statistics" title="Statystyki">
           <ActivityStats activityId={activityId} activityType={activityType} />
-          <GoBackButton goTo={TeacherRoutes.GAME_MANAGEMENT.CHAPTER.MAIN + `/${chapterName}/${chapterId}`} />
+          <GoBackButton goTo={`${TeacherRoutes.GAME_MANAGEMENT.CHAPTER.MAIN  }/${chapterName}/${chapterId}`} />
         </Tab>
-        <Tab eventKey={'requirements'} title={'Wymagania'}>
+        <Tab eventKey="requirements" title="Wymagania">
           <Requirements
             id={activityId}
             getRequirementsCallback={ActivityService.getActivityRequirements}
             updateRequirementsCallback={ActivityService.setActivityRequirements}
-            tableTitle={
-              'Lista wymagań, które student musi spełnić, żeby odblokować możliwość wykonania tej aktywności:'
-            }
+            tableTitle="Lista wymagań, które student musi spełnić, żeby odblokować możliwość wykonania tej aktywności:"
             chapterDetails={{ chapterName, chapterId }}
           />
         </Tab>
       </TabsContainer>
-      <Modal show={isStudentAnswerModalOpen} onHide={() => setIsStudentAnswerModalOpen(false)} size={'lg'}>
+      <Modal show={isStudentAnswerModalOpen} onHide={() => setIsStudentAnswerModalOpen(false)} size="lg">
         <ModalHeader>
           <h5>Odpowiedź studenta{chosenStudent ? `: ${chosenStudent.firstName} ${chosenStudent.lastName}` : ''}</h5>
         </ModalHeader>
@@ -130,7 +136,7 @@ function ActivityDetails(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

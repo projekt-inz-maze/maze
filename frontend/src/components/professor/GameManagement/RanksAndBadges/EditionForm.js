@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+
 import { FormikProvider, useFormik } from 'formik'
-import { ERROR_OCCURRED, FIELD_REQUIRED } from '../../../../utils/constants'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { FormCol } from '../../../general/LoginAndRegistrationPage/FormCol'
 import { connect } from 'react-redux'
+
 import RankService from '../../../../services/rank.service'
-import { successToast } from '../../../../utils/toasts'
 import UserService from '../../../../services/user.service'
+import { ERROR_OCCURRED, FIELD_REQUIRED } from '../../../../utils/constants'
+import { successToast } from '../../../../utils/toasts'
+import { FormCol } from '../../../general/LoginAndRegistrationPage/FormCol'
 
 function EditionForm(props) {
   const [editFormInitialValues, setEditFormInitialValues] = useState({})
@@ -97,9 +99,7 @@ function EditionForm(props) {
 
   const getFormCol = useCallback(
     (key, idx) => {
-      const getFormData = (valueId, formColId) => {
-        return Object.values(editFormInitialValues).map((value) => value[valueId])[formColId]
-      }
+      const getFormData = (valueId, formColId) => Object.values(editFormInitialValues).map((value) => value[valueId])[formColId]
 
       if (key === 'image') {
         return (
@@ -124,7 +124,7 @@ function EditionForm(props) {
         return (
           <Form.Check
             ref={checkboxRef}
-            className={'my-3'}
+            className="my-3"
             label={getFormData(1, idx)}
             name={key}
             defaultChecked={!!formik.initialValues.forGroup}
@@ -133,7 +133,7 @@ function EditionForm(props) {
       }
 
       return (
-        <div className={'my-3'}>
+        <div className="my-3">
           {FormCol(getFormData(1, idx), getFormData(0, idx), key, 12, {
             errorColor: props.theme.danger
           })}
@@ -158,7 +158,7 @@ function EditionForm(props) {
             <Col sm={12} className='d-flex justify-content-center mb-2'>
               <Button
                 style={{ backgroundColor: props.theme.danger, borderColor: props.theme.danger }}
-                className={'me-3'}
+                className="me-3"
                 onClick={() => props.setModalOpen(false)}
               >
                 Anuluj
@@ -169,7 +169,7 @@ function EditionForm(props) {
             </Col>
           </Row>
           {errorMessage && (
-            <p className={'text-center mt-2'} style={{ color: props.theme.danger }}>
+            <p className="text-center mt-2" style={{ color: props.theme.danger }}>
               {errorMessage}
             </p>
           )}
@@ -180,7 +180,7 @@ function EditionForm(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

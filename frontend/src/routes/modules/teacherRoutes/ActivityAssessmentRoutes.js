@@ -1,15 +1,16 @@
 import { Route, Routes } from 'react-router-dom'
+
 import NotFound from '../../../components/general/NotFoundPage/NotFound'
 import PageGuard from '../../../components/general/PageGuard/PageGuard'
-import { Role } from '../../../utils/userRole'
-import ActivityAssessmentList from '../../../components/professor/ActivityAssessmentList/ActivityAssessmentList'
 import ActivityAssessmentDetails from '../../../components/professor/ActivityAssessmentDetails/ActivityAssessmentDetails'
+import ActivityAssessmentList from '../../../components/professor/ActivityAssessmentList/ActivityAssessmentList'
+import { Role } from '../../../utils/userRole'
 
 export default function ActivityAssessmentRoutes() {
   return (
     <Routes>
       <Route
-        path={'list'}
+        path="list"
         element={
           <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
             <ActivityAssessmentList />
@@ -18,7 +19,7 @@ export default function ActivityAssessmentRoutes() {
       />
 
       <Route
-        path={'activity-assessment'}
+        path="activity-assessment"
         element={
           <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
             <ActivityAssessmentDetails />
