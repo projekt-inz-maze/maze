@@ -11,16 +11,10 @@ import ActivityService from '../../../../services/activity.service'
 import { Activity } from '../../../../utils/constants'
 import { isMobileView } from '../../../../utils/mobileHelper'
 import { Content } from '../../../App/AppGeneralStyles'
+import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 import Ranking from '../../../general/Ranking/Ranking'
 import { TabsContainer } from '../../ParticipantsPage/ParticipantsStyles'
-
-
-
-
-
-
 import Requirements from '../Requirements/Requirements'
-import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 
 function ActivityDetails(props) {
   const location = useLocation()

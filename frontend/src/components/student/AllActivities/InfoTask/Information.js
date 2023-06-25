@@ -13,10 +13,10 @@ import InfoTaskService from '../../../../services/infoTask.service'
 import { Activity, ERROR_OCCURRED, getActivityImg, getActivityTypeName } from '../../../../utils/constants'
 import { isMobileView } from '../../../../utils/mobileHelper'
 import { Content } from '../../../App/AppGeneralStyles'
+import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 import ImagesGallery from '../../../general/ImagesGallery/ImagesGallery'
 import Loader from '../../../general/Loader/Loader'
 import { CustomCard } from '../../GameCardPage/GameCardStyles'
-import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 
 function Information(props) {
   const isMobileDisplay = isMobileView()

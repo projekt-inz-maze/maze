@@ -9,12 +9,10 @@ import GameButton from './GameButton'
 import GameLoaderModal from './GameLoader/GameLoaderModal'
 import SuperPowerEditionModal from './GameSettings/SuperPowerEditionModal'
 import ManagementCard from './ManagementCard'
-
-
 import { TableBodyRow } from './TableStyles'
+import { TeacherRoutes } from '../../../routes/PageRoutes'
 import ChapterService from '../../../services/chapter.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
-import { TeacherRoutes } from '../../../routes/PageRoutes'
 import { isMobileView } from '../../../utils/mobileHelper'
 import { Content } from '../../App/AppGeneralStyles'
 import { GameCardOptionPick } from '../../general/GameCardStyles'

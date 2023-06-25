@@ -14,11 +14,9 @@ import {
   Spinner,
   Table
 } from 'react-bootstrap'
-
-import ChapterModal from '../GameManagement/ChapterModal/ChapterModal'
-import { successToast } from '../../../utils/toasts'
 import { connect } from 'react-redux'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+
 import AddActivityModal from './AddActivityModal'
 import { ActivitiesCard, ButtonsCol, CustomTooltip, MapCard, SummaryCard, TableRow } from './ChapterDetailsStyles'
 import DeletionModal from './DeletionModal'
@@ -28,10 +26,12 @@ import ActivityService from '../../../services/activity.service'
 import ChapterService from '../../../services/chapter.service'
 import { ERROR_OCCURRED, getActivityImg, getActivityTypeName } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
+import { successToast } from '../../../utils/toasts'
 import { Content } from '../../App/AppGeneralStyles'
 import Loader from '../../general/Loader/Loader'
 import GameCard from '../../student/GameCardPage/GameCard'
 import ChapterMap from '../../student/GameMapPage/Map/ChapterMap'
+import ChapterModal from '../GameManagement/ChapterModal/ChapterModal'
 
 function ChapterDetails(props) {
   const { id: chapterId } = useParams()

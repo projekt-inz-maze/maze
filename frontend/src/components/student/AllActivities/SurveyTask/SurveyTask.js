@@ -19,8 +19,6 @@ import {
 import { successToast } from '../../../../utils/toasts'
 import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 import Loader from '../../../general/Loader/Loader'
-
-
 import GameCard from '../../GameCardPage/GameCard'
 import { CustomTable } from '../../GameCardPage/gameCardContentsStyle'
 

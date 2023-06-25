@@ -10,6 +10,12 @@ module.exports = {
     'prettier'
   ],
   overrides: [
+    {
+      'files': ['**/__tests__/*.js', '**/*.test.js', '**/*.spec.js'],
+      'env': {
+        'jest': true
+      }
+    }
   ],
   parserOptions: {
     ecmaVersion: 'latest',
@@ -18,10 +24,11 @@ module.exports = {
   plugins: [
     'react',
     'react-hooks',
-    'prettier'
+    'prettier',
+    'jest'
   ],
   rules: {
-    'no-alert': 'error',
+    'no-alert': 'off', // TODO: Drop this later.
     'no-console': 'warn',
     'no-trailing-spaces': 'error',
     'comma-dangle': ['error', 'never'],
@@ -32,6 +39,8 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'import/no-extraneous-dependencies': 'error',
+    'import/prefer-default-export': 'off', // TODO: Drop this later.
+    'consistent-return': 'off', // TODO: Drop this later.
     semi: ['error', 'never'],
     'react/jsx-handler-names': ['error', {
       'eventHandlerPrefix': 'handle',
@@ -56,8 +65,17 @@ module.exports = {
         }
       }
     ],
-    'react/prop-types': 'off', // TODO: remove this line after converting all pages to typescript
+    'react/no-array-index-key': 'off', // TODO: Drop this later.
+    'no-nested-ternary': 'off', // TODO: Drop this later.
+    'import/no-cycle': 'off', // TODO: Drop this later.
+    'react/prop-types': 'off', // TODO: remove this line after converting all pages to typescript.
     'arrow-parens': ['error', 'always'],
-    'quotes': ['error', 'single']
+    'quotes': ['error', 'single'],
+    'no-plusplus': 'off',
+    'react/jsx-no-useless-fragment': 'off', // TODO: Drop this later.
+    'no-case-declarations': 'off', // TODO: Drop this later.
+    'class-methods-use-this': 'off', // TODO: Drop this later.
+    // Rule override for test files
+    'jest/no-undef': 'off'
   }
 }

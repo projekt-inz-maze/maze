@@ -2,10 +2,9 @@ import { useEffect, useRef, useState, useMemo } from 'react'
 
 import { debounce } from 'lodash'
 import { Row, Col } from 'react-bootstrap'
-
-import { Activity } from '../../../utils/constants'
 import { connect } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
+
 import {
   AcceptButton,
   RemarksTextArea,
@@ -19,7 +18,7 @@ import ActivityAssessmentStudentFileService from './ActivityAssessmentStudentFil
 import { SET_ASSESSMENT_NUMBERS } from '../../../actions/types'
 import { TeacherRoutes } from '../../../routes/PageRoutes'
 import ProfessorService from '../../../services/professor.service'
-import { ERROR_OCCURRED } from '../../../utils/constants'
+import { Activity , ERROR_OCCURRED } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
 import { Content } from '../../App/AppGeneralStyles'
 import GoBackButton from '../../general/GoBackButton/GoBackButton'

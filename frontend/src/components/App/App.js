@@ -1,13 +1,10 @@
 import { Container } from 'react-bootstrap'
+import { connect } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-
 import './App.css'
 import { ToastContainer } from 'react-toastify'
 
 import { SidebarCol } from './AppGeneralStyles'
-
-import { connect } from 'react-redux'
-
 import AuthVerify from '../../common/auth-verify'
 import AppRoutes from '../../routes/AppRoutes'
 import { sidebarExcludedPaths } from '../../utils/constants'
