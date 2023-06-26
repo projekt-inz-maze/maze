@@ -8,12 +8,12 @@ import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.model.activity.task.*;
 import com.example.api.model.map.Chapter;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.activity.task.GraphTaskRepo;
-import com.example.api.repo.activity.task.InfoRepo;
-import com.example.api.repo.activity.task.SurveyRepo;
-import com.example.api.repo.map.ChapterRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.task.FileTaskRepository;
+import com.example.api.repository.activity.task.GraphTaskRepository;
+import com.example.api.repository.activity.task.InfoRepository;
+import com.example.api.repository.activity.task.SurveyRepository;
+import com.example.api.repository.map.ChapterRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.activity.task.FileTaskService;
 import com.example.api.service.activity.task.GraphTaskService;
@@ -38,23 +38,23 @@ import java.util.stream.Stream;
 @Transactional
 public class ActivityService {
     private final AuthenticationService authService;
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
     private final UserValidator userValidator;
-    private final GraphTaskRepo graphTaskRepo;
-    private final FileTaskRepo fileTaskRepo;
-    private final SurveyRepo surveyRepo;
-    private final InfoRepo infoRepo;
+    private final GraphTaskRepository graphTaskRepository;
+    private final FileTaskRepository fileTaskRepository;
+    private final SurveyRepository surveyRepository;
+    private final InfoRepository infoRepository;
     private final ActivityValidator activityValidator;
     private final GraphTaskService graphTaskService;
     private final FileTaskService fileTaskService;
     private final InfoService infoService;
     private final SurveyService surveyService;
-    private final ChapterRepo chapterRepo;
+    private final ChapterRepository chapterRepository;
     private final ChapterValidator chapterValidator;
 
     public EditActivityForm getActivityEditInfo(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
         String email = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
 
         Activity activity = getActivity(activityID);
@@ -65,7 +65,7 @@ public class ActivityService {
 
     public void editActivity(EditActivityForm form) throws RequestValidationException, ParseException {
         String email = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
 
         Activity activity = getActivity(form.getActivityID());
@@ -91,10 +91,10 @@ public class ActivityService {
     }
 
     private List<? extends Activity> getAllActivities() {
-        List<GraphTask> graphTasks = graphTaskRepo.findAll();
-        List<FileTask> fileTasks = fileTaskRepo.findAll();
-        List<Survey> surveys = surveyRepo.findAll();
-        List<Info> infos = infoRepo.findAll();
+        List<GraphTask> graphTasks = graphTaskRepository.findAll();
+        List<FileTask> fileTasks = fileTaskRepository.findAll();
+        List<Survey> surveys = surveyRepository.findAll();
+        List<Info> infos = infoRepository.findAll();
 
         return Stream.of(graphTasks, fileTasks, surveys, infos)
                 .flatMap(Collection::stream)
@@ -125,7 +125,7 @@ public class ActivityService {
     public void editActivity(Activity activity, EditActivityForm form) throws RequestValidationException {
         CreateActivityForm editForm = form.getActivityBody();
 
-        Chapter chapter = chapterRepo.findAll().stream().filter(ch -> ch.getActivityMap().hasActivity(activity)).findFirst().orElse(null);
+        Chapter chapter = chapterRepository.findAll().stream().filter(ch -> ch.getActivityMap().hasActivity(activity)).findFirst().orElse(null);
         activity.setTitle(editForm.getTitle());
         activity.setDescription(editForm.getDescription());
         chapterValidator.validateChapterIsNotNull(chapter, null);
@@ -141,16 +141,16 @@ public class ActivityService {
 
     public void deleteActivity(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
         String email = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
 
         Activity activity = getActivity(activityID);
         activityValidator.validateActivityIsNotNull(activity, activityID);
         switch (activity.getActivityType()) {
-            case EXPEDITION -> graphTaskRepo.delete((GraphTask) activity);
-            case TASK -> fileTaskRepo.delete((FileTask) activity);
-            case INFO -> infoRepo.delete((Info) activity);
-            case SURVEY -> surveyRepo.delete((Survey) activity);
+            case EXPEDITION -> graphTaskRepository.delete((GraphTask) activity);
+            case TASK -> fileTaskRepository.delete((FileTask) activity);
+            case INFO -> infoRepository.delete((Info) activity);
+            case SURVEY -> surveyRepository.delete((Survey) activity);
         }
 
     }

@@ -16,11 +16,11 @@ import com.example.api.model.question.Option;
 import com.example.api.model.question.Question;
 import com.example.api.model.question.QuestionType;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.task.GraphTaskRepo;
-import com.example.api.repo.map.ChapterRepo;
-import com.example.api.repo.question.OptionRepo;
-import com.example.api.repo.question.QuestionRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.task.GraphTaskRepository;
+import com.example.api.repository.map.ChapterRepository;
+import com.example.api.repository.question.OptionRepository;
+import com.example.api.repository.question.QuestionRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.map.RequirementService;
 import com.example.api.service.validator.ChapterValidator;
@@ -45,13 +45,13 @@ import java.util.Map;
 @Slf4j
 @Transactional
 public class GraphTaskService {
-    private final GraphTaskRepo graphTaskRepo;
+    private final GraphTaskRepository graphTaskRepository;
     private final ActivityValidator activityValidator;
     private final AuthenticationService authService;
-    private final UserRepo userRepo;
-    private final OptionRepo optionRepo;
-    private final QuestionRepo questionRepo;
-    private final ChapterRepo chapterRepo;
+    private final UserRepository userRepository;
+    private final OptionRepository optionRepository;
+    private final QuestionRepository questionRepository;
+    private final ChapterRepository chapterRepository;
     private final UserValidator userValidator;
     private final TimeParser timeParser;
     private final RequirementService requirementService;
@@ -59,12 +59,12 @@ public class GraphTaskService {
     private final GraphTaskValidator graphTaskValidator;
 
     public GraphTask saveGraphTask(GraphTask graphTask) {
-        return graphTaskRepo.save(graphTask);
+        return graphTaskRepository.save(graphTask);
     }
 
     public GraphTaskResponse getGraphTaskById(Long id) throws EntityNotFoundException {
         log.info("Fetching graph task with id {}", id);
-        GraphTask graphTask = graphTaskRepo.findGraphTaskById(id);
+        GraphTask graphTask = graphTaskRepository.findGraphTaskById(id);
         graphTaskValidator.validateGraphTaskIsNotNull(graphTask, id);
         return new GraphTaskResponse(graphTask);
     }
@@ -72,23 +72,23 @@ public class GraphTaskService {
     public void createGraphTask(CreateGraphTaskChapterForm chapterForm) throws ParseException, RequestValidationException {
         log.info("Starting creation of new GraphTask");
         CreateGraphTaskForm form = chapterForm.getForm();
-        Chapter chapter = chapterRepo.findChapterById(chapterForm.getChapterId());
+        Chapter chapter = chapterRepository.findChapterById(chapterForm.getChapterId());
 
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
         activityValidator.validateCreateGraphTaskFormFields(form);
         activityValidator.validateActivityPosition(form, chapter);
 
-        List<GraphTask> graphTasks = graphTaskRepo.findAll();
+        List<GraphTask> graphTasks = graphTaskRepository.findAll();
         activityValidator.validateGraphTaskTitle(form.getTitle(), graphTasks);
 
         SimpleDateFormat timeToSolveFormat = new SimpleDateFormat("HH:mm:ss");
         long timeToSolveMillis = timeParser.parseAndGetTimeMillisFromHour(timeToSolveFormat, form.getTimeToSolve());
 
         String email = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
         List<Question> questions = questionFormsToQuestions(form.getQuestions());
-        questionRepo.saveAll(questions);
+        questionRepository.saveAll(questions);
 
         double maxPoints = calculateMaxPoints(questions.get(0), 0);
 
@@ -98,14 +98,14 @@ public class GraphTaskService {
                 timeToSolveMillis,
                 maxPoints);
         graphTask.setRequirements(requirementService.getDefaultRequirements(true));
-        graphTaskRepo.save(graphTask);
+        graphTaskRepository.save(graphTask);
 
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
         chapter.getActivityMap().getGraphTasks().add(graphTask);
     }
 
     public List<GraphTask> getStudentGraphTasks() {
-        return graphTaskRepo.findAll()
+        return graphTaskRepository.findAll()
                 .stream()
                 .filter(graphTask -> !graphTask.getIsBlocked())
                 .toList();
@@ -140,7 +140,7 @@ public class GraphTaskService {
                                 .map(optionForm -> new Option(optionForm, question))
                                 .toList();
                         options.forEach(option -> option.setQuestion(question));
-                        optionRepo.saveAll(options);
+                        optionRepository.saveAll(options);
                         question.setOptions(options);
                         numToQuestion.put(questionForm.getQuestionNum(), question);
                     }
@@ -190,7 +190,7 @@ public class GraphTaskService {
             return;
         }
         List<Question> questions = questionFormsToQuestions(graphTaskForm.getQuestions());
-        questionRepo.saveAll(questions);
+        questionRepository.saveAll(questions);
         double newMaxPoints = calculateMaxPoints(questions.get(0), 0);
         removeOldQuestions(graphTask, questions);
         addNewQuestions(graphTask, questions);
@@ -214,7 +214,7 @@ public class GraphTaskService {
 
     public List<GraphNode> getGraphMap(Long graphTaskID) throws EntityNotFoundException {
         log.info("Fetching graph nodes for GraphTask with id {}", graphTaskID);
-        GraphTask graphTask = graphTaskRepo.findGraphTaskById(graphTaskID);
+        GraphTask graphTask = graphTaskRepository.findGraphTaskById(graphTaskID);
         graphTaskValidator.validateGraphTaskIsNotNull(graphTask, graphTaskID);
 
         if (graphTask.getQuestions().size() == 0) {

@@ -10,10 +10,10 @@ import com.example.api.model.activity.task.Info;
 import com.example.api.model.map.Chapter;
 import com.example.api.model.user.User;
 import com.example.api.model.util.Url;
-import com.example.api.repo.activity.task.InfoRepo;
-import com.example.api.repo.map.ChapterRepo;
-import com.example.api.repo.user.UserRepo;
-import com.example.api.repo.util.UrlRepo;
+import com.example.api.repository.activity.task.InfoRepository;
+import com.example.api.repository.map.ChapterRepository;
+import com.example.api.repository.user.UserRepository;
+import com.example.api.repository.util.UrlRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.map.RequirementService;
 import com.example.api.service.validator.ChapterValidator;
@@ -32,23 +32,23 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class InfoService {
-    private final InfoRepo infoRepo;
-    private final ChapterRepo chapterRepo;
+    private final InfoRepository infoRepository;
+    private final ChapterRepository chapterRepository;
     private final ActivityValidator activityValidator;
     private final AuthenticationService authService;
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
     private final UserValidator userValidator;
-    private final UrlRepo urlRepo;
+    private final UrlRepository urlRepository;
     private final RequirementService requirementService;
     private final ChapterValidator chapterValidator;
 
     public Info saveInfo(Info info){
-        return infoRepo.save(info);
+        return infoRepository.save(info);
     }
 
     public InfoResponse getInfo(Long id) throws EntityNotFoundException {
         log.info("Fetching info");
-        Info info = infoRepo.findInfoById(id);
+        Info info = infoRepository.findInfoById(id);
         activityValidator.validateActivityIsNotNull(info, id);
         List<String> urls = info.getImageUrls()
                 .stream()
@@ -60,21 +60,21 @@ public class InfoService {
     public void createInfo(CreateInfoChapterForm chapterForm) throws RequestValidationException {
         log.info("Starting the creation of info");
         CreateInfoForm form = chapterForm.getForm();
-        Chapter chapter = chapterRepo.findChapterById(chapterForm.getChapterId());
+        Chapter chapter = chapterRepository.findChapterById(chapterForm.getChapterId());
 
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
         activityValidator.validateCreateInfoForm(form);
         activityValidator.validateActivityPosition(form, chapter);
 
         String email = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
 
         List<Url> imageUrls = form.getImageUrls()
                 .stream()
                 .map(url -> new Url(null, url))
                 .toList();
-        urlRepo.saveAll(imageUrls);
+        urlRepository.saveAll(imageUrls);
 
         Info info = new Info(
                 form,
@@ -82,12 +82,12 @@ public class InfoService {
                 imageUrls
         );
         info.setRequirements(requirementService.getDefaultRequirements(true));
-        infoRepo.save(info);
+        infoRepository.save(info);
         chapter.getActivityMap().getInfos().add(info);
     }
 
     public List<Info> getStudentInfos() {
-        return infoRepo.findAll()
+        return infoRepository.findAll()
                 .stream()
                 .filter(info -> !info.getIsBlocked())
                 .toList();
@@ -113,7 +113,7 @@ public class InfoService {
                     return newUrl;
                 })
                 .toList();
-        urlRepo.saveAll(newUrls);
+        urlRepository.saveAll(newUrls);
         List<Url> updatedUrls = new LinkedList<>();
         updatedUrls.addAll(remainingUrls);
         updatedUrls.addAll(newUrls);

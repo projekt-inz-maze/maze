@@ -21,9 +21,9 @@ import com.example.api.model.map.requirement.Requirement;
 import com.example.api.model.user.AccountType;
 import com.example.api.model.user.User;
 import com.example.api.model.util.File;
-import com.example.api.repo.map.ChapterRepo;
-import com.example.api.repo.user.UserRepo;
-import com.example.api.repo.util.FileRepo;
+import com.example.api.repository.map.ChapterRepository;
+import com.example.api.repository.user.UserRepository;
+import com.example.api.repository.util.FileRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.validator.ChapterValidator;
 import com.example.api.service.validator.UserValidator;
@@ -42,22 +42,22 @@ import java.util.Optional;
 @Slf4j
 @Transactional
 public class ChapterService {
-    private final ChapterRepo chapterRepo;
+    private final ChapterRepository chapterRepository;
     private final ActivityMapService activityMapService;
-    private final FileRepo fileRepo;
+    private final FileRepository fileRepository;
     private final ActivityValidator activityValidator;
     private final ChapterValidator chapterValidator;
     private final AuthenticationService authService;
     private final UserValidator userValidator;
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
     private final RequirementService requirementService;
 
     public List<? extends ChapterResponse> getAllChapters() {
         log.info("Fetching all chapters");
-        List<Chapter> chapters = chapterRepo.findAll();
+        List<Chapter> chapters = chapterRepository.findAll();
 
         String email = authService.getAuthentication().getName();
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         AccountType accountType = user.getAccountType();
 
         if (accountType == AccountType.STUDENT) {
@@ -81,11 +81,11 @@ public class ChapterService {
 
     public ChapterInfoResponse getChapterInfo(Long id) throws EntityNotFoundException {
         log.info("Fetching info for chapter with id {}", id);
-        Chapter chapter = chapterRepo.findChapterById(id);
+        Chapter chapter = chapterRepository.findChapterById(id);
         chapterValidator.validateChapterIsNotNull(chapter, id);
 
         String email = authService.getAuthentication().getName();
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
 
         List<? extends MapTask> allTasks;
         if (user.getAccountType() == AccountType.STUDENT){
@@ -99,15 +99,15 @@ public class ChapterService {
 
     public void createChapter(ChapterForm form) throws RequestValidationException {
         log.info("Creating new chapter");
-        File image = fileRepo.findFileById(form.getImageId());
+        File image = fileRepository.findFileById(form.getImageId());
         activityValidator.validateFileIsNotNull(image, form.getImageId());
         chapterValidator.validateChapterCreation(form);
         ActivityMap activityMap = new ActivityMap(form.getSizeX(), form.getSizeY(), image);
         activityMapService.saveActivityMap(activityMap);
         Chapter chapter = new Chapter(form.getName(), activityMap, form.getPosX(), form.getPosY());
         chapter.setRequirements(requirementService.getDefaultRequirements(false));
-        List<Chapter> allChapters = chapterRepo.findAll();
-        chapterRepo.save(chapter);
+        List<Chapter> allChapters = chapterRepository.findAll();
+        chapterRepository.save(chapter);
         if (!allChapters.isEmpty()) {
             allChapters.forEach(chapter_ -> {
                 if (chapter_.getNextChapter() == null) {
@@ -118,7 +118,7 @@ public class ChapterService {
     }
 
     public Chapter getChapterWithActivity(Activity activity) {
-        return chapterRepo.findAll()
+        return chapterRepository.findAll()
                 .stream()
                 .filter(chapter -> chapter.getActivityMap().hasActivity(activity))
                 .findAny()
@@ -127,28 +127,28 @@ public class ChapterService {
 
     public void deleteChapter(Long chapterID) throws WrongUserTypeException, EntityNotFoundException {
         String email = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
 
-        Chapter chapter = chapterRepo.findChapterById(chapterID);
+        Chapter chapter = chapterRepository.findChapterById(chapterID);
         chapterValidator.validateChapterIsNotNull(chapter, chapterID);
 
-        Optional<Chapter> prevChapter = chapterRepo.findAll().stream().filter(ch -> chapter.equals(ch.getNextChapter()))
+        Optional<Chapter> prevChapter = chapterRepository.findAll().stream().filter(ch -> chapter.equals(ch.getNextChapter()))
                 .findAny();
         prevChapter.ifPresent(value -> value.setNextChapter(chapter.getNextChapter()));
-        chapterRepo.deleteChapterById(chapterID);
+        chapterRepository.deleteChapterById(chapterID);
     }
 
     public void editChapter(EditChapterForm editChapterForm) throws RequestValidationException {
         // user validation
         String email = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
 
         ChapterForm chapterForm = editChapterForm.getEditionForm();
 
         // chapter validation for given editChapterForm
-        Chapter chapter = chapterRepo.findChapterById(editChapterForm.getChapterId());
+        Chapter chapter = chapterRepository.findChapterById(editChapterForm.getChapterId());
         chapterValidator.validateChapterIsNotNull(chapter, editChapterForm.getChapterId());
         chapterValidator.validatePositionTaken(chapterForm, chapter);
         chapterValidator.validateChapterEdition(chapterForm, chapter);
@@ -163,13 +163,13 @@ public class ChapterService {
         ActivityMap chapterMap = chapter.getActivityMap();
         chapterMap.setMapSizeX(chapterForm.getSizeX());
         chapterMap.setMapSizeY(chapterForm.getSizeY());
-        chapterMap.setImage(fileRepo.findFileById(chapterForm.getImageId()));
+        chapterMap.setImage(fileRepository.findFileById(chapterForm.getImageId()));
 
         chapter.setActivityMap(chapterMap);
     }
 
     public RequirementResponse getRequirementsForChapter(Long chapterId) throws EntityNotFoundException {
-        Chapter chapter = chapterRepo.findChapterById(chapterId);
+        Chapter chapter = chapterRepository.findChapterById(chapterId);
         chapterValidator.validateChapterIsNotNull(chapter, chapterId);
 
         List<? extends RequirementDTO<?>> requirements = chapter.getRequirements()
@@ -181,7 +181,7 @@ public class ChapterService {
     }
 
     public void updateRequirementForChapter(ChapterRequirementForm form) throws RequestValidationException {
-        Chapter chapter = chapterRepo.findChapterById(form.getChapterId());
+        Chapter chapter = chapterRepository.findChapterById(form.getChapterId());
         Boolean isBlocked = form.getIsBlocked();
         if(isBlocked != null) {
             chapter.setIsBlocked(isBlocked);

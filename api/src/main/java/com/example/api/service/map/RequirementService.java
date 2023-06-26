@@ -3,7 +3,7 @@ package com.example.api.service.map;
 import com.example.api.dto.request.activity.task.requirement.RequirementForm;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.model.map.requirement.*;
-import com.example.api.repo.map.RequirementRepo;
+import com.example.api.repository.map.RequirementRepository;
 import com.example.api.service.validator.MapValidator;
 import com.example.api.util.message.MessageManager;
 import com.example.api.util.visitor.RequirementFulfilledVisitor;
@@ -21,13 +21,13 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class RequirementService {
-    private final RequirementRepo requirementRepo;
+    private final RequirementRepository requirementRepository;
     private final RequirementFulfilledVisitor requirementFulfilledVisitor;
     private final RequirementValueVisitor requirementValueVisitor;
     private final MapValidator mapValidator;
 
     public Requirement saveRequirement(Requirement requirement) {
-        return requirementRepo.save(requirement);
+        return requirementRepository.save(requirement);
     }
 
     public List<Requirement> getDefaultRequirements(boolean forActivity) {
@@ -75,7 +75,7 @@ public class RequirementService {
                 graphTasksRequirement,
                 fileTasksRequirement
         );
-        requirementRepo.saveAll(requirements);
+        requirementRepository.saveAll(requirements);
         return requirements;
     }
 
@@ -86,7 +86,7 @@ public class RequirementService {
 
     public void updateRequirements(List<RequirementForm> forms) throws RequestValidationException {
         for (RequirementForm requirementForm: forms) {
-            Requirement requirement = requirementRepo.findRequirementById(requirementForm.getId());
+            Requirement requirement = requirementRepository.findRequirementById(requirementForm.getId());
             mapValidator.validateRequirementIsNotNull(requirement, requirementForm.getId());
 
             requirement.setSelected(requirementForm.getSelected());

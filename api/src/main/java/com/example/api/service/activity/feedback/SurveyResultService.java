@@ -6,9 +6,9 @@ import com.example.api.error.exception.*;
 import com.example.api.model.activity.result.SurveyResult;
 import com.example.api.model.activity.task.Survey;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.SurveyResultRepo;
-import com.example.api.repo.activity.task.SurveyRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.SurveyResultRepository;
+import com.example.api.repository.activity.task.SurveyRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.user.BadgeService;
 import com.example.api.service.validator.FeedbackValidator;
@@ -26,9 +26,9 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class SurveyResultService {
-    private final SurveyResultRepo surveyResultRepo;
-    private final UserRepo userRepo;
-    private final SurveyRepo surveyRepo;
+    private final SurveyResultRepository surveyResultRepository;
+    private final UserRepository userRepository;
+    private final SurveyRepository surveyRepository;
     private final UserValidator userValidator;
     private final AuthenticationService authService;
     private final ActivityValidator activityValidator;
@@ -36,19 +36,19 @@ public class SurveyResultService {
     private final FeedbackValidator feedbackValidator;
 
     public SurveyResult saveSurveyResult(SurveyResult surveyResult) {
-        return surveyResultRepo.save(surveyResult);
+        return surveyResultRepository.save(surveyResult);
     }
 
     public SurveyResultInfoResponse saveSurveyResult(SurveyResultForm form) throws RequestValidationException {
         String email = authService.getAuthentication().getName();
         log.info("Saving user {} feedback for survey with id {}", email, form.getSurveyId());
-        User student = userRepo.findUserByEmail(email);
+        User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student, email);
         Long id = form.getSurveyId();
-        Survey survey = surveyRepo.findSurveyById(id);
+        Survey survey = surveyRepository.findSurveyById(id);
         activityValidator.validateActivityIsNotNull(survey, id);
 
-        SurveyResult surveyResult = surveyResultRepo.findSurveyResultBySurveyAndUser(survey, student);
+        SurveyResult surveyResult = surveyResultRepository.findSurveyResultBySurveyAndUser(survey, student);
         if (surveyResult == null) {
             surveyResult = new SurveyResult();
             surveyResult.setSurvey(survey);
@@ -68,20 +68,20 @@ public class SurveyResultService {
             throw new RequestValidationException(ExceptionMessage.USER_FEEDBACK_RATE_OUT_OF_RANGE);
         }
         surveyResult.setRate(form.getRate());
-        surveyResultRepo.save(surveyResult);
+        surveyResultRepository.save(surveyResult);
         return new SurveyResultInfoResponse(surveyResult);
     }
 
     public SurveyResultInfoResponse getSurveyResult(Long surveyId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         String email = authService.getAuthentication().getName();
         log.info("Getting user {} feedback for survey with id {}", email, surveyId);
-        User student = userRepo.findUserByEmail(email);
+        User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student, email);
 
-        Survey survey = surveyRepo.findSurveyById(surveyId);
+        Survey survey = surveyRepository.findSurveyById(surveyId);
         activityValidator.validateActivityIsNotNull(survey, surveyId);
 
-        SurveyResult surveyResult = surveyResultRepo.findSurveyResultBySurveyAndUser(survey, student);
+        SurveyResult surveyResult = surveyResultRepository.findSurveyResultBySurveyAndUser(survey, student);
 
         try {
             feedbackValidator.validateFeedbackIsNotNull(surveyResult, surveyId, email);
@@ -89,7 +89,7 @@ public class SurveyResultService {
         catch (EntityNotFoundException ex) {
             surveyResult = new SurveyResult(survey, null, null);
             surveyResult.setUser(student);
-            surveyResultRepo.save(surveyResult);
+            surveyResultRepository.save(surveyResult);
             badgeService.checkAllBadges();
         }
 
@@ -98,7 +98,7 @@ public class SurveyResultService {
     }
 
     public List<SurveyResult> getAllSurveyResultsForStudent(User student) {
-        return surveyResultRepo.findAllByUser(student)
+        return surveyResultRepository.findAllByUser(student)
                 .stream()
                 .filter(SurveyResult::isEvaluated)
                 .toList();

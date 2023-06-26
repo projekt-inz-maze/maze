@@ -13,10 +13,10 @@ import com.example.api.model.activity.result.FileTaskResult;
 import com.example.api.model.activity.task.FileTask;
 import com.example.api.model.user.User;
 import com.example.api.model.util.File;
-import com.example.api.repo.activity.feedback.ProfessorFeedbackRepo;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.feedback.ProfessorFeedbackRepository;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.task.FileTaskRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.service.validator.FeedbackValidator;
 import com.example.api.service.validator.UserValidator;
 import com.example.api.service.validator.activity.ActivityValidator;
@@ -33,17 +33,17 @@ import java.util.stream.Collectors;
 @Slf4j
 @Transactional
 public class ProfessorFeedbackService {
-    private final ProfessorFeedbackRepo professorFeedbackRepo;
+    private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final FeedbackValidator feedbackValidator;
     private final FileTaskResultRepo fileTaskResultRepo;
-    private final FileTaskRepo fileTaskRepo;
-    private final UserRepo userRepo;
+    private final FileTaskRepository fileTaskRepository;
+    private final UserRepository userRepository;
     private final ActivityValidator activityValidator;
     private final UserValidator userValidator;
 
     public ProfessorFeedbackInfoResponse saveProfessorFeedback(ProfessorFeedback feedback)
             throws MissingAttributeException, EntityNotFoundException {
-        return createInfoResponseFromProfessorFeedback(professorFeedbackRepo.save(feedback));
+        return createInfoResponseFromProfessorFeedback(professorFeedbackRepository.save(feedback));
     }
 
     public ProfessorFeedbackInfoResponse saveProfessorFeedback(SaveProfessorFeedbackForm form)
@@ -53,7 +53,7 @@ public class ProfessorFeedbackService {
                 feedbackValidator.validateAndSetProfessorFeedbackTaskForm(form);
         log.debug(professorFeedback.getContent());
 
-        return createInfoResponseFromProfessorFeedback(professorFeedbackRepo.save(professorFeedback));
+        return createInfoResponseFromProfessorFeedback(professorFeedbackRepository.save(professorFeedback));
     }
 
     public ProfessorFeedback getProfessorFeedbackForFileTaskResult(Long id)
@@ -61,7 +61,7 @@ public class ProfessorFeedbackService {
         log.info("Fetching professor feedback for file task result with id {}", id);
         FileTaskResult result = fileTaskResultRepo.findFileTaskResultById(id);
         activityValidator.validateTaskResultIsNotNull(result, id);
-        return professorFeedbackRepo.findProfessorFeedbackByFileTaskResult(result);
+        return professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(result);
     }
 
     public ProfessorFeedbackInfoResponse getProfessorFeedbackInfoForFileTaskResult(Long id)
@@ -73,13 +73,13 @@ public class ProfessorFeedbackService {
     public ProfessorFeedback getProfessorFeedbackForFileTaskAndStudent(Long fileTaskId, String studentEmail)
             throws EntityNotFoundException, WrongUserTypeException {
         log.info("Fetching professor feedback for file task with id {} and student {}", fileTaskId, studentEmail);
-        FileTask fileTask = fileTaskRepo.findFileTaskById(fileTaskId);
+        FileTask fileTask = fileTaskRepository.findFileTaskById(fileTaskId);
         activityValidator.validateActivityIsNotNull(fileTask, fileTaskId);
-        User student = userRepo.findUserByEmail(studentEmail);
+        User student = userRepository.findUserByEmail(studentEmail);
         userValidator.validateStudentAccount(student, studentEmail);
         FileTaskResult result = fileTaskResultRepo.findFileTaskResultByFileTaskAndUser(fileTask, student);
         activityValidator.validateTaskResultIsNotNull(result, student, fileTask);
-        return professorFeedbackRepo.findProfessorFeedbackByFileTaskResult(result);
+        return professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(result);
     }
 
     public ProfessorFeedbackInfoResponse getProfessorFeedbackInfoForFileTaskAndStudent(Long fileTaskId, String studentEmail)

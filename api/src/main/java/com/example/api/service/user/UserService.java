@@ -9,13 +9,13 @@ import com.example.api.error.exception.*;
 import com.example.api.model.group.Group;
 import com.example.api.model.user.AccountType;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.AdditionalPointsRepo;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.activity.task.GraphTaskRepo;
-import com.example.api.repo.activity.task.InfoRepo;
-import com.example.api.repo.activity.task.SurveyRepo;
-import com.example.api.repo.group.GroupRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.ProfessorFeedbackRepository;
+import com.example.api.repository.activity.task.FileTaskRepository;
+import com.example.api.repository.activity.task.GraphTaskRepository;
+import com.example.api.repository.activity.task.InfoRepository;
+import com.example.api.repository.activity.task.SurveyRepository;
+import com.example.api.repository.group.GroupRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.user.util.ProfessorRegisterToken;
 import com.example.api.service.validator.PasswordValidator;
@@ -40,13 +40,13 @@ import java.util.stream.Stream;
 @Slf4j
 @Transactional
 public class UserService implements UserDetailsService {
-    private final UserRepo userRepo;
-    private final GroupRepo groupRepo;
-    private final GraphTaskRepo graphTaskRepo;
-    private final FileTaskRepo fileTaskRepo;
-    private final SurveyRepo surveyRepo;
-    private final InfoRepo infoRepo;
-    private final AdditionalPointsRepo additionalPointsRepo;
+    private final UserRepository userRepository;
+    private final GroupRepository groupRepository;
+    private final GraphTaskRepository graphTaskRepository;
+    private final FileTaskRepository fileTaskRepository;
+    private final SurveyRepository surveyRepository;
+    private final InfoRepository infoRepository;
+    private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final AuthenticationService authService;
     private final PasswordEncoder passwordEncoder;
     private final UserValidator userValidator;
@@ -55,7 +55,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         userValidator.validateUserIsNotNull(user, email);
         log.info("User {} found in database", email);
         Collection<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getAccountType().getName()));
@@ -65,20 +65,20 @@ public class UserService implements UserDetailsService {
     public User saveUser(User user) {
         log.info("Saving user {} to the database", user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepo.save(user);
+        return userRepository.save(user);
     }
 
     public Long registerUser(RegisterUserForm form) throws RequestValidationException {
         String email = form.getEmail();
         log.info("Registering user {}", email);
-        User dbUser = userRepo.findUserByEmail(email);
+        User dbUser = userRepository.findUserByEmail(email);
         User user = new User(form.getEmail(), form.getFirstName(), form.getLastName(), form.getAccountType());
         userValidator.validateUserRegistration(dbUser, user, form, email);
         passwordValidator.validatePassword(form.getPassword());
         user.setPassword(passwordEncoder.encode(form.getPassword()));
         user.setPoints(0D);
         user.setLevel(1);
-        userRepo.save(user);
+        userRepository.save(user);
         return user.getId();
     }
 
@@ -90,7 +90,7 @@ public class UserService implements UserDetailsService {
 
     public User getUser(String email) throws UsernameNotFoundException {
         log.info("Fetching user {}", email);
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         userValidator.validateUserIsNotNull(user, email);
         return user;
     }
@@ -102,20 +102,20 @@ public class UserService implements UserDetailsService {
 
     public List<User> getUsers() {
         log.info("Fetching all users");
-        return userRepo.findAll();
+        return userRepository.findAll();
     }
 
     public Group getUserGroup() {
         String email = authService.getAuthentication().getName();
         log.info("Fetching group for user {}", email);
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         userValidator.validateUserIsNotNull(user, email);
         return user.getGroup();
     }
 
     public List<BasicStudent> getAllStudentsWithGroup() {
         log.info("Fetching all students with group");
-        List<User> students = userRepo.findAllByAccountTypeEquals(AccountType.STUDENT);
+        List<User> students = userRepository.findAllByAccountTypeEquals(AccountType.STUDENT);
         return students.stream()
                 .map(BasicStudent::new)
                 .collect(Collectors.toList());
@@ -126,9 +126,9 @@ public class UserService implements UserDetailsService {
         Long studentId = setStudentGroupForm.getStudentId();
         Long newGroupId = setStudentGroupForm.getNewGroupId();
         log.info("Setting group for student with id {}", studentId);
-        User user = userRepo.findUserById(studentId);
+        User user = userRepository.findUserById(studentId);
         userValidator.validateStudentAccount(user, studentId);
-        Group newGroup = groupRepo.findGroupById(newGroupId);
+        Group newGroup = groupRepository.findGroupById(newGroupId);
         Group previousGroup = user.getGroup();
         userValidator.validateAndSetUserGroup(newGroup, previousGroup, newGroupId, user);
         return newGroup;
@@ -137,7 +137,7 @@ public class UserService implements UserDetailsService {
     public Integer setIndexNumber(SetStudentIndexForm setStudentIndexForm) throws WrongUserTypeException, EntityAlreadyInDatabaseException {
         String email = authService.getAuthentication().getName();
         log.info("Setting index number {} for user with email {}", setStudentIndexForm.getNewIndexNumber(), email);
-        User student = userRepo.findUserByEmail(email);
+        User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student, email);
 
         if (student.getIndexNumber().equals(setStudentIndexForm.getNewIndexNumber())) {
@@ -145,12 +145,12 @@ public class UserService implements UserDetailsService {
             return student.getIndexNumber();
         }
 
-        if (userRepo.existsUserByIndexNumber(setStudentIndexForm.getNewIndexNumber())) {
+        if (userRepository.existsUserByIndexNumber(setStudentIndexForm.getNewIndexNumber())) {
             log.error("Cannot set index number student with email {} to {} because it is taken", email, setStudentIndexForm.getNewIndexNumber());
             throw new EntityAlreadyInDatabaseException("Cannot set index number for user with email " + email + " to " + setStudentIndexForm.getNewIndexNumber() + " because is taken");
         }
         student.setIndexNumber(setStudentIndexForm.getNewIndexNumber());
-        userRepo.save(student);
+        userRepository.save(student);
         return student.getIndexNumber();
     }
 
@@ -164,29 +164,29 @@ public class UserService implements UserDetailsService {
 
     public void deleteProfessorAccount(String professorEmail) throws WrongUserTypeException {
         User professor = getCurrentUser();
-        User newProfessor = userRepo.findUserByEmail(professorEmail);
+        User newProfessor = userRepository.findUserByEmail(professorEmail);
         userValidator.validateProfessorAccount(professor, professorEmail);
         userValidator.validateProfessorAccount(newProfessor, newProfessor.getEmail());
 
         changeUserForActivitiesAndAdditionalPoints(professor, newProfessor);
-        userRepo.delete(professor);
+        userRepository.delete(professor);
     }
 
     public void deleteStudentAccount() throws WrongUserTypeException {
         User user = getCurrentUser();
         userValidator.validateStudentAccount(user, user.getEmail());
-        userRepo.delete(user);
+        userRepository.delete(user);
     }
 
     private void changeUserForActivitiesAndAdditionalPoints(User from, User to){
-        Stream.of(graphTaskRepo.findAll(),
-                        fileTaskRepo.findAll(),
-                        surveyRepo.findAll(),
-                        infoRepo.findAll())
+        Stream.of(graphTaskRepository.findAll(),
+                        fileTaskRepository.findAll(),
+                        surveyRepository.findAll(),
+                        infoRepository.findAll())
                 .flatMap(Collection::stream)
                 .filter(activity -> activity.getProfessor() == from)
                 .forEach(activity -> activity.setProfessor(to));
-        additionalPointsRepo.findAll()
+        professorFeedbackRepository.findAll()
                 .stream()
                 .filter(additionalPoint -> additionalPoint.getProfessorEmail().equals(from.getEmail()))
                 .forEach(additionalPoint -> additionalPoint.setProfessorEmail(to.getEmail()));
@@ -195,7 +195,7 @@ public class UserService implements UserDetailsService {
     public List<String> getAllProfessorEmails() {
         User user = getCurrentUser();
         String professorEmail = user.getEmail();
-        return userRepo.findAllByAccountTypeEquals(AccountType.PROFESSOR)
+        return userRepository.findAllByAccountTypeEquals(AccountType.PROFESSOR)
                 .stream()
                 .map(User::getEmail)
                 .filter(email -> !email.equals(professorEmail))
@@ -204,7 +204,7 @@ public class UserService implements UserDetailsService {
 
     public User getCurrentUserAndValidateStudentAccount() throws WrongUserTypeException {
         String email = authService.getAuthentication().getName();
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(user, email);
         return user;
     }

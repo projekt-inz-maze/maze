@@ -13,9 +13,9 @@ import com.example.api.model.user.Rank;
 import com.example.api.model.user.User;
 import com.example.api.model.util.Image;
 import com.example.api.model.util.ImageType;
-import com.example.api.repo.user.RankRepo;
-import com.example.api.repo.user.UserRepo;
-import com.example.api.repo.util.ImageRepo;
+import com.example.api.repository.user.RankRepository;
+import com.example.api.repository.user.UserRepository;
+import com.example.api.repository.util.ImageRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.validator.RankValidator;
 import com.example.api.service.validator.UserValidator;
@@ -33,9 +33,9 @@ import java.util.*;
 @Slf4j
 @Transactional
 public class RankService {
-    private final RankRepo rankRepo;
-    private final ImageRepo imageRepo;
-    private final UserRepo userRepo;
+    private final RankRepository rankRepository;
+    private final ImageRepository imageRepository;
+    private final UserRepository userRepository;
     private final RankValidator rankValidator;
     private final UserValidator userValidator;
     private final AuthenticationService authService;
@@ -60,7 +60,7 @@ public class RankService {
     }
 
     public Map<HeroType, List<Rank>> getHeroTypeToRanks() {
-        List<Rank> ranks = rankRepo.findAll();
+        List<Rank> ranks = rankRepository.findAll();
         Map<HeroType, List<Rank>> heroTypeToRanks = new HashMap<>();
         ranks.forEach(rank -> {
             List<Rank> typeRanks = heroTypeToRanks.get(rank.getHeroType());
@@ -79,7 +79,7 @@ public class RankService {
         rankValidator.validateAddRankForm(form);
         MultipartFile multipartFile = form.getImage();
         Image image = new Image(form.getName() + " image", multipartFile.getBytes(), ImageType.RANK);
-        imageRepo.save(image);
+        imageRepository.save(image);
         Rank rank = new Rank(
                 null,
                 form.getType(),
@@ -87,12 +87,12 @@ public class RankService {
                 form.getMinPoints(),
                 image
         );
-        rankRepo.save(rank);
+        rankRepository.save(rank);
     }
 
     public void updateRank(EditRankForm form) throws RequestValidationException, IOException {
         Long id = form.getRankId();
-        Rank rank = rankRepo.findRankById(id);
+        Rank rank = rankRepository.findRankById(id);
         rankValidator.validateEditRankForm(form, rank, id);
         if (form.getName() != null) {
             rank.setName(form.getName());
@@ -111,7 +111,7 @@ public class RankService {
 
     public CurrentRankResponse getCurrentRank() throws WrongUserTypeException {
         String email = authService.getAuthentication().getName();
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(user, email);
 
         double points = user.getPoints();
@@ -171,8 +171,8 @@ public class RankService {
 
     public void deleteRank(Long id) throws EntityNotFoundException {
         log.info("Deleting rank with id {}", id);
-        Rank rank = rankRepo.findRankById(id);
+        Rank rank = rankRepository.findRankById(id);
         rankValidator.validateRankIsNotNull(rank, id);
-        rankRepo.delete(rank);
+        rankRepository.delete(rank);
     }
 }

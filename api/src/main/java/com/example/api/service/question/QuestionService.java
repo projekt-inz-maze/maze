@@ -13,9 +13,9 @@ import com.example.api.model.activity.result.ResultStatus;
 import com.example.api.model.question.Answer;
 import com.example.api.model.question.Question;
 import com.example.api.model.user.User;
-import com.example.api.repo.question.AnswerRepo;
-import com.example.api.repo.question.QuestionRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.question.AnswerRepository;
+import com.example.api.repository.question.QuestionRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.activity.result.GraphTaskResultService;
 import com.example.api.service.user.BadgeService;
@@ -38,9 +38,9 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class QuestionService {
-    private final QuestionRepo questionRepo;
-    private final AnswerRepo answerRepo;
-    private final UserRepo userRepo;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
+    private final UserRepository userRepository;
     private final QuestionValidator questionValidator;
     private final ResultValidator resultValidator;
     private final AuthenticationService authService;
@@ -49,19 +49,19 @@ public class QuestionService {
     private final PointsCalculator pointsCalculator;
 
     public Question saveQuestion(Question question) {
-        return questionRepo.save(question);
+        return questionRepository.save(question);
     }
 
     public Question getQuestion(Long id) throws EntityNotFoundException {
         log.info("Fetching question with id {}", id);
-        Question question = questionRepo.findQuestionById(id);
+        Question question = questionRepository.findQuestionById(id);
         questionValidator.validateQuestionIsNotNull(question, id);
         return question;
     }
 
     public Long performQuestionAction(QuestionActionForm form) throws RequestValidationException, TimeLimitExceededException {
         String email = authService.getAuthentication().getName();
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
 
         ResultStatus status = form.getStatus();
         Long graphTaskId = form.getGraphTaskId();
@@ -77,7 +77,7 @@ public class QuestionService {
             case CHOOSE -> {
                 resultValidator.validateGraphTaskResultStatusIsChoose(result);
                 Long questionId = form.getQuestionId();
-                Question question = questionRepo.findQuestionById(questionId);
+                Question question = questionRepository.findQuestionById(questionId);
                 questionValidator.validateQuestionIsNotNull(question, questionId);
                 result.setSendDateMillis(System.currentTimeMillis());
                 result.setCurrQuestion(question);
@@ -89,7 +89,7 @@ public class QuestionService {
                 Question question = result.getCurrQuestion();
                 Answer answer = resultValidator.validateAndCreateAnswer(form.getAnswerForm(), question);
                 answer.setQuestion(question);
-                answerRepo.save(answer);
+                answerRepository.save(answer);
                 result.setSendDateMillis(System.currentTimeMillis());
                 result.getAnswers().add(answer);
                 result.setStatus(ResultStatus.CHOOSE);

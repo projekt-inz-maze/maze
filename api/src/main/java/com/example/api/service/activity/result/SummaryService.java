@@ -13,15 +13,15 @@ import com.example.api.model.activity.task.Survey;
 import com.example.api.model.group.Group;
 import com.example.api.model.map.Chapter;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.result.GraphTaskResultRepo;
-import com.example.api.repo.activity.result.SurveyResultRepo;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.activity.task.GraphTaskRepo;
-import com.example.api.repo.activity.task.SurveyRepo;
-import com.example.api.repo.group.GroupRepo;
-import com.example.api.repo.map.ChapterRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.result.GraphTaskResultRepository;
+import com.example.api.repository.activity.result.SurveyResultRepository;
+import com.example.api.repository.activity.task.FileTaskRepository;
+import com.example.api.repository.activity.task.GraphTaskRepository;
+import com.example.api.repository.activity.task.SurveyRepository;
+import com.example.api.repository.group.GroupRepository;
+import com.example.api.repository.map.ChapterRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.validator.UserValidator;
 import com.example.api.util.calculator.GradesCalculator;
@@ -42,21 +42,21 @@ import java.util.stream.Stream;
 @Transactional
 public class SummaryService {
     private final AuthenticationService authService;
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
     private final UserValidator userValidator;
-    private final GroupRepo groupRepo;
-    private final GraphTaskRepo graphTaskRepo;
-    private final GraphTaskResultRepo graphTaskResultRepo;
-    private final FileTaskRepo fileTaskRepo;
+    private final GroupRepository groupRepository;
+    private final GraphTaskRepository graphTaskRepository;
+    private final GraphTaskResultRepository graphTaskResultRepository;
+    private final FileTaskRepository fileTaskRepository;
     private final FileTaskResultRepo fileTaskResultRepo;
-    private final SurveyRepo surveyRepo;
-    private final SurveyResultRepo surveyResultRepo;
-    private final ChapterRepo chapterRepo;
+    private final SurveyRepository surveyRepository;
+    private final SurveyResultRepository surveyResultRepository;
+    private final ChapterRepository chapterRepository;
     private final PointsToGradeMapper pointsToGradeMapper;
 
     public SummaryResponse getSummary() throws WrongUserTypeException {
         String professorEmail = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(professorEmail);
+        User professor = userRepository.findUserByEmail(professorEmail);
         userValidator.validateProfessorAccount(professor, professorEmail);
         log.info("Fetching summary for professor {}", professorEmail);
 
@@ -165,7 +165,7 @@ public class SummaryService {
     // avgGradesList
     /////////////////////////////
     private List<AverageGrade> getAvgGradesList(User professor) {
-        return chapterRepo.findAll()
+        return chapterRepository.findAll()
                 .stream()
                 .map(chapter -> toAverageGrade(chapter, professor))
                 .toList();
@@ -178,7 +178,7 @@ public class SummaryService {
     }
 
     private List<AverageGradeForChapter> getAvgGradesForChapter(Chapter chapter, User professor) {
-        return groupRepo.findAll()
+        return groupRepository.findAll()
                 .stream()
                 .map(group -> toAvgGradeForChapter(chapter, group, professor))
                 .toList();
@@ -200,7 +200,7 @@ public class SummaryService {
     // avgActivitiesScore
     /////////////////////////////
     private List<AverageActivityScore> getAvgActivitiesScore(User professor) {
-        return chapterRepo.findAll()
+        return chapterRepository.findAll()
                 .stream()
                 .map(chapter -> toAvgActivityScore(chapter, professor))
                 .toList();
@@ -238,7 +238,7 @@ public class SummaryService {
     }
 
     private List<Score> getScores(Activity activity) {
-        return groupRepo.findAll()
+        return groupRepository.findAll()
                 .stream()
                 .map(group -> toScore(activity, group))
                 .filter(Objects::nonNull)
@@ -286,9 +286,9 @@ public class SummaryService {
     // help methods
     /////////////////////////////
     private List<? extends Activity> getAllActivities() { // without Info
-        List<GraphTask> graphTasks = graphTaskRepo.findAll();
-        List<FileTask> fileTasks = fileTaskRepo.findAll();
-        List<Survey> surveys = surveyRepo.findAll();
+        List<GraphTask> graphTasks = graphTaskRepository.findAll();
+        List<FileTask> fileTasks = fileTaskRepository.findAll();
+        List<Survey> surveys = surveyRepository.findAll();
 
 
         return Stream.of(graphTasks, fileTasks, surveys)
@@ -304,7 +304,7 @@ public class SummaryService {
     }
 
     private List<? extends Activity> getAllProfessorActivitiesToAssess(User professor) { // without Info
-        return fileTaskRepo.findAll().stream().filter(activity -> isProfessorActivity(activity, professor)).toList();
+        return fileTaskRepository.findAll().stream().filter(activity -> isProfessorActivity(activity, professor)).toList();
     }
 
 
@@ -318,13 +318,13 @@ public class SummaryService {
 
     private List<? extends TaskResult> getAllResultsForActivity(Activity activity) {
         if (activity.getActivityType().equals(ActivityType.EXPEDITION)) {
-            return graphTaskResultRepo.findAllByGraphTask((GraphTask) activity);
+            return graphTaskResultRepository.findAllByGraphTask((GraphTask) activity);
         }
         else if (activity.getActivityType().equals(ActivityType.TASK)) {
             return fileTaskResultRepo.findAllByFileTask((FileTask) activity);
         }
         else if (activity.getActivityType().equals(ActivityType.SURVEY)) {
-            return surveyResultRepo.findAllBySurvey((Survey) activity);
+            return surveyResultRepository.findAllBySurvey((Survey) activity);
         }
         return List.of();
     }

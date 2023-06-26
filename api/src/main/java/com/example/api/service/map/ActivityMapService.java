@@ -16,11 +16,11 @@ import com.example.api.model.activity.task.Survey;
 import com.example.api.model.map.ActivityMap;
 import com.example.api.model.user.AccountType;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.result.GraphTaskResultRepo;
-import com.example.api.repo.activity.result.SurveyResultRepo;
-import com.example.api.repo.map.MapRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.result.GraphTaskResultRepository;
+import com.example.api.repository.activity.result.SurveyResultRepository;
+import com.example.api.repository.map.MapRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.validator.MapValidator;
 import lombok.RequiredArgsConstructor;
@@ -37,25 +37,25 @@ import java.util.stream.Stream;
 @Slf4j
 @Transactional
 public class ActivityMapService {
-    private final MapRepo mapRepo;
+    private final MapRepository mapRepository;
     private final RequirementService requirementService;
     private final MapValidator mapValidator;
     private final AuthenticationService authService;
-    private final UserRepo userRepo;
-    private final GraphTaskResultRepo graphTaskResultRepo;
+    private final UserRepository userRepository;
+    private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepo fileTaskResultRepo;
-    private final SurveyResultRepo surveyResultRepo;
+    private final SurveyResultRepository surveyResultRepository;
 
     public ActivityMap saveActivityMap(ActivityMap activityMap){
-        return mapRepo.save(activityMap);
+        return mapRepository.save(activityMap);
     }
 
     public ActivityMapResponse getActivityMap(Long id) throws EntityNotFoundException, WrongUserTypeException {
         log.info("Fetching activity map with id {} as ActivityMapResponse", id);
         String studentEmail = authService.getAuthentication().getName();
-        User user = userRepo.findUserByEmail(studentEmail);
+        User user = userRepository.findUserByEmail(studentEmail);
 
-        ActivityMap activityMap = mapRepo.findActivityMapById(id);
+        ActivityMap activityMap = mapRepository.findActivityMapById(id);
         mapValidator.validateActivityMapIsNotNull(activityMap, id);
         List<? extends MapTask> allTasks;
         if (user.getAccountType() == AccountType.STUDENT) {
@@ -118,7 +118,7 @@ public class ActivityMapService {
     }
 
     private Boolean isGraphTaskCompleted(GraphTask graphTask, User user) {
-        GraphTaskResult result = graphTaskResultRepo.findGraphTaskResultByGraphTaskAndUser(graphTask, user);
+        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskAndUser(graphTask, user);
         return result != null && result.getSendDateMillis() != null;
     }
 
@@ -128,7 +128,7 @@ public class ActivityMapService {
     }
 
     private Boolean isSurveyCompleted(Survey survey, User student) {
-        SurveyResult result = surveyResultRepo.findSurveyResultBySurveyAndUser(survey, student);
+        SurveyResult result = surveyResultRepository.findSurveyResultBySurveyAndUser(survey, student);
         return result != null;
     }
 }

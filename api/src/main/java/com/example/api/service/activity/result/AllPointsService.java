@@ -7,11 +7,11 @@ import com.example.api.dto.response.activity.task.result.TotalPointsResponse;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.model.activity.result.FileTaskResult;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.AdditionalPointsRepo;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.result.GraphTaskResultRepo;
-import com.example.api.repo.activity.result.SurveyResultRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.ProfessorFeedbackRepository;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.result.GraphTaskResultRepository;
+import com.example.api.repository.activity.result.SurveyResultRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -29,19 +29,19 @@ import java.util.stream.Stream;
 @Slf4j
 @Transactional
 public class AllPointsService {
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
     private final AuthenticationService authService;
     private final UserValidator userValidator;
     private final TaskResultService taskResultService;
     private final AdditionalPointsService additionalPointsService;
-    private final GraphTaskResultRepo graphTaskResultRepo;
+    private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepo fileTaskResultRepo;
-    private final SurveyResultRepo surveyResultRepo;
-    private final AdditionalPointsRepo additionalPointsRepo;
+    private final SurveyResultRepository surveyResultRepository;
+    private final ProfessorFeedbackRepository professorFeedbackRepository;
 
     public List<?> getAllPointsListForProfessor(String studentEmail) throws WrongUserTypeException {
         String professorEmail = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(professorEmail);
+        User professor = userRepository.findUserByEmail(professorEmail);
         userValidator.validateProfessorAccount(professor, professorEmail);
         log.info("Fetching student all points {} for professor {}", studentEmail, professorEmail);
 
@@ -56,13 +56,13 @@ public class AllPointsService {
 
     public TotalPointsResponse getAllPointsTotal() throws WrongUserTypeException {
         String studentEmail = authService.getAuthentication().getName();
-        User student = userRepo.findUserByEmail(studentEmail);
+        User student = userRepository.findUserByEmail(studentEmail);
         userValidator.validateStudentAccount(student, studentEmail);
 
         log.info("Fetching student all points total {}", studentEmail);
         AtomicReference<Double> totalPointsReceived = new AtomicReference<>(0D);
         AtomicReference<Double> totalPointsToReceive = new AtomicReference<>(0D);
-        graphTaskResultRepo.findAllByUser(student)
+        graphTaskResultRepository.findAllByUser(student)
                 .stream()
                 .filter(graphTaskResult -> graphTaskResult.getPointsReceived() != null)
                 .forEach(graphTaskResult -> {
@@ -76,12 +76,12 @@ public class AllPointsService {
                     totalPointsReceived.updateAndGet(v -> v + fileTaskResult.getPointsReceived());
                     totalPointsToReceive.updateAndGet(v -> v + fileTaskResult.getFileTask().getMaxPoints());
                 });
-        surveyResultRepo.findAllByUser(student)
+        surveyResultRepository.findAllByUser(student)
                 .forEach(surveyTaskResult -> {
                     totalPointsReceived.updateAndGet(v -> v + surveyTaskResult.getPointsReceived());
                     totalPointsToReceive.updateAndGet(v -> v + surveyTaskResult.getPointsReceived());
                 });
-        additionalPointsRepo.findAllByUser(student)
+        professorFeedbackRepository.findAllByUser(student)
                 .forEach(additionalPoints -> {
                     totalPointsReceived.updateAndGet(v -> v + additionalPoints.getPointsReceived());
                 });
@@ -89,7 +89,7 @@ public class AllPointsService {
     }
 
     private List<?> getAllPointsList(String studentEmail) throws WrongUserTypeException {
-        User student = userRepo.findUserByEmail(studentEmail);
+        User student = userRepository.findUserByEmail(studentEmail);
         userValidator.validateStudentAccount(student, studentEmail);
 
         List<TaskPointsStatisticsResponse> taskPoints = taskResultService.getUserPointsStatistics(studentEmail);

@@ -20,14 +20,14 @@ import com.example.api.model.map.ActivityMap;
 import com.example.api.model.map.Chapter;
 import com.example.api.model.map.requirement.Requirement;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.AdditionalPointsRepo;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.activity.task.GraphTaskRepo;
-import com.example.api.repo.activity.task.InfoRepo;
-import com.example.api.repo.activity.task.SurveyRepo;
-import com.example.api.repo.map.ChapterRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.ProfessorFeedbackRepository;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.task.FileTaskRepository;
+import com.example.api.repository.activity.task.GraphTaskRepository;
+import com.example.api.repository.activity.task.InfoRepository;
+import com.example.api.repository.activity.task.SurveyRepository;
+import com.example.api.repository.map.ChapterRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.map.RequirementService;
 import com.example.api.service.validator.UserValidator;
@@ -46,14 +46,14 @@ import java.util.stream.Stream;
 @Slf4j
 @Transactional
 public class TaskService {
-    private final FileTaskRepo fileTaskRepo;
-    private final GraphTaskRepo graphTaskRepo;
-    private final SurveyRepo surveyRepo;
-    private final InfoRepo infoRepo;
+    private final FileTaskRepository fileTaskRepository;
+    private final GraphTaskRepository graphTaskRepository;
+    private final SurveyRepository surveyRepository;
+    private final InfoRepository infoRepository;
     private final FileTaskResultRepo fileTaskResultRepo;
-    private final UserRepo userRepo;
-    private final ChapterRepo chapterRepo;
-    private final AdditionalPointsRepo additionalPointsRepo;
+    private final UserRepository userRepository;
+    private final ChapterRepository chapterRepository;
+    private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final AuthenticationService authService;
     private final UserValidator userValidator;
     private final ActivityValidator activityValidator;
@@ -63,10 +63,10 @@ public class TaskService {
             throws WrongUserTypeException, UsernameNotFoundException {
         String email = authService.getAuthentication().getName();
         log.info("Fetching all activities that are needed to be evaluated for professor {}", email);
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
         List<ActivityToEvaluateResponse> response = new LinkedList<>();
-        List<FileTask> fileTasks = fileTaskRepo.findAll()
+        List<FileTask> fileTasks = fileTaskRepository.findAll()
                 .stream()
                 .filter(fileTask -> fileTask.getProfessor().getEmail().equals(email))
                 .toList();
@@ -83,7 +83,7 @@ public class TaskService {
 
     public TaskToEvaluateResponse getFirstAnswerToEvaluate(Long id) throws EntityNotFoundException {
         log.info("Fetching first activity that is needed to be evaluated for file task with id {}", id);
-        FileTask task = fileTaskRepo.findFileTaskById(id);
+        FileTask task = fileTaskRepository.findFileTaskById(id);
         activityValidator.validateActivityIsNotNull(task, id);
         List<FileTaskResult> fileTaskResults = fileTaskResultRepo.findAll()
                 .stream()
@@ -112,7 +112,7 @@ public class TaskService {
 
     public List<ActivitiesResponse> getAllActivities() {
         log.info("Fetching all activities");
-        List<Chapter> chapters = chapterRepo.findAll();
+        List<Chapter> chapters = chapterRepository.findAll();
         List<List<ActivitiesResponse>> activitiesResponses = new LinkedList<>();
         chapters.forEach(chapter -> {
             ActivityMap activityMap = chapter.getActivityMap();
@@ -160,14 +160,14 @@ public class TaskService {
     }
 
     public Activity getActivity(Long id) throws EntityNotFoundException {
-        if (graphTaskRepo.existsById(id)) {
-            return graphTaskRepo.findGraphTaskById(id);
-        } else if (fileTaskRepo.existsById(id)) {
-            return fileTaskRepo.findFileTaskById(id);
-        } else if (surveyRepo.existsById(id)) {
-            return surveyRepo.findSurveyById(id);
-        } else if (infoRepo.existsById(id)) {
-            return infoRepo.findInfoById(id);
+        if (graphTaskRepository.existsById(id)) {
+            return graphTaskRepository.findGraphTaskById(id);
+        } else if (fileTaskRepository.existsById(id)) {
+            return fileTaskRepository.findFileTaskById(id);
+        } else if (surveyRepository.existsById(id)) {
+            return surveyRepository.findSurveyById(id);
+        } else if (infoRepository.existsById(id)) {
+            return infoRepository.findInfoById(id);
         } else {
             log.error("Activity with id {} not found in database", id);
             throw new EntityNotFoundException("Activity with id " + id + " not found in database");

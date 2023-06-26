@@ -9,9 +9,9 @@ import com.example.api.model.user.badge.ActivityNumberBadge;
 import com.example.api.model.user.badge.Badge;
 import com.example.api.model.user.badge.TopScoreBadge;
 import com.example.api.model.user.badge.UnlockedBadge;
-import com.example.api.repo.user.BadgeRepo;
-import com.example.api.repo.user.UnlockedBadgeRepo;
-import com.example.api.repo.util.FileRepo;
+import com.example.api.repository.user.BadgeRepository;
+import com.example.api.repository.user.UnlockedBadgeRepository;
+import com.example.api.repository.util.FileRepository;
 import com.example.api.service.user.BadgeService;
 import com.example.api.service.user.UserService;
 import com.example.api.service.validator.BadgeValidator;
@@ -30,11 +30,11 @@ import static org.mockito.Mockito.when;
 
 public class BadgeServiceTest {
     private BadgeService badgeService;
-    @Mock private BadgeRepo badgeRepo;
-    @Mock private UnlockedBadgeRepo unlockedBadgeRepo;
+    @Mock private BadgeRepository badgeRepository;
+    @Mock private UnlockedBadgeRepository unlockedBadgeRepository;
     @Mock private UserService userService;
     @Mock private BadgeVisitor badgeVisitor;
-    @Mock private FileRepo fileRepo;
+    @Mock private FileRepository fileRepository;
     @Mock private BadgeValidator badgeValidator;
 
     private User user;
@@ -46,9 +46,9 @@ public class BadgeServiceTest {
     public void init() {
         MockitoAnnotations.openMocks(this);
         badgeService = new BadgeService(
-                badgeRepo,
-                unlockedBadgeRepo,
-                fileRepo,
+                badgeRepository,
+                unlockedBadgeRepository,
+                fileRepository,
                 userService,
                 badgeValidator,
                 badgeVisitor
@@ -74,7 +74,7 @@ public class BadgeServiceTest {
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(false);
         when(userService.getCurrentUser()).thenReturn(user);
-        doReturn(badges).when(badgeRepo).findAll();
+        doReturn(badges).when(badgeRepository).findAll();
 
         //when
         badgeService.checkAllBadges();
@@ -98,7 +98,7 @@ public class BadgeServiceTest {
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(true);
         when(userService.getCurrentUser()).thenReturn(user);
-        doReturn(badges).when(badgeRepo).findAll();
+        doReturn(badges).when(badgeRepository).findAll();
 
         //when
         badgeService.checkAllBadges();

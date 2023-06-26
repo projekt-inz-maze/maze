@@ -4,7 +4,7 @@ import com.example.api.dto.response.util.ChapterImageResponse;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.model.util.Image;
 import com.example.api.model.util.ImageType;
-import com.example.api.repo.util.ImageRepo;
+import com.example.api.repository.util.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,11 +17,11 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class FileService {
-    private final ImageRepo imageRepo;
+    private final ImageRepository imageRepository;
 
     public List<ChapterImageResponse> getImagesForChapter() {
         log.info("Fetching all images for chapter");
-        return imageRepo.findAll()
+        return imageRepository.findAll()
                 .stream()
                 .filter(image -> image.getType() == ImageType.CHAPTER)
                 .map(image -> new ChapterImageResponse(image.getId(), image.getName(), image.getType()))
@@ -30,7 +30,7 @@ public class FileService {
 
     public Image getImage(Long id) throws EntityNotFoundException {
         log.info("Fetching image with id {}", id);
-        Image image = imageRepo.findImageById(id);
+        Image image = imageRepository.findImageById(id);
         if (image == null) {
             log.error("Image with given id {} was not found", id);
             throw new EntityNotFoundException("Image with given id " + id + " was not found");

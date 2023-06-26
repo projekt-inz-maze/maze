@@ -15,14 +15,14 @@ import com.example.api.model.activity.task.*;
 import com.example.api.model.group.Group;
 import com.example.api.model.user.AccountType;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.feedback.ProfessorFeedbackRepo;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.result.GraphTaskResultRepo;
-import com.example.api.repo.activity.result.SurveyResultRepo;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.activity.task.GraphTaskRepo;
-import com.example.api.repo.activity.task.SurveyRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.feedback.ProfessorFeedbackRepository;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.result.GraphTaskResultRepository;
+import com.example.api.repository.activity.result.SurveyResultRepository;
+import com.example.api.repository.activity.task.FileTaskRepository;
+import com.example.api.repository.activity.task.GraphTaskRepository;
+import com.example.api.repository.activity.task.SurveyRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.activity.result.util.GroupActivityStatisticsCreator;
 import com.example.api.service.activity.result.util.ScaleActivityStatisticsCreator;
@@ -47,24 +47,24 @@ import java.util.stream.Stream;
 @Slf4j
 @Transactional
 public class TaskResultService {
-    private final UserRepo userRepo;
-    private final GraphTaskResultRepo graphTaskResultRepo;
-    private final GraphTaskRepo graphTaskRepo;
+    private final UserRepository userRepository;
+    private final GraphTaskResultRepository graphTaskResultRepository;
+    private final GraphTaskRepository graphTaskRepository;
     private final FileTaskResultRepo fileTaskResultRepo;
-    private final FileTaskRepo fileTaskRepo;
-    private final SurveyResultRepo surveyResultRepo;
-    private final SurveyRepo surveyRepo;
+    private final FileTaskRepository fileTaskRepository;
+    private final SurveyResultRepository surveyResultRepository;
+    private final SurveyRepository surveyRepository;
     private final CSVConverter csvConverter;
     private final AuthenticationService authService;
     private final UserValidator userValidator;
-    private final ProfessorFeedbackRepo professorFeedbackRepo;
+    private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final ActivityValidator activityValidator;
 
     public ByteArrayResource getCSVFile(GetCSVForm csvForm) throws IOException {
         log.info("Fetching csv files for students");
         List<Long> studentIds = csvForm.getStudentIds();
         List<Long> activityIds = csvForm.getActivityIds();
-        List<User> students = userRepo.findAll()
+        List<User> students = userRepository.findAll()
                 .stream()
                 .filter(user -> studentIds.contains(user.getId()))
                 .filter(user -> user.getAccountType() == AccountType.STUDENT)
@@ -85,7 +85,7 @@ public class TaskResultService {
                     switch (type) {
                         case EXPEDITION -> {
                             GraphTask graphTask = formToGraphTaskMap.get(activityId);
-                            GraphTaskResult graphTaskResult = graphTaskResultRepo
+                            GraphTaskResult graphTaskResult = graphTaskResultRepository
                                     .findGraphTaskResultByGraphTaskAndUser(graphTask, student);
                             csvTaskResults.add(new CSVTaskResult(graphTaskResult));
                         }
@@ -94,13 +94,13 @@ public class TaskResultService {
                             FileTaskResult fileTaskResult = fileTaskResultRepo.findFileTaskResultByFileTaskAndUser(
                                     fileTask,
                                     student);
-                            Feedback feedback = professorFeedbackRepo
+                            Feedback feedback = professorFeedbackRepository
                                     .findProfessorFeedbackByFileTaskResult(fileTaskResult);
                             csvTaskResults.add(new CSVTaskResult(fileTaskResult, feedback));
                         }
                         case SURVEY -> {
                             Survey survey = formToSurveyMap.get(activityId);
-                            SurveyResult surveyResult = surveyResultRepo.findSurveyResultBySurveyAndUser(survey,
+                            SurveyResult surveyResult = surveyResultRepository.findSurveyResultBySurveyAndUser(survey,
                                     student);
                             csvTaskResults.add(new CSVTaskResult(surveyResult));
                         }
@@ -114,14 +114,14 @@ public class TaskResultService {
     }
 
     public List<? extends TaskResult> getAllResultsForStudent(User student) {
-        List<SurveyResult> surveyResults = surveyResultRepo.findAllByUser(student);
+        List<SurveyResult> surveyResults = surveyResultRepository.findAllByUser(student);
         return Stream.of(getGraphAndFileResultsForStudent(student), surveyResults)
                 .flatMap(Collection::stream)
                 .toList();
     }
 
     public List<? extends TaskResult> getGraphAndFileResultsForStudent(User student) {
-        List<GraphTaskResult> graphTaskResults = graphTaskResultRepo.findAllByUser(student);
+        List<GraphTaskResult> graphTaskResults = graphTaskResultRepository.findAllByUser(student);
         List<FileTaskResult> fileTaskResults = fileTaskResultRepo.findAllByUser(student);
         return Stream.of(graphTaskResults, fileTaskResults)
                 .flatMap(Collection::stream)
@@ -134,9 +134,9 @@ public class TaskResultService {
     }
 
     public List<TaskPointsStatisticsResponse> getUserPointsStatistics(String email) throws WrongUserTypeException {
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(user, email);
-        List<TaskPointsStatisticsResponse> graphTaskStatistics = graphTaskResultRepo.findAllByUser(user)
+        List<TaskPointsStatisticsResponse> graphTaskStatistics = graphTaskResultRepository.findAllByUser(user)
                 .stream()
                 .filter(graphTaskResult -> graphTaskResult.getSendDateMillis() != null)
                 .map(TaskPointsStatisticsResponse::new)
@@ -146,7 +146,7 @@ public class TaskResultService {
                 .filter(FileTaskResult::isEvaluated)
                 .map(TaskPointsStatisticsResponse::new)
                 .toList();
-        List<TaskPointsStatisticsResponse> surveyResults = surveyResultRepo.findAllByUser(user)
+        List<TaskPointsStatisticsResponse> surveyResults = surveyResultRepository.findAllByUser(user)
                 .stream()
                 .map(TaskPointsStatisticsResponse::new)
                 .toList();
@@ -159,7 +159,7 @@ public class TaskResultService {
     public ActivityStatisticsResponse getActivityStatistics(Long activityID)
             throws WrongUserTypeException, EntityNotFoundException {
         String professorEmail = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(professorEmail);
+        User professor = userRepository.findUserByEmail(professorEmail);
         userValidator.validateProfessorAccount(professor, professorEmail);
 
         Activity activity = getActivity(activityID);
@@ -201,20 +201,20 @@ public class TaskResultService {
     }
 
     private Activity getActivity(Long activityID) {
-        GraphTask graphTask = graphTaskRepo.findGraphTaskById(activityID);
+        GraphTask graphTask = graphTaskRepository.findGraphTaskById(activityID);
         if (graphTask != null) {
             return graphTask;
         }
-        FileTask fileTask = fileTaskRepo.findFileTaskById(activityID);
+        FileTask fileTask = fileTaskRepository.findFileTaskById(activityID);
         if (fileTask != null) {
             return fileTask;
         }
-        return surveyRepo.findSurveyById(activityID);
+        return surveyRepository.findSurveyById(activityID);
     }
 
     private List<? extends TaskResult> getResultsForTask(Task task) {
         if (task.getActivityType().equals(ActivityType.EXPEDITION)) {
-            return graphTaskResultRepo.findAllByGraphTask((GraphTask) task)
+            return graphTaskResultRepository.findAllByGraphTask((GraphTask) task)
                     .stream()
                     .filter(result -> result.getPointsReceived() != null)
                     .toList();
@@ -296,7 +296,7 @@ public class TaskResultService {
 
     private List<? extends TaskResult> getActivityResults(Activity activity) {
         if (activity.getActivityType().equals(ActivityType.SURVEY)) {
-            return surveyResultRepo.findAllBySurvey((Survey) activity);
+            return surveyResultRepository.findAllBySurvey((Survey) activity);
         }
         return getResultsForTask((Task) activity);
     }

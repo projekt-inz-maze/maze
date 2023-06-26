@@ -4,8 +4,8 @@ import com.example.api.dto.request.user.ResetPasswordForm;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.model.user.PasswordResetToken;
 import com.example.api.model.user.User;
-import com.example.api.repo.user.PasswordResetTokenRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.user.PasswordResetTokenRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.service.util.email.EmailService;
 import com.example.api.service.validator.PasswordResetValidator;
 import com.example.api.service.validator.PasswordValidator;
@@ -27,15 +27,15 @@ public class PasswordResetService {
     private final int TOKEN_TTL_IN_MIN = 5;
 
     private final UserValidator userValidator;
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final PasswordResetValidator passwordResetValidator;
-    private final PasswordResetTokenRepo passwordResetTokenRepo;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final PasswordValidator passwordValidator;
 
     public void sendPasswordResetEmail(String email) {
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         userValidator.validateUserIsNotNull(user, email);
 
         String plainToken = UUID.randomUUID()
@@ -50,9 +50,9 @@ public class PasswordResetService {
         token.setCreationTime(System.currentTimeMillis());
         token.setExpirationTime(token.getCreationTime() + (TOKEN_TTL_IN_MIN * 60 * 1_000));
         token.setUser(user);
-        passwordResetTokenRepo.save(token);
+        passwordResetTokenRepository.save(token);
         user.setPasswordResetToken(token);
-        userRepo.save(user);
+        userRepository.save(user);
 
         log.info("Sending password reset email to {}", email);
         emailService.sendEmail(user, "Systematic Chaos - password reset", getPasswordResetEmailMessage(plainToken));
@@ -62,7 +62,7 @@ public class PasswordResetService {
     public void resetPassword(ResetPasswordForm form) throws RequestValidationException {
         log.info("Trying to reset password for {}", form.getEmail());
         String email = form.getEmail();
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         userValidator.validateUserIsNotNull(user, email);
 
         PasswordResetToken token = user.getPasswordResetToken();

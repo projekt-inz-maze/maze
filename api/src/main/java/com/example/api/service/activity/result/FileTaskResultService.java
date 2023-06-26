@@ -7,10 +7,10 @@ import com.example.api.model.activity.result.FileTaskResult;
 import com.example.api.model.activity.task.FileTask;
 import com.example.api.model.user.User;
 import com.example.api.model.util.File;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.user.UserRepo;
-import com.example.api.repo.util.FileRepo;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.task.FileTaskRepository;
+import com.example.api.repository.user.UserRepository;
+import com.example.api.repository.util.FileRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.validator.UserValidator;
 import com.example.api.service.validator.activity.ActivityValidator;
@@ -29,9 +29,9 @@ import java.util.List;
 @Transactional
 public class FileTaskResultService {
     private final FileTaskResultRepo fileTaskResultRepo;
-    private final FileTaskRepo fileTaskRepo;
-    private final UserRepo userRepo;
-    private final FileRepo fileRepo;
+    private final FileTaskRepository fileTaskRepository;
+    private final UserRepository userRepository;
+    private final FileRepository fileRepository;
     private final UserValidator userValidator;
     private final AuthenticationService authService;
     private final ActivityValidator activityValidator;
@@ -47,14 +47,14 @@ public class FileTaskResultService {
         if(result == null){
             result = new FileTaskResult();
             result.setAnswer("");
-            result.setFileTask(fileTaskRepo.findFileTaskById(form.getFileTaskId()));
+            result.setFileTask(fileTaskRepository.findFileTaskById(form.getFileTaskId()));
             result.setSendDateMillis(System.currentTimeMillis());
             result.setEvaluated(false);
-            result.setUser(userRepo.findUserByEmail(email));
+            result.setUser(userRepository.findUserByEmail(email));
         }
         if(form.getFile() != null) {
             File file = new File(null, form.getFileName(), form.getFile().getBytes());
-            fileRepo.save(file);
+            fileRepository.save(file);
             result.getFiles().add(file);
             fileTaskResultRepo.save(result);
         }
@@ -74,15 +74,15 @@ public class FileTaskResultService {
     }
 
     private FileTaskResult getFileTaskResultByFileTaskAndUser(Long fileTaskId, String email) throws EntityNotFoundException, WrongUserTypeException {
-        FileTask fileTask = fileTaskRepo.findFileTaskById(fileTaskId);
+        FileTask fileTask = fileTaskRepository.findFileTaskById(fileTaskId);
         activityValidator.validateActivityIsNotNull(fileTask, fileTaskId);
-        User student = userRepo.findUserByEmail(email);
+        User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student, email);
         return fileTaskResultRepo.findFileTaskResultByFileTaskAndUser(fileTask, student);
     }
 
     public ByteArrayResource getFileById(Long fileId) throws EntityNotFoundException {
-        File file = fileRepo.findFileById(fileId);
+        File file = fileRepository.findFileById(fileId);
         activityValidator.validateFileIsNotNull(file, fileId);
         return new ByteArrayResource(file.getFile());
     }

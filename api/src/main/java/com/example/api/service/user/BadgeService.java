@@ -13,9 +13,9 @@ import com.example.api.model.user.User;
 import com.example.api.model.user.badge.*;
 import com.example.api.model.util.Image;
 import com.example.api.model.util.ImageType;
-import com.example.api.repo.user.BadgeRepo;
-import com.example.api.repo.user.UnlockedBadgeRepo;
-import com.example.api.repo.util.FileRepo;
+import com.example.api.repository.user.BadgeRepository;
+import com.example.api.repository.user.UnlockedBadgeRepository;
+import com.example.api.repository.util.FileRepository;
 import com.example.api.service.validator.BadgeValidator;
 import com.example.api.util.visitor.BadgeVisitor;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +32,15 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class BadgeService {
-    private final BadgeRepo badgeRepo;
-    private final UnlockedBadgeRepo unlockedBadgeRepo;
-    private final FileRepo fileRepo;
+    private final BadgeRepository badgeRepository;
+    private final UnlockedBadgeRepository unlockedBadgeRepository;
+    private final FileRepository fileRepository;
     private final UserService userService;
     private final BadgeValidator badgeValidator;
     private final BadgeVisitor badgeVisitor;
 
     public List<? extends BadgeResponse<?>> getAllBadges() {
-        return badgeRepo.findAll()
+        return badgeRepository.findAll()
                 .stream()
                 .sorted(Comparator.comparingLong(Badge::getId))
                 .map(Badge::getResponse)
@@ -62,37 +62,37 @@ public class BadgeService {
                 .stream()
                 .map(UnlockedBadge::getBadge)
                 .toList();
-        List<Badge> badges = badgeRepo.findAll()
+        List<Badge> badges = badgeRepository.findAll()
                 .stream()
                 .filter(badge -> !studentBadges.contains(badge))
                 .toList();
         for (Badge badge: badges) {
             if (badge.isGranted(badgeVisitor)) {
                 UnlockedBadge unlockedBadge = new UnlockedBadge(badge, System.currentTimeMillis(), student);
-                unlockedBadgeRepo.save(unlockedBadge);
+                unlockedBadgeRepository.save(unlockedBadge);
                 student.getUnlockedBadges().add(unlockedBadge);
             }
         }
     }
 
     public void deleteBadge(Long badgeId) {
-        badgeRepo.deleteById(badgeId);
+        badgeRepository.deleteById(badgeId);
     }
 
     public void updateBadge(BadgeUpdateForm form) throws RequestValidationException, IOException {
         Long id = form.getId();
-        Badge badge = badgeRepo.findBadgeById(id);
+        Badge badge = badgeRepository.findBadgeById(id);
         badgeValidator.validateBadgeIsNotNull(badge, id);
 
         badge.update(form, badgeValidator);
         checkAllBadges();
-        badgeRepo.save(badge);
+        badgeRepository.save(badge);
     }
 
     public void addBadge(BadgeAddForm form) throws IOException, RequestValidationException {
         badgeValidator.validateBadgeForm(form);
         Badge badge = getBadgeFromForm(form);
-        badgeRepo.save(badge);
+        badgeRepository.save(badge);
     }
 
     private Badge getBadgeFromForm(BadgeAddForm form) throws RequestValidationException, IOException {
@@ -100,7 +100,7 @@ public class BadgeService {
         String title = form.getTitle();
         String description = form.getDescription();
         Image image = new Image("badge", form.getImage().getBytes(), ImageType.BADGE);
-        fileRepo.save(image);
+        fileRepository.save(image);
         String value = form.getValue();
         Boolean forValue = form.getForValue();
         Badge badge = null;

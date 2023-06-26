@@ -7,8 +7,8 @@ import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.model.activity.result.AdditionalPoints;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.AdditionalPointsRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.ProfessorFeedbackRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.user.BadgeService;
 import com.example.api.service.validator.UserValidator;
@@ -24,8 +24,8 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class AdditionalPointsService {
-    private final AdditionalPointsRepo additionalPointsRepo;
-    private final UserRepo userRepo;
+    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final UserRepository userRepository;
     private final AuthenticationService authService;
     private final BadgeService badgeService;
     private final UserValidator userValidator;
@@ -33,7 +33,7 @@ public class AdditionalPointsService {
     public void saveAdditionalPoints(AddAdditionalPointsForm form)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         log.info("Saving additional points for student with id {}", form.getStudentId());
-        User user = userRepo.findUserById(form.getStudentId());
+        User user = userRepository.findUserById(form.getStudentId());
         userValidator.validateStudentAccount(user, form.getStudentId());
         String professorEmail = authService.getAuthentication().getName();
         AdditionalPoints additionalPoints = new AdditionalPoints(null,
@@ -45,7 +45,7 @@ public class AdditionalPointsService {
         if (form.getDescription() != null) {
             additionalPoints.setDescription(form.getDescription());
         }
-        additionalPointsRepo.save(additionalPoints);
+        professorFeedbackRepository.save(additionalPoints);
         badgeService.checkAllBadges();
     }
 
@@ -55,13 +55,13 @@ public class AdditionalPointsService {
     }
 
     public List<AdditionalPointsResponse> getAdditionalPoints(String email) {
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         log.info("Fetching additional points for user {}", email);
-        List<AdditionalPoints> additionalPoints = additionalPointsRepo.findAllByUser(user);
+        List<AdditionalPoints> additionalPoints = professorFeedbackRepository.findAllByUser(user);
         return additionalPoints.stream()
                 .map(additionalPoint -> {
                     String professorEmail = additionalPoint.getProfessorEmail();
-                    User professor = userRepo.findUserByEmail(professorEmail);
+                    User professor = userRepository.findUserByEmail(professorEmail);
                     String professorName = professor.getFirstName() + " " + professor.getLastName();
                     return new AdditionalPointsResponse(additionalPoint.getSendDateMillis(),
                             professorName,

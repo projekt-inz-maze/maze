@@ -13,11 +13,11 @@ import com.example.api.model.activity.result.FileTaskResult;
 import com.example.api.model.activity.task.FileTask;
 import com.example.api.model.map.Chapter;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.feedback.ProfessorFeedbackRepo;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.map.ChapterRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.feedback.ProfessorFeedbackRepository;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.task.FileTaskRepository;
+import com.example.api.repository.map.ChapterRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.map.RequirementService;
 import com.example.api.service.validator.ChapterValidator;
@@ -37,11 +37,11 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class FileTaskService {
-    private final FileTaskRepo fileTaskRepo;
+    private final FileTaskRepository fileTaskRepository;
     private final FileTaskResultRepo fileTaskResultRepo;
-    private final ProfessorFeedbackRepo professorFeedbackRepo;
-    private final UserRepo userRepo;
-    private final ChapterRepo chapterRepo;
+    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final UserRepository userRepository;
+    private final ChapterRepository chapterRepository;
     private final UserValidator userValidator;
     private final AuthenticationService authService;
     private final ActivityValidator activityValidator;
@@ -50,19 +50,19 @@ public class FileTaskService {
     private final ChapterValidator chapterValidator;
 
     public FileTask saveFileTask(FileTask fileTask) {
-        return fileTaskRepo.save(fileTask);
+        return fileTaskRepository.save(fileTask);
     }
 
     public FileTaskInfoResponse getFileTaskInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
         String email = authService.getAuthentication().getName();
         FileTaskInfoResponse result = new FileTaskInfoResponse();
-        FileTask fileTask = fileTaskRepo.findFileTaskById(id);
+        FileTask fileTask = fileTaskRepository.findFileTaskById(id);
         activityValidator.validateActivityIsNotNull(fileTask, id);
         result.setFileTaskId(fileTask.getId());
         result.setName(fileTask.getTitle());
         result.setDescription(fileTask.getDescription());
 
-        User student = userRepo.findUserByEmail(email);
+        User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student, email);
         FileTaskResult fileTaskResult = fileTaskResultRepo.findFileTaskResultByFileTaskAndUser(fileTask, student);
         if(fileTaskResult == null){
@@ -76,7 +76,7 @@ public class FileTaskService {
                 .toList();
         result.setTaskFiles(fileResponseList);
 
-        ProfessorFeedback feedback = professorFeedbackRepo.findProfessorFeedbackByFileTaskResult(fileTaskResult);
+        ProfessorFeedback feedback = professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(fileTaskResult);
         if (feedback == null) {
             log.debug("Feedback for file task result with id {} does not exist", fileTaskResult.getId());
             return result;
@@ -92,29 +92,29 @@ public class FileTaskService {
     public void createFileTask(CreateFileTaskChapterForm chapterForm) throws RequestValidationException {
         log.info("Starting the creation of file task");
         CreateFileTaskForm form = chapterForm.getForm();
-        Chapter chapter = chapterRepo.findChapterById(chapterForm.getChapterId());
+        Chapter chapter = chapterRepository.findChapterById(chapterForm.getChapterId());
 
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
         activityValidator.validateCreateFileTaskFormFields(form);
         activityValidator.validateActivityPosition(form, chapter);
 
-        List<FileTask> fileTasks = fileTaskRepo.findAll();
+        List<FileTask> fileTasks = fileTaskRepository.findAll();
         activityValidator.validateFileTaskTitle(form.getTitle(), fileTasks);
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
         String email = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
 
         FileTask fileTask = new FileTask(form, professor);
         fileTask.setRequirements(requirementService.getDefaultRequirements(true));
-        fileTaskRepo.save(fileTask);
+        fileTaskRepository.save(fileTask);
         chapter.getActivityMap().getFileTasks().add(fileTask);
     }
 
     public List<FileTask> getStudentFileTasks() {
-        return fileTaskRepo.findAll()
+        return fileTaskRepository.findAll()
                 .stream()
                 .filter(fileTask -> !fileTask.getIsBlocked())
                 .toList();
@@ -133,7 +133,7 @@ public class FileTaskService {
                 .forEach(fileTaskResult -> {
                     Double prevPoints = fileTaskResult.getPointsReceived();
                     Double newPoints = prevPoints * (newMaxPoints / fileTask.getMaxPoints());
-                    ProfessorFeedback feedback = professorFeedbackRepo.findProfessorFeedbackByFileTaskResult(fileTaskResult);
+                    ProfessorFeedback feedback = professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(fileTaskResult);
                     if (feedback != null) {
                         feedback.setPoints(newPoints);
                     }

@@ -12,10 +12,10 @@ import com.example.api.model.activity.result.SurveyResult;
 import com.example.api.model.activity.task.Survey;
 import com.example.api.model.map.Chapter;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.SurveyResultRepo;
-import com.example.api.repo.activity.task.SurveyRepo;
-import com.example.api.repo.map.ChapterRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.SurveyResultRepository;
+import com.example.api.repository.activity.task.SurveyRepository;
+import com.example.api.repository.map.ChapterRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.map.RequirementService;
 import com.example.api.service.validator.ChapterValidator;
@@ -33,30 +33,30 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class SurveyService {
-    private final SurveyRepo surveyRepo;
-    private final UserRepo userRepo;
-    private final ChapterRepo chapterRepo;
+    private final SurveyRepository surveyRepository;
+    private final UserRepository userRepository;
+    private final ChapterRepository chapterRepository;
     private final ActivityValidator activityValidator;
     private final UserValidator userValidator;
     private final AuthenticationService authService;
     private final RequirementService requirementService;
     private final ChapterValidator chapterValidator;
-    private final SurveyResultRepo surveyResultRepo;
+    private final SurveyResultRepository surveyResultRepository;
 
     public Survey saveSurvey(Survey survey){
-        return surveyRepo.save(survey);
+        return surveyRepository.save(survey);
     }
 
     public SurveyInfoResponse getSurveyInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
         String email = authService.getAuthentication().getName();
-        User student = userRepo.findUserByEmail(email);
+        User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student, email);
-        Survey survey = surveyRepo.findSurveyById(id);
+        Survey survey = surveyRepository.findSurveyById(id);
         activityValidator.validateActivityIsNotNull(survey, id);
         log.info("Fetching survey info");
 
         SurveyInfoResponse response = new SurveyInfoResponse(survey);
-        SurveyResult feedback = surveyResultRepo.findSurveyResultBySurveyAndUser(survey, student);
+        SurveyResult feedback = surveyResultRepository.findSurveyResultBySurveyAndUser(survey, student);
         if (feedback != null) {
             response.setFeedback(new SurveyResultInfoResponse(feedback));
         }
@@ -67,14 +67,14 @@ public class SurveyService {
     public void createSurvey(CreateSurveyChapterForm chapterForm) throws RequestValidationException {
         log.info("Starting the creation of survey");
         CreateSurveyForm form = chapterForm.getForm();
-        Chapter chapter = chapterRepo.findChapterById(chapterForm.getChapterId());
+        Chapter chapter = chapterRepository.findChapterById(chapterForm.getChapterId());
 
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
         activityValidator.validateCreateSurveyForm(form);
         activityValidator.validateActivityPosition(form, chapter);
 
         String email = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
 
         Survey survey = new Survey(
@@ -82,12 +82,12 @@ public class SurveyService {
                 professor
         );
         survey.setRequirements(requirementService.getDefaultRequirements(true));
-        surveyRepo.save(survey);
+        surveyRepository.save(survey);
         chapter.getActivityMap().getSurveys().add(survey);
     }
 
     public List<Survey> getStudentSurvey() {
-        return surveyRepo.findAll()
+        return surveyRepository.findAll()
                 .stream()
                 .filter(survey -> !survey.getIsBlocked())
                 .toList();

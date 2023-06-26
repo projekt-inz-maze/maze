@@ -15,11 +15,11 @@ import com.example.api.model.map.Chapter;
 import com.example.api.model.map.requirement.Requirement;
 import com.example.api.model.user.Rank;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.AdditionalPointsRepo;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.result.GraphTaskResultRepo;
-import com.example.api.repo.activity.result.SurveyResultRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.ProfessorFeedbackRepository;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.result.GraphTaskResultRepository;
+import com.example.api.repository.activity.result.SurveyResultRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.activity.result.ranking.RankingService;
 import com.example.api.service.activity.task.FileTaskService;
@@ -45,14 +45,14 @@ import java.util.stream.Stream;
 @Slf4j
 @Transactional
 public class DashboardService {
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
     private final AuthenticationService authService;
     private final UserValidator userValidator;
     private final RankingService rankingService;
-    private final GraphTaskResultRepo graphTaskResultRepo;
+    private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepo fileTaskResultRepo;
-    private final SurveyResultRepo surveyResultRepo;
-    private final AdditionalPointsRepo additionalPointsRepo;
+    private final SurveyResultRepository surveyResultRepository;
+    private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final GraphTaskService graphTaskService;
     private final FileTaskService fileTaskService;
     private final SurveyService surveyService;
@@ -65,7 +65,7 @@ public class DashboardService {
 
     public DashboardResponse getStudentDashboard() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         String studentEmail = authService.getAuthentication().getName();
-        User student = userRepo.findUserByEmail(studentEmail);
+        User student = userRepository.findUserByEmail(studentEmail);
         userValidator.validateStudentAccount(student, studentEmail);
         badgeService.checkAllBadges();
 
@@ -125,7 +125,7 @@ public class DashboardService {
     }
 
     private Double getAvgGraphTask(User student) {
-        OptionalDouble avg = graphTaskResultRepo.findAllByUser(student)
+        OptionalDouble avg = graphTaskResultRepository.findAllByUser(student)
                 .stream()
                 .filter(GraphTaskResult::isEvaluated)
                 .mapToDouble(result -> 100 * result.getPointsReceived() / result.getGraphTask().getMaxPoints())
@@ -143,12 +143,12 @@ public class DashboardService {
     }
 
     private Long getSurveysNumber(User student) {
-        return (long) surveyResultRepo.findAllByUser(student)
+        return (long) surveyResultRepository.findAllByUser(student)
                 .size();
     }
 
     private Double getGraphTaskPoints(User student) {
-        return getTaskPoints(graphTaskResultRepo.findAllByUser(student));
+        return getTaskPoints(graphTaskResultRepository.findAllByUser(student));
     }
 
     private Double getFileTaskPoints(User student) {
@@ -156,11 +156,11 @@ public class DashboardService {
     }
 
     private Double getAdditionalPoints(User student) {
-        return getTaskPoints(additionalPointsRepo.findAllByUser(student));
+        return getTaskPoints(professorFeedbackRepository.findAllByUser(student));
     }
 
     private Double getSurveyPoints(User student) {
-        return getTaskPoints(surveyResultRepo.findAllByUser(student));
+        return getTaskPoints(surveyResultRepository.findAllByUser(student));
     }
 
     private Double getTaskPoints(List<? extends TaskResult> taskResults) {
@@ -172,7 +172,7 @@ public class DashboardService {
     }
 
     private Double getMaxPoints(User student) {
-        Double maxPointsGraphTask = graphTaskResultRepo.findAllByUser(student)
+        Double maxPointsGraphTask = graphTaskResultRepository.findAllByUser(student)
                 .stream()
                 .filter(GraphTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getGraphTask().getMaxPoints())
@@ -182,7 +182,7 @@ public class DashboardService {
                 .filter(FileTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getFileTask().getMaxPoints())
                 .sum();
-        Double maxPointsSurvey = surveyResultRepo.findAllByUser(student)
+        Double maxPointsSurvey = surveyResultRepository.findAllByUser(student)
                 .stream()
                 .filter(SurveyResult::isEvaluated)
                 .mapToDouble(result -> result.getSurvey().getMaxPoints())
@@ -254,13 +254,13 @@ public class DashboardService {
 
     // Completed means answer was sent (not necessarily rated)
     private Long getCompletedActivities(User student) {
-        Long graphTasksCompleted = graphTaskResultRepo.findAllByUser(student)
+        Long graphTasksCompleted = graphTaskResultRepository.findAllByUser(student)
                 .stream()
                 .filter(result -> Objects.nonNull(result.getSendDateMillis()))
                 .count();
         Long fileTasksCompleted = (long) fileTaskResultRepo.findAllByUser(student)
                 .size();
-        Long surveysCompleted = (long) surveyResultRepo.findAllByUser(student).size();
+        Long surveysCompleted = (long) surveyResultRepository.findAllByUser(student).size();
         return graphTasksCompleted + fileTasksCompleted + surveysCompleted;
     }
 }

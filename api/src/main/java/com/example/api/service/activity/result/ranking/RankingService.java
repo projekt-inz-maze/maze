@@ -13,14 +13,14 @@ import com.example.api.model.activity.task.GraphTask;
 import com.example.api.model.activity.task.Survey;
 import com.example.api.model.user.AccountType;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.AdditionalPointsRepo;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.result.GraphTaskResultRepo;
-import com.example.api.repo.activity.result.SurveyResultRepo;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.activity.task.GraphTaskRepo;
-import com.example.api.repo.activity.task.SurveyRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.ProfessorFeedbackRepository;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.result.GraphTaskResultRepository;
+import com.example.api.repository.activity.result.SurveyResultRepository;
+import com.example.api.repository.activity.task.FileTaskRepository;
+import com.example.api.repository.activity.task.GraphTaskRepository;
+import com.example.api.repository.activity.task.SurveyRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.user.RankService;
 import com.example.api.service.user.UserService;
@@ -43,14 +43,14 @@ import java.util.stream.DoubleStream;
 @Slf4j
 @Transactional
 public class RankingService {
-    private final UserRepo userRepo;
-    private final GraphTaskResultRepo graphTaskResultRepo;
-    private final GraphTaskRepo graphTaskRepo;
+    private final UserRepository userRepository;
+    private final GraphTaskResultRepository graphTaskResultRepository;
+    private final GraphTaskRepository graphTaskRepository;
     private final FileTaskResultRepo fileTaskResultRepo;
-    private final FileTaskRepo fileTaskRepo;
-    private final SurveyResultRepo surveyResultRepo;
-    private final SurveyRepo surveyRepo;
-    private final AdditionalPointsRepo additionalPointsRepo;
+    private final FileTaskRepository fileTaskRepository;
+    private final SurveyResultRepository surveyResultRepository;
+    private final SurveyRepository surveyRepository;
+    private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final AuthenticationService authService;
     private final UserValidator userValidator;
     private final GroupValidator groupValidator;
@@ -59,7 +59,7 @@ public class RankingService {
 
 
     public List<RankingResponse> getRanking() {
-        List<RankingResponse> rankingList = userRepo.findAllByAccountTypeEquals(AccountType.STUDENT)
+        List<RankingResponse> rankingList = userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
                 .stream()
                 .map(this::studentToRankingEntry)
                 .sorted(Comparator.comparingDouble(RankingResponse::getPoints).reversed())
@@ -71,7 +71,7 @@ public class RankingService {
 
     public List<RankingResponse> getRankingForLoggedStudentGroup() {
         String groupName = userService.getUserGroup().getName();
-        List<RankingResponse> rankingList = userRepo.findAllByAccountTypeEquals(AccountType.STUDENT)
+        List<RankingResponse> rankingList = userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
                 .stream()
                 .filter(student -> Objects.equals(student.getGroup().getName(), groupName))
                 .map(this::studentToRankingEntry)
@@ -84,7 +84,7 @@ public class RankingService {
 
     public List<RankingResponse> getSearchedRanking(String search) {
         String searchLower = search.toLowerCase().replaceAll("\\s",""); // removing whitespaces
-        List<RankingResponse> rankingList = userRepo.findAllByAccountTypeEquals(AccountType.STUDENT)
+        List<RankingResponse> rankingList = userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
                 .stream()
                 .filter(student ->
                                 student.getFirstName().concat(student.getLastName()).toLowerCase().replaceAll("\\s","").contains(searchLower) ||
@@ -101,11 +101,11 @@ public class RankingService {
 
     public List<RankingResponse> getActivityRanking(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
         String professorEmail = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(professorEmail);
+        User professor = userRepository.findUserByEmail(professorEmail);
         userValidator.validateProfessorAccount(professor, professorEmail);
 
 
-        List<RankingResponse> rankingList =  userRepo.findAllByAccountTypeEquals(AccountType.STUDENT)
+        List<RankingResponse> rankingList =  userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
                         .stream()
                         .map(user -> {
                             SurveyAnswerResponse holder = new SurveyAnswerResponse();
@@ -142,19 +142,19 @@ public class RankingService {
     }
 
     private Double getStudentPointsForActivity(Long activityID, User user, SurveyAnswerResponse surveyAnswerHolder) {
-        GraphTask graphTask = graphTaskRepo.findGraphTaskById(activityID);
+        GraphTask graphTask = graphTaskRepository.findGraphTaskById(activityID);
         if (graphTask != null) {
-            GraphTaskResult result = graphTaskResultRepo.findGraphTaskResultByGraphTaskAndUser(graphTask, user);
+            GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskAndUser(graphTask, user);
             return result != null ? result.getPointsReceived() : null;
         }
-        FileTask fileTask = fileTaskRepo.findFileTaskById(activityID);
+        FileTask fileTask = fileTaskRepository.findFileTaskById(activityID);
         if (fileTask != null) {
             FileTaskResult result = fileTaskResultRepo.findFileTaskResultByFileTaskAndUser(fileTask, user);
             return result != null ? (result.isEvaluated() ? result.getPointsReceived() : null) : null;
         }
-        Survey survey = surveyRepo.findSurveyById(activityID);
+        Survey survey = surveyRepository.findSurveyById(activityID);
         if (survey != null) {
-            SurveyResult result = surveyResultRepo.findSurveyResultBySurveyAndUser(survey, user);
+            SurveyResult result = surveyResultRepository.findSurveyResultBySurveyAndUser(survey, user);
             if (result == null) return null;
             surveyAnswerHolder.setAnswer(result.getFeedback());
             surveyAnswerHolder.setStudentPoints(result.getRate());
@@ -170,14 +170,14 @@ public class RankingService {
 
     public Integer getRankingPosition() throws WrongUserTypeException, UsernameNotFoundException {
         String email = authService.getAuthentication().getName();
-        User student = userRepo.findUserByEmail(email);
+        User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student, email);
         return getPositionFromRanking(getRanking(), email);
     }
 
     public Integer getGroupRankingPosition() throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException, EntityNotFoundException {
         String email = authService.getAuthentication().getName();
-        User student = userRepo.findUserByEmail(email);
+        User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student, email);
         groupValidator.validateUserGroupIsNotNull(student);
 
@@ -209,7 +209,7 @@ public class RankingService {
     }
 
     private Double getGraphTaskPoints(User student) {
-        return graphTaskResultRepo.findAllByUser(student)
+        return graphTaskResultRepository.findAllByUser(student)
                 .stream()
                 .mapToDouble(task -> {
                     try {
@@ -236,7 +236,7 @@ public class RankingService {
     }
 
     private Double getAdditionalPoints(User student) {
-        return additionalPointsRepo.findAllByUser(student)
+        return professorFeedbackRepository.findAllByUser(student)
                 .stream()
                 .mapToDouble(points -> {
                     try {
@@ -249,7 +249,7 @@ public class RankingService {
     }
 
     private Double getSurveyPoints(User student) {
-        return surveyResultRepo.findAllByUser(student)
+        return surveyResultRepository.findAllByUser(student)
                 .stream()
                 .mapToDouble(survey -> {
                     try {

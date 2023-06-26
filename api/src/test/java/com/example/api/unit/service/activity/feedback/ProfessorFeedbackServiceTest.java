@@ -9,16 +9,15 @@ import com.example.api.model.activity.feedback.ProfessorFeedback;
 import com.example.api.model.activity.result.FileTaskResult;
 import com.example.api.model.activity.task.FileTask;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.feedback.ProfessorFeedbackRepo;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.feedback.ProfessorFeedbackRepository;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.task.FileTaskRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.service.activity.feedback.ProfessorFeedbackService;
 import com.example.api.service.validator.FeedbackValidator;
 import com.example.api.service.validator.UserValidator;
 import com.example.api.service.validator.activity.ActivityValidator;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -35,11 +34,11 @@ import static org.mockito.Mockito.verify;
 // TODO: update and complete tests
 public class ProfessorFeedbackServiceTest {
     private ProfessorFeedbackService professorFeedbackService;
-    @Mock private ProfessorFeedbackRepo professorFeedbackRepo;
+    @Mock private ProfessorFeedbackRepository professorFeedbackRepository;
     @Mock private FeedbackValidator feedbackValidator;
     @Mock private FileTaskResultRepo fileTaskResultRepo;
-    @Mock private FileTaskRepo fileTaskRepo;
-    @Mock private UserRepo userRepo;
+    @Mock private FileTaskRepository fileTaskRepository;
+    @Mock private UserRepository userRepository;
     @Mock private ActivityValidator activityValidator;
     @Mock private UserValidator userValidator;
     @Captor private ArgumentCaptor<ProfessorFeedback> professorFeedbackArgumentCaptor;
@@ -52,11 +51,11 @@ public class ProfessorFeedbackServiceTest {
         MockitoAnnotations.openMocks(this);
 
         professorFeedbackService = new ProfessorFeedbackService(
-                professorFeedbackRepo,
+                professorFeedbackRepository,
                 feedbackValidator,
                 fileTaskResultRepo,
-                fileTaskRepo,
-                userRepo,
+                fileTaskRepository,
+                userRepository,
                 activityValidator,
                 userValidator);
     }
@@ -74,13 +73,13 @@ public class ProfessorFeedbackServiceTest {
         fileTaskResult.setFileTask(fileTask);
         feedback.setFileTaskResult(fileTaskResult);
 
-        given(professorFeedbackRepo.save(feedback)).willReturn(feedback);
+        given(professorFeedbackRepository.save(feedback)).willReturn(feedback);
 
         //when
         professorFeedbackService.saveProfessorFeedback(feedback);
 
         //then
-        verify(professorFeedbackRepo).save(professorFeedbackArgumentCaptor.capture());
+        verify(professorFeedbackRepository).save(professorFeedbackArgumentCaptor.capture());
         ProfessorFeedback capturedFeedback = professorFeedbackArgumentCaptor.getValue();
         assertThat(capturedFeedback).isEqualTo(feedback);
     }
@@ -102,14 +101,14 @@ public class ProfessorFeedbackServiceTest {
         fileTaskResult.setFileTask(fileTask);
         feedback.setFileTaskResult(fileTaskResult);
         given(feedbackValidator.validateAndSetProfessorFeedbackTaskForm(form)).willReturn(feedback);
-        given(professorFeedbackRepo.save(feedback)).willReturn(feedback);
+        given(professorFeedbackRepository.save(feedback)).willReturn(feedback);
 
         //when
         professorFeedbackService.saveProfessorFeedback(form);
 
         //then
         verify(feedbackValidator).validateAndSetProfessorFeedbackTaskForm(formArgumentCaptor.capture());
-        verify(professorFeedbackRepo).save(professorFeedbackArgumentCaptor.capture());
+        verify(professorFeedbackRepository).save(professorFeedbackArgumentCaptor.capture());
         SaveProfessorFeedbackForm capturedForm = formArgumentCaptor.getValue();
         ProfessorFeedback capturedFeedback = professorFeedbackArgumentCaptor.getValue();
         assertThat(capturedForm).isEqualTo(form);
@@ -128,7 +127,7 @@ public class ProfessorFeedbackServiceTest {
 
         //then
         verify(fileTaskResultRepo).findFileTaskResultById(idArgumentCaptor.capture());
-        verify(professorFeedbackRepo).findProfessorFeedbackByFileTaskResult(fileTaskResultArgumentCaptor.capture());
+        verify(professorFeedbackRepository).findProfessorFeedbackByFileTaskResult(fileTaskResultArgumentCaptor.capture());
         Long capturedId = idArgumentCaptor.getValue();
         FileTaskResult capturedResult = fileTaskResultArgumentCaptor.getValue();
         assertThat(capturedId).isEqualTo(id);

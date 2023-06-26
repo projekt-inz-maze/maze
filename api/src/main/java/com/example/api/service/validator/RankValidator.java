@@ -6,7 +6,7 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.model.user.Rank;
-import com.example.api.repo.user.RankRepo;
+import com.example.api.repository.user.RankRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import java.util.Objects;
 @Transactional
 @RequiredArgsConstructor
 public class RankValidator {
-    private final RankRepo rankRepo;
+    private final RankRepository rankRepository;
 
     public void validateRankIsNotNull(Rank rank, Long id) throws EntityNotFoundException {
         if (rank == null) {
@@ -39,7 +39,7 @@ public class RankValidator {
             log.error("Rank name cannot have more than 30 characters!");
             throw new RequestValidationException(ExceptionMessage.RANK_NAME_TOO_LONG);
         }
-        List<Rank> ranks = rankRepo.findAll()
+        List<Rank> ranks = rankRepository.findAll()
                 .stream()
                 .filter(rank -> rank.getHeroType() == form.getType())
                 .toList();

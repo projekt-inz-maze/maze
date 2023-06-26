@@ -1,7 +1,7 @@
 package com.example.api.service.question;
 
 import com.example.api.model.question.Option;
-import com.example.api.repo.question.OptionRepo;
+import com.example.api.repository.question.OptionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,13 +14,13 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class OptionService {
-    private final OptionRepo optionRepo;
+    private final OptionRepository optionRepository;
 
     public Option saveOption(Option option) {
-        return optionRepo.save(option);
+        return optionRepository.save(option);
     }
 
     public void saveAll(List<Option> options) {
-        optionRepo.saveAll(options);
+        optionRepository.saveAll(options);
     }
 }

@@ -6,11 +6,11 @@ import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.model.activity.result.*;
 import com.example.api.model.user.AccountType;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.AdditionalPointsRepo;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.result.GraphTaskResultRepo;
-import com.example.api.repo.activity.result.SurveyResultRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.ProfessorFeedbackRepository;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.result.GraphTaskResultRepository;
+import com.example.api.repository.activity.result.SurveyResultRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.validator.UserValidator;
 import com.example.api.util.csv.PointsToGradeMapper;
@@ -29,20 +29,20 @@ import java.util.stream.Stream;
 @Slf4j
 @Transactional
 public class GradeService {
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
     private final UserValidator userValidator;
     private final AuthenticationService authService;
-    private final GraphTaskResultRepo graphTaskResultRepo;
+    private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepo fileTaskResultRepo;
-    private final SurveyResultRepo surveyResultRepo;
-    private final AdditionalPointsRepo additionalPointsRepo;
+    private final SurveyResultRepository surveyResultRepository;
+    private final ProfessorFeedbackRepository professorFeedbackRepository;
 
     public List<GradeResponse> getAllGrades() throws WrongUserTypeException {
         String email = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
 
-        return userRepo.findAllByAccountTypeEquals(AccountType.STUDENT)
+        return userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
                 .stream()
                 .map(this::getStudentFinalGrade)
                 .sorted(Comparator.comparing(entry -> entry.getStudent().getLastName().toLowerCase() + entry.getStudent().getFirstName().toLowerCase()))
@@ -50,13 +50,13 @@ public class GradeService {
     }
 
     public GradeResponse getStudentFinalGrade(User student) {
-        List<GraphTaskResult> graphTaskResults = graphTaskResultRepo.findAllByUser(student);
+        List<GraphTaskResult> graphTaskResults = graphTaskResultRepository.findAllByUser(student);
         List<FileTaskResult> fileTaskResults = fileTaskResultRepo.findAllByUser(student);
-        List<SurveyResult> surveyResults = surveyResultRepo.findAllByUser(student)
+        List<SurveyResult> surveyResults = surveyResultRepository.findAllByUser(student)
                 .stream()
                 .filter(SurveyResult::isEvaluated)
                 .toList();
-        List<AdditionalPoints> additionalPointsList = additionalPointsRepo.findAllByUser(student);
+        List<AdditionalPoints> additionalPointsList = professorFeedbackRepository.findAllByUser(student);
 
         Double pointsReceived = Stream.of(graphTaskResults, fileTaskResults, surveyResults)
                 .flatMap(Collection::stream)

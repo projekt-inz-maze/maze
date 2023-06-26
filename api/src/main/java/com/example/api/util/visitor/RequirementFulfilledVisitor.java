@@ -6,8 +6,8 @@ import com.example.api.model.activity.task.FileTask;
 import com.example.api.model.activity.task.GraphTask;
 import com.example.api.model.map.requirement.*;
 import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.result.GraphTaskResultRepo;
+import com.example.api.repository.activity.result.FileTaskResultRepo;
+import com.example.api.repository.activity.result.GraphTaskResultRepository;
 import com.example.api.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RequirementFulfilledVisitor {
     private final UserService userService;
-    private final GraphTaskResultRepo graphTaskResultRepo;
+    private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepo fileTaskResultRepo;
 
     public boolean visitDateFromRequirement(DateFromRequirement requirement) {
@@ -56,7 +56,7 @@ public class RequirementFulfilledVisitor {
             return true;
         }
         User student = userService.getCurrentUser();
-        List<GraphTask> graphTasks = graphTaskResultRepo.findAllByUser(student)
+        List<GraphTask> graphTasks = graphTaskResultRepository.findAllByUser(student)
                 .stream()
                 .map(GraphTaskResult::getGraphTask)
                 .toList();

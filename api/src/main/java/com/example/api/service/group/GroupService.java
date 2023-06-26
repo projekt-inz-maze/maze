@@ -9,8 +9,8 @@ import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.model.group.Group;
 import com.example.api.model.user.AccountType;
 import com.example.api.model.user.User;
-import com.example.api.repo.group.GroupRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.group.GroupRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.validator.GroupValidator;
 import com.example.api.service.validator.UserValidator;
@@ -29,35 +29,35 @@ import java.util.List;
 @Transactional
 public class GroupService {
     private final AuthenticationService authService;
-    private final GroupRepo groupRepo;
+    private final GroupRepository groupRepository;
     private final GroupValidator groupValidator;
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
     private final UserValidator userValidator;
 
     public Group saveGroup(Group group) {
         log.info("Saving group to database with name {}", group.getName());
-        return groupRepo.save(group);
+        return groupRepository.save(group);
     }
 
     public Long saveGroup(SaveGroupForm form) throws RequestValidationException {
         log.info("Saving group to database with name {}", form.getName());
-        List<Group> groups = groupRepo.findAll();
+        List<Group> groups = groupRepository.findAll();
         groupValidator.validateGroup(groups, form);
         Group group = new Group(null, form.getName(), new ArrayList<>(), form.getInvitationCode());
-        groupRepo.save(group);
+        groupRepository.save(group);
         return group.getId();
     }
 
     public Group getGroupById(Long id) throws EntityNotFoundException {
         log.info("Fetching group with id {}", id);
-        Group group = groupRepo.findGroupById(id);
+        Group group = groupRepository.findGroupById(id);
         groupValidator.validateGroupIsNotNull(group, id);
         return group;
     }
 
     public Group getGroupByInvitationCode(String code) throws EntityNotFoundException {
         log.info("Fetching group with code {}", code);
-        Group group = groupRepo.findGroupByInvitationCode(code);
+        Group group = groupRepository.findGroupByInvitationCode(code);
         groupValidator.validateGroupIsNotNull(group, code);
         return group;
     }
@@ -65,10 +65,10 @@ public class GroupService {
     public List<GroupCode> getInvitationCodeList() throws WrongUserTypeException {
         log.info("Fetching group code list");
         String email = authService.getAuthentication().getName();
-        User professor = userRepo.findUserByEmail(email);
+        User professor = userRepository.findUserByEmail(email);
         userValidator.validateProfessorAccount(professor, email);
 
-        return groupRepo.findAll()
+        return groupRepository.findAll()
                 .stream()
                 .map(group -> new GroupCode(
                         group.getId(),
@@ -86,7 +86,7 @@ public class GroupService {
 
     public List<BasicUser> getGroupUserList(Long id) throws EntityNotFoundException {
         log.info("Fetching users from group with id {}", id);
-        Group group = groupRepo.findGroupById(id);
+        Group group = groupRepository.findGroupById(id);
         groupValidator.validateGroupIsNotNull(group, id);
         return group.getUsers()
                 .stream()
@@ -97,7 +97,7 @@ public class GroupService {
 
     public List<BasicUser> getGroupStudentList(Long id) throws EntityNotFoundException {
         log.info("Fetching users from group with id {}", id);
-        Group group = groupRepo.findGroupById(id);
+        Group group = groupRepository.findGroupById(id);
         groupValidator.validateGroupIsNotNull(group, id);
         return group.getUsers()
                 .stream()
@@ -109,7 +109,7 @@ public class GroupService {
 
     public List<BasicUser> getGroupProfessorList(Long id) throws EntityNotFoundException {
         log.info("Fetching users from group with id {}", id);
-        Group group = groupRepo.findGroupById(id);
+        Group group = groupRepository.findGroupById(id);
         groupValidator.validateGroupIsNotNull(group, id);
         return group.getUsers()
                 .stream()

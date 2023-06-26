@@ -7,8 +7,8 @@ import com.example.api.error.exception.RequestValidationException;
 import com.example.api.model.activity.task.Activity;
 import com.example.api.model.map.ActivityMap;
 import com.example.api.model.map.Chapter;
-import com.example.api.repo.map.ChapterRepo;
-import com.example.api.repo.util.FileRepo;
+import com.example.api.repository.map.ChapterRepository;
+import com.example.api.repository.util.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -22,8 +22,8 @@ import java.util.stream.Stream;
 @Slf4j
 @RequiredArgsConstructor
 public class ChapterValidator {
-    private final ChapterRepo chapterRepo;
-    private final FileRepo fileRepo;
+    private final ChapterRepository chapterRepository;
+    private final FileRepository fileRepository;
 
     public void validateChapterIsNotNull(Chapter chapter, Long id) throws EntityNotFoundException {
         if(chapter == null) {
@@ -33,7 +33,7 @@ public class ChapterValidator {
     }
 
     public void validateChapterCreation(ChapterForm form) throws RequestValidationException {
-        List<Chapter> chapters = chapterRepo.findAll();
+        List<Chapter> chapters = chapterRepository.findAll();
         if (chapters.stream()
                 .anyMatch(chapter ->
                                 Objects.equals(chapter.getPosX(), form.getPosX()) &&
@@ -64,7 +64,7 @@ public class ChapterValidator {
     }
 
     public void validatePositionTaken(ChapterForm form, Chapter chapter) throws RequestValidationException {
-        List<Chapter> chapters = chapterRepo.findAll();
+        List<Chapter> chapters = chapterRepository.findAll();
 
         if (chapters.stream().anyMatch(chapter_ ->
                 Objects.equals(chapter_.getPosX(), form.getPosX()) &&
@@ -76,7 +76,7 @@ public class ChapterValidator {
     }
 
     public void validateImageExists(Long newImageId) throws RequestValidationException {
-        if (fileRepo.findFileById(newImageId) == null){
+        if (fileRepository.findFileById(newImageId) == null){
             log.error("Image with id {} not found in database", newImageId);
             throw new RequestValidationException(ExceptionMessage.IMAGE_NOT_EXISTS);
         }

@@ -7,9 +7,9 @@ import com.example.api.model.user.AccountType;
 import com.example.api.model.user.User;
 import com.example.api.model.user.hero.Hero;
 import com.example.api.model.user.hero.UserHero;
-import com.example.api.repo.group.GroupRepo;
-import com.example.api.repo.user.HeroRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.group.GroupRepository;
+import com.example.api.repository.user.HeroRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.service.user.util.ProfessorRegisterToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +24,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class UserValidator {
-    private final GroupRepo groupRepo;
-    private final UserRepo userRepo;
-    private final HeroRepo heroRepo;
+    private final GroupRepository groupRepository;
+    private final UserRepository userRepository;
+    private final HeroRepository heroRepository;
     private final ProfessorRegisterToken professorRegisterToken;
 
     public void validateUserIsNotNull(User user, String email) throws UsernameNotFoundException {
@@ -81,12 +81,12 @@ public class UserValidator {
         }
         else {
             previousGroup.getUsers().remove(user);
-            groupRepo.save(previousGroup);
+            groupRepository.save(previousGroup);
         }
         user.setGroup(newGroup);
         newGroup.getUsers().add(user);
-        userRepo.save(user);
-        groupRepo.save(newGroup);
+        userRepository.save(user);
+        groupRepository.save(newGroup);
     }
 
     public void validateUserRegistration(User dbUser, User newUser, RegisterUserForm form, String email) throws RequestValidationException {
@@ -106,19 +106,19 @@ public class UserValidator {
                         List.of("firstName", "lastName", "email", "password", "heroType", "invitationCode"), 1);
             }
             String code = form.getInvitationCode();
-            Group group = groupRepo.findGroupByInvitationCode(code);
+            Group group = groupRepository.findGroupByInvitationCode(code);
             if(group == null) {
                 log.error("Group with invitational code {} not found in database", code);
                 throw new EntityNotFoundException(ExceptionMessage.GROUP_CODE_NOT_EXIST);
             }
             newUser.setGroup(group);
 
-            Hero hero = heroRepo.findHeroByType(form.getHeroType());
+            Hero hero = heroRepository.findHeroByType(form.getHeroType());
             UserHero userHero = new UserHero(hero, 0, 0L);
             newUser.setUserHero(userHero);
             Integer indexNumber = form.getIndexNumber();
 
-            if(indexNumber == null || userRepo.existsUserByIndexNumber(indexNumber)) {
+            if(indexNumber == null || userRepository.existsUserByIndexNumber(indexNumber)) {
                 log.error("User with index number {} already in database", indexNumber);
                 throw new EntityAlreadyInDatabaseException(ExceptionMessage.INDEX_TAKEN);
             }

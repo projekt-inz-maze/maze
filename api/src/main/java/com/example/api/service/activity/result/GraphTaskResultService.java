@@ -9,10 +9,10 @@ import com.example.api.model.activity.task.GraphTask;
 import com.example.api.model.question.Question;
 import com.example.api.model.user.User;
 import com.example.api.model.user.hero.Hero;
-import com.example.api.repo.activity.result.GraphTaskResultRepo;
-import com.example.api.repo.activity.task.GraphTaskRepo;
-import com.example.api.repo.question.QuestionRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.repository.activity.result.GraphTaskResultRepository;
+import com.example.api.repository.activity.task.GraphTaskRepository;
+import com.example.api.repository.question.QuestionRepository;
+import com.example.api.repository.user.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.service.user.UserService;
 import com.example.api.service.validator.ResultValidator;
@@ -33,10 +33,10 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class GraphTaskResultService {
-    private final GraphTaskResultRepo graphTaskResultRepo;
-    private final GraphTaskRepo graphTaskRepo;
-    private final UserRepo userRepo;
-    private final QuestionRepo questionRepo;
+    private final GraphTaskResultRepository graphTaskResultRepository;
+    private final GraphTaskRepository graphTaskRepository;
+    private final UserRepository userRepository;
+    private final QuestionRepository questionRepository;
     private final PointsCalculator pointsCalculator;
     private final ResultValidator resultValidator;
     private final UserValidator userValidator;
@@ -49,28 +49,28 @@ public class GraphTaskResultService {
     public Long getGraphTaskResultId(Long graphTaskId)
             throws WrongUserTypeException, EntityNotFoundException {
         String email = authService.getAuthentication().getName();
-        User student = userRepo.findUserByEmail(email);
+        User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student, email);
-        GraphTask graphTask = graphTaskRepo.findGraphTaskById(graphTaskId);
+        GraphTask graphTask = graphTaskRepository.findGraphTaskById(graphTaskId);
         activityValidator.validateActivityIsNotNull(graphTask, graphTaskId);
-        GraphTaskResult graphTaskResult = graphTaskResultRepo.findGraphTaskResultByGraphTaskAndUser(graphTask, student);
+        GraphTaskResult graphTaskResult = graphTaskResultRepository.findGraphTaskResultByGraphTaskAndUser(graphTask, student);
         return graphTaskResult == null ? null : graphTaskResult.getId();
     }
 
     public GraphTaskResult saveGraphTaskResult(GraphTaskResult result) {
-        return graphTaskResultRepo.save(result);
+        return graphTaskResultRepository.save(result);
     }
 
     public void startGraphTaskResult(Long id) throws EntityNotFoundException, WrongUserTypeException, EntityAlreadyInDatabaseException {
         log.info("Saving graph task result");
-        GraphTask graphTask = graphTaskRepo.findGraphTaskById(id);
+        GraphTask graphTask = graphTaskRepository.findGraphTaskById(id);
         activityValidator.validateActivityIsNotNull(graphTask, id);
 
         String email = authService.getAuthentication().getName();
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(user, email);
 
-        GraphTaskResult result = graphTaskResultRepo.findGraphTaskResultByGraphTaskAndUser(graphTask, user);
+        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskAndUser(graphTask, user);
         resultValidator.validateGraphTaskResultIsNotInDatabase(result, id, email);
 
         GraphTaskResult graphTaskResult = new GraphTaskResult(
@@ -80,54 +80,54 @@ public class GraphTaskResultService {
                 ResultStatus.CHOOSE,
                 graphTask.getQuestions().get(0)
         );
-        graphTaskResultRepo.save(graphTaskResult);
+        graphTaskResultRepository.save(graphTaskResult);
     }
 
     public Double getPointsFromClosedQuestions(Long id) throws EntityNotFoundException {
         log.info("Calculating points from closed questions for graph task result with id {}", id);
-        GraphTaskResult result = graphTaskResultRepo.findGraphTaskResultById(id);
+        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultById(id);
         activityValidator.validateTaskResultIsNotNull(result, id);
         return pointsCalculator.calculatePointsForClosedQuestions(result);
     }
 
     public Double getPointsFromOpenedQuestions(Long id) throws EntityNotFoundException {
         log.info("Calculating points from opened questions for graph task result with id {}", id);
-        GraphTaskResult result = graphTaskResultRepo.findGraphTaskResultById(id);
+        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultById(id);
         activityValidator.validateTaskResultIsNotNull(result, id);
         return pointsCalculator.calculatePointsForOpenedQuestions(result);
     }
 
     public Double getAllPoints(Long id) throws EntityNotFoundException {
         log.info("Fetching points from graph task result with id {}", id);
-        GraphTaskResult result = graphTaskResultRepo.findGraphTaskResultById(id);
+        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultById(id);
         activityValidator.validateTaskResultIsNotNull(result, id);
         return result.getPointsReceived();
     }
 
     public Double getMaxAvailablePoints(Long id) throws EntityNotFoundException {
         log.info("Calculating maximum available points for graph task result with id {}", id);
-        GraphTaskResult result = graphTaskResultRepo.findGraphTaskResultById(id);
+        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultById(id);
         activityValidator.validateTaskResultIsNotNull(result, id);
         return pointsCalculator.calculateMaxAvailablePoints(result);
     }
 
     public Double getMaxClosedPoints(Long id) throws EntityNotFoundException {
         log.info("Calculating maximum closed points for graph task result with id {}", id);
-        GraphTaskResult result = graphTaskResultRepo.findGraphTaskResultById(id);
+        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultById(id);
         activityValidator.validateTaskResultIsNotNull(result, id);
         return pointsCalculator.calculateMaxClosedPoints(result);
     }
 
     public Double getMaxOpenedPoints(Long id) throws EntityNotFoundException {
         log.info("Calculating maximum opened points for graph task result with id {}", id);
-        GraphTaskResult result = graphTaskResultRepo.findGraphTaskResultById(id);
+        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultById(id);
         activityValidator.validateTaskResultIsNotNull(result, id);
         return pointsCalculator.calculateMaxOpenedPoints(result);
     }
 
     public Long getTimeRemaining(Long resultId) throws EntityNotFoundException, EntityRequiredAttributeNullException {
         log.info("Calculating time remaining for graph task result with id {}", resultId);
-        GraphTaskResult graphTaskResult = graphTaskResultRepo.findGraphTaskResultById(resultId);
+        GraphTaskResult graphTaskResult = graphTaskResultRepository.findGraphTaskResultById(resultId);
         activityValidator.validateGraphTaskResultExistsAndHasStartDate(graphTaskResult, resultId);
         GraphTask graphTask = graphTaskResult.getGraphTask();
         return timeCalculator.getTimeRemaining(graphTaskResult.getStartDateMillis(), graphTask.getTimeToSolveMillis());
@@ -135,7 +135,7 @@ public class GraphTaskResultService {
 
     public Long getTimeLeftAfterEnd(Long resultId) throws EntityNotFoundException, EntityRequiredAttributeNullException {
         log.info("Calculating how much time left after last action for graph task result with id {}", resultId);
-        GraphTaskResult graphTaskResult = graphTaskResultRepo.findGraphTaskResultById(resultId);
+        GraphTaskResult graphTaskResult = graphTaskResultRepository.findGraphTaskResultById(resultId);
         activityValidator.validateGraphTaskResultExistsAndHasStartAndEndDate(graphTaskResult, resultId);
         GraphTask graphTask = graphTaskResult.getGraphTask();
         return timeCalculator.getTimeLeftAfterLastAnswer(graphTaskResult.getStartDateMillis(), graphTask.getTimeToSolveMillis(), graphTaskResult.getSendDateMillis());
@@ -150,26 +150,26 @@ public class GraphTaskResultService {
 
     public GraphTaskResult getGraphTaskResult(Long graphTaskId, String email)
             throws EntityNotFoundException, WrongUserTypeException {
-        User user = userRepo.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(user, email);
 
-        GraphTask graphTask = graphTaskRepo.findGraphTaskById(graphTaskId);
+        GraphTask graphTask = graphTaskRepository.findGraphTaskById(graphTaskId);
         activityValidator.validateActivityIsNotNull(graphTask, graphTaskId);
 
         return getGraphTaskResultWithGraphTaskAndUser(graphTask, user);
     }
 
     public List<GraphTaskResult> getAllGraphTaskResultsForStudent(User student){
-        return graphTaskResultRepo.findAllByUser(student);
+        return graphTaskResultRepository.findAllByUser(student);
     }
 
     public SuperPowerResponse<?> useSuperPower(Long graphTaskId, Long questionId) throws RequestValidationException {
         User user = userService.getCurrentUserAndValidateStudentAccount();
         Hero hero = user.getUserHero().getHero();
 
-        GraphTask graphTask = graphTaskRepo.findGraphTaskById(graphTaskId);
+        GraphTask graphTask = graphTaskRepository.findGraphTaskById(graphTaskId);
         GraphTaskResult result = getGraphTaskResultWithGraphTaskAndUser(graphTask, user);
-        Question question = questionRepo.findQuestionById(questionId);
+        Question question = questionRepository.findQuestionById(questionId);
 
         return hero.useSuperPower(heroVisitor, user, result, question);
     }
@@ -178,7 +178,7 @@ public class GraphTaskResultService {
         User user = userService.getCurrentUserAndValidateStudentAccount();
         Hero hero = user.getUserHero().getHero();
 
-        GraphTask graphTask = graphTaskRepo.findGraphTaskById(graphTaskId);
+        GraphTask graphTask = graphTaskRepository.findGraphTaskById(graphTaskId);
         GraphTaskResult result = getGraphTaskResultWithGraphTaskAndUser(graphTask, user);
 
         boolean canBeUsed = hero.canPowerBeUsed(user, result);
@@ -188,7 +188,7 @@ public class GraphTaskResultService {
     }
 
     private GraphTaskResult getGraphTaskResultWithGraphTaskAndUser(GraphTask graphTask, User user) throws EntityNotFoundException {
-        GraphTaskResult result = graphTaskResultRepo.findGraphTaskResultByGraphTaskAndUser(graphTask, user);
+        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskAndUser(graphTask, user);
         resultValidator.validateResultIsNotNull(result, graphTask.getId(), user.getEmail());
         return result;
     }
