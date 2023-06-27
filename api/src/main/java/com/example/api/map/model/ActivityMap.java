@@ -1,7 +1,6 @@
 package com.example.api.map.model;
 
 import com.example.api.activity.task.model.*;
-import com.example.api.model.activity.task.model.*;
 import com.example.api.util.model.File;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
