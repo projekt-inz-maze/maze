@@ -1,6 +1,6 @@
 package com.example.api.error.exception;
 
-import com.example.api.model.user.AccountType;
+import com.example.api.user.model.AccountType;
 
 public class WrongUserTypeException extends RequestValidationException{
     private final AccountType accountType;

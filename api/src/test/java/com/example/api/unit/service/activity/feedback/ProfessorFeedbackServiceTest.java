@@ -1,22 +1,22 @@
 package com.example.api.unit.service.activity.feedback;
 
-import com.example.api.dto.request.activity.feedback.SaveProfessorFeedbackForm;
+import com.example.api.activity.feedback.dto.request.SaveProfessorFeedbackForm;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongPointsNumberException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.model.activity.feedback.ProfessorFeedback;
-import com.example.api.model.activity.result.FileTaskResult;
-import com.example.api.model.activity.task.FileTask;
-import com.example.api.model.user.User;
-import com.example.api.repository.activity.feedback.ProfessorFeedbackRepository;
-import com.example.api.repository.activity.result.FileTaskResultRepo;
-import com.example.api.repository.activity.task.FileTaskRepository;
-import com.example.api.repository.user.UserRepository;
-import com.example.api.service.activity.feedback.ProfessorFeedbackService;
-import com.example.api.service.validator.FeedbackValidator;
-import com.example.api.service.validator.UserValidator;
-import com.example.api.service.validator.activity.ActivityValidator;
+import com.example.api.activity.feedback.model.ProfessorFeedback;
+import com.example.api.activity.result.model.FileTaskResult;
+import com.example.api.activity.task.model.FileTask;
+import com.example.api.user.model.User;
+import com.example.api.activity.repository.feedback.ProfessorFeedbackRepository;
+import com.example.api.activity.repository.result.FileTaskResultRepository;
+import com.example.api.activity.repository.task.FileTaskRepository;
+import com.example.api.user.repository.UserRepository;
+import com.example.api.activity.feedback.service.ProfessorFeedbackService;
+import com.example.api.validator.FeedbackValidator;
+import com.example.api.validator.UserValidator;
+import com.example.api.activity.validator.ActivityValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -36,7 +36,7 @@ public class ProfessorFeedbackServiceTest {
     private ProfessorFeedbackService professorFeedbackService;
     @Mock private ProfessorFeedbackRepository professorFeedbackRepository;
     @Mock private FeedbackValidator feedbackValidator;
-    @Mock private FileTaskResultRepo fileTaskResultRepo;
+    @Mock private FileTaskResultRepository fileTaskResultRepository;
     @Mock private FileTaskRepository fileTaskRepository;
     @Mock private UserRepository userRepository;
     @Mock private ActivityValidator activityValidator;
@@ -53,7 +53,7 @@ public class ProfessorFeedbackServiceTest {
         professorFeedbackService = new ProfessorFeedbackService(
                 professorFeedbackRepository,
                 feedbackValidator,
-                fileTaskResultRepo,
+                fileTaskResultRepository,
                 fileTaskRepository,
                 userRepository,
                 activityValidator,
@@ -120,13 +120,13 @@ public class ProfessorFeedbackServiceTest {
         //given
         Long id = 1L;
         FileTaskResult result = new FileTaskResult();
-        given(fileTaskResultRepo.findFileTaskResultById(id)).willReturn(result);
+        given(fileTaskResultRepository.findFileTaskResultById(id)).willReturn(result);
 
         //when
         professorFeedbackService.getProfessorFeedbackForFileTaskResult(id);
 
         //then
-        verify(fileTaskResultRepo).findFileTaskResultById(idArgumentCaptor.capture());
+        verify(fileTaskResultRepository).findFileTaskResultById(idArgumentCaptor.capture());
         verify(professorFeedbackRepository).findProfessorFeedbackByFileTaskResult(fileTaskResultArgumentCaptor.capture());
         Long capturedId = idArgumentCaptor.getValue();
         FileTaskResult capturedResult = fileTaskResultArgumentCaptor.getValue();

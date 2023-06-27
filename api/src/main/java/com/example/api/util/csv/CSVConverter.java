@@ -1,7 +1,7 @@
 package com.example.api.util.csv;
 
-import com.example.api.model.user.User;
-import com.example.api.service.user.GradeService;
+import com.example.api.user.model.User;
+import com.example.api.user.service.GradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
