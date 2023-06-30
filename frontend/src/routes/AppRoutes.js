@@ -13,6 +13,7 @@ import GradesRoutes from './modules/teacherRoutes/GradesRoutes'
 import ParticipantsRoutes from './modules/teacherRoutes/ParticipantsRoutes'
 import TeacherRankingRoutes from './modules/teacherRoutes/RankingRoutes'
 import SettingsRoutes from './modules/teacherRoutes/SettingsRoutes'
+import CourseList from '../components/general/CourseList/CourseList.tsx'
 import LoginAndRegistration from '../components/general/LoginAndRegistrationPage/LoginAndRegistration'
 import ResetPassword from '../components/general/LoginAndRegistrationPage/ResetPassword/ResetPassword'
 import NotFound from '../components/general/NotFoundPage/NotFound'
@@ -52,6 +53,8 @@ export default function AppRoutes() {
           </PageGuard>
         }
       />
+
+      <Route path={'/courses/*'} element={<CourseList />} />
 
       <Route path={'/game-card/*'} element={<GameCardRoutes />} />
 

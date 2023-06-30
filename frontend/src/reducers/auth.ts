@@ -1,9 +1,10 @@
 import { LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT, REGISTER_FAIL, REGISTER_SUCCESS } from '../actions/types'
 
-const user = JSON.parse(localStorage.getItem('user'))
-const initialState = user ? { isLoggedIn: true, user } : { isLoggedIn: false, user: null }
+const user = localStorage.getItem('user')
+const parsedUser = user ? JSON.parse(user) : null
+const initialState = parsedUser ? { isLoggedIn: true, user: parsedUser } : { isLoggedIn: false, user: null }
 
-export default function useAppSelector(state = initialState, action) {
+export default function useAppSelector(state = initialState, action: any) {
   const { type, payload } = action
   switch (type) {
     case REGISTER_SUCCESS:

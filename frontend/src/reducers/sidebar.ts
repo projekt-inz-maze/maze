@@ -2,7 +2,7 @@ import { SET_ASSESSMENT_NUMBERS, SET_EXPANDED } from '../actions/types'
 
 const initialState = { isExpanded: true, assessments: 0 }
 
-export default function getSidebarInfo(state = initialState, action) {
+export default function getSidebarInfo(state = initialState, action: any) {
   const { type, payload } = action
   switch (type) {
     case SET_EXPANDED:

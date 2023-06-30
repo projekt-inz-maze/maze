@@ -22,7 +22,7 @@ function PageGuard(props) {
         navigate(TeacherRoutes.GAME_SUMMARY)
         window.location.reload(true) // without it, sidebar not reload after redirect
       } else if ((role === Role.LOGGED_IN_AS_TEACHER || (role === Role.NOT_LOGGED_IN && isLoggedIn)) && student) {
-        navigate(StudentRoutes.GAME_CARD)
+        navigate(GeneralRoutes.COURSE_LIST)
         window.location.reload(true) // without it, sidebar not reload after redirect
       }
   }, [navigate, role, isLoggedIn, student])
