@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import SuperPowerTrigger from '../SuperPowerTrigger'
+
 import { useSuperPowerCheck } from '../../../../../../hooks/useSuperPowerCheck'
+import SuperPowerTrigger from '../SuperPowerTrigger'
 
 function PriestSuperPower(props) {
   const [superPowerInfo, setSuperPowerInfo] = useState(undefined)
@@ -11,7 +12,7 @@ function PriestSuperPower(props) {
     if (superPowerInfo?.value) {
       props.setRemainingTime(+superPowerInfo.value / 1000) // ms -> s
     }
-    //eslint-disable-next-line
+    // eslint-disable-next-line
   }, [superPowerInfo])
 
   const startUsingSuperPower = () => {

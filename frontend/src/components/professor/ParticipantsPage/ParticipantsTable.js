@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { GameCardOptionPick } from '../../general/GameCardStyles'
-import { TableContainer } from './ParticipantsStyles'
-import ChangeGroupModal from './ChangeGroupModal'
+
 import { Button } from 'react-bootstrap'
+import { connect } from 'react-redux'
+
+import BonusPointsModal from './BonusPointsModal'
+import ChangeGroupModal from './ChangeGroupModal'
+import { TableContainer } from './ParticipantsStyles'
 import GroupService from '../../../services/group.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
-import BonusPointsModal from './BonusPointsModal'
-import { connect } from 'react-redux'
 import { isMobileView } from '../../../utils/mobileHelper'
+import { GameCardOptionPick } from '../../general/GameCardStyles'
 
 function ParticipantsTable(props) {
   const isMobileDisplay = isMobileView()
@@ -30,9 +32,7 @@ function ParticipantsTable(props) {
       } else {
         GroupService.getGroupStudents(props.groupId)
           .then((response) => {
-            const responseWithGroupName = response?.map((student) => {
-              return { ...student, groupName: props.groupName }
-            })
+            const responseWithGroupName = response?.map((student) => ({ ...student, groupName: props.groupName }))
             setStudentsList(responseWithGroupName)
           })
           .catch(() => {
@@ -54,18 +54,18 @@ function ParticipantsTable(props) {
           <tr>
             <th>Nazwa grupy</th>
             <th>Imię i nazwisko członka</th>
-            <th className={'text-center'}>Akcje</th>
+            <th className="text-center">Akcje</th>
           </tr>
         </thead>
-        <tbody className={'mh-100'}>
+        <tbody className="mh-100">
           {studentsList?.length > 0 ? (
             studentsList.map((student, index) => (
               <tr key={index + student.groupName}>
-                <td className={'py-2'}>{student.groupName}</td>
-                <td className={'py-2'}>
+                <td className="py-2">{student.groupName}</td>
+                <td className="py-2">
                   {student.firstName} {student.lastName}
                 </td>
-                <td className={'py-2 text-center'}>
+                <td className="py-2 text-center">
                   <Button
                     style={{ backgroundColor: props.theme.success, border: 'none' }}
                     onClick={() => {
@@ -76,7 +76,7 @@ function ParticipantsTable(props) {
                     Zmień grupę
                   </Button>
                   <Button
-                    className={'ms-2'}
+                    className="ms-2"
                     style={{ backgroundColor: props.theme.success, border: 'none' }}
                     onClick={() => {
                       setChosenStudent(student)
@@ -90,7 +90,7 @@ function ParticipantsTable(props) {
             ))
           ) : (
             <tr>
-              <td colSpan='100%' className={'text-center'}>
+              <td colSpan='100%' className="text-center">
                 <p>{studentsList == null ? ERROR_OCCURRED : 'Brak członków'}</p>
               </td>
             </tr>
@@ -108,7 +108,7 @@ function ParticipantsTable(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

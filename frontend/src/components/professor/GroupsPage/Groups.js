@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
+
 import { Button, Row } from 'react-bootstrap'
-import { Content } from '../../App/AppGeneralStyles'
+import { connect } from 'react-redux'
+
 import { Title } from './GroupsStyle'
 import GroupsTable from './Table/GroupsTable'
-import GroupAdditionModal from '../GroupAdditionPage/GroupAdditionModal'
-import { connect } from 'react-redux'
-import { isMobileView } from '../../../utils/mobileHelper'
-import GoBackButton from '../../general/GoBackButton/GoBackButton'
 import { TeacherRoutes } from '../../../routes/PageRoutes'
+import { isMobileView } from '../../../utils/mobileHelper'
+import { Content } from '../../App/AppGeneralStyles'
+import GoBackButton from '../../general/GoBackButton/GoBackButton'
+import GroupAdditionModal from '../GroupAdditionPage/GroupAdditionModal'
 
 function Groups(props) {
   const [modalOpen, setModalOpen] = useState(false)
@@ -19,7 +21,7 @@ function Groups(props) {
   return (
     <>
       <Content
-        className={'d-flex flex-column align-items-center h-100'}
+        className="d-flex flex-column align-items-center h-100"
         style={{ marginBottom: isMobileDisplay ? 85 : 0 }}
       >
         <Row className='m-3'>
@@ -30,13 +32,13 @@ function Groups(props) {
         </Row>
 
         <div
-          className={'d-flex justify-content-center gap-2 position-absolute'}
+          className="d-flex justify-content-center gap-2 position-absolute"
           style={isMobileDisplay ? null : { bottom: 10 }}
         >
-          <GoBackButton goTo={TeacherRoutes.GAME_MANAGEMENT.MAIN} customClass={'position-relative'} />
+          <GoBackButton goTo={TeacherRoutes.GAME_MANAGEMENT.MAIN} customClass="position-relative" />
           <Button
             style={isMobileDisplay ? { ...buttonStyle } : { ...buttonStyle, position: 'relative' }}
-            className={'justify-content-end'}
+            className="justify-content-end"
             onClick={() => setModalOpen(true)}
           >
             Dodaj grupę
@@ -49,7 +51,7 @@ function Groups(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

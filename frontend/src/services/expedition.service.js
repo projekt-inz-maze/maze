@@ -1,4 +1,3 @@
-import { axiosApiGet, axiosApiPost } from '../utils/axios'
 import {
   GET_QUESTION_INFO,
   GET_TASK_GRAPH_MAP,
@@ -16,6 +15,7 @@ import {
   GET_TASK_GRAPH_RESULT_SUPER_POWER_CAN_USE,
   GET_TASK_GRAPH_RESULT_SUPER_POWER
 } from './urls'
+import { axiosApiGet, axiosApiPost } from '../utils/axios'
 
 class ExpeditionService {
   // returns all info about activity
@@ -67,13 +67,13 @@ class ExpeditionService {
 
   getRemainingTime(resultId) {
     return axiosApiGet(GET_TASK_GRAPH_RESULT_TIME_REMAINING, {
-      resultId: resultId
+      resultId
     }).catch((error) => {
       throw error
     })
   }
 
-  //reworked flow endpoints
+  // reworked flow endpoints
   setExpeditionStart(activityId) {
     return axiosApiPost(POST_TASK_GRAPH_RESULT_START, {
       graphTaskId: activityId
@@ -109,8 +109,8 @@ class ExpeditionService {
 
   setGraphTaskJson(chapterId, form) {
     return axiosApiPost(POST_TASK_GRAPH_CREATE, {
-      chapterId: chapterId,
-      form: form
+      chapterId,
+      form
     }).catch((error) => {
       throw error
     })

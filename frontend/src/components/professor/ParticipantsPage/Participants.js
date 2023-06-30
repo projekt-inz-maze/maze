@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
+
 import { Tab } from 'react-bootstrap'
-import ParticipantsTable from './ParticipantsTable'
+import { connect } from 'react-redux'
+
 import { ParticipantsContent, TabsContainer } from './ParticipantsStyles'
+import ParticipantsTable from './ParticipantsTable'
 import GroupService from '../../../services/group.service'
 import Loader from '../../general/Loader/Loader'
-import { connect } from 'react-redux'
+
 
 function Participants(props) {
   const [allGroups, setAllGroups] = useState(undefined)
@@ -24,9 +27,9 @@ function Participants(props) {
           $background={props.theme.success}
           $fontColor={props.theme.background}
           $linkColor={props.theme.primary}
-          defaultActiveKey={'wszyscy'}
+          defaultActiveKey="wszyscy"
         >
-          <Tab eventKey={'wszyscy'} title={'Wszyscy'}>
+          <Tab eventKey="wszyscy" title="Wszyscy">
             <ParticipantsTable />
           </Tab>
 
@@ -43,7 +46,7 @@ function Participants(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

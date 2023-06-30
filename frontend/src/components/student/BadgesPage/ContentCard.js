@@ -1,8 +1,10 @@
 import React from 'react'
-import { CustomCard } from '../GameCardPage/GameCardStyles'
-import CardHeader from 'react-bootstrap/CardHeader'
+
 import { Card } from 'react-bootstrap'
+import CardHeader from 'react-bootstrap/CardHeader'
 import { connect } from 'react-redux'
+
+import { CustomCard } from '../GameCardPage/GameCardStyles'
 
 function ContentCard(props) {
   return (
@@ -21,7 +23,7 @@ function ContentCard(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

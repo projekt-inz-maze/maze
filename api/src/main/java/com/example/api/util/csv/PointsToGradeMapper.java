@@ -1,6 +1,6 @@
 package com.example.api.util.csv;
 
-import com.example.api.model.activity.result.TaskResult;
+import com.example.api.activity.result.model.TaskResult;
 import org.springframework.stereotype.Component;
 
 @Component

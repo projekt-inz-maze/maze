@@ -1,9 +1,10 @@
+import { connect } from 'react-redux'
+
 import ClosedQuestionPage from './ClosedQuestionPage/ClosedQuestionPage'
+import OpenQuestionPage from './OpenQuestionPage/OpenQuestionPage'
+import { ContentWithBackground } from './QuestionAndOptionsStyle'
 import { ERROR_OCCURRED, QuestionType } from '../../../../../utils/constants'
 import Loader from '../../../../general/Loader/Loader'
-import { ContentWithBackground } from './QuestionAndOptionsStyle'
-import OpenQuestionPage from './OpenQuestionPage/OpenQuestionPage'
-import { connect } from 'react-redux'
 
 // we don't need navigate, we don't need location - props are enough
 
@@ -35,7 +36,7 @@ function QuestionAndOptions(props) {
       {question === undefined ? (
         <Loader />
       ) : question == null ? (
-        <p className={'text-center h3'} style={{ color: props.theme.danger }}>
+        <p className="text-center h3" style={{ color: props.theme.danger }}>
           {ERROR_OCCURRED}
         </p>
       ) : (
@@ -52,7 +53,7 @@ function QuestionAndOptions(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

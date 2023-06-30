@@ -1,0 +1,31 @@
+package com.example.api.activity.task.dto.response.result.question;
+
+import com.example.api.question.model.Question;
+import com.example.api.question.model.QuestionType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+public class QuestionDetails {
+    private Long questionId;
+    private String content;
+    private Double points;
+    private List<OptionInfo> options;
+    private QuestionType type;
+    private String hint;
+
+    public QuestionDetails(Question question) {
+        this.questionId = question.getId();
+        this.content = question.getContent();
+        this.points = question.getPoints();
+        this.options = question.getOptions()
+                .stream()
+                .map(OptionInfo::new)
+                .toList();
+        this.type = question.getType();
+        this.hint = question.getHint();
+    }
+}

@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
+
 import { Formik } from 'formik'
 import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
-import { FormCol } from '../FormCol'
-import { login } from '../../../../actions/auth'
 import { connect } from 'react-redux'
-import { FIELD_REQUIRED, NOT_LOGGED_IN_ERROR } from '../../../../utils/constants'
+
+import { login } from '../../../../actions/auth'
 import { GeneralRoutes } from '../../../../routes/PageRoutes'
+import { FIELD_REQUIRED, NOT_LOGGED_IN_ERROR } from '../../../../utils/constants'
+import { FormCol } from '../FormCol'
 
 function LoginForm(props) {
   const { dispatch } = props
@@ -47,7 +49,7 @@ function LoginForm(props) {
             <Row className='mx-auto'>
               {FormCol('Email', 'email', 'email', 12, { errorColor: props.theme.danger })}
               {FormCol('Hasło', 'password', 'password', 12, { errorColor: props.theme.danger })}
-              <a className={'text-end pt-2'} style={{ color: props.theme.font }} href={GeneralRoutes.PASSWORD_RESET}>
+              <a className="text-end pt-2" style={{ color: props.theme.font }} href={GeneralRoutes.PASSWORD_RESET}>
                 Nie pamiętasz hasła ?
               </a>
             </Row>
@@ -66,7 +68,7 @@ function LoginForm(props) {
               </Col>
             </Row>
             {errorMessage && (
-              <p className={'text-center mt-2'} style={{ color: props.theme.danger }}>
+              <p className="text-center mt-2" style={{ color: props.theme.danger }}>
                 {errorMessage}
               </p>
             )}
@@ -78,7 +80,7 @@ function LoginForm(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

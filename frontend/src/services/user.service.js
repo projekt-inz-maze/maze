@@ -1,5 +1,3 @@
-import { axiosApiDelete, axiosApiGet, axiosApiMultipartPost, axiosApiMultipartPut, axiosApiPut } from '../utils/axios'
-import { parseJwt } from '../utils/Api'
 import {
   ADD_BADGE,
   DELETE_BADGE,
@@ -10,6 +8,8 @@ import {
   PUT_BADGE_UPDATE,
   PUT_PASSWORD_RESET
 } from './urls'
+import { parseJwt } from '../utils/Api'
+import { axiosApiDelete, axiosApiGet, axiosApiMultipartPost, axiosApiMultipartPut, axiosApiPut } from '../utils/axios'
 
 class UserService {
   getUser() {
@@ -78,7 +78,7 @@ class UserService {
 
   sendNewPassword(email, password, token) {
     return axiosApiPut(PUT_PASSWORD_RESET, {
-      email: email,
+      email,
       passwordResetToken: token,
       newPassword: password
     }).catch((error) => {

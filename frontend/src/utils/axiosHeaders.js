@@ -4,14 +4,14 @@ export const validHeader = (params) => ({
   headers: {
     ...authHeader()
   },
-  params: params
+  params
 })
 
 export const multipartFileHeader = (params) => ({
   headers: {
     ...authHeader()
   },
-  params: params
+  params
 })
 
 export const fileHeaderWithParams = (params) => ({
@@ -19,5 +19,5 @@ export const fileHeaderWithParams = (params) => ({
     ...authHeader()
   },
   responseType: 'blob',
-  params: params
+  params
 })

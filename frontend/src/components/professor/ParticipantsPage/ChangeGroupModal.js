@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
+
 import { Button, Card, Form, Modal, Spinner } from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/CardHeader'
-import Loader from '../../general/Loader/Loader'
+import { connect } from 'react-redux'
+
 import GroupService from '../../../services/group.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
+import Loader from '../../general/Loader/Loader'
 import SuccessModal from '../SuccessModal'
-import { connect } from 'react-redux'
+
 
 function ChangeGroupModal(props) {
   const [student, setStudent] = useState()
@@ -19,7 +22,7 @@ function ChangeGroupModal(props) {
     GroupService.getGroups()
       .then((response) => {
         setGroups([...response])
-        setNewGroup(response?.find((group) => group.name === student?.groupName)) //defaultValue in select list
+        setNewGroup(response?.find((group) => group.name === student?.groupName)) // defaultValue in select list
       })
       .catch(() => setGroups(null))
   }, [student])
@@ -45,7 +48,7 @@ function ChangeGroupModal(props) {
     <>
       <Modal show={props.show}>
         <Card>
-          <CardHeader className={'text-center'}>
+          <CardHeader className="text-center">
             <Card.Title>Zmiana grupy</Card.Title>
             <p>Zmień grupę wybranego studenta wybierając jego nową grupę z poniższej listy</p>
           </CardHeader>
@@ -55,7 +58,7 @@ function ChangeGroupModal(props) {
             <>
               <Card.Body>
                 {groups == null ? (
-                  <p className={'text-center h6'} style={{ color: props.theme.danger }}>
+                  <p className="text-center h6" style={{ color: props.theme.danger }}>
                     {ERROR_OCCURRED}
                   </p>
                 ) : (
@@ -76,7 +79,7 @@ function ChangeGroupModal(props) {
                   </>
                 )}
               </Card.Body>
-              <Card.Footer className={'d-flex justify-content-center align-items-center'}>
+              <Card.Footer className="d-flex justify-content-center align-items-center">
                 <Button
                   onClick={() => props.setModalOpen(false)}
                   style={{ backgroundColor: props.theme.danger, borderColor: props.theme.danger }}
@@ -85,10 +88,10 @@ function ChangeGroupModal(props) {
                 </Button>
                 <Button
                   style={{ backgroundColor: props.theme.success, borderColor: props.theme.success }}
-                  className={'ms-2'}
+                  className="ms-2"
                   onClick={submitChange}
                 >
-                  {isFetching ? <Spinner animation={'border'} size={'sm'} /> : <span>Zapisz</span>}
+                  {isFetching ? <Spinner animation="border" size="sm" /> : <span>Zapisz</span>}
                 </Button>
               </Card.Footer>
             </>
@@ -107,7 +110,7 @@ function ChangeGroupModal(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

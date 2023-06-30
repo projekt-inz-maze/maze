@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Dropdown } from 'react-bootstrap'
+import styled from 'styled-components'
 
 export const ImageContainer = styled.div`
   &:hover {

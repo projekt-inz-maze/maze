@@ -1,20 +1,22 @@
 import { toast } from 'react-toastify'
+
 import 'react-toastify/dist/ReactToastify.css'
-import authService from '../services/auth.service'
 import { logout } from '../actions/auth'
+import authService from '../services/auth.service'
+
 import { Button } from 'react-bootstrap'
 
 export const errorToast = (errorMsg, autoClose = 4000, position = 'top-right') =>
-  toast.error(errorMsg ?? 'Coś poszło nie tak.', { autoClose: autoClose, position: position })
+  toast.error(errorMsg ?? 'Coś poszło nie tak.', { autoClose, position })
 
 const refreshSession = (user, dispatch, navigate) => {
   authService.refreshToken(user.refresh_token).catch(() => dispatch(logout(navigate)))
 }
 export const refreshSessionToast = (user, dispatch, navigate) =>
   toast.warning(
-    <div className={'d-flex flex-column'}>
-      <p className={'text-center'}>Twoja sesja wygaśnie za mniej niż 15min.</p>
-      <Button variant={'outline-warning'} onClick={() => refreshSession(user, dispatch, navigate)}>
+    <div className="d-flex flex-column">
+      <p className="text-center">Twoja sesja wygaśnie za mniej niż 15min.</p>
+      <Button variant="outline-warning" onClick={() => refreshSession(user, dispatch, navigate)}>
         Wydłuż sesję
       </Button>
     </div>,

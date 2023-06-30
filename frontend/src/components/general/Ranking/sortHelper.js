@@ -47,7 +47,7 @@ export const sortArray = (array, order, sortedVariables, options = {}) => {
     // We can compare latin extended chars thanks to localeCompare (pl lang)
     if (options.isString) {
       return orderOffset * firstValue.localeCompare(secondValue)
-    } else {
+    }
       if (firstValue > secondValue) {
         result = 1
       } else if (firstValue < secondValue) {
@@ -55,7 +55,7 @@ export const sortArray = (array, order, sortedVariables, options = {}) => {
       } else {
         result = 0
       }
-    }
+
 
     return result * orderOffset
   })

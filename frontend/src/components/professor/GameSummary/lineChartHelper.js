@@ -21,5 +21,5 @@ export const lineChartConfig = (chapterScores) => {
     })
   })
 
-  return getChartConfig('LINE', { labels: labels, dataset: datasets })
+  return getChartConfig('LINE', { labels, dataset: datasets })
 }

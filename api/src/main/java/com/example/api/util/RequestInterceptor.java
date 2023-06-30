@@ -1,6 +1,4 @@
 package com.example.api.util;
-import com.example.api.model.user.User;
-import com.example.api.repo.user.UserRepo;
 import com.example.api.security.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

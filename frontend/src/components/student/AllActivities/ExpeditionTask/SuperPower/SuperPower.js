@@ -1,18 +1,18 @@
 import React from 'react'
-import { HeroType } from '../../../../../utils/userRole'
-import ExpeditionService from '../../../../../services/expedition.service'
 
-import RogueSuperPower from './HeroSuperPower/RogueSuperPower'
+
 import PriestSuperPower from './HeroSuperPower/PriestSuperPower'
+import RogueSuperPower from './HeroSuperPower/RogueSuperPower'
 import WizardAndWarriorSuperPower from './HeroSuperPower/WizardAndWarriorSuperPower'
+import ExpeditionService from '../../../../../services/expedition.service'
+import { HeroType } from '../../../../../utils/userRole'
 
 function SuperPower(props) {
   const userHeroType = localStorage.getItem('heroType')
   const powerUse = (questionId = undefined) => ExpeditionService.startSuperPower(props.activityId, questionId)
   const checkPowerCanBeUsed = () => ExpeditionService.checkSuperPowerCanBeUsed(props.activityId)
 
-  const wizardAndWarriorSuperPowerComponent = (storageKey) => {
-    return (
+  const wizardAndWarriorSuperPowerComponent = (storageKey) => (
       <WizardAndWarriorSuperPower
         status={props.status}
         usePower={powerUse}
@@ -21,7 +21,6 @@ function SuperPower(props) {
         storageKey={storageKey}
       />
     )
-  }
 
   const contentMapper = {
     [HeroType.WIZARD]: wizardAndWarriorSuperPowerComponent('questionPoints'),

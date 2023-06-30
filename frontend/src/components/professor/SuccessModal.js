@@ -10,8 +10,8 @@ function SuccessModal(props) {
           <Modal.Title>Zmiana zakończona.</Modal.Title>
         </Modal.Header>
       )}
-      <ModalBody className={'text-center'}>{text}</ModalBody>
-      <ModalFooter className={'justify-content-center'}>
+      <ModalBody className="text-center">{text}</ModalBody>
+      <ModalFooter className="justify-content-center">
         <Button
           style={{ backgroundColor: props.theme.success, borderColor: props.theme.success }}
           onClick={() => setIsSuccessModalOpen(false)}
@@ -24,7 +24,7 @@ function SuccessModal(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

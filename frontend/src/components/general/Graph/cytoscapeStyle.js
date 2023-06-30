@@ -1,5 +1,5 @@
-import nodeIcon from '../../../utils/resources/graphElements/node-edit.png'
 import labelIcon from '../../../utils/resources/graphElements/label1.png'
+import nodeIcon from '../../../utils/resources/graphElements/node-edit.png'
 
 const FONT_FAMILY = 'Patrick Hand'
 
@@ -64,11 +64,11 @@ export const nodeLabelStyle = (node) => {
     background: `url('${labelIcon}') no-repeat center`,
     backgroundSize: 'cover',
     zIndex: 12,
-    width: parseFloat(node.data().size) * 6 + 'px',
-    height: parseFloat(node.data().size) * 3 + 'px',
+    width: `${parseFloat(node.data().size) * 6  }px`,
+    height: `${parseFloat(node.data().size) * 3  }px`,
     textAlign: 'center',
-    padding: parseFloat(node.data().size) * 0.75 + 'px',
-    fontSize: parseFloat(node.data().size) * 0.7 + 'px',
+    padding: `${parseFloat(node.data().size) * 0.75  }px`,
+    fontSize: `${parseFloat(node.data().size) * 0.7  }px`,
     display: 'flex',
     justifyContent: 'center'
   }
@@ -87,32 +87,28 @@ export const gameNodeStyle = (node) => {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundSize: 'contain',
-    width: parseFloat(node.data().size) * 5 + 'px',
-    height: parseFloat(node.data().size) * 5 + 'px',
+    width: `${parseFloat(node.data().size) * 5  }px`,
+    height: `${parseFloat(node.data().size) * 5  }px`,
     zIndex: 10,
     fontFamily: FONT_FAMILY,
     opacity: node.data().isBlocked ? 0.5 : 1
   }
 }
 
-export const gameNodeChildStyle = (node) => {
-  return {
+export const gameNodeChildStyle = (node) => ({
     width: '50%',
     height: '50%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: parseFloat(node.data().size) * 3 + 'px',
+    fontSize: `${parseFloat(node.data().size) * 3  }px`,
     color: 'white',
     zIndex: 11
-  }
-}
+  })
 
-export const nodeLabelChildStyle = (node) => {
-  return {
-    width: (parseFloat(node.data().size) * 7) / 2 + 'px',
+export const nodeLabelChildStyle = (node) => ({
+    width: `${(parseFloat(node.data().size) * 7) / 2  }px`,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     fontFamily: FONT_FAMILY
-  }
-}
+  })

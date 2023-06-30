@@ -1,6 +1,6 @@
 package com.example.api.error.exception;
 
-import com.example.api.model.question.QuestionType;
+import com.example.api.question.model.QuestionType;
 
 public class WrongAnswerTypeException extends RequestValidationException{
     private final QuestionType expectedType;

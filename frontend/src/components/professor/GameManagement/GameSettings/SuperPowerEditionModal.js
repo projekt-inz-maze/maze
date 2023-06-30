@@ -1,4 +1,7 @@
 import React, { useCallback, useRef, useState, useTransition } from 'react'
+
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   Button,
   Form,
@@ -11,13 +14,12 @@ import {
   Spinner
 } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { HeroType } from '../../../../utils/userRole'
-import { coolDownDescription, ERROR_OCCURRED, getHeroName, getSpecifyDescription } from '../../../../utils/constants'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
-import Tooltip from '../../../general/Tooltip/Tooltip'
+
 import ProfessorService from '../../../../services/professor.service'
+import { coolDownDescription, ERROR_OCCURRED, getHeroName, getSpecifyDescription } from '../../../../utils/constants'
 import { successToast } from '../../../../utils/toasts'
+import { HeroType } from '../../../../utils/userRole'
+import Tooltip from '../../../general/Tooltip/Tooltip'
 
 function SuperPowerEditionModal(props) {
   const heroTypes = Object.values(HeroType)
@@ -64,7 +66,7 @@ function SuperPowerEditionModal(props) {
 
       return (
         <>
-          <FontAwesomeIcon className={'ms-2'} icon={faCircleInfo} data-for={dataFor} data-tip={dataTip} />
+          <FontAwesomeIcon className="ms-2" icon={faCircleInfo} data-for={dataFor} data-tip={dataTip} />
           <Tooltip id={dataFor} />
         </>
       )
@@ -73,13 +75,13 @@ function SuperPowerEditionModal(props) {
   )
 
   return (
-    <Modal show={props.isModalVisible} onHide={() => props.setModalVisible(false)} size={'lg'}>
+    <Modal show={props.isModalVisible} onHide={() => props.setModalVisible(false)} size="lg">
       <ModalHeader>
         <h5>Edycja umiejętności postaci.</h5>
       </ModalHeader>
       <ModalBody>
         <div>
-          <FormLabel className={'fw-bold'}>Rodzaj postaci</FormLabel>
+          <FormLabel className="fw-bold">Rodzaj postaci</FormLabel>
           <Form.Select onChange={(e) => setSelectedHeroType(e.target.value)}>
             {heroTypes.map((heroType, index) => (
               <option value={heroType} name={heroType} key={index}>
@@ -89,26 +91,26 @@ function SuperPowerEditionModal(props) {
           </Form.Select>
         </div>
 
-        <div className={'mt-4'}>
-          <FormLabel className={'fw-bold'}>
+        <div className="mt-4">
+          <FormLabel className="fw-bold">
             <span>Wartość bazowa</span>
             {infoIcon('baseValueInfo')}
           </FormLabel>
-          <FormControl type={'number'} ref={baseValueRef} />
+          <FormControl type="number" ref={baseValueRef} />
         </div>
 
         {selectedHeroType === HeroType.WIZARD || selectedHeroType === HeroType.WARRIOR ? (
-          <div className={'mt-4'}>
-            <FormLabel className={'fw-bold'}>
+          <div className="mt-4">
+            <FormLabel className="fw-bold">
               <span>Czas ładowania</span>
               {infoIcon('coolDownInfo')}
             </FormLabel>
-            <FormControl type={'number'} ref={coolDownRef} />
+            <FormControl type="number" ref={coolDownRef} />
           </div>
         ) : null}
       </ModalBody>
       <ModalFooter>
-        <div className={'gap-2 d-flex w-100 justify-content-center'}>
+        <div className="gap-2 d-flex w-100 justify-content-center">
           <Button
             style={{ backgroundColor: props.theme.danger, borderColor: props.theme.danger }}
             onClick={() => props.setModalVisible(false)}
@@ -120,18 +122,18 @@ function SuperPowerEditionModal(props) {
             onClick={editSuperPower}
             disabled={isEditionFetching}
           >
-            {isEditionFetching ? <Spinner animation={'border'} /> : <span>Zapisz</span>}
+            {isEditionFetching ? <Spinner animation="border" /> : <span>Zapisz</span>}
           </Button>
         </div>
 
-        {!!errorMessage ? <p className={'text-danger w-100 text-center'}>{errorMessage}</p> : null}
+        {errorMessage ? <p className="text-danger w-100 text-center">{errorMessage}</p> : null}
       </ModalFooter>
     </Modal>
   )
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

@@ -22,7 +22,7 @@ describe('Password validator tests:', () => {
     // when
     const validatorMessage = validatePassword(examplePassword)
 
-    //then
+    // then
     expect(validatorMessage).toBe('')
   })
   it('should return FIELD_REQUIRED error for empty password string', () => {

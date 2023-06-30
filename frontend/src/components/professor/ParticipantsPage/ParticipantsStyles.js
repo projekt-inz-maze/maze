@@ -1,6 +1,7 @@
-import styled from 'styled-components'
-import { Content } from '../../App/AppGeneralStyles'
 import { Table, Tabs } from 'react-bootstrap'
+import styled from 'styled-components'
+
+import { Content } from '../../App/AppGeneralStyles'
 
 export const ParticipantsContent = styled(Content)`
   padding: 15px;

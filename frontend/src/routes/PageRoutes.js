@@ -1,7 +1,8 @@
 export const GeneralRoutes = {
   HOME: '/',
   PASSWORD_RESET: '/password-reset',
-  CANVAS: '/canvas' // other case
+  CANVAS: '/canvas', // other case
+  COURSE_LIST: '/courses'
 }
 
 export const StudentRoutes = {

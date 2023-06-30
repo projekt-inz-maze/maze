@@ -1,6 +1,8 @@
 import React from 'react'
-import { Chart, Circle, Percentage } from './PercentageCircleStyle'
+
 import { connect } from 'react-redux'
+
+import { Chart, Circle, Percentage } from './PercentageCircleStyle'
 
 function PercentageCircle(props) {
   const { percentageValue, points, maxPoints } = props
@@ -25,7 +27,7 @@ function PercentageCircle(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

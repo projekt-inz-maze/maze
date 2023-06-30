@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
+
 import { Spinner } from 'react-bootstrap'
-import GroupService from '../../../../services/group.service'
-import { TableContainer } from '../../../student/PointsPage/Tables/TableStyle'
-import { ERROR_OCCURRED } from '../../../../utils/constants'
 import { connect } from 'react-redux'
+
+import GroupService from '../../../../services/group.service'
+import { ERROR_OCCURRED } from '../../../../utils/constants'
+import { TableContainer } from '../../../student/PointsPage/Tables/TableStyle'
 
 const tableHeaders = ['Nr', 'Nazwa grupy', 'Liczba uczestników', 'Kod']
 
@@ -25,8 +27,7 @@ function GroupsTable(props) {
     // eslint-disable-next-line
   }, [])
 
-  const TableBody = (tableContent) => {
-    return tableContent.map((row, idx) => (
+  const TableBody = (tableContent) => tableContent.map((row, idx) => (
       <tr key={idx}>
         <td>{idx + 1}</td>
         <td>{row.name}</td>
@@ -34,15 +35,13 @@ function GroupsTable(props) {
         <td>{row.invitationCode}</td>
       </tr>
     ))
-  }
 
   return (
-    <>
-      <TableContainer
+    <TableContainer
         $fontColor={props.theme.font}
         $background={props.theme.primary}
         $bodyColor={props.theme.secondary}
-        className={'mb-0'}
+        className="mb-0"
       >
         <thead>
           <tr>
@@ -54,13 +53,13 @@ function GroupsTable(props) {
         <tbody>
           {tableContent === undefined ? (
             <tr>
-              <td colSpan={4} className={'text-center'}>
-                <Spinner animation={'border'} />
+              <td colSpan={4} className="text-center">
+                <Spinner animation="border" />
               </td>
             </tr>
           ) : tableContent === null ? (
             <tr>
-              <td colSpan={4} className={'text-center'}>
+              <td colSpan={4} className="text-center">
                 {ERROR_OCCURRED}
               </td>
             </tr>
@@ -69,12 +68,11 @@ function GroupsTable(props) {
           )}
         </tbody>
       </TableContainer>
-    </>
   )
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

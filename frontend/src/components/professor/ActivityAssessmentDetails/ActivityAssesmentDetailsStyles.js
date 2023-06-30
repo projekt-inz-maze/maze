@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Button, Col, Row } from 'react-bootstrap'
+import styled from 'styled-components'
 
 export const PointsRow = styled(Row)`
   align-items: center;

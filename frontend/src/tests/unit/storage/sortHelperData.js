@@ -1,6 +1,7 @@
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons'
-import { HeroType } from '../../../utils/userRole'
+
 import { getHeroName } from '../../../utils/constants'
+import { HeroType } from '../../../utils/userRole'
 
 export const ASC = 'ASC'
 export const DESC = 'DESC'

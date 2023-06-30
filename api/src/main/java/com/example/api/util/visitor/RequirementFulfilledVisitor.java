@@ -1,14 +1,14 @@
 package com.example.api.util.visitor;
 
-import com.example.api.model.activity.result.FileTaskResult;
-import com.example.api.model.activity.result.GraphTaskResult;
-import com.example.api.model.activity.task.FileTask;
-import com.example.api.model.activity.task.GraphTask;
-import com.example.api.model.map.requirement.*;
-import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.FileTaskResultRepo;
-import com.example.api.repo.activity.result.GraphTaskResultRepo;
-import com.example.api.service.user.UserService;
+import com.example.api.activity.result.model.FileTaskResult;
+import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.activity.task.model.FileTask;
+import com.example.api.activity.task.model.GraphTask;
+import com.example.api.map.model.requirement.*;
+import com.example.api.user.model.User;
+import com.example.api.activity.repository.result.FileTaskResultRepository;
+import com.example.api.activity.repository.result.GraphTaskResultRepository;
+import com.example.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RequirementFulfilledVisitor {
     private final UserService userService;
-    private final GraphTaskResultRepo graphTaskResultRepo;
-    private final FileTaskResultRepo fileTaskResultRepo;
+    private final GraphTaskResultRepository graphTaskResultRepository;
+    private final FileTaskResultRepository fileTaskResultRepository;
 
     public boolean visitDateFromRequirement(DateFromRequirement requirement) {
         if (!requirement.getSelected()) {
@@ -44,7 +44,7 @@ public class RequirementFulfilledVisitor {
             return true;
         }
         User student = userService.getCurrentUser();
-        List<FileTask> fileTasks = fileTaskResultRepo.findAllByUser(student)
+        List<FileTask> fileTasks = fileTaskResultRepository.findAllByUser(student)
                 .stream()
                 .map(FileTaskResult::getFileTask)
                 .toList();
@@ -56,7 +56,7 @@ public class RequirementFulfilledVisitor {
             return true;
         }
         User student = userService.getCurrentUser();
-        List<GraphTask> graphTasks = graphTaskResultRepo.findAllByUser(student)
+        List<GraphTask> graphTasks = graphTaskResultRepository.findAllByUser(student)
                 .stream()
                 .map(GraphTaskResult::getGraphTask)
                 .toList();

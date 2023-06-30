@@ -1,11 +1,14 @@
 import React, { useRef, useState, useTransition } from 'react'
+
 import { Formik } from 'formik'
+import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
+import { connect } from 'react-redux'
+
+import UserService from '../../../../services/user.service'
 import { BadgeType, ERROR_OCCURRED, FIELD_REQUIRED, FILE_INPUT_REQUIRED } from '../../../../utils/constants'
 import { successToast } from '../../../../utils/toasts'
-import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
 import { FormCol } from '../../../general/LoginAndRegistrationPage/FormCol'
-import UserService from '../../../../services/user.service'
-import { connect } from 'react-redux'
+
 
 function BadgeCreationForm(props) {
   const [isFetching, startAddition] = useTransition()
@@ -92,9 +95,9 @@ function BadgeCreationForm(props) {
                 <Col md={12}>
                   <Form.Check
                     ref={checkboxRef}
-                    className={'my-3'}
-                    label={'Zastosuj tylko dla grupy, do której należy student.'}
-                    name={'forGroup'}
+                    className="my-3"
+                    label="Zastosuj tylko dla grupy, do której należy student."
+                    name="forGroup"
                   />
                 </Col>
               ) : null}
@@ -118,7 +121,7 @@ function BadgeCreationForm(props) {
               </Col>
             </Row>
             {errorMessage ? (
-              <p className={'text-center mt-2'} style={{ color: props.theme.danger }}>
+              <p className="text-center mt-2" style={{ color: props.theme.danger }}>
                 {errorMessage}
               </p>
             ) : null}
@@ -130,7 +133,7 @@ function BadgeCreationForm(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

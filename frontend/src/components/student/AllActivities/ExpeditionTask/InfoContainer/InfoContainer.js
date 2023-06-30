@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { getTimer } from '../../../../../utils/storageManager'
-import { TimerContainer } from './InfoContainerStyle'
+
 import GraphPreview from './GraphPreview'
-import { PercentageBar } from '../../../BadgesPage/BadgesStyle'
+import { TimerContainer } from './InfoContainerStyle'
 import { isMobileView } from '../../../../../utils/mobileHelper'
+import { getTimer } from '../../../../../utils/storageManager'
+import { PercentageBar } from '../../../BadgesPage/BadgesStyle'
 import SuperPower from '../SuperPower/SuperPower'
 
 const mobileViewStyle = {
@@ -29,7 +30,7 @@ export default function InfoContainer(props) {
 
   const setIntervalForTimer = () => {
     setTimerInterval(
-      setInterval(function () {
+      setInterval(() => {
         setRemainingTime((prevState) => prevState - 1)
       }, 1000)
     )
@@ -74,7 +75,7 @@ export default function InfoContainer(props) {
         $height={PERCENTAGE_BAR_HEIGHT}
         style={isMobileView() ? mobileViewStyle : desktopViewStyle}
       >
-        <strong className={'d-flex justify-content-center'}>{`${props.actualPoints?.toFixed(2)}/${
+        <strong className="d-flex justify-content-center">{`${props.actualPoints?.toFixed(2)}/${
           props.maxPoints
         }`}</strong>
       </PercentageBar>
@@ -82,7 +83,7 @@ export default function InfoContainer(props) {
   }, [props.actualPoints, props.maxPoints])
 
   return (
-    <div className={'d-flex justify-content-center'}>
+    <div className="d-flex justify-content-center">
       <TimerContainer time={remainingTime}>{timer}</TimerContainer>
       {percentageBar}
       <GraphPreview
@@ -97,7 +98,7 @@ export default function InfoContainer(props) {
         status={props.status}
       />
       {React.cloneElement(props.children, {
-        remainingTime: remainingTime
+        remainingTime
       })}
     </div>
   )

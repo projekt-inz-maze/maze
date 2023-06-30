@@ -1,6 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
+
 import { Button } from 'react-bootstrap'
+import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 function GoBackButton(props) {
@@ -24,7 +25,7 @@ function GoBackButton(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

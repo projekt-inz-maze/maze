@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+
 import { faAnglesLeft, faAnglesRight, faFire } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Nav } from 'react-bootstrap'
+import { connect } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+
 import { NavLinkStyles } from './navBuilder'
 import { Badge, LogoDiv, NavBarTextContainer, NavEdit, SidebarEdit } from './SidebarStyles'
-import { connect } from 'react-redux'
 import { logout } from '../../../actions/auth'
-import { GeneralRoutes } from '../../../routes/PageRoutes'
 import { SET_ASSESSMENT_NUMBERS, SET_EXPANDED } from '../../../actions/types'
+import { GeneralRoutes } from '../../../routes/PageRoutes'
 import ProfessorService from '../../../services/professor.service'
 import { isStudent } from '../../../utils/storageManager'
 
@@ -16,7 +18,7 @@ function Sidebar(props) {
   const navigate = useNavigate()
   const logOut = () => props.dispatch(logout(navigate))
 
-  const isExpanded = props.sidebar.isExpanded
+  const {isExpanded} = props.sidebar
   const assessmentsNumber = props.sidebar.assessments
 
   useEffect(() => {
@@ -40,14 +42,14 @@ function Sidebar(props) {
     <SidebarEdit $backgroundColor={props.theme.primary}>
       <NavBarTextContainer $fontColor={props.theme.font}>
         <Nav.Link as={LogoDiv} $logoColor={props.theme.font} to={GeneralRoutes.HOME} key={GeneralRoutes.HOME} id='logo'>
-          <FontAwesomeIcon icon={faFire} size={'2x'} />
+          <FontAwesomeIcon icon={faFire} size="2x" />
           {isExpanded && <p>Systematic Chaos</p>}
         </Nav.Link>
 
         <div className={`d-flex w-100  ${isExpanded ? 'justify-content-end pe-3' : 'justify-content-center'}`}>
           <FontAwesomeIcon
             icon={isExpanded ? faAnglesLeft : faAnglesRight}
-            size={'lg'}
+            size="lg"
             color={props.theme.background}
             onClick={toggleSidebar}
             style={{ cursor: 'pointer' }}
@@ -73,7 +75,7 @@ function Sidebar(props) {
                 <div style={{ width: 30, textAlign: 'center' }}>
                   <FontAwesomeIcon icon={link.icon} />
                 </div>
-                {isExpanded && <span className={'ps-2'}>{link.name}</span>}
+                {isExpanded && <span className="ps-2">{link.name}</span>}
                 {link.action === 'BADGE' && assessmentsNumber ? (
                   <Badge $badgeColor={props.theme.danger}>{assessmentsNumber}</Badge>
                 ) : null}
@@ -114,8 +116,8 @@ function Sidebar(props) {
 }
 
 function mapStateToProps(state) {
-  const sidebar = state.sidebar
-  const theme = state.theme
+  const {sidebar} = state
+  const {theme} = state
   const { user } = state.auth
 
   return { sidebar, user, theme }

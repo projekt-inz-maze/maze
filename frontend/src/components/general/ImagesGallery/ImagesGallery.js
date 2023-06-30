@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import GridLayout from 'react-grid-layout'
-import { ControlPanel, ImageContainer } from './ImagesGalleryStyle'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { faChevronLeft, faChevronRight, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'
-import { Button, Dropdown, Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import download from 'downloadjs'
+import { Button, Dropdown, Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
+import GridLayout from 'react-grid-layout'
 import { connect } from 'react-redux'
 
-//prop - imagesWithId
+import { ControlPanel, ImageContainer } from './ImagesGalleryStyle'
+
+// prop - imagesWithId
 
 function ImagesGallery(props) {
   const [imagesHeight, setImagesHeight] = useState([])
@@ -78,7 +80,7 @@ function ImagesGallery(props) {
       id: nextImageId,
       src: props.imagesWithId ? props.images[nextImageId].url : props.images[nextImageId],
       isFirst: false,
-      isLast: isLast
+      isLast
     })
   }
 
@@ -88,7 +90,7 @@ function ImagesGallery(props) {
     setFullPreviewSource({
       id: prevImageId,
       src: props.imagesWithId ? props.images[prevImageId].url : props.images[prevImageId],
-      isFirst: isFirst,
+      isFirst,
       isLast: false
     })
   }
@@ -97,7 +99,7 @@ function ImagesGallery(props) {
     <>
       {layout && rowHeight && (
         <GridLayout
-          className={'layout'}
+          className="layout"
           layout={layout}
           cols={props.cols}
           width={props.width}
@@ -107,7 +109,7 @@ function ImagesGallery(props) {
           {props.images.map((image, index) => (
             <ImageContainer
               key={props.imagesWithId ? image.id : index.toString()}
-              className={'rounded'}
+              className="rounded"
               style={
                 props.pickedImage && props.pickedImage === image.id
                   ? { border: `4px solid ${props.theme.success}`, padding: '5px' }
@@ -115,17 +117,17 @@ function ImagesGallery(props) {
               }
             >
               <img
-                className={'p-3'}
-                width={'100%'}
-                height={'100%'}
+                className="p-3"
+                width="100%"
+                height="100%"
                 src={props.imagesWithId ? image.url : image}
-                alt={'info-task-attachment'}
+                alt="info-task-attachment"
                 onClick={() => {
                   if (props.imagesWithId) props.setFieldValue('imageId', image.id)
                 }}
               />
 
-              <ControlPanel drop={'start'}>
+              <ControlPanel drop="start">
                 <Dropdown.Toggle style={{ backgroundColor: props.theme.primary, borderColor: props.theme.primary }}>
                   <FontAwesomeIcon icon={faEllipsisVertical} />
                 </Dropdown.Toggle>
@@ -143,14 +145,14 @@ function ImagesGallery(props) {
         </GridLayout>
       )}
 
-      <Modal show={isFullPreviewOpen} onHide={() => setIsFullPreviewOpen(false)} size={'xl'}>
+      <Modal show={isFullPreviewOpen} onHide={() => setIsFullPreviewOpen(false)} size="xl">
         <ModalHeader closeButton>
           <h5>Pełny podgląd plików</h5>
         </ModalHeader>
-        <ModalBody className={'d-flex justify-content-center align-items-center'}>
+        <ModalBody className="d-flex justify-content-center align-items-center">
           <FontAwesomeIcon
             icon={faChevronLeft}
-            className={'display-3 me-3'}
+            className="display-3 me-3"
             onClick={() => {
               if (!fullPreviewSource.isFirst) {
                 prevImage(fullPreviewSource.id)
@@ -158,10 +160,10 @@ function ImagesGallery(props) {
             }}
             style={{ opacity: fullPreviewSource.isFirst ? 0.5 : 1, cursor: 'pointer' }}
           />
-          <img width={'90%'} height={'90%'} src={fullPreviewSource.src} alt={'full-preview'} />
+          <img width="90%" height="90%" src={fullPreviewSource.src} alt="full-preview" />
           <FontAwesomeIcon
             icon={faChevronRight}
-            className={'display-3 ms-3'}
+            className="display-3 ms-3"
             onClick={() => {
               if (!fullPreviewSource.isLast) {
                 nextImage(fullPreviewSource.id)
@@ -179,7 +181,7 @@ function ImagesGallery(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }
