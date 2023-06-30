@@ -36,6 +36,7 @@ module.exports = {
     'react/destructuring-assignment': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react-hooks/rules-of-hooks': 'error',
+    'react/function-component-definition': 'off',
     'import/no-extraneous-dependencies': 'error',
     'import/prefer-default-export': 'off', // TODO: Drop this later.
     'consistent-return': 'off', // TODO: Drop this later.
