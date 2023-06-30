@@ -1,61 +1,60 @@
 package com.example.api.config;
 
-import com.example.api.model.activity.result.AdditionalPoints;
-import com.example.api.model.activity.result.FileTaskResult;
-import com.example.api.model.activity.result.GraphTaskResult;
-import com.example.api.model.activity.result.SurveyResult;
-import com.example.api.model.activity.task.FileTask;
-import com.example.api.model.activity.task.GraphTask;
-import com.example.api.model.activity.task.Info;
-import com.example.api.model.activity.task.Survey;
-import com.example.api.model.group.AccessDate;
-import com.example.api.model.group.Group;
-import com.example.api.model.map.ActivityMap;
-import com.example.api.model.map.Chapter;
-import com.example.api.model.map.requirement.*;
-import com.example.api.model.question.Difficulty;
-import com.example.api.model.question.Option;
-import com.example.api.model.question.Question;
-import com.example.api.model.question.QuestionType;
-import com.example.api.model.user.AccountType;
-import com.example.api.model.user.HeroType;
-import com.example.api.model.user.Rank;
-import com.example.api.model.user.User;
-import com.example.api.model.user.badge.*;
-import com.example.api.model.user.hero.*;
-import com.example.api.model.util.File;
-import com.example.api.model.util.Image;
-import com.example.api.model.util.ImageType;
-import com.example.api.model.util.Url;
-import com.example.api.repo.activity.result.AdditionalPointsRepo;
-import com.example.api.repo.activity.result.SurveyResultRepo;
-import com.example.api.repo.map.ChapterRepo;
-import com.example.api.repo.map.RequirementRepo;
-import com.example.api.repo.user.*;
-import com.example.api.repo.util.FileRepo;
-import com.example.api.repo.util.UrlRepo;
-import com.example.api.service.activity.feedback.ProfessorFeedbackService;
-import com.example.api.service.activity.feedback.SurveyResultService;
-import com.example.api.service.activity.result.FileTaskResultService;
-import com.example.api.service.activity.result.GraphTaskResultService;
-import com.example.api.service.activity.task.FileTaskService;
-import com.example.api.service.activity.task.GraphTaskService;
-import com.example.api.service.activity.task.InfoService;
-import com.example.api.service.activity.task.SurveyService;
-import com.example.api.service.group.AccessDateService;
-import com.example.api.service.group.GroupService;
-import com.example.api.service.map.ActivityMapService;
-import com.example.api.service.map.RequirementService;
-import com.example.api.service.question.OptionService;
-import com.example.api.service.question.QuestionService;
-import com.example.api.service.user.BadgeService;
-import com.example.api.service.user.UserService;
+import com.example.api.activity.result.model.AdditionalPoints;
+import com.example.api.activity.result.model.FileTaskResult;
+import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.activity.result.model.SurveyResult;
+import com.example.api.activity.task.model.FileTask;
+import com.example.api.activity.task.model.GraphTask;
+import com.example.api.activity.task.model.Info;
+import com.example.api.activity.task.model.Survey;
+import com.example.api.group.model.AccessDate;
+import com.example.api.group.model.Group;
+import com.example.api.map.model.ActivityMap;
+import com.example.api.map.model.Chapter;
+import com.example.api.map.model.requirement.*;
+import com.example.api.question.model.Difficulty;
+import com.example.api.question.model.Option;
+import com.example.api.question.model.Question;
+import com.example.api.question.model.QuestionType;
+import com.example.api.user.model.AccountType;
+import com.example.api.user.model.HeroType;
+import com.example.api.user.model.Rank;
+import com.example.api.user.model.User;
+import com.example.api.user.model.badge.*;
+import com.example.api.user.model.hero.*;
+import com.example.api.util.model.File;
+import com.example.api.util.model.Image;
+import com.example.api.util.model.ImageType;
+import com.example.api.util.model.Url;
+import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
+import com.example.api.activity.repository.result.SurveyResultRepository;
+import com.example.api.map.repository.ChapterRepository;
+import com.example.api.map.repository.RequirementRepository;
+import com.example.api.user.repository.*;
+import com.example.api.util.repository.FileRepository;
+import com.example.api.util.repository.UrlRepository;
+import com.example.api.activity.feedback.service.ProfessorFeedbackService;
+import com.example.api.activity.feedback.service.SurveyResultService;
+import com.example.api.activity.result.service.FileTaskResultService;
+import com.example.api.activity.result.service.GraphTaskResultService;
+import com.example.api.activity.task.service.FileTaskService;
+import com.example.api.activity.task.service.GraphTaskService;
+import com.example.api.activity.task.service.InfoService;
+import com.example.api.activity.task.service.SurveyService;
+import com.example.api.group.service.AccessDateService;
+import com.example.api.group.service.GroupService;
+import com.example.api.map.service.ActivityMapService;
+import com.example.api.map.service.RequirementService;
+import com.example.api.question.service.OptionService;
+import com.example.api.question.service.QuestionService;
+import com.example.api.user.service.BadgeService;
+import com.example.api.user.service.UserService;
 import com.example.api.util.message.MessageManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ByteArrayResource;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
@@ -71,17 +70,17 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 @Transactional
 public class DatabaseConfig {
-    private final UrlRepo urlRepo;
-    private final ChapterRepo chapterRepo;
-    private final RankRepo rankRepo;
-    private final AdditionalPointsRepo additionalPointsRepo;
-    private final SurveyResultRepo surveyResultRepo;
-    private final FileRepo fileRepo;
-    private final UserRepo userRepo;
-    private final BadgeRepo badgeRepo;
-    private final UnlockedBadgeRepo unlockedBadgeRepo;
-    private final RequirementRepo requirementRepo;
-    private final HeroRepo heroRepo;
+    private final UrlRepository urlRepository;
+    private final ChapterRepository chapterRepository;
+    private final RankRepository rankRepository;
+    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final SurveyResultRepository surveyResultRepository;
+    private final FileRepository fileRepository;
+    private final UserRepository userRepository;
+    private final BadgeRepository badgeRepository;
+    private final UnlockedBadgeRepository unlockedBadgeRepository;
+    private final RequirementRepository requirementRepository;
+    private final HeroRepository heroRepository;
 
     @Bean
     public CommandLineRunner commandLineRunner(UserService userService, ProfessorFeedbackService professorFeedbackService,
@@ -101,7 +100,7 @@ public class DatabaseConfig {
             Hero rogue = new Rogue(HeroType.ROGUE, week);
             Hero warrior = new Warrior(HeroType.WARRIOR, week);
             Hero wizard = new Wizard(HeroType.WIZARD, week);
-            heroRepo.saveAll(List.of(priest, rogue, wizard, warrior));
+            heroRepository.saveAll(List.of(priest, rogue, wizard, warrior));
 
             // USERS & GROUPS
 
@@ -468,8 +467,8 @@ public class DatabaseConfig {
             Url url2 = new Url();
             url1.setUrl("https://upload.wikimedia.org/wikipedia/commons/c/cb/UTP_cable.jpg");
             url2.setUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/25_pair_color_code_chart.svg/800px-25_pair_color_code_chart.svg.png");
-            urlRepo.save(url1);
-            urlRepo.save(url2);
+            urlRepository.save(url1);
+            urlRepository.save(url2);
             info1.setImageUrls(List.of(url1, url2));
             info1.setTitle("Skrętki");
             info1.setExperience(10.0);
@@ -490,7 +489,7 @@ public class DatabaseConfig {
 
             byte[] chapterImageBytes = getByteArrayForFile("src/main/resources/images/chapter_image.png", "png");
             Image chapterImage = new Image("Chapter image 1", chapterImageBytes, ImageType.CHAPTER);
-            fileRepo.save(chapterImage);
+            fileRepository.save(chapterImage);
 
             ActivityMap activityMap1 = new ActivityMap();
             activityMap1.setMapSizeX(8);
@@ -565,7 +564,7 @@ public class DatabaseConfig {
             chapter.setActivityMap(activityMap1);
             chapter.setRequirements(requirementService.getDefaultRequirements(false));
             chapter.setIsBlocked(false);
-            chapterRepo.save(chapter);
+            chapterRepository.save(chapter);
 
             calendar.set(2022, Calendar.JUNE, 15);
             AdditionalPoints additionalPoints = new AdditionalPoints();
@@ -576,7 +575,7 @@ public class DatabaseConfig {
             additionalPoints.setProfessorEmail(professor.getEmail());
             additionalPoints.setDescription("Good job");
             addReceivedPointsForUser(student, additionalPoints.getPointsReceived());
-            additionalPointsRepo.save(additionalPoints);
+            professorFeedbackRepository.save(additionalPoints);
 
             SurveyResult surveyResult1 = new SurveyResult();
             surveyResult1.setSurvey(survey);
@@ -586,7 +585,7 @@ public class DatabaseConfig {
             addReceivedPointsForUser(student, surveyResult1.getPointsReceived());
             calendar.set(2022, Calendar.JUNE, 16);
             surveyResult1.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResultRepo.save(surveyResult1);
+            surveyResultRepository.save(surveyResult1);
 
             SurveyResult surveyResult2 = new SurveyResult();
             surveyResult2.setSurvey(survey);
@@ -596,7 +595,7 @@ public class DatabaseConfig {
             addReceivedPointsForUser(student1, surveyResult2.getPointsReceived());
             calendar.set(2022, Calendar.JUNE, 18);
             surveyResult2.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResultRepo.save(surveyResult2);
+            surveyResultRepository.save(surveyResult2);
 
             SurveyResult surveyResult3 = new SurveyResult();
             surveyResult3.setSurvey(survey);
@@ -606,30 +605,30 @@ public class DatabaseConfig {
             addReceivedPointsForUser(student10, surveyResult3.getPointsReceived());
             calendar.set(2022, Calendar.JUNE, 19);
             surveyResult3.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResultRepo.save(surveyResult3);
+            surveyResultRepository.save(surveyResult3);
 
             File file = new File();
-            fileRepo.save(file);
+            fileRepository.save(file);
 
 
             byte[] chapterImageBytes2 = getByteArrayForFile("src/main/resources/images/chapter_image2.png", "png");
             Image chapterImage2 = new Image("Chapter image 2", chapterImageBytes2, ImageType.CHAPTER);
-            fileRepo.save(chapterImage2);
+            fileRepository.save(chapterImage2);
 
             byte[] chapterImageBytes3 = getByteArrayForFile("src/main/resources/images/chapter_image3.png", "png");
             Image chapterImage3 = new Image("Chapter image 3", chapterImageBytes3, ImageType.CHAPTER);
-            fileRepo.save(chapterImage3);
+            fileRepository.save(chapterImage3);
 
             byte[] chapterImageBytes4 = getByteArrayForFile("src/main/resources/images/chapter_image4.png", "png");
             Image chapterImage4 = new Image("Chapter image 4", chapterImageBytes4, ImageType.CHAPTER);
-            fileRepo.save(chapterImage4);
+            fileRepository.save(chapterImage4);
 
             byte[] chapterImageBytes5 = getByteArrayForFile("src/main/resources/images/chapter_image5.png", "png");
             Image chapterImage5 = new Image("Chapter image 5", chapterImageBytes5, ImageType.CHAPTER);
-            fileRepo.save(chapterImage5);
+            fileRepository.save(chapterImage5);
 
-            userRepo.saveAll(students1);
-            userRepo.saveAll(students2);
+            userRepository.saveAll(students1);
+            userRepository.saveAll(students2);
 
             initAllRanks();
             initBadges();
@@ -682,90 +681,90 @@ public class DatabaseConfig {
                 fileTasksRequirement
         );
 
-        requirementRepo.saveAll(requirements);
+        requirementRepository.saveAll(requirements);
         return requirements;
     }
 
     private void initAllRanks() throws IOException {
         byte[] warriorImageBytes1 = getByteArrayForFile("src/main/resources/images/warrior1.png", "png");
         Image warriorImage1 = new Image("Warrior rank image 1", warriorImageBytes1, ImageType.RANK);
-        fileRepo.save(warriorImage1);
+        fileRepository.save(warriorImage1);
 
         byte[] warriorImageBytes2 = getByteArrayForFile("src/main/resources/images/warrior.png", "png");
         Image warriorImage2 = new Image("Warrior rank image 2", warriorImageBytes2, ImageType.RANK);
-        fileRepo.save(warriorImage2);
+        fileRepository.save(warriorImage2);
 
         byte[] warriorImageBytes3 = getByteArrayForFile("src/main/resources/images/swordsman.png", "png");
         Image warriorImage3 = new Image("Warrior rank image 3", warriorImageBytes3, ImageType.RANK);
-        fileRepo.save(warriorImage3);
+        fileRepository.save(warriorImage3);
 
         byte[] warriorImageBytes4 = getByteArrayForFile("src/main/resources/images/knight.png", "png");
         Image warriorImage4 = new Image("Warrior rank image 4", warriorImageBytes4, ImageType.RANK);
-        fileRepo.save(warriorImage4);
+        fileRepository.save(warriorImage4);
 
         byte[] warriorImageBytes5 = getByteArrayForFile("src/main/resources/images/knightHorse.png", "png");
         Image warriorImage5 = new Image("Warrior rank image 5", warriorImageBytes5, ImageType.RANK);
-        fileRepo.save(warriorImage5);
+        fileRepository.save(warriorImage5);
 
         byte[] wizardImageBytes1 = getByteArrayForFile("src/main/resources/images/wizard1.png", "png");
         Image wizardImage1 = new Image("Wizard rank image 1", wizardImageBytes1, ImageType.RANK);
-        fileRepo.save(wizardImage1);
+        fileRepository.save(wizardImage1);
 
         byte[] wizardImageBytes2 = getByteArrayForFile("src/main/resources/images/wizard2.png", "png");
         Image wizardImage2 = new Image("Wizard rank image 2", wizardImageBytes2, ImageType.RANK);
-        fileRepo.save(wizardImage2);
+        fileRepository.save(wizardImage2);
 
         byte[] wizardImageBytes3 = getByteArrayForFile("src/main/resources/images/wizard3.png", "png");
         Image wizardImage3 = new Image("Wizard rank image 3", wizardImageBytes3, ImageType.RANK);
-        fileRepo.save(wizardImage3);
+        fileRepository.save(wizardImage3);
 
         byte[] wizardImageBytes4 = getByteArrayForFile("src/main/resources/images/wizard4.png", "png");
         Image wizardImage4 = new Image("Wizard rank image 4", wizardImageBytes4, ImageType.RANK);
-        fileRepo.save(wizardImage4);
+        fileRepository.save(wizardImage4);
 
         byte[] wizardImageBytes5 = getByteArrayForFile("src/main/resources/images/wizard5.png", "png");
         Image wizardImage5 = new Image("Wizard rank image 5", wizardImageBytes5, ImageType.RANK);
-        fileRepo.save(wizardImage5);
+        fileRepository.save(wizardImage5);
 
         byte[] priestImageBytes1 = getByteArrayForFile("src/main/resources/images/priest1.png", "png");
         Image priestImage1 = new Image("Priest rank image 1", priestImageBytes1, ImageType.RANK);
-        fileRepo.save(priestImage1);
+        fileRepository.save(priestImage1);
 
         byte[] priestImageBytes2 = getByteArrayForFile("src/main/resources/images/priest2.png", "png");
         Image priestImage2 = new Image("Priest rank image 2", priestImageBytes2, ImageType.RANK);
-        fileRepo.save(priestImage2);
+        fileRepository.save(priestImage2);
 
         byte[] priestImageBytes3 = getByteArrayForFile("src/main/resources/images/priest3.png", "png");
         Image priestImage3 = new Image("Priest rank image 3", priestImageBytes3, ImageType.RANK);
-        fileRepo.save(priestImage3);
+        fileRepository.save(priestImage3);
 
         byte[] priestImageBytes4 = getByteArrayForFile("src/main/resources/images/priest4.png", "png");
         Image priestImage4 = new Image("Priest rank image 4", priestImageBytes4, ImageType.RANK);
-        fileRepo.save(priestImage4);
+        fileRepository.save(priestImage4);
 
         byte[] priestImageBytes5 = getByteArrayForFile("src/main/resources/images/priest5.png", "png");
         Image priestImage5 = new Image("Priest rank image 5", priestImageBytes5, ImageType.RANK);
-        fileRepo.save(priestImage5);
+        fileRepository.save(priestImage5);
 
         byte[] rogueImageBytes1 = getByteArrayForFile("src/main/resources/images/rogue1.png", "png");
         Image rogueImage1 = new Image("Rogue rank image 1", rogueImageBytes1, ImageType.RANK);
-        fileRepo.save(rogueImage1);
+        fileRepository.save(rogueImage1);
 
         byte[] rogueImageBytes2 = getByteArrayForFile("src/main/resources/images/rogue2.png", "png");
         Image rogueImage2 = new Image("Rogue rank image 2", rogueImageBytes2, ImageType.RANK);
-        fileRepo.save(rogueImage2);
+        fileRepository.save(rogueImage2);
 
         byte[] rogueImageBytes3 = getByteArrayForFile("src/main/resources/images/rogue3.png", "png");
         Image rogueImage3 = new Image("Rogue rank image 3", rogueImageBytes3, ImageType.RANK);
-        fileRepo.save(rogueImage3);
+        fileRepository.save(rogueImage3);
 
         byte[] rogueImageBytes4 = getByteArrayForFile("src/main/resources/images/rogue4.png", "png");
         Image rogueImage4 = new Image("Rogue rank image 4", rogueImageBytes4, ImageType.RANK);
-        fileRepo.save(rogueImage4);
+        fileRepository.save(rogueImage4);
 
         byte[] rogueImageBytes5 = getByteArrayForFile("src/main/resources/images/rogue5.png", "png");
         Image rogueImage5 = new Image("Rogue rank image 5", rogueImageBytes5, ImageType.RANK);
-        fileRepo.save(rogueImage5);
+        fileRepository.save(rogueImage5);
 
         Rank warriorRank1 = new Rank(null, HeroType.WARRIOR, "Chłop", 0.0, warriorImage1);
         Rank warriorRank2 = new Rank(null, HeroType.WARRIOR, "Giermek", 100.0, warriorImage2);
@@ -791,10 +790,10 @@ public class DatabaseConfig {
         Rank rogueRank4 = new Rank(null, HeroType.ROGUE, "Skrytobójca", 300.0, rogueImage4);
         Rank rogueRank5 = new Rank(null, HeroType.ROGUE, "Przywódca bractwa", 400.0, rogueImage5);
 
-        rankRepo.saveAll(List.of(warriorRank1, warriorRank2, warriorRank3, warriorRank4, warriorRank5));
-        rankRepo.saveAll(List.of(wizardRank1, wizardRank2, wizardRank3, wizardRank4, wizardRank5));
-        rankRepo.saveAll(List.of(priestRank1, priestRank2, priestRank3, priestRank4, priestRank5));
-        rankRepo.saveAll(List.of(rogueRank1, rogueRank2, rogueRank3, rogueRank4, rogueRank5));
+        rankRepository.saveAll(List.of(warriorRank1, warriorRank2, warriorRank3, warriorRank4, warriorRank5));
+        rankRepository.saveAll(List.of(wizardRank1, wizardRank2, wizardRank3, wizardRank4, wizardRank5));
+        rankRepository.saveAll(List.of(priestRank1, priestRank2, priestRank3, priestRank4, priestRank5));
+        rankRepository.saveAll(List.of(rogueRank1, rogueRank2, rogueRank3, rogueRank4, rogueRank5));
     }
 
     private byte[] getByteArrayForFile(String path, String format) throws IOException {
@@ -825,7 +824,7 @@ public class DatabaseConfig {
         Image theEnd = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/the_end.png", "png"), ImageType.BADGE);
         Image topTwenty = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/twenty.png", "png"), ImageType.BADGE);
 
-        fileRepo.saveAll(List.of(activityMaster, activityExperienced, fileTaskExperienced,fileTaskFirstSteps,
+        fileRepository.saveAll(List.of(activityMaster, activityExperienced, fileTaskExperienced,fileTaskFirstSteps,
                 fileTaskMaster,topFive,graphTaskExperienced,graphTaskFirstSteps,graphTaskMaster,groupLeader
                 ,handshake,inTheMiddle,itsTheBeginning,leader,longA,lookingUp, smileFromProfessor, theEnd, topTwenty));
 
@@ -991,7 +990,7 @@ public class DatabaseConfig {
                 true
         );
 
-        badgeRepo.saveAll(List.of(badge1, badge2, badge3, badge4, badge5, badge6, badge7, badge8, badge9, badge10,
+        badgeRepository.saveAll(List.of(badge1, badge2, badge3, badge4, badge5, badge6, badge7, badge8, badge9, badge10,
                 badge11, badge12, badge13, badge14, badge15, badge16, badge17, badge18, badge19));
     }
 

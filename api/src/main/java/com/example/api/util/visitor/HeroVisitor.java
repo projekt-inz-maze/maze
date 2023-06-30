@@ -1,13 +1,13 @@
 package com.example.api.util.visitor;
 
-import com.example.api.dto.response.activity.result.SuperPowerResponse;
+import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.model.activity.result.GraphTaskResult;
-import com.example.api.model.activity.result.ResultStatus;
-import com.example.api.model.question.Question;
-import com.example.api.model.question.QuestionType;
-import com.example.api.model.user.User;
-import com.example.api.model.user.hero.*;
+import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.activity.result.model.ResultStatus;
+import com.example.api.question.model.Question;
+import com.example.api.question.model.QuestionType;
+import com.example.api.user.model.User;
+import com.example.api.user.model.hero.*;
 import com.example.api.util.calculator.TimeCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,8 +34,8 @@ public class HeroVisitor {
     }
 
     public SuperPowerResponse<Boolean> visitRogue(Rogue rogue,
-                                            User user,
-                                            GraphTaskResult result) throws RequestValidationException {
+                                                  User user,
+                                                  GraphTaskResult result) throws RequestValidationException {
         checkIfHeroPowerCanBeUsed(rogue, user, result);
         result.setStatus(ResultStatus.CHOOSE);
 
@@ -44,9 +44,9 @@ public class HeroVisitor {
     }
 
     public SuperPowerResponse<QuestionType> visitWarrior(Warrior warrior,
-                                              User user,
-                                              GraphTaskResult result,
-                                              Question question) throws RequestValidationException {
+                                                         User user,
+                                                         GraphTaskResult result,
+                                                         Question question) throws RequestValidationException {
         checkIfHeroPowerCanBeUsed(warrior, user, result);
 
         QuestionType type = question.getType();
@@ -57,9 +57,9 @@ public class HeroVisitor {
     }
 
     public SuperPowerResponse<Double> visitWizard(Wizard wizard,
-                                             User user,
-                                             GraphTaskResult result,
-                                             Question question) throws RequestValidationException {
+                                                  User user,
+                                                  GraphTaskResult result,
+                                                  Question question) throws RequestValidationException {
         checkIfHeroPowerCanBeUsed(wizard, user, result);
 
         Double points = question.getPoints();
@@ -70,8 +70,8 @@ public class HeroVisitor {
     }
 
     public void checkIfHeroPowerCanBeUsed(Hero hero,
-                                           User user,
-                                           GraphTaskResult result) throws RequestValidationException {
+                                          User user,
+                                          GraphTaskResult result) throws RequestValidationException {
         if (!hero.canPowerBeUsed(user, result)) {
             throw new RequestValidationException("You cannot use hero power now!");
         }
