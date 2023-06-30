@@ -40,7 +40,7 @@ module.exports = {
     'react/function-component-definition': 'off',
     'import/no-extraneous-dependencies': 'error',
     'import/extensions': 'off',
-    'import/prefer-default-export': 'off', // TODO: Drop this later.
+    'import/prefer-default-export': 'off', // TODO: Drop this later..
     'consistent-return': 'off', // TODO: Drop this later.
     'semi': ['error', 'never'],
     'react/jsx-handler-names': [
