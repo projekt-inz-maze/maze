@@ -30,6 +30,7 @@ module.exports = {
     'no-console': 'warn',
     'no-trailing-spaces': 'error',
     'comma-dangle': ['error', 'never'],
+    'default-param-last': 'off',
     'no-unused-vars': 'error',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': 'off',
@@ -38,6 +39,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react/function-component-definition': 'off',
     'import/no-extraneous-dependencies': 'error',
+    'import/extensions': 'off',
     'import/prefer-default-export': 'off', // TODO: Drop this later.
     'consistent-return': 'off', // TODO: Drop this later.
     'semi': ['error', 'never'],
