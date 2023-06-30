@@ -7,26 +7,24 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'airbnb',
-    'prettier'
+    'prettier',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/typescript'
   ],
   overrides: [
     {
-      'files': ['**/__tests__/*.js', '**/*.test.js', '**/*.spec.js'],
-      'env': {
-        'jest': true
+      files: ['**/__tests__/*.js', '**/*.test.js', '**/*.spec.js'],
+      env: {
+        jest: true
       }
     }
   ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: [
-    'react',
-    'react-hooks',
-    'prettier',
-    'jest'
-  ],
+  plugins: ['react', 'react-hooks', 'prettier', 'jest', 'import'],
   rules: {
     'no-alert': 'off', // TODO: Drop this later.
     'no-console': 'warn',
@@ -41,25 +39,28 @@ module.exports = {
     'import/no-extraneous-dependencies': 'error',
     'import/prefer-default-export': 'off', // TODO: Drop this later.
     'consistent-return': 'off', // TODO: Drop this later.
-    semi: ['error', 'never'],
-    'react/jsx-handler-names': ['error', {
-      'eventHandlerPrefix': 'handle',
-      'eventHandlerPropPrefix': 'on'
-    }],
+    'semi': ['error', 'never'],
+    'react/jsx-handler-names': [
+      'error',
+      {
+        eventHandlerPrefix: 'handle',
+        eventHandlerPropPrefix: 'on'
+      }
+    ],
     'import/order': [
       'error',
       {
-        groups: ['builtin', 'external', 'internal'],
-        pathGroups: [
+        'groups': ['builtin', 'external', 'internal'],
+        'pathGroups': [
           {
             pattern: 'react',
             group: 'external',
             position: 'before'
           }
         ],
-        pathGroupsExcludedImportTypes: ['react'],
+        'pathGroupsExcludedImportTypes': ['react'],
         'newlines-between': 'always',
-        alphabetize: {
+        'alphabetize': {
           order: 'asc',
           caseInsensitive: true
         }
