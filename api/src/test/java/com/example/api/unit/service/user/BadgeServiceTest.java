@@ -3,18 +3,18 @@ package com.example.api.unit.service.user;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.model.user.AccountType;
-import com.example.api.model.user.User;
-import com.example.api.model.user.badge.ActivityNumberBadge;
-import com.example.api.model.user.badge.Badge;
-import com.example.api.model.user.badge.TopScoreBadge;
-import com.example.api.model.user.badge.UnlockedBadge;
-import com.example.api.repo.user.BadgeRepo;
-import com.example.api.repo.user.UnlockedBadgeRepo;
-import com.example.api.repo.util.FileRepo;
-import com.example.api.service.user.BadgeService;
-import com.example.api.service.user.UserService;
-import com.example.api.service.validator.BadgeValidator;
+import com.example.api.user.model.AccountType;
+import com.example.api.user.model.User;
+import com.example.api.user.model.badge.ActivityNumberBadge;
+import com.example.api.user.model.badge.Badge;
+import com.example.api.user.model.badge.TopScoreBadge;
+import com.example.api.user.model.badge.UnlockedBadge;
+import com.example.api.user.repository.BadgeRepository;
+import com.example.api.user.repository.UnlockedBadgeRepository;
+import com.example.api.util.repository.FileRepository;
+import com.example.api.user.service.BadgeService;
+import com.example.api.user.service.UserService;
+import com.example.api.validator.BadgeValidator;
 import com.example.api.util.visitor.BadgeVisitor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,11 +30,11 @@ import static org.mockito.Mockito.when;
 
 public class BadgeServiceTest {
     private BadgeService badgeService;
-    @Mock private BadgeRepo badgeRepo;
-    @Mock private UnlockedBadgeRepo unlockedBadgeRepo;
+    @Mock private BadgeRepository badgeRepository;
+    @Mock private UnlockedBadgeRepository unlockedBadgeRepository;
     @Mock private UserService userService;
     @Mock private BadgeVisitor badgeVisitor;
-    @Mock private FileRepo fileRepo;
+    @Mock private FileRepository fileRepository;
     @Mock private BadgeValidator badgeValidator;
 
     private User user;
@@ -46,9 +46,9 @@ public class BadgeServiceTest {
     public void init() {
         MockitoAnnotations.openMocks(this);
         badgeService = new BadgeService(
-                badgeRepo,
-                unlockedBadgeRepo,
-                fileRepo,
+                badgeRepository,
+                unlockedBadgeRepository,
+                fileRepository,
                 userService,
                 badgeValidator,
                 badgeVisitor
@@ -74,7 +74,7 @@ public class BadgeServiceTest {
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(false);
         when(userService.getCurrentUser()).thenReturn(user);
-        doReturn(badges).when(badgeRepo).findAll();
+        doReturn(badges).when(badgeRepository).findAll();
 
         //when
         badgeService.checkAllBadges();
@@ -98,7 +98,7 @@ public class BadgeServiceTest {
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(true);
         when(userService.getCurrentUser()).thenReturn(user);
-        doReturn(badges).when(badgeRepo).findAll();
+        doReturn(badges).when(badgeRepository).findAll();
 
         //when
         badgeService.checkAllBadges();

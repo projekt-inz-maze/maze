@@ -2,18 +2,18 @@ package com.example.api.util.visitor;
 
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.model.activity.task.FileTask;
-import com.example.api.model.activity.task.GraphTask;
-import com.example.api.model.group.Group;
-import com.example.api.model.map.requirement.*;
-import com.example.api.model.user.User;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.activity.task.GraphTaskRepo;
-import com.example.api.repo.group.GroupRepo;
-import com.example.api.repo.user.UserRepo;
-import com.example.api.service.validator.GroupValidator;
-import com.example.api.service.validator.UserValidator;
-import com.example.api.service.validator.activity.ActivityValidator;
+import com.example.api.activity.task.model.FileTask;
+import com.example.api.activity.task.model.GraphTask;
+import com.example.api.group.model.Group;
+import com.example.api.map.model.requirement.*;
+import com.example.api.user.model.User;
+import com.example.api.activity.repository.task.FileTaskRepository;
+import com.example.api.activity.repository.task.GraphTaskRepository;
+import com.example.api.group.repository.GroupRepository;
+import com.example.api.user.repository.UserRepository;
+import com.example.api.validator.GroupValidator;
+import com.example.api.validator.UserValidator;
+import com.example.api.activity.validator.ActivityValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +23,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class RequirementValueVisitor {
-    private final FileTaskRepo fileTaskRepo;
-    private final GraphTaskRepo graphTaskRepo;
-    private final GroupRepo groupRepo;
-    private final UserRepo userRepo;
+    private final FileTaskRepository fileTaskRepository;
+    private final GraphTaskRepository graphTaskRepository;
+    private final GroupRepository groupRepository;
+    private final UserRepository userRepository;
     private final ActivityValidator activityValidator;
     private final GroupValidator groupValidator;
     private final UserValidator userValidator;
@@ -56,7 +56,7 @@ public class RequirementValueVisitor {
         String[] titles = value.split(";");
         List<FileTask> fileTasks = new LinkedList<>();
         for (String title: titles) {
-            FileTask fileTask = fileTaskRepo.findFileTaskByTitle(title);
+            FileTask fileTask = fileTaskRepository.findFileTaskByTitle(title);
             activityValidator.validateActivityIsNotNullWithMessage(
                     fileTask,
                     title,
@@ -74,7 +74,7 @@ public class RequirementValueVisitor {
         String[] titles = value.split(";");
         List<GraphTask> graphTasks = new LinkedList<>();
         for (String title: titles) {
-            GraphTask graphTask = graphTaskRepo.findGraphTaskByTitle(title);
+            GraphTask graphTask = graphTaskRepository.findGraphTaskByTitle(title);
             activityValidator.validateActivityIsNotNullWithMessage(
                     graphTask,
                     title,
@@ -92,7 +92,7 @@ public class RequirementValueVisitor {
         String[] groupNames = value.split(";");
         List<Group> groups = new LinkedList<>();
         for (String groupName: groupNames) {
-            Group group = groupRepo.findGroupByName(groupName);
+            Group group = groupRepository.findGroupByName(groupName);
             groupValidator.validateGroupIsNotNullWithMessage(
                     group,
                     groupName,
@@ -119,7 +119,7 @@ public class RequirementValueVisitor {
         String[] emails = value.split(";");
         List<User> students = new LinkedList<>();
         for(String email: emails) {
-            User student = userRepo.findUserByEmail(email);
+            User student = userRepository.findUserByEmail(email);
             userValidator.validateUserIsNotNullWithMessage(
                     student,
                     email,

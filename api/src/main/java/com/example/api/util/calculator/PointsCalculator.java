@@ -1,10 +1,10 @@
 package com.example.api.util.calculator;
 
-import com.example.api.model.activity.result.GraphTaskResult;
-import com.example.api.model.question.Answer;
-import com.example.api.model.question.Option;
-import com.example.api.model.question.Question;
-import com.example.api.model.question.QuestionType;
+import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.question.model.Answer;
+import com.example.api.question.model.Option;
+import com.example.api.question.model.Question;
+import com.example.api.question.model.QuestionType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

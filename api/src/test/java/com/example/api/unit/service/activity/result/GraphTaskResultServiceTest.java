@@ -1,28 +1,22 @@
 package com.example.api.unit.service.activity.result;
 
-import com.example.api.dto.request.activity.result.AnswerForm;
-import com.example.api.dto.request.activity.result.QuestionActionForm;
-import com.example.api.dto.request.activity.result.SetSendDateMillisForm;
-import com.example.api.dto.request.activity.result.SetStartDateMillisForm;
+import com.example.api.activity.result.dto.request.AnswerForm;
 import com.example.api.error.exception.*;
-import com.example.api.model.activity.result.GraphTaskResult;
-import com.example.api.model.activity.result.ResultStatus;
-import com.example.api.model.activity.task.GraphTask;
-import com.example.api.model.question.Answer;
-import com.example.api.model.question.Question;
-import com.example.api.model.user.AccountType;
-import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.GraphTaskResultRepo;
-import com.example.api.repo.activity.task.GraphTaskRepo;
-import com.example.api.repo.question.AnswerRepo;
-import com.example.api.repo.question.QuestionRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.activity.task.model.GraphTask;
+import com.example.api.question.model.Question;
+import com.example.api.user.model.AccountType;
+import com.example.api.user.model.User;
+import com.example.api.activity.repository.result.GraphTaskResultRepository;
+import com.example.api.activity.repository.task.GraphTaskRepository;
+import com.example.api.question.repository.QuestionRepository;
+import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
-import com.example.api.service.activity.result.GraphTaskResultService;
-import com.example.api.service.user.UserService;
-import com.example.api.service.validator.ResultValidator;
-import com.example.api.service.validator.UserValidator;
-import com.example.api.service.validator.activity.ActivityValidator;
+import com.example.api.activity.result.service.GraphTaskResultService;
+import com.example.api.user.service.UserService;
+import com.example.api.validator.ResultValidator;
+import com.example.api.validator.UserValidator;
+import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.util.calculator.PointsCalculator;
 import com.example.api.util.calculator.TimeCalculator;
 import com.example.api.util.visitor.HeroVisitor;
@@ -34,21 +28,19 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.Authentication;
 
-import java.util.Calendar;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class GraphTaskResultServiceTest {
     private GraphTaskResultService graphTaskResultService;
-    @Mock private GraphTaskResultRepo graphTaskResultRepo;
-    @Mock private GraphTaskRepo graphTaskRepo;
-    @Mock private UserRepo userRepo;
-    @Mock private QuestionRepo questionRepo;
+    @Mock private GraphTaskResultRepository graphTaskResultRepository;
+    @Mock private GraphTaskRepository graphTaskRepository;
+    @Mock private UserRepository userRepository;
+    @Mock private QuestionRepository questionRepository;
     @Mock private ResultValidator answerFormValidator;
     @Mock private PointsCalculator pointsCalculator;
     @Mock private UserValidator userValidator;
@@ -73,10 +65,10 @@ public class GraphTaskResultServiceTest {
     public void init() {
         MockitoAnnotations.openMocks(this);
         graphTaskResultService = new GraphTaskResultService(
-                graphTaskResultRepo,
-                graphTaskRepo,
-                userRepo,
-                questionRepo,
+                graphTaskResultRepository,
+                graphTaskRepository,
+                userRepository,
+                questionRepository,
                 pointsCalculator,
                 answerFormValidator,
                 userValidator,
@@ -102,14 +94,14 @@ public class GraphTaskResultServiceTest {
         user.setAccountType(AccountType.STUDENT);
         given(authService.getAuthentication()).willReturn(authentication);
         given(authentication.getName()).willReturn("random@email.com");
-        given(userRepo.findUserByEmail(user.getEmail())).willReturn(user);
-        given(graphTaskRepo.findGraphTaskById(graphTask.getId())).willReturn(graphTask);
+        given(userRepository.findUserByEmail(user.getEmail())).willReturn(user);
+        given(graphTaskRepository.findGraphTaskById(graphTask.getId())).willReturn(graphTask);
 
         // when
         graphTaskResultService.getGraphTaskResultId(graphTask.getId());
 
         // then
-        verify(graphTaskResultRepo).findGraphTaskResultByGraphTaskAndUser(
+        verify(graphTaskResultRepository).findGraphTaskResultByGraphTaskAndUser(
                 graphTaskArgumentCaptor.capture(), userArgumentCaptor.capture());
         User capturedUser = userArgumentCaptor.getValue();
         GraphTask capturedGraphTask = graphTaskArgumentCaptor.getValue();
@@ -127,7 +119,7 @@ public class GraphTaskResultServiceTest {
         graphTaskResultService.saveGraphTaskResult(result);
 
         // then
-        verify(graphTaskResultRepo).save(resultArgumentCaptor.capture());
+        verify(graphTaskResultRepository).save(resultArgumentCaptor.capture());
         GraphTaskResult capturedResult = resultArgumentCaptor.getValue();
         assertThat(capturedResult).isEqualTo(result);
     }
@@ -139,16 +131,16 @@ public class GraphTaskResultServiceTest {
         user.setEmail("random@email.com");
         given(authService.getAuthentication()).willReturn(authentication);
         given(authentication.getName()).willReturn("random@email.com");
-        given(graphTaskRepo.findGraphTaskById(graphTask.getId())).willReturn(graphTask);
-        given(userRepo.findUserByEmail(user.getEmail())).willReturn(user);
+        given(graphTaskRepository.findGraphTaskById(graphTask.getId())).willReturn(graphTask);
+        given(userRepository.findUserByEmail(user.getEmail())).willReturn(user);
 
 
         // when
         graphTaskResultService.startGraphTaskResult(graphTask.getId());
 
         // then
-        verify(graphTaskRepo).findGraphTaskById(idArgumentCaptor.capture());
-        verify(userRepo).findUserByEmail(emailArgumentCaptor.capture());
+        verify(graphTaskRepository).findGraphTaskById(idArgumentCaptor.capture());
+        verify(userRepository).findUserByEmail(emailArgumentCaptor.capture());
         Long capturedId = idArgumentCaptor.getValue();
         String capturedEmail = emailArgumentCaptor.getValue();
         assertThat(capturedId).isEqualTo(graphTask.getId());
@@ -158,13 +150,13 @@ public class GraphTaskResultServiceTest {
     @Test
     public void getPointsFromClosedQuestions() throws WrongAnswerTypeException, EntityNotFoundException {
         //given
-        given(graphTaskResultRepo.findGraphTaskResultById(result.getId())).willReturn(result);
+        given(graphTaskResultRepository.findGraphTaskResultById(result.getId())).willReturn(result);
 
         // when
         graphTaskResultService.getPointsFromClosedQuestions(result.getId());
 
         // then
-        verify(graphTaskResultRepo).findGraphTaskResultById(idArgumentCaptor.capture());
+        verify(graphTaskResultRepository).findGraphTaskResultById(idArgumentCaptor.capture());
         Long capturedId = idArgumentCaptor.getValue();
         assertThat(capturedId).isEqualTo(result.getId());
     }
@@ -172,13 +164,13 @@ public class GraphTaskResultServiceTest {
     @Test
     public void getPointsFromOpenedQuestions() throws WrongAnswerTypeException, EntityNotFoundException {
         //given
-        given(graphTaskResultRepo.findGraphTaskResultById(result.getId())).willReturn(result);
+        given(graphTaskResultRepository.findGraphTaskResultById(result.getId())).willReturn(result);
 
         // when
         graphTaskResultService.getPointsFromOpenedQuestions(result.getId());
 
         // then
-        verify(graphTaskResultRepo).findGraphTaskResultById(idArgumentCaptor.capture());
+        verify(graphTaskResultRepository).findGraphTaskResultById(idArgumentCaptor.capture());
         Long capturedId = idArgumentCaptor.getValue();
         assertThat(capturedId).isEqualTo(result.getId());
     }
@@ -186,13 +178,13 @@ public class GraphTaskResultServiceTest {
     @Test
     public void getMaxAvailablePoints() throws EntityNotFoundException {
         //given
-        given(graphTaskResultRepo.findGraphTaskResultById(result.getId())).willReturn(result);
+        given(graphTaskResultRepository.findGraphTaskResultById(result.getId())).willReturn(result);
 
         // when
         graphTaskResultService.getMaxAvailablePoints(result.getId());
 
         // then
-        verify(graphTaskResultRepo).findGraphTaskResultById(idArgumentCaptor.capture());
+        verify(graphTaskResultRepository).findGraphTaskResultById(idArgumentCaptor.capture());
         Long capturedId = idArgumentCaptor.getValue();
         assertThat(capturedId).isEqualTo(result.getId());
     }
@@ -200,13 +192,13 @@ public class GraphTaskResultServiceTest {
     @Test
     public void getMaxClosedPoints() throws EntityNotFoundException {
         //given
-        given(graphTaskResultRepo.findGraphTaskResultById(result.getId())).willReturn(result);
+        given(graphTaskResultRepository.findGraphTaskResultById(result.getId())).willReturn(result);
 
         // when
         graphTaskResultService.getMaxClosedPoints(result.getId());
 
         // then
-        verify(graphTaskResultRepo).findGraphTaskResultById(idArgumentCaptor.capture());
+        verify(graphTaskResultRepository).findGraphTaskResultById(idArgumentCaptor.capture());
         Long capturedId = idArgumentCaptor.getValue();
         assertThat(capturedId).isEqualTo(result.getId());
     }
@@ -214,13 +206,13 @@ public class GraphTaskResultServiceTest {
     @Test
     public void getMaxOpenedPoints() throws EntityNotFoundException {
         //given
-        given(graphTaskResultRepo.findGraphTaskResultById(result.getId())).willReturn(result);
+        given(graphTaskResultRepository.findGraphTaskResultById(result.getId())).willReturn(result);
 
         // when
         graphTaskResultService.getMaxOpenedPoints(result.getId());
 
         // then
-        verify(graphTaskResultRepo).findGraphTaskResultById(idArgumentCaptor.capture());
+        verify(graphTaskResultRepository).findGraphTaskResultById(idArgumentCaptor.capture());
         Long capturedId = idArgumentCaptor.getValue();
         assertThat(capturedId).isEqualTo(result.getId());
     }
@@ -228,7 +220,7 @@ public class GraphTaskResultServiceTest {
     @Test
     public void getTimeRemaining() throws EntityNotFoundException, EntityRequiredAttributeNullException {
         // given
-        given(graphTaskResultRepo.findGraphTaskResultById(result.getId())).willReturn(result);
+        given(graphTaskResultRepository.findGraphTaskResultById(result.getId())).willReturn(result);
         result.setStartDateMillis(System.currentTimeMillis());
         graphTask.setTimeToSolveMillis(1_000_000L);
 
@@ -236,7 +228,7 @@ public class GraphTaskResultServiceTest {
         graphTaskResultService.getTimeRemaining(result.getId());
 
         // then
-        verify(graphTaskResultRepo).findGraphTaskResultById(idArgumentCaptor.capture());
+        verify(graphTaskResultRepository).findGraphTaskResultById(idArgumentCaptor.capture());
         Long capturedId = idArgumentCaptor.getValue();
         assertThat(capturedId).isEqualTo(result.getId());
     }

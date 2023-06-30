@@ -1,25 +1,25 @@
 package com.example.api.unit.service.user;
 
-import com.example.api.dto.request.user.RegisterUserForm;
-import com.example.api.dto.request.user.SetStudentGroupForm;
-import com.example.api.dto.response.user.BasicStudent;
+import com.example.api.user.dto.request.RegisterUserForm;
+import com.example.api.user.dto.request.SetStudentGroupForm;
+import com.example.api.user.dto.response.BasicStudent;
 import com.example.api.error.exception.*;
-import com.example.api.model.group.Group;
-import com.example.api.model.user.AccountType;
-import com.example.api.model.user.HeroType;
-import com.example.api.model.user.User;
-import com.example.api.repo.activity.result.AdditionalPointsRepo;
-import com.example.api.repo.activity.task.FileTaskRepo;
-import com.example.api.repo.activity.task.GraphTaskRepo;
-import com.example.api.repo.activity.task.InfoRepo;
-import com.example.api.repo.activity.task.SurveyRepo;
-import com.example.api.repo.group.GroupRepo;
-import com.example.api.repo.user.UserRepo;
+import com.example.api.group.model.Group;
+import com.example.api.user.model.AccountType;
+import com.example.api.user.model.HeroType;
+import com.example.api.user.model.User;
+import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
+import com.example.api.activity.repository.task.FileTaskRepository;
+import com.example.api.activity.repository.task.GraphTaskRepository;
+import com.example.api.activity.repository.task.InfoRepository;
+import com.example.api.activity.repository.task.SurveyRepository;
+import com.example.api.group.repository.GroupRepository;
+import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
-import com.example.api.service.user.UserService;
-import com.example.api.service.user.util.ProfessorRegisterToken;
-import com.example.api.service.validator.PasswordValidator;
-import com.example.api.service.validator.UserValidator;
+import com.example.api.user.service.UserService;
+import com.example.api.user.service.util.ProfessorRegisterToken;
+import com.example.api.validator.PasswordValidator;
+import com.example.api.validator.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -27,7 +27,6 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
@@ -36,23 +35,22 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class UserServiceTests {
     private UserService userService;
 
-    @Mock private UserRepo userRepo;
-    @Mock private GroupRepo groupRepo;
+    @Mock private UserRepository userRepository;
+    @Mock private GroupRepository groupRepository;
     @Mock private PasswordEncoder passwordEncoder;
     @Mock private AuthenticationService authService;
     @Mock private Authentication authentication;
     @Mock private UserValidator userValidator;
-    @Mock private GraphTaskRepo graphTaskRepo;
-    @Mock private FileTaskRepo fileTaskRepo;
-    @Mock private SurveyRepo surveyRepo;
-    @Mock private InfoRepo infoRepo;
-    @Mock private AdditionalPointsRepo additionalPointsRepo;
+    @Mock private GraphTaskRepository graphTaskRepository;
+    @Mock private FileTaskRepository fileTaskRepository;
+    @Mock private SurveyRepository surveyRepository;
+    @Mock private InfoRepository infoRepository;
+    @Mock private ProfessorFeedbackRepository professorFeedbackRepository;
     @Mock private ProfessorRegisterToken professorRegisterToken;
     @Mock private PasswordValidator passwordValidator;
     @Captor private ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
@@ -69,13 +67,13 @@ public class UserServiceTests {
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        userService = new UserService(userRepo,
-                groupRepo,
-                graphTaskRepo,
-                fileTaskRepo,
-                surveyRepo,
-                infoRepo,
-                additionalPointsRepo,
+        userService = new UserService(userRepository,
+                groupRepository,
+                graphTaskRepository,
+                fileTaskRepository,
+                surveyRepository,
+                infoRepository,
+                professorFeedbackRepository,
                 authService,
                 passwordEncoder,
                 userValidator,
@@ -99,13 +97,13 @@ public class UserServiceTests {
     public void loadUserByUsername() {
         // given
         user.setAccountType(AccountType.STUDENT);
-        given(userRepo.findUserByEmail(user.getEmail())).willReturn(user);
+        given(userRepository.findUserByEmail(user.getEmail())).willReturn(user);
 
         // when
         userService.loadUserByUsername(user.getEmail());
 
         // then
-        verify(userRepo).findUserByEmail(stringArgumentCaptor.capture());
+        verify(userRepository).findUserByEmail(stringArgumentCaptor.capture());
         String capturedEmail = stringArgumentCaptor.getValue();
         assertThat(capturedEmail).isEqualTo(user.getEmail());
     }
@@ -115,14 +113,14 @@ public class UserServiceTests {
         // given
         String password = user.getPassword();
         String encodedPassword = "encodedPassword";
-        given(userRepo.save(user)).willReturn(user);
+        given(userRepository.save(user)).willReturn(user);
         given(passwordEncoder.encode(user.getPassword())).willReturn(encodedPassword);
 
         // when
         userService.saveUser(user);
 
         // then
-        verify(userRepo).save(userArgumentCaptor.capture());
+        verify(userRepository).save(userArgumentCaptor.capture());
         verify(passwordEncoder).encode(stringArgumentCaptor.capture());
         User capturedUser = userArgumentCaptor.getValue();
         String capturedPassword = stringArgumentCaptor.getValue();
@@ -140,16 +138,16 @@ public class UserServiceTests {
         registerUserForm.setHeroType(HeroType.PRIEST);
         registerUserForm.setIndexNumber(99);
         String encodedPassword = "encodedPassword";
-        given(userRepo.findUserByEmail(registerUserForm.getEmail())).willReturn(null);
-        given(groupRepo.findGroupByInvitationCode(registerUserForm.getInvitationCode())).willReturn(group);
-        given(userRepo.existsUserByIndexNumber(registerUserForm.getIndexNumber())).willReturn(false);
+        given(userRepository.findUserByEmail(registerUserForm.getEmail())).willReturn(null);
+        given(groupRepository.findGroupByInvitationCode(registerUserForm.getInvitationCode())).willReturn(group);
+        given(userRepository.existsUserByIndexNumber(registerUserForm.getIndexNumber())).willReturn(false);
         given(passwordEncoder.encode(user.getPassword())).willReturn(encodedPassword);
 
         // when
         userService.registerUser(registerUserForm);
 
         // then
-        verify(userRepo).findUserByEmail(stringArgumentCaptor.capture());
+        verify(userRepository).findUserByEmail(stringArgumentCaptor.capture());
         verify(passwordEncoder).encode(stringArgumentCaptor.capture());
         String capturedEmail = stringArgumentCaptor.getAllValues().get(0);
         String capturedPassword = stringArgumentCaptor.getAllValues().get(1);
@@ -163,14 +161,14 @@ public class UserServiceTests {
         registerUserForm.setEmail(user.getEmail());
         registerUserForm.setAccountType(AccountType.PROFESSOR);
         String encodedPassword = "encodedPassword";
-        given(userRepo.findUserByEmail(registerUserForm.getEmail())).willReturn(null);
+        given(userRepository.findUserByEmail(registerUserForm.getEmail())).willReturn(null);
         given(passwordEncoder.encode(user.getPassword())).willReturn(encodedPassword);
 
         // when
         userService.registerUser(registerUserForm);
 
         // then
-        verify(userRepo).findUserByEmail(stringArgumentCaptor.capture());
+        verify(userRepository).findUserByEmail(stringArgumentCaptor.capture());
         verify(passwordEncoder).encode(stringArgumentCaptor.capture());
         String capturedEmail = stringArgumentCaptor.getAllValues().get(0);
         String capturedPassword = stringArgumentCaptor.getAllValues().get(1);
@@ -181,13 +179,13 @@ public class UserServiceTests {
     @Test
     public void getUser() {
         // given
-        given(userRepo.findUserByEmail(user.getEmail())).willReturn(user);
+        given(userRepository.findUserByEmail(user.getEmail())).willReturn(user);
 
         // when
         User returnedUser = userService.getUser(user.getEmail());
 
         // then
-        verify(userRepo).findUserByEmail(stringArgumentCaptor.capture());
+        verify(userRepository).findUserByEmail(stringArgumentCaptor.capture());
         String capturedEmail = stringArgumentCaptor.getValue();
         assertThat(capturedEmail).isEqualTo(user.getEmail());
         assertThat(returnedUser).isEqualTo(user);
@@ -198,13 +196,13 @@ public class UserServiceTests {
         // given
         User secondUser = new User();
         secondUser.setId(2L);
-        given(userRepo.findAll()).willReturn(List.of(user, secondUser));
+        given(userRepository.findAll()).willReturn(List.of(user, secondUser));
 
         // when
         List<User> returnedUsers = userService.getUsers();
 
         // then
-        verify(userRepo).findAll();
+        verify(userRepository).findAll();
         assertThat(returnedUsers.size()).isEqualTo(2);
         assertThat(returnedUsers.contains(user)).isTrue();
         assertThat(returnedUsers.contains(secondUser)).isTrue();
@@ -213,13 +211,13 @@ public class UserServiceTests {
     @Test
     public void getUsersWhenIsEmpty() {
         // given
-        given(userRepo.findAll()).willReturn(List.of());
+        given(userRepository.findAll()).willReturn(List.of());
 
         // when
         List<User> returnedUsers = userService.getUsers();
 
         // then
-        verify(userRepo).findAll();
+        verify(userRepository).findAll();
         assertThat(returnedUsers.size()).isEqualTo(0);
     }
 
@@ -227,7 +225,7 @@ public class UserServiceTests {
     public void getUserGroup() throws EntityNotFoundException {
         // given
         user.setGroup(group);
-        given(userRepo.findUserByEmail(user.getEmail())).willReturn(user);
+        given(userRepository.findUserByEmail(user.getEmail())).willReturn(user);
         given(authService.getAuthentication()).willReturn(authentication);
         given(authentication.getName()).willReturn(user.getEmail());
 
@@ -235,7 +233,7 @@ public class UserServiceTests {
         Group userGroup = userService.getUserGroup();
 
         // then
-        verify(userRepo).findUserByEmail(stringArgumentCaptor.capture());
+        verify(userRepository).findUserByEmail(stringArgumentCaptor.capture());
         String capturedEmail = stringArgumentCaptor.getValue();
         assertThat(capturedEmail).isEqualTo(user.getEmail());
         assertThat(userGroup).isEqualTo(group);
@@ -248,13 +246,13 @@ public class UserServiceTests {
         Group secondGroup = new Group();
         user.setGroup(group);
         secondUser.setGroup(secondGroup);
-        given(userRepo.findAllByAccountTypeEquals(AccountType.STUDENT)).willReturn(List.of(user, secondUser));
+        given(userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)).willReturn(List.of(user, secondUser));
 
         // when
         List<BasicStudent> studentsWithGroup = userService.getAllStudentsWithGroup();
 
         // then
-        verify(userRepo).findAllByAccountTypeEquals(accountTypeArgumentCaptor.capture());
+        verify(userRepository).findAllByAccountTypeEquals(accountTypeArgumentCaptor.capture());
         AccountType capturedAccountType = accountTypeArgumentCaptor.getValue();
         assertThat(capturedAccountType).isEqualTo(AccountType.STUDENT);
         assertThat(studentsWithGroup.contains(new BasicStudent(user))).isTrue();
@@ -265,13 +263,13 @@ public class UserServiceTests {
     @Test
     public void getAllStudentsWithGroupWhenIsEmpty() {
         // given
-        given(userRepo.findAllByAccountTypeEquals(AccountType.STUDENT)).willReturn(List.of());
+        given(userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)).willReturn(List.of());
 
         // when
         List<BasicStudent> studentsWithGroup = userService.getAllStudentsWithGroup();
 
         // then
-        verify(userRepo).findAllByAccountTypeEquals(accountTypeArgumentCaptor.capture());
+        verify(userRepository).findAllByAccountTypeEquals(accountTypeArgumentCaptor.capture());
         AccountType capturedAccountType = accountTypeArgumentCaptor.getValue();
         assertThat(capturedAccountType).isEqualTo(AccountType.STUDENT);
         assertThat(studentsWithGroup.size()).isEqualTo(0);
@@ -291,16 +289,16 @@ public class UserServiceTests {
         SetStudentGroupForm setStudentGroupForm = new SetStudentGroupForm();
         setStudentGroupForm.setStudentId(user.getId());
         setStudentGroupForm.setNewGroupId(newGroup.getId());
-        given(userRepo.findUserById(user.getId())).willReturn(user);
-        given(groupRepo.findGroupById(group.getId())).willReturn(group);
-        given(groupRepo.findGroupById(newGroup.getId())).willReturn(newGroup);
+        given(userRepository.findUserById(user.getId())).willReturn(user);
+        given(groupRepository.findGroupById(group.getId())).willReturn(group);
+        given(groupRepository.findGroupById(newGroup.getId())).willReturn(newGroup);
 
         //when
         userService.setStudentGroup(setStudentGroupForm);
 
         // then
-        verify(userRepo).findUserById(idArgumentCaptor.capture());
-        verify(groupRepo).findGroupById(idArgumentCaptor.capture());
+        verify(userRepository).findUserById(idArgumentCaptor.capture());
+        verify(groupRepository).findGroupById(idArgumentCaptor.capture());
         Long capturedUserId = idArgumentCaptor.getAllValues().get(0);
         Long capturedNewGroupId = idArgumentCaptor.getAllValues().get(1);
         assertThat(capturedUserId).isEqualTo(user.getId());
