@@ -25,6 +25,7 @@
         "formik": "^2.2.9",
         "gh-pages": "^4.0.0",
         "hex-to-css-filter": "^5.4.0",
+        "holderjs": "^2.9.9",
         "lodash": "^4.17.21",
         "moment": "^2.29.4",
         "node-sass": "^9.0.0",

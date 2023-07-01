@@ -29,7 +29,7 @@ function App(props) {
                 <Sidebar link_titles={student ? UserSidebarTitles : ProfessorSidebarTitles} />
               </SidebarCol>
             )}
-            <div className='p-0 w-100'>
+            <div className="p-0 w-100">
               <AppRoutes />
             </div>
             { window.location.pathname !== '/courses' && (
