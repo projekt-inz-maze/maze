@@ -1,8 +1,8 @@
 import React from 'react'
 
+import { Card, Container, Stack } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
-import styles from './CourseList.module.css'
 
 const CourseList = () => {
   const navigate = useNavigate()
@@ -12,11 +12,15 @@ const CourseList = () => {
   }
 
   return (
-    <div className={styles.mainContainer}>
+    <Container>
       <h1>Cześć, Magda!</h1>
       <h2>Twoje kursy</h2>
-      <button type="button" onClick={() => handleClick()}>Kurs 1</button>
-    </div>
+      <Stack gap={3}>
+        <Card onClick={() => handleClick()}>Sieci komputerowe</Card>
+        <Card>Bezpieczeństwo sieci komputerowych</Card>
+        <Card>Wirtualne sieci prywatne</Card>
+      </Stack>
+    </Container>
   )
 }
 
