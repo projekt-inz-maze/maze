@@ -1,0 +1,15 @@
+.dropdownToggle {
+  display: flex;
+  justify-content: flex-end;
+  height: 0.5em;
+}
+
+.menuIcon {
+  width: 2em;
+  height: 2em;
+  border-radius: 6px;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}

@@ -1,10 +1,25 @@
-.clickable {
-    cursor: pointer;
-}
-
 .mainCard {
   transition: all 0.2s ease-in-out;
+
   &:hover {
     transform: scale(1.05);
+  }
+
+  .clickable {
+    cursor: pointer;
+  }
+
+  .menu {
+    background-color: #fff;
+    color: #333;
+    border: 0;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .dropdownMenu {
+    width: 90%;
+    margin-top: 1.25em;
   }
 }

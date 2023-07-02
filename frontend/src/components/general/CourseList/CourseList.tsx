@@ -18,13 +18,12 @@ const CourseList = () => {
   return (
     <Container fluid className={styles.mainContainer}>
       <Col>
-        <Col className={styles.headerRow}>
+        <Row className={styles.headerRow}>
           <h1>Cześć, Magda!</h1>
           <h2>Twoje kursy</h2>
-        </Col>
+        </Row>
         <Row>
-          {/*TODO: Add padding on right side*/}
-          <Col xs={8}>
+          <Col xs={7}>
             <Stack className={styles.stackContainer} direction='horizontal' gap={3}>
               <CourseCard
                 title='Sieci komputerowe'

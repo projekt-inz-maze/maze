@@ -79,6 +79,8 @@ module.exports = {
     'react/jsx-no-useless-fragment': 'off', // TODO: Drop this later.
     'no-case-declarations': 'off', // TODO: Drop this later.
     'class-methods-use-this': 'off', // TODO: Drop this later.
+    'jsx-a11y/click-events-have-key-events': 'off', // TODO: Drop this later.
+    'jsx-a11y/no-static-element-interactions': 'off', // TODO: Drop this later.
     // Rule override for test files
     'jest/no-undef': 'off'
   }
