@@ -1,8 +1,10 @@
 import { useCallback, useRef, useState } from 'react'
-import { Form } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { faDownload, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import download from 'downloadjs'
+import { Form } from 'react-bootstrap'
+
 import { ActivityFileName } from '../../../../utils/constants'
 
 function FileUpload(props) {
@@ -19,7 +21,7 @@ function FileUpload(props) {
   }
 
   const uploadJsonFile = (event) => {
-    let reader = new FileReader()
+    const reader = new FileReader()
     reader.onload = (event) => {
       props.setPlaceholderJson(JSON.parse(event.target.result))
       setFileUploadMessage('Plik został dodany pomyślnie. Możesz to sprawdzić w edytorze online.')
@@ -34,32 +36,30 @@ function FileUpload(props) {
     }
   }
 
-  const Icon = useCallback((onClick, icon) => {
-    return (
-      <FontAwesomeIcon className={'ms-4'} icon={icon} onClick={onClick} size={'lg'} style={{ cursor: 'pointer' }} />
-    )
-  }, [])
+  const Icon = useCallback((onClick, icon) => (
+      <FontAwesomeIcon className="ms-4" icon={icon} onClick={onClick} size="lg" style={{ cursor: 'pointer' }} />
+    ), [])
 
   return (
     <>
-      <p className={'text-center mt-4'}>
+      <p className="text-center mt-4">
         Jeżeli nie chcesz korzystać z JSON edytora online, możesz pobrać plik z jego zawartością i edytować go poza
         naszym edytorem, a następnie załączyć wyedytowany plik.
       </p>
 
-      <Form.Group className={'mt-4'}>
-        <Form.Label className={'fw-bold'} style={{ width: 210 }}>
+      <Form.Group className="mt-4">
+        <Form.Label className="fw-bold" style={{ width: 210 }}>
           Pobierz plik konfiguracyjny
         </Form.Label>
         {Icon(downloadJson, faDownload)}
       </Form.Group>
 
       <Form.Group className='my-4'>
-        <div className={'fw-bold w-100'}>
+        <div className="fw-bold w-100">
           <Form.Label style={{ width: 210 }}>Załącz wyedytowany plik</Form.Label>
           {Icon(removeInputFile, faTrash)}
         </div>
-        <input ref={uploadInputRef} type={'file'} accept={'application/json'} onChange={uploadJsonFile} />
+        <input ref={uploadInputRef} type="file" accept="application/json" onChange={uploadJsonFile} />
       </Form.Group>
 
       <p>{fileUploadMessage}</p>

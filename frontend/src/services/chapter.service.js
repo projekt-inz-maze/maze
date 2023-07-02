@@ -1,4 +1,3 @@
-import { axiosApiDelete, axiosApiGet, axiosApiPost, axiosApiPut } from '../utils/axios'
 import {
   GET_CHAPTER_INFO,
   GET_CHAPTER,
@@ -10,6 +9,7 @@ import {
   GET_CHAPTER_REQUIREMENTS,
   POST_CHAPTER_REQUIREMENTS_UPDATE
 } from './urls'
+import { axiosApiDelete, axiosApiGet, axiosApiPost, axiosApiPut } from '../utils/axios'
 
 class ChapterService {
   getChaptersList() {
@@ -26,12 +26,12 @@ class ChapterService {
 
   sendNewChapterData({ name, sizeX, sizeY, imageId, posX, posY }) {
     return axiosApiPost(POST_CHAPTER_CREATE, {
-      name: name,
-      sizeX: sizeX,
-      sizeY: sizeY,
-      imageId: imageId,
-      posX: posX,
-      posY: posY
+      name,
+      sizeX,
+      sizeY,
+      imageId,
+      posX,
+      posY
     }).catch((error) => {
       throw error
     })

@@ -1,10 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Console, ConsoleContent, Downloader } from './LogViewerStyle'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { faDownload } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import download from 'downloadjs'
+
+import { Console, ConsoleContent, Downloader } from './LogViewerStyle'
 import ProfessorService from '../../../../services/professor.service'
 import Loader from '../../../general/Loader/Loader'
-import download from 'downloadjs'
+
 
 const logLineSplitRegex = /(?<=]) |(?<=:) /
 
@@ -45,13 +48,13 @@ function LogViewer() {
       <Downloader>
         <FontAwesomeIcon
           icon={faDownload}
-          size={'lg'}
+          size="lg"
           onClick={downloadFile}
-          opacity={!!logsFile ? 1 : 0.6}
-          style={{ cursor: !!logsFile ? 'pointer' : 'default' }}
+          opacity={logsFile ? 1 : 0.6}
+          style={{ cursor: logsFile ? 'pointer' : 'default' }}
         />
       </Downloader>
-      <ConsoleContent className={'font-monospace text-white'}>
+      <ConsoleContent className="font-monospace text-white">
         {logsFile === undefined ? (
           <Loader />
         ) : logsFile == null ? (

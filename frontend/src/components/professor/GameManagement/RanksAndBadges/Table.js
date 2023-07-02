@@ -1,8 +1,10 @@
 import React from 'react'
-import { CustomTable } from '../../../student/GameCardPage/gameCardContentsStyle'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { connect } from 'react-redux'
+
+import { CustomTable } from '../../../student/GameCardPage/gameCardContentsStyle'
 
 function Table(props) {
   return (
@@ -23,15 +25,15 @@ function Table(props) {
         {props.body.map((bodyElement, i) => (
           <tr key={i + Date.now()}>
             {bodyElement.map((element, index) => (
-              <td key={index + Date.now()} className={'align-middle'}>
+              <td key={index + Date.now()} className="align-middle">
                 {element}
               </td>
             ))}
-            <td className={'align-middle'}>
+            <td className="align-middle">
               <FontAwesomeIcon icon={faEdit} onClick={() => props.editIconCallback(i)} />
             </td>
             {props.deleteIconCallback ? (
-              <td className={'align-middle'}>
+              <td className="align-middle">
                 <FontAwesomeIcon icon={faTrash} onClick={() => props.deleteIconCallback(i)} />
               </td>
             ) : null}
@@ -43,7 +45,7 @@ function Table(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

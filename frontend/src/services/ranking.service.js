@@ -1,4 +1,3 @@
-import { axiosApiGet } from '../utils/axios'
 import {
   GET_RANKING_SEARCH,
   GET_RANKING,
@@ -6,6 +5,7 @@ import {
   GET_RANKING_GROUP_POSITION,
   GET_RANKING_GROUP
 } from './urls'
+import { axiosApiGet } from '../utils/axios'
 
 class RankingService {
   getGlobalRankingList() {

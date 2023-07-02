@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { faCheck, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { getTextColor } from './textColorHelper'
-import { ColorDiv } from './ColorPickerStyle'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { PhotoshopPicker } from 'react-color'
+
+import { ColorDiv } from './ColorPickerStyle'
+import { getTextColor } from './textColorHelper'
+
 
 function ColorPicker(props) {
   const [colors, setColors] = useState([])
@@ -20,16 +23,16 @@ function ColorPicker(props) {
   }, [props.selectedColorId])
 
   const addColor = () => {
-    if (!!newColor) {
+    if (newColor) {
       setColors([...colors, newColor])
     }
     setIsColorPickerModalOpen(false)
   }
 
   return (
-    <div className={'mb-4'}>
+    <div className="mb-4">
       <h5>{props.header}</h5>
-      <div className={'d-flex gap-2'}>
+      <div className="d-flex gap-2">
         {colors.map((color, index) => (
           <ColorDiv key={index + Date.now()} $backgroundColor={color} onClick={() => setSelectedColorId(index)}>
             {index === selectedColorId && <FontAwesomeIcon icon={faCheck} color={getTextColor(color)} />}
@@ -37,12 +40,12 @@ function ColorPicker(props) {
         ))}
         <ColorDiv>
           <FontAwesomeIcon
-            cursor={'pointer'}
+            cursor="pointer"
             icon={faPlus}
             onClick={() => setIsColorPickerModalOpen(!isColorPickerModalOpen)}
           />
           {isColorPickerModalOpen && (
-            <div className={'position-absolute top-100 start-100'} style={{ zIndex: 2 }}>
+            <div className="position-absolute top-100 start-100" style={{ zIndex: 2 }}>
               <PhotoshopPicker
                 color={newColor}
                 onChange={(c) => setNewColor(c.hex)}

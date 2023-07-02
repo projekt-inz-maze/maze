@@ -1,14 +1,16 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
+
 import { useLocation, useNavigate } from 'react-router-dom'
-import { EXPEDITION_STATUS } from '../../../../../utils/constants'
+
 import { StudentRoutes } from '../../../../../routes/PageRoutes'
 import ExpeditionService from '../../../../../services/expedition.service'
-import QuestionSelectionDoor from '../QuestionSelectionDoor/QuestionSelectionDoor'
-import QuestionAndOptions from '../QuestionAndOptions/QuestionAndOptions'
-import InfoContainer from '../InfoContainer/InfoContainer'
+import { EXPEDITION_STATUS } from '../../../../../utils/constants'
 import Loader from '../../../../general/Loader/Loader'
+import InfoContainer from '../InfoContainer/InfoContainer'
+import QuestionAndOptions from '../QuestionAndOptions/QuestionAndOptions'
+import QuestionSelectionDoor from '../QuestionSelectionDoor/QuestionSelectionDoor'
 
-/* 
+/*
 wrapped elements should be:
 
 -- in ANSWER

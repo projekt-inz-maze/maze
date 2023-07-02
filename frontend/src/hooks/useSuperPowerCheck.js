@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 import { EXPEDITION_STATUS } from '../utils/constants'
 
 export const useSuperPowerCheck = (checkFunction, superPowerInfo, skip = false, onSkipObject = undefined) => {

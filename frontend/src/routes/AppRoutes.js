@@ -1,23 +1,25 @@
 import { Route, Routes } from 'react-router-dom'
-import NotFound from '../components/general/NotFoundPage/NotFound'
-import PageGuard from '../components/general/PageGuard/PageGuard'
-import { Role } from '../utils/userRole'
-import LoginAndRegistration from '../components/general/LoginAndRegistrationPage/LoginAndRegistration'
+
+import BadgesAndAchievementsRoutes from './modules/studentRoutes/BadgesAndAchievementsRoutes'
 import GameCardRoutes from './modules/studentRoutes/GameCardRoutes'
 import GameMapRoutes from './modules/studentRoutes/GameMapRoutes'
 import PointsRoutes from './modules/studentRoutes/PointsRoutes'
-import StudentRankingRoutes from './modules/studentRoutes/RankingRoutes'
-import BadgesAndAchievementsRoutes from './modules/studentRoutes/BadgesAndAchievementsRoutes'
-import GameSummaryRoutes from './modules/teacherRoutes/GameSummaryRoutes'
-import GameManagementRoutes from './modules/teacherRoutes/GameManagementRoutes'
-import ParticipantsRoutes from './modules/teacherRoutes/ParticipantsRoutes'
-import ActivityAssessmentRoutes from './modules/teacherRoutes/ActivityAssessmentRoutes'
-import GradesRoutes from './modules/teacherRoutes/GradesRoutes'
-import TeacherRankingRoutes from './modules/teacherRoutes/RankingRoutes'
-import CanvasMap from '../components/student/CanvasMapPage/CanvasMap'
 import ProfileRoutes from './modules/studentRoutes/ProfileRoutes'
+import StudentRankingRoutes from './modules/studentRoutes/RankingRoutes'
+import ActivityAssessmentRoutes from './modules/teacherRoutes/ActivityAssessmentRoutes'
+import GameManagementRoutes from './modules/teacherRoutes/GameManagementRoutes'
+import GameSummaryRoutes from './modules/teacherRoutes/GameSummaryRoutes'
+import GradesRoutes from './modules/teacherRoutes/GradesRoutes'
+import ParticipantsRoutes from './modules/teacherRoutes/ParticipantsRoutes'
+import TeacherRankingRoutes from './modules/teacherRoutes/RankingRoutes'
 import SettingsRoutes from './modules/teacherRoutes/SettingsRoutes'
+import CourseList from '../components/general/CourseList/CourseList.tsx'
+import LoginAndRegistration from '../components/general/LoginAndRegistrationPage/LoginAndRegistration'
 import ResetPassword from '../components/general/LoginAndRegistrationPage/ResetPassword/ResetPassword'
+import NotFound from '../components/general/NotFoundPage/NotFound'
+import PageGuard from '../components/general/PageGuard/PageGuard'
+import CanvasMap from '../components/student/CanvasMapPage/CanvasMap'
+import { Role } from '../utils/userRole'
 
 export default function AppRoutes() {
   return (
@@ -43,7 +45,7 @@ export default function AppRoutes() {
       />
 
       <Route
-        path={'/canvas'}
+        path="/canvas"
         exact
         element={
           <PageGuard role={Role.LOGGED_IN_AS_STUDENT}>
@@ -51,6 +53,8 @@ export default function AppRoutes() {
           </PageGuard>
         }
       />
+
+      <Route path={'/courses/*'} element={<CourseList />} />
 
       <Route path={'/game-card/*'} element={<GameCardRoutes />} />
 

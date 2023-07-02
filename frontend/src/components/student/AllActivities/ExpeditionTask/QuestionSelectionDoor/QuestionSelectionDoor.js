@@ -1,13 +1,15 @@
-import { Door, DoorColumn } from './QuestionSelectionDoorStyles'
 import { Button, Row } from 'react-bootstrap'
-import { Content } from '../../../../App/AppGeneralStyles'
+import { connect } from 'react-redux'
+
+import { Door, DoorColumn } from './QuestionSelectionDoorStyles'
 import ExpeditionService from '../../../../../services/expedition.service'
 import { ERROR_OCCURRED, EXPEDITION_STATUS } from '../../../../../utils/constants'
-import { connect } from 'react-redux'
+import { Content } from '../../../../App/AppGeneralStyles'
+
 
 const getQuestionDetails = (questionId, questionType, questionPoints) => {
   if (questionPoints && questionId === questionPoints.id) {
-    return questionPoints.value + 'pkt'
+    return `${questionPoints.value  }pkt`
   }
 
   if (questionType && questionId === questionType.id) {
@@ -23,8 +25,8 @@ function generateDoor(question, noDoors, onDoorClick, buttonColor, questionPoint
   return (
     <DoorColumn key={question.id + Date.now()} xl={12 / noDoors} md={12}>
       <Row className='mx-auto'>
-        <h3 className={'text-center'}>{question.difficulty?.toUpperCase()}</h3>
-        <h5 className={'p-0 text-center'} style={{ margin: questionDetails ? '0' : '12px 0' }}>
+        <h3 className="text-center">{question.difficulty?.toUpperCase()}</h3>
+        <h5 className="p-0 text-center" style={{ margin: questionDetails ? '0' : '12px 0' }}>
           {questionDetails}
         </h5>
       </Row>
@@ -59,7 +61,7 @@ function QuestionSelectionDoor(props) {
     ExpeditionService.sendAction({
       status: EXPEDITION_STATUS.CHOOSE,
       graphTaskId: expeditionId,
-      questionId: questionId,
+      questionId,
       answerForm: null
     }).then(() => reloadInfo())
   }
@@ -67,7 +69,7 @@ function QuestionSelectionDoor(props) {
   return (
     <Content>
       {questions == null ? (
-        <p className={'text-center h3 p-5'} style={{ color: props.theme.danger }}>
+        <p className="text-center h3 p-5" style={{ color: props.theme.danger }}>
           {ERROR_OCCURRED}
         </p>
       ) : (
@@ -82,7 +84,7 @@ function QuestionSelectionDoor(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

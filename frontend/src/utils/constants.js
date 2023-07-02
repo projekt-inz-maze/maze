@@ -1,16 +1,22 @@
+import moment from 'moment'
+
+import TaskImg from './resources/activities/fileTaskIcon.png'
+import ExpeditionImg from './resources/activities/graphTaskIcon.png'
+import InformationImg from './resources/activities/infoTaskIcon.png'
+import SurveyImg from './resources/activities/surveyTaskIcon.png'
 import priestImg from './resources/heroes/pope.png'
 import rogueImg from './resources/heroes/rogue.png'
 import warriorImg from './resources/heroes/warrior.png'
 import wizardImg from './resources/heroes/wizard.png'
-import ExpeditionImg from './resources/activities/graphTaskIcon.png'
-import InformationImg from './resources/activities/infoTaskIcon.png'
-import SurveyImg from './resources/activities/surveyTaskIcon.png'
-import TaskImg from './resources/activities/fileTaskIcon.png'
-
 import warrior1 from './resources/warrior/0.png'
 import warrior2 from './resources/warrior/1.png'
 import warrior11 from './resources/warrior/10.png'
 import warrior12 from './resources/warrior/11.png'
+import warrior13 from './resources/warrior/12.png'
+import warrior14 from './resources/warrior/13.png'
+import warrior15 from './resources/warrior/14.png'
+import warrior16 from './resources/warrior/15.png'
+import warrior17 from './resources/warrior/16.png'
 import warrior3 from './resources/warrior/2.png'
 import warrior4 from './resources/warrior/3.png'
 import warrior5 from './resources/warrior/4.png'
@@ -18,13 +24,7 @@ import warrior6 from './resources/warrior/5.png'
 import warrior7 from './resources/warrior/6.png'
 import warrior8 from './resources/warrior/7.png'
 import warrior10 from './resources/warrior/9.png'
-import warrior13 from './resources/warrior/12.png'
-import warrior14 from './resources/warrior/13.png'
-import warrior15 from './resources/warrior/14.png'
-import warrior16 from './resources/warrior/15.png'
-import warrior17 from './resources/warrior/16.png'
 import { HeroType, PlayerType } from './userRole'
-import moment from 'moment'
 import { GeneralRoutes, StudentRoutes } from '../routes/PageRoutes'
 
 export const FIELD_REQUIRED = 'Pole wymagane.'
@@ -77,7 +77,7 @@ export const getActivityImg = (type) => {
     case Activity.TASK:
       return TaskImg
     default:
-      return
+
   }
 }
 
@@ -94,7 +94,7 @@ export const getActivityTypeName = (type) => {
     case Activity.ADDITIONAL:
       return 'Bonus'
     default:
-      return
+
   }
 }
 
@@ -109,7 +109,7 @@ export const getActivityPath = (type) => {
     case Activity.INFO:
       return StudentRoutes.GAME_MAP.INFO_TASK
     default:
-      return
+
   }
 }
 
@@ -177,12 +177,12 @@ export const percentagesToGrade = (percentages) => {
   const HIGHER_GRADE_STEP = 0.5
 
   if (percentages < MIN_PERCENTAGE_FOR_POSITIVE_GRADE) return FAILING_GRADE
-  else {
+
     return (
       MIN_POSITIVE_GRADE +
       Math.floor((percentages - MIN_PERCENTAGE_FOR_POSITIVE_GRADE) / PERCENTAGE_FOR_HIGHER_GRADE) * HIGHER_GRADE_STEP
     )
-  }
+
 }
 
 export const getHeroName = (heroName) => {
@@ -196,7 +196,7 @@ export const getHeroName = (heroName) => {
     case HeroType.WIZARD:
       return 'Czarodziej'
     default:
-      return
+
   }
 }
 

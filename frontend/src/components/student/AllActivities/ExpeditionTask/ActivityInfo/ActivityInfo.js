@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
+
+import { connect } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { Content } from '../../../../App/AppGeneralStyles'
+
 import ActivityContent from './ActivityContent'
-import Loader from '../../../../general/Loader/Loader'
 import ExpeditionService from '../../../../../services/expedition.service'
 import { ERROR_OCCURRED } from '../../../../../utils/constants'
-import { connect } from 'react-redux'
+import { Content } from '../../../../App/AppGeneralStyles'
+import Loader from '../../../../general/Loader/Loader'
 
 function ActivityInfo(props) {
   const location = useLocation()
@@ -29,7 +31,7 @@ function ActivityInfo(props) {
       {!activity && !errorMessage ? (
         <Loader />
       ) : errorMessage ? (
-        <p className={'text-center h4'} style={{ color: props.theme.danger }}>
+        <p className="text-center h4" style={{ color: props.theme.danger }}>
           {errorMessage}
         </p>
       ) : (
@@ -40,7 +42,7 @@ function ActivityInfo(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

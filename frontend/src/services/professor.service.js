@@ -1,12 +1,3 @@
-import { parseJwt } from '../utils/Api'
-import {
-  axiosApiGet,
-  axiosApiGetFile,
-  axiosApiPost,
-  axiosApiMultipartPost,
-  axiosApiDelete,
-  axiosApiPut
-} from '../utils/axios'
 import {
   POST_TASK_RESULT_CSV,
   GET_TASK_EVALUATE_ALL,
@@ -22,6 +13,15 @@ import {
   PUT_HERO,
   GET_FILE_LOG
 } from './urls'
+import { parseJwt } from '../utils/Api'
+import {
+  axiosApiGet,
+  axiosApiGetFile,
+  axiosApiPost,
+  axiosApiMultipartPost,
+  axiosApiDelete,
+  axiosApiPut
+} from '../utils/axios'
 
 class ProfessorService {
   getUser() {
@@ -56,7 +56,7 @@ class ProfessorService {
     return axiosApiMultipartPost(POST_FEEDBACK_PROFESSOR, {
       fileTaskResultId: taskId,
       content: remarks,
-      points: points,
+      points,
       file,
       fileName
     }).catch((error) => {
@@ -76,7 +76,7 @@ class ProfessorService {
   }
 
   getStudentPointsList(studentEmail) {
-    return axiosApiGet(GET_POINTS_ALL_LIST_PROFESSOR, { studentEmail: studentEmail }).catch((error) => {
+    return axiosApiGet(GET_POINTS_ALL_LIST_PROFESSOR, { studentEmail }).catch((error) => {
       throw error
     })
   }

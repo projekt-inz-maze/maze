@@ -17,7 +17,7 @@ const initialState = {
   font: '#FFB30D'
 }
 
-export default function getTheme(state = initialState, action) {
+export default function getTheme(state = initialState, action : any) {
   const { type, payload } = action
 
   switch (type) {

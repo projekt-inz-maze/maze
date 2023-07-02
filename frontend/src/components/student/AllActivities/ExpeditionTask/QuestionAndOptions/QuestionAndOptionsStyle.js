@@ -1,5 +1,6 @@
 import { Row } from 'react-bootstrap'
 import styled from 'styled-components'
+
 import background from '../../../../../utils/resources/graphTask/background5.jpg'
 import { Content } from '../../../../App/AppGeneralStyles'
 

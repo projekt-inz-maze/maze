@@ -1,12 +1,13 @@
 import React, { useRef, useState } from 'react'
+
 import { Row, Tab } from 'react-bootstrap'
+import { connect } from 'react-redux'
+
 import { AccountType, OK, TabsContainer } from './AuthStyle'
 import LoginForm from './LoginPage/LoginForm'
 import RegistrationForm from './RegistrationPage/RegistrationForm'
 import student from '../../../utils/resources/registration/graduated-white.png'
-
 import teacher from '../../../utils/resources/registration/teacher-white.png'
-import { connect } from 'react-redux'
 
 function AuthTabs(props) {
   const [studentAccount, setStudentAccount] = useState(true)
@@ -56,7 +57,7 @@ function AuthTabs(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

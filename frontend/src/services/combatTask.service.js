@@ -1,5 +1,3 @@
-import { axiosApiDelete, axiosApiDownloadFile, axiosApiGet, axiosApiPost, axiosApiMultipartPost } from '../utils/axios'
-
 import {
   GET_TASK_FILE,
   DELETE_TASK_FILE_RESULT_FILE,
@@ -8,6 +6,8 @@ import {
   POST_TASK_FILE_CREATE,
   GET_TASK_FILE_CREATE
 } from './urls'
+import { axiosApiDelete, axiosApiDownloadFile, axiosApiGet, axiosApiPost, axiosApiMultipartPost } from '../utils/axios'
+
 
 class CombatTaskService {
   getCombatTask(taskId) {
@@ -27,7 +27,7 @@ class CombatTaskService {
   removeCombatTaskFile(taskId, index) {
     return axiosApiDelete(DELETE_TASK_FILE_RESULT_FILE, {
       fileTaskId: taskId,
-      index: index
+      index
     }).catch((error) => {
       throw error
     })
@@ -36,8 +36,8 @@ class CombatTaskService {
   saveCombatTaskAnswer(taskId, openAnswer, fileName, fileBlob) {
     return axiosApiMultipartPost(POST_TASK_FILE_RESULT_FILE, {
       fileTaskId: taskId,
-      openAnswer: openAnswer,
-      fileName: fileName,
+      openAnswer,
+      fileName,
       file: fileBlob
     }).catch((error) => {
       throw error
@@ -52,8 +52,8 @@ class CombatTaskService {
 
   setFileTaskJson({ chapterId, form }) {
     return axiosApiPost(POST_TASK_FILE_CREATE, {
-      chapterId: chapterId,
-      form: form
+      chapterId,
+      form
     }).catch((error) => {
       throw error
     })

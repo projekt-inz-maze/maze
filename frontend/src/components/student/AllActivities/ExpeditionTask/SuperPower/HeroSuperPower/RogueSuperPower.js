@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import SuperPowerTrigger from '../SuperPowerTrigger'
+
 import { useRogueSuperPowerCheck } from '../../../../../../hooks/useSuperPowerCheck'
+import SuperPowerTrigger from '../SuperPowerTrigger'
 
 function RogueSuperPower(props) {
   const [superPowerInfo, setSuperPowerInfo] = useState(undefined)

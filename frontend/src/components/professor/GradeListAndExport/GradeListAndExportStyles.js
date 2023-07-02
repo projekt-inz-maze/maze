@@ -1,5 +1,6 @@
-import styled from 'styled-components'
 import { Tabs, Button, Table } from 'react-bootstrap'
+import styled from 'styled-components'
+
 export const GradesContent = styled.div`
   padding: 15px;
 

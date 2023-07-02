@@ -1,8 +1,11 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
-import Graph from '../../general/Graph/Graph'
+
+import { connect } from 'react-redux'
+
 import { getNodePosition } from './gameMapHelper'
 import { GameMapContainer as GameMapContainerStyle } from './GameMapStyles'
-import { connect } from 'react-redux'
+import Graph from '../../general/Graph/Graph'
+
 
 function GameMapContainer(props) {
   const [mapContainerSize, setMapContainerSize] = useState(null)
@@ -33,7 +36,7 @@ function GameMapContainer(props) {
     <div style={{ maxWidth: '100vw', overflowX: 'auto' }}>
       <GameMapContainerStyle
         $borderColor={props.theme.primary}
-        className={'mx-auto rounded mt-3'}
+        className="mx-auto rounded mt-3"
         ref={containerRef}
         $customHeight={props.customHeight}
       >
@@ -42,7 +45,7 @@ function GameMapContainer(props) {
             classes: element.classes,
             data: { ...element.data, position: getNodePosition(element.data.position, mapContainerSize) }
           }))}
-          layoutName={'preset'}
+          layoutName="preset"
           height={getHeight()}
           onNodeClick={props.nodeClickCallback}
           movable={false}
@@ -54,7 +57,7 @@ function GameMapContainer(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

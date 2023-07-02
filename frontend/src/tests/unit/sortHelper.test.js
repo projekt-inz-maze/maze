@@ -1,4 +1,3 @@
-import { getArrayValue, getSortIcon, nextSortingOrder, sortArray } from '../../components/general/Ranking/sortHelper'
 import {
   ASC,
   iconsData,
@@ -9,6 +8,7 @@ import {
   arrayToSort,
   expectedSortedArray
 } from './storage/sortHelperData'
+import { getArrayValue, getSortIcon, nextSortingOrder, sortArray } from '../../components/general/Ranking/sortHelper'
 import { getHeroName } from '../../utils/constants'
 
 describe('Sort icon getter tests', () => {

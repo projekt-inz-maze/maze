@@ -1,12 +1,14 @@
 import React from 'react'
-import { Content } from '../../../App/AppGeneralStyles'
+
 import { Button, Col, Form, Row } from 'react-bootstrap'
-import gameMap from '../../../../utils/resources/gameMap/map1.png'
-import ColorPicker from './ColorPicker'
-import { useNavigate } from 'react-router-dom'
-import { TeacherRoutes } from '../../../../routes/PageRoutes'
 import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
+import ColorPicker from './ColorPicker'
+import { TeacherRoutes } from '../../../../routes/PageRoutes'
 import { isMobileView } from '../../../../utils/mobileHelper'
+import gameMap from '../../../../utils/resources/gameMap/map1.png'
+import { Content } from '../../../App/AppGeneralStyles'
 
 function GameSettings(props) {
   const navigate = useNavigate()
@@ -21,15 +23,14 @@ function GameSettings(props) {
   ]
 
   return (
-    <>
-      <Content>
+    <Content>
         <Row style={{ margin: 0, marginBottom: isMobileView() ? 85 : 0 }}>
           <Col md={6}>
-            <Row className={'m-0'}>
-              <h3 className={'pt-4'}>Motywy kolorystyczne</h3>
+            <Row className="m-0">
+              <h3 className="pt-4">Motywy kolorystyczne</h3>
               <p>Użyte motywy kolorystyczne wpłyną na wygląd aplikacji i wszystkich użytkowników.</p>
-              <Form.Check className={'mb-3'} label={'Wykorzystaj domyślną kolorystykę'} />
-              <Form.Check className={'mb-3'} label={'Zastosuj poniższe zmiany tylko dla moich grup.'} />
+              <Form.Check className="mb-3" label="Wykorzystaj domyślną kolorystykę" />
+              <Form.Check className="mb-3" label="Zastosuj poniższe zmiany tylko dla moich grup." />
               <div>
                 {colorPickerElements.map((pickerSet, index) => (
                   <ColorPicker key={index} header={pickerSet.header} colors={pickerSet.colors} selectedColorId={0} />
@@ -38,19 +39,19 @@ function GameSettings(props) {
             </Row>
           </Col>
           <Col md={6}>
-            <Row style={{ height: '95%', alignContent: 'flex-start' }} className={'d-flex'}>
-              <h3 className={'pt-4'}>Rozgrywka</h3>
+            <Row style={{ height: '95%', alignContent: 'flex-start' }} className="d-flex">
+              <h3 className="pt-4">Rozgrywka</h3>
               <p>Zmień wygląd mapy gry.</p>
               <div>
                 <h5>Wykorzystywana mapa</h5>
-                <img src={gameMap} alt={'actual-game-map'} width={'100%'} />
+                <img src={gameMap} alt="actual-game-map" width="100%" />
               </div>
-              <div className={'pt-3'} style={{ cursor: 'pointer' }}>
+              <div className="pt-3" style={{ cursor: 'pointer' }}>
                 <h5>Zaimportuj nową mapę</h5>
-                <input type={'file'} accept={'image/png, image/jpeg'} />
+                <input type="file" accept="image/png, image/jpeg" />
               </div>
             </Row>
-            <div className={'gap-2 d-flex justify-content-end'}>
+            <div className="gap-2 d-flex justify-content-end">
               <Button
                 style={{ backgroundColor: props.theme.warning, borderColor: props.theme.warning }}
                 onClick={() => navigate(TeacherRoutes.GAME_MANAGEMENT.MAIN)}
@@ -64,12 +65,11 @@ function GameSettings(props) {
           </Col>
         </Row>
       </Content>
-    </>
   )
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }
