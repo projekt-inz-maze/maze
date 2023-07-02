@@ -10,11 +10,11 @@ import com.example.api.error.exception.*;
 import com.example.api.group.model.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
-import com.example.api.activity.repository.task.FileTaskRepository;
-import com.example.api.activity.repository.task.GraphTaskRepository;
-import com.example.api.activity.repository.task.InfoRepository;
-import com.example.api.activity.repository.task.SurveyRepository;
+import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.task.repository.FileTaskRepository;
+import com.example.api.activity.task.repository.GraphTaskRepository;
+import com.example.api.activity.task.repository.InfoRepository;
+import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
     private final FileTaskRepository fileTaskRepository;
     private final SurveyRepository surveyRepository;
     private final InfoRepository infoRepository;
-    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final AdditionalPointsRepository additionalPointsRepository;
     private final AuthenticationService authService;
     private final PasswordEncoder passwordEncoder;
     private final UserValidator userValidator;
@@ -186,7 +186,7 @@ public class UserService implements UserDetailsService {
                 .flatMap(Collection::stream)
                 .filter(activity -> activity.getProfessor() == from)
                 .forEach(activity -> activity.setProfessor(to));
-        professorFeedbackRepository.findAll()
+        additionalPointsRepository.findAll()
                 .stream()
                 .filter(additionalPoint -> additionalPoint.getProfessorEmail().equals(from.getEmail()))
                 .forEach(additionalPoint -> additionalPoint.setProfessorEmail(to.getEmail()));

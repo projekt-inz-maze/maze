@@ -1,5 +1,6 @@
 package com.example.api.activity.result.model;
 
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -27,18 +28,22 @@ public abstract class TaskResult {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    @ManyToOne
+    private Course course;
+
     private Double pointsReceived;
     private Long sendDateMillis;
 
     public abstract boolean isEvaluated();
     public abstract Activity getActivity();
 
-    public TaskResult(Long id, User user, Double pointsReceived, Long sendDateMillis)
+    public TaskResult(Long id, User user, Double pointsReceived, Long sendDateMillis, Course course)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         this.id = id;
         this.user = user;
         this.setPointsReceived(pointsReceived);
         this.sendDateMillis = sendDateMillis;
+        this.course= course;
     }
 
     public void setPointsReceived(Double newPoints) {

@@ -16,7 +16,7 @@ import com.example.api.question.model.Option;
 import com.example.api.question.model.Question;
 import com.example.api.question.model.QuestionType;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.task.GraphTaskRepository;
+import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.question.repository.OptionRepository;
 import com.example.api.question.repository.QuestionRepository;
@@ -96,7 +96,8 @@ public class GraphTaskService {
                 professor,
                 questions,
                 timeToSolveMillis,
-                maxPoints);
+                maxPoints,
+                null);
         graphTask.setRequirements(requirementService.getDefaultRequirements(true));
         graphTaskRepository.save(graphTask);
 

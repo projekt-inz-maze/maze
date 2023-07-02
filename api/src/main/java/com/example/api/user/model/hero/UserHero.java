@@ -1,5 +1,6 @@
 package com.example.api.user.model.hero;
 
+import com.example.api.course.model.Course;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,7 @@ public class UserHero {
     private Hero hero;
     private Integer timesSuperPowerUsedInResult;
     private Long lastSuperPowerUsageTimeMillis;
+
+    @ManyToOne
+    private Course course;
 }

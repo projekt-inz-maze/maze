@@ -104,7 +104,7 @@ public class ChapterService {
         chapterValidator.validateChapterCreation(form);
         ActivityMap activityMap = new ActivityMap(form.getSizeX(), form.getSizeY(), image);
         activityMapService.saveActivityMap(activityMap);
-        Chapter chapter = new Chapter(form.getName(), activityMap, form.getPosX(), form.getPosY());
+        Chapter chapter = new Chapter(form.getName(), activityMap, form.getPosX(), form.getPosY(), null);
         chapter.setRequirements(requirementService.getDefaultRequirements(false));
         List<Chapter> allChapters = chapterRepository.findAll();
         chapterRepository.save(chapter);

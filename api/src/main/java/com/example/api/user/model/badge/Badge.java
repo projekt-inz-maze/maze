@@ -1,5 +1,6 @@
 package com.example.api.user.model.badge;
 
+import com.example.api.course.model.Course;
 import com.example.api.user.dto.request.badge.BadgeUpdateForm;
 import com.example.api.user.dto.response.badge.BadgeResponse;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -37,11 +38,16 @@ public abstract class Badge {
     @OneToMany(mappedBy = "badge", cascade = CascadeType.REMOVE)
     private List<UnlockedBadge> unlockedBadges;
 
-    public Badge(Long id, String title, String description, Image image) {
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
+    public Badge(Long id, String title, String description, Image image, Course course) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.image = image;
+        this.course = course;
     }
 
     public abstract boolean isGranted(BadgeVisitor visitor)

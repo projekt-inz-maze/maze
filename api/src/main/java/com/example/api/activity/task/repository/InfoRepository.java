@@ -1,4 +1,4 @@
-package com.example.api.activity.repository.task;
+package com.example.api.activity.task.repository;
 
 import com.example.api.activity.task.model.Info;
 import org.springframework.data.jpa.repository.JpaRepository;

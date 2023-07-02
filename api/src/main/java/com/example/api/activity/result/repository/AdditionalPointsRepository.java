@@ -1,4 +1,4 @@
-package com.example.api.activity.repository.result;
+package com.example.api.activity.result.repository;
 
 import com.example.api.activity.result.model.AdditionalPoints;
 import com.example.api.user.model.User;
@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProfessorFeedbackRepository extends JpaRepository<AdditionalPoints, Long> {
+public interface AdditionalPointsRepository extends JpaRepository<AdditionalPoints, Long> {
     List<AdditionalPoints> findAllByUser(User user);
 }

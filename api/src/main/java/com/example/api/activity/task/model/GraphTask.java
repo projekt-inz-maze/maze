@@ -1,6 +1,7 @@
 package com.example.api.activity.task.model;
 
 import com.example.api.activity.task.dto.request.create.CreateGraphTaskForm;
+import com.example.api.course.model.Course;
 import com.example.api.map.dto.response.task.ActivityType;
 import com.example.api.question.model.Question;
 import com.example.api.user.model.User;
@@ -34,9 +35,10 @@ public class GraphTask extends Task {
                      User professor,
                      List<Question> questions,
                      long timeToSolveMillis,
-                     double maxPoints){
+                     double maxPoints,
+                     Course course){
         super(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), professor,
-                form.getRequiredKnowledge(), maxPoints);
+                form.getRequiredKnowledge(), maxPoints, course);
         this.questions = questions;
         this.timeToSolveMillis = timeToSolveMillis;
         super.setExperience(maxPoints * 10);

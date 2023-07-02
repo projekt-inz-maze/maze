@@ -114,7 +114,7 @@ public class UserValidator {
             newUser.setGroup(group);
 
             Hero hero = heroRepository.findHeroByType(form.getHeroType());
-            UserHero userHero = new UserHero(hero, 0, 0L);
+            UserHero userHero = new UserHero(hero, 0, 0L, null);
             newUser.setUserHero(userHero);
             Integer indexNumber = form.getIndexNumber();
 

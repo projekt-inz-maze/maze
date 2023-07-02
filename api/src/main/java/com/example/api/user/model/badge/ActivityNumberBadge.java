@@ -1,5 +1,6 @@
 package com.example.api.user.model.badge;
 
+import com.example.api.course.model.Course;
 import com.example.api.user.dto.request.badge.BadgeUpdateForm;
 import com.example.api.user.dto.response.badge.BadgeResponse;
 import com.example.api.error.exception.RequestValidationException;
@@ -22,8 +23,8 @@ import java.io.IOException;
 public class ActivityNumberBadge extends Badge{
     private Integer activityNumber;
 
-    public ActivityNumberBadge(Long id, String title, String description, Image image, Integer activityNumber) {
-        super(id, title, description, image);
+    public ActivityNumberBadge(Long id, String title, String description, Image image, Integer activityNumber, Course course) {
+        super(id, title, description, image, course);
         this.activityNumber = activityNumber;
     }
 

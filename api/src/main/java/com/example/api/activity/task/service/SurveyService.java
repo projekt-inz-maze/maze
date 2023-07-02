@@ -12,8 +12,8 @@ import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.task.model.Survey;
 import com.example.api.map.model.Chapter;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.result.SurveyResultRepository;
-import com.example.api.activity.repository.task.SurveyRepository;
+import com.example.api.activity.result.repository.SurveyResultRepository;
+import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
@@ -79,7 +79,8 @@ public class SurveyService {
 
         Survey survey = new Survey(
                 form,
-                professor
+                professor,
+                null
         );
         survey.setRequirements(requirementService.getDefaultRequirements(true));
         surveyRepository.save(survey);

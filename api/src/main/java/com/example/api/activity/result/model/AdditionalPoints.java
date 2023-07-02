@@ -1,5 +1,6 @@
 package com.example.api.activity.result.model;
 
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -24,9 +25,10 @@ public class AdditionalPoints extends TaskResult{
                             Double points,
                             Long sendDateMillis,
                             String professorEmail,
-                            String description)
+                            String description,
+                            Course course)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        super(id, student, points, sendDateMillis);
+        super(id, student, points, sendDateMillis, course);
         this.professorEmail = professorEmail;
         this.description = description;
     }

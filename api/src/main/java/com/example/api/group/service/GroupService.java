@@ -43,7 +43,7 @@ public class GroupService {
         log.info("Saving group to database with name {}", form.getName());
         List<Group> groups = groupRepository.findAll();
         groupValidator.validateGroup(groups, form);
-        Group group = new Group(null, form.getName(), new ArrayList<>(), form.getInvitationCode());
+        Group group = new Group(null, form.getName(), new ArrayList<>(), form.getInvitationCode(), null);
         groupRepository.save(group);
         return group.getId();
     }

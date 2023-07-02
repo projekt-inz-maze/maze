@@ -6,10 +6,10 @@ import com.example.api.user.dto.response.grade.GradeResponse;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
-import com.example.api.activity.repository.result.FileTaskResultRepository;
-import com.example.api.activity.repository.result.GraphTaskResultRepository;
-import com.example.api.activity.repository.result.SurveyResultRepository;
+import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.result.repository.FileTaskResultRepository;
+import com.example.api.activity.result.repository.GraphTaskResultRepository;
+import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.validator.UserValidator;
@@ -35,7 +35,7 @@ public class GradeService {
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
-    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final AdditionalPointsRepository additionalPointsRepository;
 
     public List<GradeResponse> getAllGrades() throws WrongUserTypeException {
         String email = authService.getAuthentication().getName();
@@ -56,7 +56,7 @@ public class GradeService {
                 .stream()
                 .filter(SurveyResult::isEvaluated)
                 .toList();
-        List<AdditionalPoints> additionalPointsList = professorFeedbackRepository.findAllByUser(student);
+        List<AdditionalPoints> additionalPointsList = additionalPointsRepository.findAllByUser(student);
 
         Double pointsReceived = Stream.of(graphTaskResults, fileTaskResults, surveyResults)
                 .flatMap(Collection::stream)
