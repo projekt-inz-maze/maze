@@ -136,7 +136,7 @@ function ExpeditionSummary(props) {
           </Row>
           <Row>
             <ButtonRow $background={props.theme.success}>
-              <button className='w-100' onClick={() => finishExpeditionAndGoHome()}>
+              <button type="button" className='w-100' onClick={() => finishExpeditionAndGoHome()}>
                 Wróć do strony głównej
               </button>
             </ButtonRow>

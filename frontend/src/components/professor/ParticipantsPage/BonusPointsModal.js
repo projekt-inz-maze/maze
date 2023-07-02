@@ -32,7 +32,7 @@ function BonusPointsModal(props) {
               return errors
             }}
             onSubmit={(values, { setSubmitting }) => {
-              ProfessorService.sendBonusPoints(props?.studentId, parseInt(values.points), values.reason, Date.now())
+              ProfessorService.sendBonusPoints(props?.studentId, parseInt(values.points, 10), values.reason, Date.now())
                 .then(() => {
                   setFinishModalDescription('Proces przyznawania dodatkowych punktów zakończył się pomyślnie.')
                 })

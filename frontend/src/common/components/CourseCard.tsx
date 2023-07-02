@@ -4,7 +4,7 @@ import { Card, Dropdown } from 'react-bootstrap'
 
 import 'holderjs'
 import style from './CourseCard.module.scss'
-import CustomDropdownToggle from "./CustomDropdownToggle/CustomDropdownToggle";
+import CustomDropdownToggle from './CustomDropdownToggle/CustomDropdownToggle'
 
 type CourseCardProps = {
   title: string

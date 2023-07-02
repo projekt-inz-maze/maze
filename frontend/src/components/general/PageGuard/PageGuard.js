@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { GeneralRoutes, StudentRoutes, TeacherRoutes } from '../../../routes/PageRoutes'
+import { GeneralRoutes, TeacherRoutes } from '../../../routes/PageRoutes'
 import { isStudent } from '../../../utils/storageManager'
 import { Role } from '../../../utils/userRole'
 
