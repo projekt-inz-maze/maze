@@ -21,17 +21,17 @@ public class AllPointsController {
     private final AllPointsService allPointsService;
 
     @GetMapping("/list/professor")
-    public ResponseEntity<List<?>> getAllPointsListForProfessor(@RequestParam String studentEmail) throws WrongUserTypeException {
+    public ResponseEntity<List<?>> getAllPointsListForProfessor(@RequestParam Long courseId, @RequestParam String studentEmail) throws WrongUserTypeException {
         return ResponseEntity.ok().body(allPointsService.getAllPointsListForProfessor(studentEmail));
     }
 
     @GetMapping("/list/student")
-    public ResponseEntity<List<?>> getAllPointsListForStudent() throws WrongUserTypeException {
+    public ResponseEntity<List<?>> getAllPointsListForStudent(@RequestParam Long courseId) throws WrongUserTypeException {
         return ResponseEntity.ok().body(allPointsService.getAllPointsListForStudent());
     }
 
     @GetMapping("/total")
-    public ResponseEntity<TotalPointsResponse> getAllPointsTotal() throws WrongUserTypeException {
+    public ResponseEntity<TotalPointsResponse> getAllPointsTotal(@RequestParam Long courseId) throws WrongUserTypeException {
         return ResponseEntity.ok().body(allPointsService.getAllPointsTotal());
     }
 }

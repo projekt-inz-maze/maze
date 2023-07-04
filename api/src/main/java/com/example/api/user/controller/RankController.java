@@ -19,35 +19,36 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("{courseId}/rank")
+@RequestMapping("/rank")
 @SecurityRequirement(name = "JWT_AUTH")
 public class RankController {
     private final RankService rankService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<RanksForHeroTypeResponse>> getAllRanks(@PathVariable Long courseId) {
+    public ResponseEntity<List<RanksForHeroTypeResponse>> getAllRanks(@RequestParam Long courseId) {
         return ResponseEntity.ok().body(rankService.getAllRanks());
     }
 
     @PostMapping(path = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> addNewRank(@PathVariable Long courseId, @ModelAttribute AddRankForm form) throws RequestValidationException, IOException {
+    public ResponseEntity<?> addNewRank(@ModelAttribute AddRankForm form) throws RequestValidationException, IOException {
         rankService.addRank(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(path = "/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> updateRank(@PathVariable Long courseId, @ModelAttribute EditRankForm form) throws RequestValidationException, IOException {
+    public ResponseEntity<?> updateRank(@ModelAttribute EditRankForm form) throws RequestValidationException, IOException {
+        //TODO validate user type
         rankService.updateRank(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/current")
-    public ResponseEntity<CurrentRankResponse> getCurrentRankInfo(@PathVariable Long courseId) throws RequestValidationException, IOException {
+    public ResponseEntity<CurrentRankResponse> getCurrentRankInfo(@RequestParam Long courseId) throws RequestValidationException, IOException {
         return ResponseEntity.ok().body(rankService.getCurrentRank());
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteRank(@PathVariable Long courseId, @RequestParam Long rankId) throws EntityNotFoundException {
+    public ResponseEntity<?> deleteRank(@RequestParam Long rankId) throws EntityNotFoundException {
         rankService.deleteRank(rankId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

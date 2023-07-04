@@ -24,7 +24,7 @@ public class RankingController {
     private final RankingService rankingService;
 
     @GetMapping
-    public ResponseEntity<List<RankingResponse>> getRanking() {
+    public ResponseEntity<List<RankingResponse>> getRanking(@RequestParam Long courseId) {
         return ResponseEntity.ok().body(rankingService.getRanking());
     }
 
@@ -35,18 +35,18 @@ public class RankingController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<RankingResponse>> getSearchedRanking(@RequestParam String search) {
+    public ResponseEntity<List<RankingResponse>> getSearchedRanking(@RequestParam Long courseId, @RequestParam String search) {
         return ResponseEntity.ok().body(rankingService.getSearchedRanking(search));
     }
 
     @GetMapping("/position")
-    public ResponseEntity<Integer> getRankingPosition()
+    public ResponseEntity<Integer> getRankingPosition(@RequestParam Long courseId)
             throws WrongUserTypeException {
         return ResponseEntity.ok().body(rankingService.getRankingPosition());
     }
 
     @GetMapping("/group/position")
-    public ResponseEntity<Integer> getGroupRankingPosition()
+    public ResponseEntity<Integer> getGroupRankingPosition(@RequestParam Long courseId)
             throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException, EntityNotFoundException {
         return ResponseEntity.ok().body(rankingService.getGroupRankingPosition());
     }
@@ -58,6 +58,7 @@ public class RankingController {
 
     @GetMapping("/activity/search")
     public ResponseEntity<List<RankingResponse>> getAllPointsActivityListSearch(
+            @RequestParam Long courseId,
             @RequestParam Long activityID,
             @RequestParam String search
     ) throws WrongUserTypeException, EntityNotFoundException {

@@ -12,4 +12,5 @@ import java.util.List;
 public class GetCSVForm {
     List<Long> studentIds;
     List<Long> activityIds;
+    Long courseId;
 }

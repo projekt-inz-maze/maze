@@ -17,6 +17,7 @@ public class HeroService {
     private final HeroRepository heroRepository;
 
     public void updateHero(UpdateHeroForm form) {
+        //TODO Add role validation?
         Hero hero = heroRepository.findHeroByType(form.getType());
         Long coolDown = form.getCoolDownMillis();
         if (coolDown != null) {

@@ -20,47 +20,47 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("{courseId}/chapter")
+@RequestMapping("/chapter")
 @SecurityRequirement(name = "JWT_AUTH")
 public class ChapterController {
     private final ChapterService chapterService;
 
     @GetMapping
-    public ResponseEntity<List<? extends ChapterResponse>> getAllChapters(@PathVariable Long courseId) {
+    public ResponseEntity<List<? extends ChapterResponse>> getAllChapters(@RequestParam Long courseId) {
         return ResponseEntity.ok().body(chapterService.getAllChapters());
     }
 
     @GetMapping("/info")
-    public ResponseEntity<ChapterInfoResponse> getChapterInfo(@PathVariable Long courseId, @RequestParam Long id) throws EntityNotFoundException {
+    public ResponseEntity<ChapterInfoResponse> getChapterInfo(@RequestParam Long id) throws EntityNotFoundException {
         return ResponseEntity.ok().body(chapterService.getChapterInfo(id));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createChapter(@PathVariable Long courseId, @RequestBody ChapterForm form) throws RequestValidationException {
+    public ResponseEntity<?> createChapter(@RequestBody ChapterForm form) throws RequestValidationException {
         chapterService.createChapter(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteChapter(@PathVariable Long courseId, @RequestParam Long chapterID) throws WrongUserTypeException, EntityNotFoundException {
+    public ResponseEntity<?> deleteChapter(@RequestParam Long chapterID) throws WrongUserTypeException, EntityNotFoundException {
         chapterService.deleteChapter(chapterID);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<?> editChapter(@PathVariable Long courseId, @RequestBody EditChapterForm editChapterForm) throws RequestValidationException {
+    public ResponseEntity<?> editChapter(@RequestBody EditChapterForm editChapterForm) throws RequestValidationException {
         chapterService.editChapter(editChapterForm);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/requirements")
-    ResponseEntity<RequirementResponse> getRequirementsForChapter(@PathVariable Long courseId, @RequestParam Long chapterId)
+    ResponseEntity<RequirementResponse> getRequirementsForChapter(@RequestParam Long chapterId)
             throws EntityNotFoundException {
         return ResponseEntity.ok().body(chapterService.getRequirementsForChapter(chapterId));
     }
 
     @PostMapping("/requirements/update")
-    ResponseEntity<?> updateRequirementForChapter(@PathVariable Long courseId, @RequestBody ChapterRequirementForm form) throws RequestValidationException {
+    ResponseEntity<?> updateRequirementForChapter(@RequestBody ChapterRequirementForm form) throws RequestValidationException {
         chapterService.updateRequirementForChapter(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }

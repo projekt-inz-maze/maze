@@ -25,7 +25,7 @@ public class AdditionalPointsController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAdditionalPoints() {
+    public ResponseEntity<?> getAdditionalPoints(@RequestParam Long courseId) {
         return ResponseEntity.ok().body(additionalPointsService.getAdditionalPoints());
     }
 }

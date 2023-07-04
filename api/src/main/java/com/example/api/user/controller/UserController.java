@@ -53,8 +53,8 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getCurrentUser());
     }
 
-    @GetMapping("/{courseId}/user/group")
-    public ResponseEntity<Group> getUserGroup(@PathVariable Long courseId) throws EntityNotFoundException {
+    @GetMapping("/user/group")
+    public ResponseEntity<Group> getUserGroup(@RequestParam Long courseId) throws EntityNotFoundException {
         return ResponseEntity.ok().body(userService.getUserGroup());
     }
 

@@ -15,4 +15,5 @@ public class AddRankForm {
     @Schema(required = true) private Double minPoints;
     @Schema(required = true) private MultipartFile image;
     @Schema(required = true) private HeroType type;
+    @Schema(required = true) private Long courseId;
 }

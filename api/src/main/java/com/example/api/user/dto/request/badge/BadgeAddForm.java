@@ -12,4 +12,5 @@ import lombok.Setter;
 @Setter
 public class BadgeAddForm extends BadgeForm{
     @Schema(required = true) private BadgeType type;
+    @Schema(required = true) private Long courseId;
 }

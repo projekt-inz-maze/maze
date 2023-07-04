@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 public class SaveGroupForm {
     @Schema(required = true) private String name;
     @Schema(required = true) private String invitationCode;
+    @Schema(required = true) private Long courseId;
 }
