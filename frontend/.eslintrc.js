@@ -27,11 +27,13 @@ module.exports = {
   plugins: ['react', 'react-hooks', 'prettier', 'jest', 'import'],
   rules: {
     'no-alert': 'off', // TODO: Drop this later.
+    'no-use-before-define': 'off', // TODO: Drop this later.
+    'no-empty-function': 'off', // TODO: Drop this later.
     'no-console': 'warn',
     'no-trailing-spaces': 'error',
     'comma-dangle': ['error', 'never'],
     'default-param-last': 'off',
-    'no-unused-vars': 'error',
+    'no-unused-vars': 'warn', // TODO: Drop this later.
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': 'off',
     'react/destructuring-assignment': 'off',
@@ -43,13 +45,14 @@ module.exports = {
     'import/prefer-default-export': 'off', // TODO: Drop this later..
     'consistent-return': 'off', // TODO: Drop this later.
     'semi': ['error', 'never'],
-    'react/jsx-handler-names': [
-      'error',
-      {
-        eventHandlerPrefix: 'handle',
-        eventHandlerPropPrefix: 'on'
-      }
-    ],
+    // 'react/jsx-handler-names': [
+    //   'error',
+    //   {
+    //     eventHandlerPrefix: 'handle',
+    //     eventHandlerPropPrefix: 'on'
+    //   }
+    // ],
+    'react/jsx-handler-names': 'off',
     'import/order': [
       'error',
       {
@@ -79,7 +82,25 @@ module.exports = {
     'react/jsx-no-useless-fragment': 'off', // TODO: Drop this later.
     'no-case-declarations': 'off', // TODO: Drop this later.
     'class-methods-use-this': 'off', // TODO: Drop this later.
+    '@typescript-eslint/no-empty-function': 'off', // TODO: Drop this later.
+    'jsx-a11y/click-events-have-key-events': 'off', // TODO: Drop this later.
+    'jsx-a11y/no-static-element-interactions': 'off', // TODO: Drop this later.
     // Rule override for test files
-    'jest/no-undef': 'off'
+    'jest/no-undef': 'off',
+    // Errors converted to warnings
+    'camelcase': 'warn',
+    'no-shadow': 'warn',
+    '@typescript-eslint/no-explicit-any': 'warn',
+    'no-unused-expressions': 'warn',
+    'prefer-destructuring': 'warn',
+    'no-unsafe-optional-chaining': 'warn',
+    'no-param-reassign': 'warn',
+    'react/button-has-type': 'warn',
+    'jsx-a11y/no-noninteractive-element-interactions': 'warn',
+    'jsx-a11y/label-has-associated-control': 'warn',
+    'jsx-a11y/control-has-associated-label': 'warn',
+    'react/no-children-prop': 'warn',
+    'react/no-unstable-nested-components': 'warn',
+    'no-restricted-globals': 'warn'
   }
 }

@@ -7,7 +7,7 @@ import { Activity } from '../../../../utils/constants'
 function AddInfoTask(props) {
   return (
     <>
-      <p className="fw-bold text-center"> W polu "infoContent" możesz wpisywać tekst markdown. </p>
+      <p className="fw-bold text-center"> W polu &quot;infoContent&quot; możesz wpisywać tekst markdown. </p>
       <AddActivity
         getActivityJson={InfoTaskService.getInfoTaskJson}
         setActivityJson={InfoTaskService.setInfoTaskJson}

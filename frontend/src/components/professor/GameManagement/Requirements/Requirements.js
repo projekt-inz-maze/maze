@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 
+import pl from 'date-fns/locale/pl'
 import { Row, Button, Spinner, Form } from 'react-bootstrap'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import { connect } from 'react-redux'
@@ -11,13 +12,10 @@ import { ERROR_OCCURRED, RequirementType } from '../../../../utils/constants'
 import { isMobileView } from '../../../../utils/mobileHelper'
 import { successToast } from '../../../../utils/toasts'
 import CreatableInput from '../../../general/CreatableInput/CreatableInput'
-import { CustomTable } from '../../../student/GameCardPage/gameCardContentsStyle'
-
-
-import 'react-datepicker/dist/react-datepicker.css'
-import pl from 'date-fns/locale/pl'
-
 import GoBackButton from '../../../general/GoBackButton/GoBackButton'
+import { CustomTable } from '../../../student/GameCardPage/gameCardContentsStyle'
+import 'react-datepicker/dist/react-datepicker.css'
+
 
 registerLocale('pl', pl)
 
