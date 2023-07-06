@@ -6,12 +6,16 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from './CourseList.module.scss'
 import CourseCard from '../../../common/components/CourseCard'
+import { useAppDispatch } from '../../../hooks/hooks'
+import { setCourseId } from '../../../reducers/userSlice'
 
 
 const CourseList = () => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
-  const handleClick = () => {
+  const handleClick = (courseId: number) => {
+    dispatch(setCourseId(courseId))
     navigate('/game-card')
   }
 
@@ -28,17 +32,17 @@ const CourseList = () => {
               <CourseCard
                 title='Sieci komputerowe'
                 description='Przedmiot na 5 semestrze studiów informatycznych.'
-                onEnterCourse={handleClick}
+                onEnterCourse={() => handleClick(1)}
               />
               <CourseCard
                 title='Bezpieczeństwo sieci komputerowych'
                 description='Przedmiot na 6 semestrze studiów informatycznych.'
-                onEnterCourse={handleClick}
+                onEnterCourse={() => handleClick(2)}
               />
               <CourseCard
                 title='Wirtualne sieci prywatne'
                 description='Przedmiot na 7 semestrze studiów informatycznych.'
-                onEnterCourse={handleClick}
+                onEnterCourse={() => handleClick(3)}
               />
             </Stack>
           </Col>
