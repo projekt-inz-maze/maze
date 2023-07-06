@@ -44,7 +44,7 @@ function EditActivityModal(props) {
         </ModalHeader>
         <ModalBody>
           <Tabs defaultActiveKey="editor">
-            <p className="fw-bold text-center">W polu "infoContent" możesz wpisywać tekst markdown.</p>
+            <p className="fw-bold text-center">W polu &quot;infoContent&quot; możesz wpisywać tekst markdown.</p>
             <Tab eventKey="editor" title="Tryb edycji">
               <JSONEditor ref={jsonEditorRef} jsonConfig={placeholderJson} />
             </Tab>

@@ -110,7 +110,7 @@ function ResetPasswordForm(props) {
           className="text-center position-relative translate-middle-x start-50 w-75"
         >
           Twój kod do resetu hasła zostanie wysłany na podany adres email. Jeżeli nie widzisz maila, sprawdź spam.
-          Jeżeli w przeciągu 5min nie otrzymasz maila z kodem, kliknij przycisk "Wyślij ponownie email"
+          Jeżeli w przeciągu 5min nie otrzymasz maila z kodem, kliknij przycisk &quot;Wyślij ponownie email&quot;
         </p>
 
         <div className="my-4 d-flex justify-content-center gap-2 ">

@@ -7,6 +7,7 @@ COPY . /app/
 RUN apk add --no-cache git
 RUN npm install
 RUN npm install react-scripts
+RUN npm rebuild node-sass
 RUN npm run build
 
 FROM nginx:stable-alpine

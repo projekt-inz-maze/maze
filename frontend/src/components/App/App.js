@@ -21,20 +21,24 @@ function App(props) {
       <Container fluid className='p-0'>
         <div className="d-flex" style={{ minHeight: '100vh', margin: 0 }}>
           <BrowserRouter>
-            <SidebarCol
-              style={{ width: props.sidebar.isExpanded ? 400 : 60 }}
-              className={sidebarExcludedPaths.includes(window.location.pathname) ? 'd-none' : 'd-md-block d-none'}
-            >
-              <Sidebar link_titles={student ? UserSidebarTitles : ProfessorSidebarTitles} />
-            </SidebarCol>
-            <div className='p-0 w-100'>
+            { window.location.pathname !== '/courses' && (
+              <SidebarCol
+                style={{ width: props.sidebar.isExpanded ? 400 : 60 }}
+                className={sidebarExcludedPaths.includes(window.location.pathname) ? 'd-none' : 'd-md-block d-none'}
+              >
+                <Sidebar link_titles={student ? UserSidebarTitles : ProfessorSidebarTitles} />
+              </SidebarCol>
+            )}
+            <div className="p-0 w-100">
               <AppRoutes />
             </div>
-            <SidebarCol
-              className={sidebarExcludedPaths.includes(window.location.pathname) ? 'd-none' : 'd-md-none d-block'}
-            >
-              <MobileNavbar link_titles={student ? UserSidebarTitles : ProfessorSidebarTitles} />
-            </SidebarCol>
+            { window.location.pathname !== '/courses' && (
+              <SidebarCol
+                className={sidebarExcludedPaths.includes(window.location.pathname) ? 'd-none' : 'd-md-none d-block'}
+              >
+                <MobileNavbar link_titles={student ? UserSidebarTitles : ProfessorSidebarTitles} />
+              </SidebarCol>
+            )}
             <AuthVerify />
           </BrowserRouter>
         </div>

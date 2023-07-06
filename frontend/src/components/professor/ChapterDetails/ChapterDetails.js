@@ -276,7 +276,7 @@ function ChapterDetails(props) {
                             activity.isActivityBlocked ? (
                               <CustomTooltip style={{ position: 'fixed' }}>
                                 Aktywność została zablokowana. Studenci nie mogą jej zobaczyć. Żeby była odblokowana
-                                musisz zmienić to w zakładce "Wymagania".
+                                musisz zmienić to w zakładce &quot;Wymagania&quot;.
                               </CustomTooltip>
                             ) : (
                               <></>

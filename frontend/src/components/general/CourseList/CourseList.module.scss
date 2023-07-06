@@ -1,0 +1,59 @@
+.mainContainer {
+    background-color: #071542;
+    color: whitesmoke;
+    height: 100%;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    padding: 10em;
+}
+
+.headerRow {
+    padding: 4em 0 1em;
+
+    h1 {
+        margin-bottom: 0.75em;
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+.stackContainer {
+    display: flex;
+    align-items: stretch;
+    color: black;
+    padding-right: 2.5em;
+    border-right: 4px solid whitesmoke;
+    flex: 3;
+}
+
+.stackContainer > * {
+    flex: 1;
+}
+
+.enrollSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding-left: 2.5em;
+    padding-top: 2em;
+
+    p {
+        font-size: 1.25rem;
+    }
+
+    .enterCode {
+        display: flex;
+        flex-direction: column;
+        width: 60%;
+
+        .enrollBtn {
+            margin-top: 1em;
+            align-self: end;
+        }
+    }
+}

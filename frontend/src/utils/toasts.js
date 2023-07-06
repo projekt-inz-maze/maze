@@ -1,10 +1,9 @@
+import { Button } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import { logout } from '../actions/auth'
 import authService from '../services/auth.service'
-
-import { Button } from 'react-bootstrap'
 
 export const errorToast = (errorMsg, autoClose = 4000, position = 'top-right') =>
   toast.error(errorMsg ?? 'Coś poszło nie tak.', { autoClose, position })
