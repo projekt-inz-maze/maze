@@ -25,7 +25,7 @@ public class RankController {
     private final RankService rankService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<RanksForHeroTypeResponse>> getAllRanks() {
+    public ResponseEntity<List<RanksForHeroTypeResponse>> getAllRanks(@RequestParam Long courseId) {
         return ResponseEntity.ok().body(rankService.getAllRanks());
     }
 
@@ -37,12 +37,13 @@ public class RankController {
 
     @PutMapping(path = "/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> updateRank(@ModelAttribute EditRankForm form) throws RequestValidationException, IOException {
+        //TODO validate user type
         rankService.updateRank(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/current")
-    public ResponseEntity<CurrentRankResponse> getCurrentRankInfo() throws RequestValidationException, IOException {
+    public ResponseEntity<CurrentRankResponse> getCurrentRankInfo(@RequestParam Long courseId) throws RequestValidationException, IOException {
         return ResponseEntity.ok().body(rankService.getCurrentRank());
     }
 

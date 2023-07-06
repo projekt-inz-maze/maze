@@ -15,4 +15,5 @@ public class ChapterForm {
     @Schema(required = true) private Long imageId;
     @Schema(required = true) private Integer posX;
     @Schema(required = true) private Integer posY;
+    @Schema(required = true) private Long courseId;
 }

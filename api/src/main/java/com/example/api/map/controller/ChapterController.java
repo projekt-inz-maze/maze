@@ -26,7 +26,7 @@ public class ChapterController {
     private final ChapterService chapterService;
 
     @GetMapping
-    public ResponseEntity<List<? extends ChapterResponse>> getAllChapters() {
+    public ResponseEntity<List<? extends ChapterResponse>> getAllChapters(@RequestParam Long courseId) {
         return ResponseEntity.ok().body(chapterService.getAllChapters());
     }
 

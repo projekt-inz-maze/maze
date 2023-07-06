@@ -27,7 +27,7 @@ public class FileController {
     private final FileService fileService;
 
     @GetMapping("/chapter/images")
-    public ResponseEntity<List<ChapterImageResponse>> getImagesForChapter() {
+    public ResponseEntity<List<ChapterImageResponse>> getImagesForChapter(@RequestParam Long courseId) {
         return ResponseEntity.ok().body(fileService.getImagesForChapter());
     }
 

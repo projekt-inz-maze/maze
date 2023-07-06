@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SummaryController {
     private final SummaryService summaryService;
     @GetMapping("")
-    public ResponseEntity<SummaryResponse> getUserPointsStatistics() throws WrongUserTypeException {
+    public ResponseEntity<SummaryResponse> getUserPointsStatistics(@RequestParam Long courseId) throws WrongUserTypeException {
         return ResponseEntity.ok().body(summaryService.getSummary());
     }
 }

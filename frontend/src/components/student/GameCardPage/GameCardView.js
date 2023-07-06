@@ -10,6 +10,7 @@ import {
   LastActivitiesContent,
   PersonalRankingInfoContent
 } from './gameCardContents'
+import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
@@ -19,9 +20,10 @@ import Loader from '../../general/Loader/Loader'
 function GameCardView(props) {
   const isMobile = isMobileView()
   const [dashboardStats, setDashboardStats] = useState(undefined)
+  const courseId = useAppSelector((state) => state.user.courseId)
 
   useEffect(() => {
-    StudentService.getDashboardStats()
+    StudentService.getDashboardStats(courseId)
       .then((response) => {
         setDashboardStats(response)
         localStorage.setItem('heroType', response.heroTypeStats.heroType)

@@ -10,6 +10,7 @@ import {
 import { axiosApiDelete, axiosApiGet, axiosApiPost } from '../utils/axios'
 
 class StudentService {
+
   getUserGroup() {
     return axiosApiGet(GET_USER_GROUP).catch((error) => {
       throw error
@@ -34,14 +35,14 @@ class StudentService {
     })
   }
 
-  setIndexNumber(newIndexNumber) {
+  setIndexNumber(newIndexNumber: number) {
     return axiosApiPost(POST_USER_INDEX, { newIndexNumber }).catch((error) => {
       throw error
     })
   }
 
-  getDashboardStats() {
-    return axiosApiGet(GET_DASHBOARD).catch((error) => {
+  getDashboardStats(courseId: number) {
+    return axiosApiGet(`${GET_DASHBOARD}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }

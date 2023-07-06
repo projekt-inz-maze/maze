@@ -23,7 +23,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping("/evaluate/all")
-    ResponseEntity<List<ActivityToEvaluateResponse>> getAllActivitiesToEvaluate()
+    ResponseEntity<List<ActivityToEvaluateResponse>> getAllActivitiesToEvaluate(@RequestParam Long courseId)
             throws WrongUserTypeException {
         return ResponseEntity.ok().body(taskService.getAllActivitiesToEvaluate());
     }
@@ -35,7 +35,7 @@ public class TaskController {
     }
 
     @GetMapping("/activities")
-    ResponseEntity<List<ActivitiesResponse>> getAllActivities() {
+    ResponseEntity<List<ActivitiesResponse>> getAllActivities(@RequestParam Long courseId) {
         return ResponseEntity.ok().body(taskService.getAllActivities());
     }
 
