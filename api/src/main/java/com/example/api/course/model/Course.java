@@ -41,4 +41,12 @@ public class Course {
     @OneToMany(mappedBy = "course")
     @JsonBackReference
     private List<Chapter> chapters = new LinkedList<>();
+
+    public Course(Long id, String name, String description, Boolean isArchived, User owner) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isArchived = isArchived;
+        this.owner = owner;
+    }
 }

@@ -11,7 +11,7 @@ import com.example.api.activity.task.repository.FileTaskRepository;
 import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.validator.GroupValidator;
+import com.example.api.group.validator.GroupValidator;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
 import lombok.RequiredArgsConstructor;

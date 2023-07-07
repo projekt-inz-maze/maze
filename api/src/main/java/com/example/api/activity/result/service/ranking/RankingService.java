@@ -24,7 +24,7 @@ import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.user.service.RankService;
 import com.example.api.user.service.UserService;
-import com.example.api.validator.GroupValidator;
+import com.example.api.group.validator.GroupValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -99,7 +99,7 @@ public class RankingService {
         return rankingList;
     }
 
-    public List<RankingResponse> getActivityRanking(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
+    public List<RankingResponse> getActivityRanking(Long activityID) throws WrongUserTypeException {
         String professorEmail = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(professorEmail);
         userValidator.validateProfessorAccount(professor, professorEmail);
@@ -175,7 +175,7 @@ public class RankingService {
         return getPositionFromRanking(getRanking(), email);
     }
 
-    public Integer getGroupRankingPosition() throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException, EntityNotFoundException {
+    public Integer getGroupRankingPosition() throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException {
         String email = authService.getAuthentication().getName();
         User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student, email);

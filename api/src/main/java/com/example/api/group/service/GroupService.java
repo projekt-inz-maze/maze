@@ -12,7 +12,7 @@ import com.example.api.user.model.User;
 import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
-import com.example.api.validator.GroupValidator;
+import com.example.api.group.validator.GroupValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
