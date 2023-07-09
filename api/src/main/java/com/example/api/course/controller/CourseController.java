@@ -3,10 +3,7 @@ package com.example.api.course.controller;
 import com.example.api.course.dto.request.SaveCourseForm;
 import com.example.api.course.dto.response.CourseDTO;
 import com.example.api.course.service.CourseService;
-import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.group.dto.request.SaveGroupForm;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,5 +34,10 @@ public class CourseController {
         courseService.deleteCourse(courseId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    //TODO edit
+
+    @DeleteMapping("/edit")
+    ResponseEntity<?> editCourse(@RequestBody CourseDTO dto) throws RequestValidationException {
+        return ResponseEntity.ok().body(courseService.editCourse(dto));
+
+    }
 }

@@ -9,8 +9,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class CourseDTO {
     @Schema(required = true) private final Long id;
-    @Schema(required = true) private final String name;
-    @Schema(required = true) private final String description;
+    @Schema private final String name;
+    @Schema private final String description;
 
     public CourseDTO(Course course) {
         this.id = course.getId();
