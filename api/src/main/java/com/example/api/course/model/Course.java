@@ -8,9 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 @Getter
@@ -36,10 +37,12 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     @JsonBackReference
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Group> groups = new LinkedList<>();
 
     @OneToMany(mappedBy = "course")
     @JsonBackReference
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Chapter> chapters = new LinkedList<>();
 
     public Course(Long id, String name, String description, Boolean isArchived, User owner) {

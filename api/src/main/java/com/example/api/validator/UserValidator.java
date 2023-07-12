@@ -62,8 +62,7 @@ public class UserValidator {
         validateUserAccountType(student, AccountType.STUDENT);
     }
 
-    public void validateProfessorAccount(User professor, String email) throws UsernameNotFoundException, WrongUserTypeException {
-        validateUserIsNotNull(professor, email);
+    public void validateProfessorAccount(User professor) throws UsernameNotFoundException, WrongUserTypeException {
         validateUserAccountType(professor, AccountType.PROFESSOR);
     }
 

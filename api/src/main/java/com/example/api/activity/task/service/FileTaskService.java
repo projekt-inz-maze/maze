@@ -105,7 +105,7 @@ public class FileTaskService {
 
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
         FileTask fileTask = new FileTask(form, professor, null);
         fileTask.setRequirements(requirementService.getDefaultRequirements(true));

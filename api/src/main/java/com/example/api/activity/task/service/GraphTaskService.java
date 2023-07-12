@@ -86,7 +86,7 @@ public class GraphTaskService {
 
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
         List<Question> questions = questionFormsToQuestions(form.getQuestions());
         questionRepository.saveAll(questions);
 

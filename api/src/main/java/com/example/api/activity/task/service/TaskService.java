@@ -64,7 +64,7 @@ public class TaskService {
         String email = authService.getAuthentication().getName();
         log.info("Fetching all activities that are needed to be evaluated for professor {}", email);
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
         List<ActivityToEvaluateResponse> response = new LinkedList<>();
         List<FileTask> fileTasks = fileTaskRepository.findAll()
                 .stream()

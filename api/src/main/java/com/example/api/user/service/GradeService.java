@@ -40,7 +40,7 @@ public class GradeService {
     public List<GradeResponse> getAllGrades() throws WrongUserTypeException {
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
         return userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
                 .stream()

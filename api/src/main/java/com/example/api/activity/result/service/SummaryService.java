@@ -57,7 +57,7 @@ public class SummaryService {
     public SummaryResponse getSummary() throws WrongUserTypeException {
         String professorEmail = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(professorEmail);
-        userValidator.validateProfessorAccount(professor, professorEmail);
+        userValidator.validateProfessorAccount(professor);
         log.info("Fetching summary for professor {}", professorEmail);
 
         List<AverageGrade> avgGradesList = getAvgGradesList(professor);
@@ -129,8 +129,7 @@ public class SummaryService {
                 .reduce(((activityScore1, activityScore2) ->
                         activityScore1.getAvgScore() > activityScore2.getAvgScore() ? activityScore1 : activityScore2
                 ));
-        if (result.isEmpty()) return null;
-        return result.get().getActivityName();
+        return result.map(ActivityScore::getActivityName).orElse(null);
     }
 
     public String getWorstScoreActivityName(List<AverageActivityScore> avgActivitiesScore) {
@@ -140,8 +139,7 @@ public class SummaryService {
                 .reduce(((activityScore1, activityScore2) ->
                         activityScore1.getAvgScore() < activityScore2.getAvgScore() ? activityScore1 : activityScore2
                 ));
-        if (result.isEmpty()) return null;
-        return result.get().getActivityName();
+        return result.map(ActivityScore::getActivityName).orElse(null);
     }
 
     public Integer getAssessedActivitiesCounter(User professor, List<NotAssessedActivity> notAssessedActivitiesTable) {
@@ -187,7 +185,7 @@ public class SummaryService {
     private AverageGradeForChapter toAvgGradeForChapter(Chapter chapter, Group group, User professor) {
         AverageGradeForChapterCreator averageGradeForChapterCreator = new AverageGradeForChapterCreator(group);
         AtomicReference<AverageGradeForChapterCreator> avgGradeForChapterCreator =
-                new AtomicReference<AverageGradeForChapterCreator>(averageGradeForChapterCreator);
+                new AtomicReference<>(averageGradeForChapterCreator);
         getAllProfessorChapterActivitiesResult(chapter, professor)
                 .stream()
                 .filter(TaskResult::isEvaluated)
@@ -343,7 +341,7 @@ public class SummaryService {
                 .map(this::getAllResultsForActivity)
                 .flatMap(Collection::stream)
                 .filter(TaskResult::isEvaluated)
-                .map(taskResult -> pointsToGradeMapper.getGrade(taskResult))
+                .map(pointsToGradeMapper::getGrade)
                 .toList();
     }
 

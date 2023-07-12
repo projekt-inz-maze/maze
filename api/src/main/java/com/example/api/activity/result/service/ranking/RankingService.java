@@ -100,9 +100,8 @@ public class RankingService {
     }
 
     public List<RankingResponse> getActivityRanking(Long activityID) throws WrongUserTypeException {
-        String professorEmail = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(professorEmail);
-        userValidator.validateProfessorAccount(professor, professorEmail);
+        User professor = userService.getCurrentUser();
+        userValidator.validateProfessorAccount(professor);
 
 
         List<RankingResponse> rankingList =  userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
@@ -117,7 +116,7 @@ public class RankingService {
         return rankingList;
     }
 
-    public List<RankingResponse> getActivityRankingSearch(Long activityID, String search) throws WrongUserTypeException, EntityNotFoundException {
+    public List<RankingResponse> getActivityRankingSearch(Long activityID, String search) throws WrongUserTypeException {
         String searchLower = search.toLowerCase().replaceAll("\\s",""); // removing whitespaces
         List<RankingResponse> rankingList = getActivityRanking(activityID)
                 .stream()

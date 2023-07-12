@@ -2,19 +2,13 @@ package com.example.api.course.validator;
 
 import com.example.api.course.dto.request.SaveCourseForm;
 import com.example.api.course.model.Course;
-import com.example.api.error.exception.EntityAlreadyInDatabaseException;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.group.dto.request.SaveGroupForm;
-import com.example.api.group.model.Group;
 import com.example.api.user.model.User;
 import com.example.api.validator.UserValidator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @Slf4j
@@ -33,9 +27,9 @@ public class CourseValidator {
         }
     }
 
-    public void validateCourseOwner(Course course, Long courseId, User professor, String email) throws RequestValidationException {
+    public void validateCourseOwner(Course course, Long courseId, User professor) throws RequestValidationException {
         validateCourseIsNotNull(course, courseId);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
         if (!course.getOwner().equals(professor)) {
             log.error("Course owner invalid.");

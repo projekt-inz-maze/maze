@@ -6,10 +6,9 @@ import com.example.api.course.model.Course;
 import com.example.api.course.repository.CourseRepository;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.user.repository.UserRepository;
+import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,15 +26,12 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final CourseValidator courseValidator;
     private final UserValidator userValidator;
-    private final AuthenticationService authService;
-    private final UserRepository userRepository;
-
+    private final UserService userService;
 
     public Long saveCourse(SaveCourseForm form) throws RequestValidationException {
 
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        User professor = userService.getCurrentUser();
+        userValidator.validateProfessorAccount(professor);
 
         log.info("Saving course to database with name {}", form.getName());
         boolean courseWithSameName = courseRepository.existsCourseByName(form.getName());
@@ -47,9 +43,7 @@ public class CourseService {
     }
 
     public List<CourseDTO> getCoursesForUser() {
-        String email = authService.getAuthentication().getName();
-        User user = userRepository.findUserByEmail(email);
-        userValidator.validateUserIsNotNull(user, email);
+        User user = userService.getCurrentUser();
 
         if (user.getAccountType().equals(AccountType.PROFESSOR)) {
             return user.getCourses()
@@ -62,19 +56,16 @@ public class CourseService {
     }
 
     public void deleteCourse(Long courseId) throws RequestValidationException {
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
+        User professor = userService.getCurrentUser();
         Course course = courseRepository.getById(courseId);
-        courseValidator.validateCourseOwner(course, courseId, professor, email);
-
+        courseValidator.validateCourseOwner(course, courseId, professor);
         courseRepository.delete(course);
     }
 
     public CourseDTO editCourse(CourseDTO dto) throws RequestValidationException {
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
+        User professor = userService.getCurrentUser();
         Course course = courseRepository.getById(dto.getId());
-        courseValidator.validateCourseOwner(course, dto.getId(), professor, email);
+        courseValidator.validateCourseOwner(course, dto.getId(), professor);
 
         if (dto.getName() != null) {
             course.setName(dto.getName());

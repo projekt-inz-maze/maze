@@ -42,7 +42,7 @@ public class AllPointsService {
     public List<?> getAllPointsListForProfessor(String studentEmail) throws WrongUserTypeException {
         String professorEmail = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(professorEmail);
-        userValidator.validateProfessorAccount(professor, professorEmail);
+        userValidator.validateProfessorAccount(professor);
         log.info("Fetching student all points {} for professor {}", studentEmail, professorEmail);
 
         return getAllPointsList(studentEmail);

@@ -97,7 +97,9 @@ public class UserService implements UserDetailsService {
 
     public User getCurrentUser() throws UsernameNotFoundException {
         String email = authService.getAuthentication().getName();
-        return getUser(email);
+        User user = getUser(email);
+        userValidator.validateUserIsNotNull(user, email);
+        return user;
     }
 
     public List<User> getUsers() {
@@ -156,7 +158,7 @@ public class UserService implements UserDetailsService {
 
     public String getProfessorRegisterToken() throws WrongUserTypeException {
         User user = getCurrentUser();
-        userValidator.validateProfessorAccount(user, authService.getAuthentication().getName());
+        userValidator.validateProfessorAccount(user);
 
         log.info("Professor {} fetch ProfessorRegisterToken", user.getEmail());
         return professorRegisterToken.getToken();
@@ -165,8 +167,8 @@ public class UserService implements UserDetailsService {
     public void deleteProfessorAccount(String professorEmail) throws WrongUserTypeException {
         User professor = getCurrentUser();
         User newProfessor = userRepository.findUserByEmail(professorEmail);
-        userValidator.validateProfessorAccount(professor, professorEmail);
-        userValidator.validateProfessorAccount(newProfessor, newProfessor.getEmail());
+        userValidator.validateProfessorAccount(professor);
+        userValidator.validateProfessorAccount(newProfessor);
 
         changeUserForActivitiesAndAdditionalPoints(professor, newProfessor);
         userRepository.delete(professor);

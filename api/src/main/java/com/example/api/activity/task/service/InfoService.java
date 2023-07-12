@@ -68,7 +68,7 @@ public class InfoService {
 
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
         List<Url> imageUrls = form.getImageUrls()
                 .stream()

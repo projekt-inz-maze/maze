@@ -60,7 +60,7 @@ public class TaskResultService {
     private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final ActivityValidator activityValidator;
 
-    public ByteArrayResource getCSVFile(GetCSVForm csvForm) throws IOException {
+    public ByteArrayResource getCSVFile(GetCSVForm csvForm) {
         log.info("Fetching csv files for students");
         List<Long> studentIds = csvForm.getStudentIds();
         List<Long> activityIds = csvForm.getActivityIds();
@@ -160,7 +160,7 @@ public class TaskResultService {
             throws WrongUserTypeException, EntityNotFoundException {
         String professorEmail = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(professorEmail);
-        userValidator.validateProfessorAccount(professor, professorEmail);
+        userValidator.validateProfessorAccount(professor);
 
         Activity activity = getActivity(activityID);
         activityValidator.validateActivityIsNotNull(activity, activityID);

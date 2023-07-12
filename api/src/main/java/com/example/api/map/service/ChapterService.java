@@ -128,7 +128,7 @@ public class ChapterService {
     public void deleteChapter(Long chapterID) throws WrongUserTypeException, EntityNotFoundException {
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
         Chapter chapter = chapterRepository.findChapterById(chapterID);
         chapterValidator.validateChapterIsNotNull(chapter, chapterID);
@@ -143,7 +143,7 @@ public class ChapterService {
         // user validation
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
         ChapterForm chapterForm = editChapterForm.getEditionForm();
 
