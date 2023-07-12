@@ -345,8 +345,6 @@ public class SummaryService {
                 .toList();
     }
 
-
-
     private boolean isProfessorActivity(Activity activity, User professor) {
         return activity.getProfessor() != null && activity.getProfessor().equals(professor);
 
