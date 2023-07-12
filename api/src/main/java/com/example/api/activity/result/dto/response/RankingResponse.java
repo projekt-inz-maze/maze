@@ -1,4 +1,4 @@
-package com.example.api.ranking.dto.response;
+package com.example.api.activity.result.dto.response;
 
 import com.example.api.user.model.HeroType;
 import com.example.api.user.model.Rank;

@@ -1,4 +1,4 @@
-package com.example.api.ranking.dto.response;
+package com.example.api.activity.result.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

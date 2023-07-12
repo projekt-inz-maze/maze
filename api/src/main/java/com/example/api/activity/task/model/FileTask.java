@@ -1,6 +1,7 @@
 package com.example.api.activity.task.model;
 
 import com.example.api.activity.task.dto.request.create.CreateFileTaskForm;
+import com.example.api.course.model.Course;
 import com.example.api.map.dto.response.task.ActivityType;
 import com.example.api.user.model.User;
 import lombok.Getter;
@@ -16,9 +17,9 @@ import javax.persistence.Entity;
 public class FileTask extends Task {
     private ActivityType activityType = ActivityType.TASK;
 
-    public FileTask(CreateFileTaskForm form, User professor) {
+    public FileTask(CreateFileTaskForm form, User professor, Course course) {
         super(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), professor,
-                form.getRequiredKnowledge(), form.getMaxPoints());
+                form.getRequiredKnowledge(), form.getMaxPoints(), course);
         double experiance = form.getMaxPoints() * 10;
         super.setExperience(experiance);
     }

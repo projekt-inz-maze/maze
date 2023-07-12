@@ -12,10 +12,10 @@ import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.map.model.Chapter;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.task.FileTaskRepository;
-import com.example.api.activity.repository.task.GraphTaskRepository;
-import com.example.api.activity.repository.task.InfoRepository;
-import com.example.api.activity.repository.task.SurveyRepository;
+import com.example.api.activity.task.repository.FileTaskRepository;
+import com.example.api.activity.task.repository.GraphTaskRepository;
+import com.example.api.activity.task.repository.InfoRepository;
+import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
@@ -55,7 +55,7 @@ public class ActivityService {
     public EditActivityForm getActivityEditInfo(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
         Activity activity = getActivity(activityID);
         activityValidator.validateActivityIsNotNull(activity, activityID);
@@ -66,7 +66,7 @@ public class ActivityService {
     public void editActivity(EditActivityForm form) throws RequestValidationException, ParseException {
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
         Activity activity = getActivity(form.getActivityID());
         activityValidator.validateActivityIsNotNull(activity, form.getActivityID());
@@ -142,7 +142,7 @@ public class ActivityService {
     public void deleteActivity(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
         Activity activity = getActivity(activityID);
         activityValidator.validateActivityIsNotNull(activity, activityID);

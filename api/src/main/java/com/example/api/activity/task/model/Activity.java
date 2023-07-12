@@ -1,5 +1,6 @@
 package com.example.api.activity.task.model;
 
+import com.example.api.course.model.Course;
 import com.example.api.map.dto.response.task.ActivityType;
 import com.example.api.map.model.requirement.Requirement;
 import com.example.api.user.model.User;
@@ -42,12 +43,17 @@ public abstract class Activity {
     @Enumerated(EnumType.STRING)
     private ActivityType activityType;
 
-    public Activity(String name, String description, int posX, int posY, User professor){
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
+    public Activity(String name, String description, int posX, int posY, User professor, Course course){
         this.title = name;
         this.description = description;
         this.posX = posX;
         this.posY = posY;
         this.professor = professor;
+        this.course = course;
     }
     abstract public Double getMaxPoints();
 }

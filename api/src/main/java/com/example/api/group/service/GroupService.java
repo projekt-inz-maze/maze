@@ -12,7 +12,7 @@ import com.example.api.user.model.User;
 import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
-import com.example.api.validator.GroupValidator;
+import com.example.api.group.validator.GroupValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,7 @@ public class GroupService {
         log.info("Saving group to database with name {}", form.getName());
         List<Group> groups = groupRepository.findAll();
         groupValidator.validateGroup(groups, form);
-        Group group = new Group(null, form.getName(), new ArrayList<>(), form.getInvitationCode());
+        Group group = new Group(null, form.getName(), new ArrayList<>(), form.getInvitationCode(), null);
         groupRepository.save(group);
         return group.getId();
     }
@@ -66,7 +66,7 @@ public class GroupService {
         log.info("Fetching group code list");
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
         return groupRepository.findAll()
                 .stream()

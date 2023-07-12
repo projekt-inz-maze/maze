@@ -17,13 +17,13 @@ import com.example.api.activity.result.model.TaskResult;
 import com.example.api.group.model.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.feedback.ProfessorFeedbackRepository;
-import com.example.api.activity.repository.result.FileTaskResultRepository;
-import com.example.api.activity.repository.result.GraphTaskResultRepository;
-import com.example.api.activity.repository.result.SurveyResultRepository;
-import com.example.api.activity.repository.task.FileTaskRepository;
-import com.example.api.activity.repository.task.GraphTaskRepository;
-import com.example.api.activity.repository.task.SurveyRepository;
+import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;
+import com.example.api.activity.result.repository.FileTaskResultRepository;
+import com.example.api.activity.result.repository.GraphTaskResultRepository;
+import com.example.api.activity.result.repository.SurveyResultRepository;
+import com.example.api.activity.task.repository.FileTaskRepository;
+import com.example.api.activity.task.repository.GraphTaskRepository;
+import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.validator.UserValidator;
@@ -60,7 +60,7 @@ public class TaskResultService {
     private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final ActivityValidator activityValidator;
 
-    public ByteArrayResource getCSVFile(GetCSVForm csvForm) throws IOException {
+    public ByteArrayResource getCSVFile(GetCSVForm csvForm) {
         log.info("Fetching csv files for students");
         List<Long> studentIds = csvForm.getStudentIds();
         List<Long> activityIds = csvForm.getActivityIds();
@@ -160,7 +160,7 @@ public class TaskResultService {
             throws WrongUserTypeException, EntityNotFoundException {
         String professorEmail = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(professorEmail);
-        userValidator.validateProfessorAccount(professor, professorEmail);
+        userValidator.validateProfessorAccount(professor);
 
         Activity activity = getActivity(activityID);
         activityValidator.validateActivityIsNotNull(activity, activityID);

@@ -43,7 +43,7 @@ public class UserValidator {
         }
     }
     
-    public void validateUserAccountType(User user, AccountType type) throws WrongUserTypeException {
+    private void validateUserAccountType(User user, AccountType type) throws WrongUserTypeException {
         if(user.getAccountType() != type) {
             throw new WrongUserTypeException("Wrong user type!", type);
         }
@@ -62,8 +62,7 @@ public class UserValidator {
         validateUserAccountType(student, AccountType.STUDENT);
     }
 
-    public void validateProfessorAccount(User professor, String email) throws UsernameNotFoundException, WrongUserTypeException {
-        validateUserIsNotNull(professor, email);
+    public void validateProfessorAccount(User professor) throws UsernameNotFoundException, WrongUserTypeException {
         validateUserAccountType(professor, AccountType.PROFESSOR);
     }
 
@@ -114,7 +113,7 @@ public class UserValidator {
             newUser.setGroup(group);
 
             Hero hero = heroRepository.findHeroByType(form.getHeroType());
-            UserHero userHero = new UserHero(hero, 0, 0L);
+            UserHero userHero = new UserHero(hero, 0, 0L, null);
             newUser.setUserHero(userHero);
             Integer indexNumber = form.getIndexNumber();
 

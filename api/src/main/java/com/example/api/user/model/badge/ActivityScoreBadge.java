@@ -29,7 +29,7 @@ public class ActivityScoreBadge extends Badge{
                               String description,
                               Image image, Double activityScore,
                               boolean forOneActivity) {
-        super(id, title, description, image);
+        super(id, title, description, image, null);
         this.activityScore = activityScore;
         this.forOneActivity = forOneActivity;
     }

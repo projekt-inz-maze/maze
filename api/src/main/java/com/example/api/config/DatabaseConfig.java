@@ -4,6 +4,8 @@ import com.example.api.activity.result.model.AdditionalPoints;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
+import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.task.model.FileTask;
 import com.example.api.activity.task.model.GraphTask;
 import com.example.api.activity.task.model.Info;
@@ -27,8 +29,6 @@ import com.example.api.util.model.File;
 import com.example.api.util.model.Image;
 import com.example.api.util.model.ImageType;
 import com.example.api.util.model.Url;
-import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
-import com.example.api.activity.repository.result.SurveyResultRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.map.repository.RequirementRepository;
 import com.example.api.user.repository.*;
@@ -73,7 +73,7 @@ public class DatabaseConfig {
     private final UrlRepository urlRepository;
     private final ChapterRepository chapterRepository;
     private final RankRepository rankRepository;
-    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final AdditionalPointsRepository additionalPointsRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final FileRepository fileRepository;
     private final UserRepository userRepository;
@@ -110,7 +110,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student.setPassword("12345");
             student.setIndexNumber(123456);
-            student.setUserHero(new UserHero(priest, 0, 0L));
+            student.setUserHero(new UserHero(priest, 0, 0L, null));
             student.setPoints(0D);
 
             User student1 = new User("smazur@student.agh.edu.pl",
@@ -119,7 +119,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student1.setPassword("12345");
             student1.setIndexNumber(123457);
-            student1.setUserHero(new UserHero(rogue, 0, 0L));
+            student1.setUserHero(new UserHero(rogue, 0, 0L, null));
             student1.setPoints(0D);
 
             User student2 = new User("murbanska@student.agh.edu.pl",
@@ -128,7 +128,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student2.setPassword("12345");
             student2.setIndexNumber(123458);
-            student2.setUserHero(new UserHero(wizard, 0, 0L));
+            student2.setUserHero(new UserHero(wizard, 0, 0L, null));
             student2.setPoints(0D);
 
             User student3 = new User("pwasilewski@student.agh.edu.pl",
@@ -137,7 +137,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student3.setPassword("12345");
             student3.setIndexNumber(123459);
-            student3.setUserHero(new UserHero(warrior, 0, 0L));
+            student3.setUserHero(new UserHero(warrior, 0, 0L, null));
             student3.setPoints(0D);
 
             User student4 = new User("awojcik@student.agh.edu.pl",
@@ -146,7 +146,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student4.setPassword("12345");
             student4.setIndexNumber(223456);
-            student4.setUserHero(new UserHero(priest, 0, 0L));
+            student4.setUserHero(new UserHero(priest, 0, 0L, null));
             student4.setPoints(0D);
 
             User student5 = new User("kkruk@student.agh.edu.pl",
@@ -155,7 +155,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student5.setPassword("12345");
             student5.setIndexNumber(323456);
-            student5.setUserHero(new UserHero(rogue, 0, 0L));
+            student5.setUserHero(new UserHero(rogue, 0, 0L, null));
             student5.setPoints(0D);
 
             User student6 = new User("mdabrowska@student.agh.edu.pl",
@@ -164,7 +164,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student6.setPassword("12345");
             student6.setIndexNumber(423456);
-            student6.setUserHero(new UserHero(wizard, 0, 0L));
+            student6.setUserHero(new UserHero(wizard, 0, 0L, null));
             student6.setPoints(0D);
 
             User student7 = new User("aczajkowski@student.agh.edu.pl",
@@ -173,7 +173,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student7.setPassword("12345");
             student7.setIndexNumber(523456);
-            student7.setUserHero(new UserHero(warrior, 0, 0L));
+            student7.setUserHero(new UserHero(warrior, 0, 0L, null));
             student7.setPoints(0D);
 
             User student8 = new User("mnowak@student.agh.edu.pl",
@@ -182,7 +182,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student8.setPassword("12345");
             student8.setIndexNumber(623456);
-            student8.setUserHero(new UserHero(priest, 0, 0L));
+            student8.setUserHero(new UserHero(priest, 0, 0L, null));
             student8.setPoints(0D);
 
             User student9 = new User("jlewandowska@student.agh.edu.pl",
@@ -191,7 +191,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student9.setPassword("12345");
             student9.setIndexNumber(723456);
-            student9.setUserHero(new UserHero(rogue, 0, 0L));
+            student9.setUserHero(new UserHero(rogue, 0, 0L, null));
             student9.setPoints(0D);
 
             User student10 = new User("mwojcik@student.agh.edu.pl",
@@ -200,7 +200,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student10.setPassword("12345");
             student10.setIndexNumber(823456);
-            student10.setUserHero(new UserHero(wizard, 0, 0L));
+            student10.setUserHero(new UserHero(wizard, 0, 0L, null));
             student10.setPoints(0D);
 
             User student11 = new User("kpaluch@student.agh.edu.pl",
@@ -209,7 +209,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student11.setPassword("12345");
             student11.setIndexNumber(923456);
-            student11.setUserHero(new UserHero(warrior, 0, 0L));
+            student11.setUserHero(new UserHero(warrior, 0, 0L, null));
             student11.setPoints(0D);
 
             User student12 = new User("fzalewski@student.agh.edu.pl",
@@ -218,7 +218,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student12.setPassword("12345");
             student12.setIndexNumber(133456);
-            student12.setUserHero(new UserHero(priest, 0, 0L));
+            student12.setUserHero(new UserHero(priest, 0, 0L, null));
             student12.setPoints(0D);
 
             User student13 = new User("jmichalak@student.agh.edu.pl",
@@ -227,7 +227,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student13.setPassword("12345");
             student13.setIndexNumber(143456);
-            student13.setUserHero(new UserHero(rogue, 0, 0L));
+            student13.setUserHero(new UserHero(rogue, 0, 0L, null));
             student13.setPoints(0D);
 
             User student14 = new User("kostrowska@student.agh.edu.pl",
@@ -236,7 +236,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student14.setPassword("12345");
             student14.setIndexNumber(153456);
-            student14.setUserHero(new UserHero(wizard, 0, 0L));
+            student14.setUserHero(new UserHero(wizard, 0, 0L, null));
             student14.setPoints(0D);
 
             User student15 = new User("dkowalska@student.agh.edu.pl",
@@ -245,7 +245,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student15.setPassword("12345");
             student15.setIndexNumber(163456);
-            student15.setUserHero(new UserHero(warrior, 0, 0L));
+            student15.setUserHero(new UserHero(warrior, 0, 0L, null));
             student15.setPoints(0D);
 
             User student16 = new User("manowak@student.agh.edu.pl",
@@ -254,7 +254,7 @@ public class DatabaseConfig {
                     AccountType.STUDENT);
             student16.setPassword("12345");
             student16.setIndexNumber(163457);
-            student16.setUserHero(new UserHero(priest, 0, 0L));
+            student16.setUserHero(new UserHero(priest, 0, 0L, null));
             student16.setPoints(0D);
 
             User professor = new User("bmaj@agh.edu.pl",
@@ -314,15 +314,15 @@ public class DatabaseConfig {
             Question startQuestion = new Question();
 
             Question question1 = new Question(null, QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
-                    Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null);
+                    Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null, null);
             Question question2 = new Question(null, QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
-                    "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null);
+                    "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null, null);
             Question question3 = new Question(null, QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
-                    "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP");
+                    "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP", null);
             Question question4 = new Question(null, QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
-                    "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka");
+                    "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka", null);
             Question question5 = new Question(null, QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
-                    "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski");
+                    "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski", null);
 
             questionService.saveQuestion(startQuestion);
             questionService.saveQuestion(question1);
@@ -384,15 +384,15 @@ public class DatabaseConfig {
             Question startQuestionTwo = new Question();
 
             Question questionTwo1 = new Question(null, QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
-                    Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null);
+                    Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null, null);
             Question questionTwo2 = new Question(null, QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
-                    "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null);
+                    "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null, null);
             Question questionTwo3 = new Question(null, QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
-                    "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP");
+                    "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP", null);
             Question questionTwo4 = new Question(null, QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
-                    "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka");
+                    "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka", null);
             Question questionTwo5 = new Question(null, QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
-                    "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski");
+                    "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski", null);
 
             questionService.saveQuestion(startQuestionTwo);
             questionService.saveQuestion(questionTwo1);
@@ -575,7 +575,7 @@ public class DatabaseConfig {
             additionalPoints.setProfessorEmail(professor.getEmail());
             additionalPoints.setDescription("Good job");
             addReceivedPointsForUser(student, additionalPoints.getPointsReceived());
-            professorFeedbackRepository.save(additionalPoints);
+            additionalPointsRepository.save(additionalPoints);
 
             SurveyResult surveyResult1 = new SurveyResult();
             surveyResult1.setSurvey(survey);
@@ -766,29 +766,29 @@ public class DatabaseConfig {
         Image rogueImage5 = new Image("Rogue rank image 5", rogueImageBytes5, ImageType.RANK);
         fileRepository.save(rogueImage5);
 
-        Rank warriorRank1 = new Rank(null, HeroType.WARRIOR, "Chłop", 0.0, warriorImage1);
-        Rank warriorRank2 = new Rank(null, HeroType.WARRIOR, "Giermek", 100.0, warriorImage2);
-        Rank warriorRank3 = new Rank(null, HeroType.WARRIOR, "Wojownik", 200.0, warriorImage3);
-        Rank warriorRank4 = new Rank(null, HeroType.WARRIOR, "Rycerz", 300.0, warriorImage4);
-        Rank warriorRank5 = new Rank(null, HeroType.WARRIOR, "Paladyn", 400.0, warriorImage5);
+        Rank warriorRank1 = new Rank(null, HeroType.WARRIOR, "Chłop", 0.0, warriorImage1, null);
+        Rank warriorRank2 = new Rank(null, HeroType.WARRIOR, "Giermek", 100.0, warriorImage2, null);
+        Rank warriorRank3 = new Rank(null, HeroType.WARRIOR, "Wojownik", 200.0, warriorImage3, null);
+        Rank warriorRank4 = new Rank(null, HeroType.WARRIOR, "Rycerz", 300.0, warriorImage4, null);
+        Rank warriorRank5 = new Rank(null, HeroType.WARRIOR, "Paladyn", 400.0, warriorImage5, null);
 
-        Rank wizardRank1 = new Rank(null, HeroType.WIZARD, "Adept magii", 0.0, wizardImage1);
-        Rank wizardRank2 = new Rank(null, HeroType.WIZARD, "Początkujący czarnoksiężnik", 100.0, wizardImage2);
-        Rank wizardRank3 = new Rank(null, HeroType.WIZARD, "Czarnoksiężnik", 200.0, wizardImage3);
-        Rank wizardRank4 = new Rank(null, HeroType.WIZARD, "Mistrz magii", 300.0,wizardImage4);
-        Rank wizardRank5 = new Rank(null, HeroType.WIZARD, "Arcymistrz magii", 400.0, wizardImage5);
+        Rank wizardRank1 = new Rank(null, HeroType.WIZARD, "Adept magii", 0.0, wizardImage1, null);
+        Rank wizardRank2 = new Rank(null, HeroType.WIZARD, "Początkujący czarnoksiężnik", 100.0, wizardImage2, null);
+        Rank wizardRank3 = new Rank(null, HeroType.WIZARD, "Czarnoksiężnik", 200.0, wizardImage3, null);
+        Rank wizardRank4 = new Rank(null, HeroType.WIZARD, "Mistrz magii", 300.0,wizardImage4, null);
+        Rank wizardRank5 = new Rank(null, HeroType.WIZARD, "Arcymistrz magii", 400.0, wizardImage5, null);
 
-        Rank priestRank1 = new Rank(null, HeroType.PRIEST, "Duchowny", 0.0, priestImage1);
-        Rank priestRank2 = new Rank(null, HeroType.PRIEST, "Mnich", 100.0, priestImage2);
-        Rank priestRank3 = new Rank(null, HeroType.PRIEST, "Inkwizytor", 200.0, priestImage3);
-        Rank priestRank4 = new Rank(null, HeroType.PRIEST, "Kapłan", 300.0, priestImage4);
-        Rank priestRank5 = new Rank(null, HeroType.PRIEST, "Arcykapłan", 400.0, priestImage5);
+        Rank priestRank1 = new Rank(null, HeroType.PRIEST, "Duchowny", 0.0, priestImage1, null);
+        Rank priestRank2 = new Rank(null, HeroType.PRIEST, "Mnich", 100.0, priestImage2, null);
+        Rank priestRank3 = new Rank(null, HeroType.PRIEST, "Inkwizytor", 200.0, priestImage3, null);
+        Rank priestRank4 = new Rank(null, HeroType.PRIEST, "Kapłan", 300.0, priestImage4, null);
+        Rank priestRank5 = new Rank(null, HeroType.PRIEST, "Arcykapłan", 400.0, priestImage5, null);
 
-        Rank rogueRank1 = new Rank(null, HeroType.ROGUE, "Złodziej", 0.0, rogueImage1);
-        Rank rogueRank2 = new Rank(null, HeroType.ROGUE, "Zwiadowca", 100.0, rogueImage2);
-        Rank rogueRank3 = new Rank(null, HeroType.ROGUE, "Zabójca", 200.0, rogueImage3);
-        Rank rogueRank4 = new Rank(null, HeroType.ROGUE, "Skrytobójca", 300.0, rogueImage4);
-        Rank rogueRank5 = new Rank(null, HeroType.ROGUE, "Przywódca bractwa", 400.0, rogueImage5);
+        Rank rogueRank1 = new Rank(null, HeroType.ROGUE, "Złodziej", 0.0, rogueImage1, null);
+        Rank rogueRank2 = new Rank(null, HeroType.ROGUE, "Zwiadowca", 100.0, rogueImage2, null);
+        Rank rogueRank3 = new Rank(null, HeroType.ROGUE, "Zabójca", 200.0, rogueImage3, null);
+        Rank rogueRank4 = new Rank(null, HeroType.ROGUE, "Skrytobójca", 300.0, rogueImage4, null);
+        Rank rogueRank5 = new Rank(null, HeroType.ROGUE, "Przywódca bractwa", 400.0, rogueImage5, null);
 
         rankRepository.saveAll(List.of(warriorRank1, warriorRank2, warriorRank3, warriorRank4, warriorRank5));
         rankRepository.saveAll(List.of(wizardRank1, wizardRank2, wizardRank3, wizardRank4, wizardRank5));
@@ -833,7 +833,8 @@ public class DatabaseConfig {
                 "To dopiero początek",
                 "Wykonaj co najmniej jedną aktywność w przeciągu tygodnia od poprzedniej aktywności (7 dni) przez okres miesiąca",
                 itsTheBeginning,
-                4
+                4,
+                null
         );
 
         Badge badge2 = new ConsistencyBadge(
@@ -841,7 +842,8 @@ public class DatabaseConfig {
                 "Długo jeszcze?",
                 "Wykonaj co najmniej jedną aktywność w przeciągu tygodnia od poprzedniej aktywności (7 dni) przez okres 3 miesięcy",
                 longA,
-                12
+                12,
+                null
         );
 
         Badge badge3 = new ConsistencyBadge(
@@ -849,7 +851,8 @@ public class DatabaseConfig {
                 "To już jest koniec, ale czy na pewno?",
                 "Wykonaj co najmniej jedną aktywność w przeciągu tygodnia od poprzedniej aktywności (7 dni) przez okres 6 mięsięcy",
                 theEnd,
-                24
+                24,
+                null
         );
 
         Badge badge4 = new TopScoreBadge(
@@ -858,7 +861,8 @@ public class DatabaseConfig {
                 "Bądź w 20% najepszych użytkowników (liczone po wykonaniu 5 ekspedycji lub zadań bojowych)",
                 topTwenty,
                 0.2,
-                false
+                false,
+                null
         );
 
 
@@ -868,7 +872,8 @@ public class DatabaseConfig {
                 "Bądź w 5% najepszych użytkowników (liczone po wykonaniu 5 ekspedycji lub zadań bojowych)",
                 topFive,
                 0.05,
-                false
+                false,
+                null
         );
 
         Badge badge6 = new TopScoreBadge(
@@ -877,7 +882,8 @@ public class DatabaseConfig {
                 "Bądź najepszym użytkownikiem w swojej grupie (liczone po wykonaniu 5 ekspedycji lub zadań bojowych)",
                 groupLeader,
                 0.0,
-                true
+                true,
+                null
         );
 
         Badge badge7 = new TopScoreBadge(
@@ -886,7 +892,8 @@ public class DatabaseConfig {
                 "Bądź najepszym użytkownikiem (liczone po wykonaniu 5 ekspedycji lub zadań bojowych)",
                 leader,
                 0.0,
-                false
+                false,
+                null
         );
 
 
@@ -895,7 +902,8 @@ public class DatabaseConfig {
                 "Pierwsze kroki w ekspedycji",
                 "Wykonaj swoją pierwszą ekspedycję",
                 graphTaskFirstSteps,
-                1
+                1,
+                null
         );
 
         Badge badge9 = new GraphTaskNumberBadge(
@@ -903,7 +911,8 @@ public class DatabaseConfig {
                 "Doświadczony w ekspedycjach",
                 "Wykonaj 10 ekspedycji",
                 graphTaskExperienced,
-                10
+                10,
+                null
         );
 
         Badge badge10 = new GraphTaskNumberBadge(
@@ -911,7 +920,8 @@ public class DatabaseConfig {
                 "Zaprawiony w ekspedycjach",
                 "Wykonaj 50 ekspedycji",
                 graphTaskMaster,
-                50
+                50,
+                null
         );
 
         Badge badge11 = new FileTaskNumberBadge(
@@ -919,7 +929,8 @@ public class DatabaseConfig {
                 "Pierwsze kroki w zadaniu bojowym",
                 "Wykonaj swoje pierwsze zadanie bojowe",
                 fileTaskFirstSteps,
-                1
+                1,
+                null
         );
 
         Badge badge12 = new FileTaskNumberBadge(
@@ -927,7 +938,8 @@ public class DatabaseConfig {
                 "Doświadczony w zadaniach bojowych",
                 "Wykonaj 10 zadań bojowych",
                 fileTaskExperienced,
-                10
+                10,
+                null
         );
 
         Badge badge13 = new FileTaskNumberBadge(
@@ -935,7 +947,8 @@ public class DatabaseConfig {
                 "Zaprawiony w zadaniach bojowych",
                 "Wykonaj 50 zadań bojowych",
                 fileTaskMaster,
-                50
+                50,
+                null
         );
 
         Badge badge14 = new ActivityNumberBadge(
@@ -943,7 +956,8 @@ public class DatabaseConfig {
                 "Doświadczony w aktywnościach",
                 "Wykonaj 30 aktywności",
                 activityExperienced,
-                30
+                30,
+                null
         );
 
         Badge badge15 = new ActivityNumberBadge(
@@ -951,7 +965,8 @@ public class DatabaseConfig {
                 "Zaprawiony w aktywnościach",
                 "Wykonaj 100 aktywności",
                 activityMaster,
-                100
+                100,
+                null
         );
 
         Badge badge16 = new ActivityScoreBadge(

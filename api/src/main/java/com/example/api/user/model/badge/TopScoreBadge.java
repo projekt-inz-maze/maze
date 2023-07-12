@@ -1,5 +1,6 @@
 package com.example.api.user.model.badge;
 
+import com.example.api.course.model.Course;
 import com.example.api.user.dto.request.badge.BadgeUpdateForm;
 import com.example.api.user.dto.response.badge.BadgeResponse;
 import com.example.api.user.dto.response.badge.BadgeResponseTopScore;
@@ -28,8 +29,8 @@ public class TopScoreBadge extends Badge{
     private Double topScore;
     private Boolean forGroup;
 
-    public TopScoreBadge(Long id, String title, String description, Image image, Double topScore, Boolean forGroup) {
-        super(id, title, description, image);
+    public TopScoreBadge(Long id, String title, String description, Image image, Double topScore, Boolean forGroup, Course course) {
+        super(id, title, description, image, course);
         this.topScore = topScore;
         this.forGroup = forGroup;
     }

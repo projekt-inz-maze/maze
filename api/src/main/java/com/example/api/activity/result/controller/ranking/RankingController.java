@@ -1,6 +1,6 @@
 package com.example.api.activity.result.controller.ranking;
 
-import com.example.api.ranking.dto.response.RankingResponse;
+import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;

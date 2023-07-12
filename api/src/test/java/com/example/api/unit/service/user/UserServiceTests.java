@@ -8,11 +8,11 @@ import com.example.api.group.model.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.HeroType;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
-import com.example.api.activity.repository.task.FileTaskRepository;
-import com.example.api.activity.repository.task.GraphTaskRepository;
-import com.example.api.activity.repository.task.InfoRepository;
-import com.example.api.activity.repository.task.SurveyRepository;
+import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.task.repository.FileTaskRepository;
+import com.example.api.activity.task.repository.GraphTaskRepository;
+import com.example.api.activity.task.repository.InfoRepository;
+import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
@@ -50,7 +50,7 @@ public class UserServiceTests {
     @Mock private FileTaskRepository fileTaskRepository;
     @Mock private SurveyRepository surveyRepository;
     @Mock private InfoRepository infoRepository;
-    @Mock private ProfessorFeedbackRepository professorFeedbackRepository;
+    @Mock private AdditionalPointsRepository additionalPointsRepository;
     @Mock private ProfessorRegisterToken professorRegisterToken;
     @Mock private PasswordValidator passwordValidator;
     @Captor private ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
@@ -73,7 +73,7 @@ public class UserServiceTests {
                 fileTaskRepository,
                 surveyRepository,
                 infoRepository,
-                professorFeedbackRepository,
+                additionalPointsRepository,
                 authService,
                 passwordEncoder,
                 userValidator,

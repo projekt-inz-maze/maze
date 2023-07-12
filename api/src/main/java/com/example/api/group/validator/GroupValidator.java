@@ -1,4 +1,4 @@
-package com.example.api.validator;
+package com.example.api.group.validator;
 
 import com.example.api.group.dto.request.SaveGroupForm;
 import com.example.api.error.exception.*;
