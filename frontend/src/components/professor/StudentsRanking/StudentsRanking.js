@@ -4,6 +4,7 @@ import { debounce } from 'lodash/function'
 import { Form } from 'react-bootstrap'
 
 import StudentPointsModal from './StudentPointsModal'
+import { useAppSelector } from '../../../hooks/hooks'
 import RankingService from '../../../services/ranking.service'
 import { Content } from '../../App/AppGeneralStyles'
 import Ranking from '../../general/Ranking/Ranking'
@@ -15,13 +16,15 @@ function StudentsRanking() {
   const [isStudentPointsModalOpen, setIsStudentPointsModalOpen] = useState(false)
   const [chosenStudentEmail, setChosenStudentEmail] = useState(null)
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   const onInfoIconClick = useCallback((student) => {
     setIsStudentPointsModalOpen(true)
     setChosenStudentEmail(student.email)
   }, [])
 
   useEffect(() => {
-    RankingService.getGlobalRankingList()
+    RankingService.getGlobalRankingList(courseId)
       .then((response) => {
         setRanking(response)
         setFilteredList(response)

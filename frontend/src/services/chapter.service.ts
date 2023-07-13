@@ -1,3 +1,4 @@
+import { chapterEditData, newChapterData } from './types/serviceTypes'
 import {
   GET_CHAPTER_INFO,
   GET_CHAPTER,
@@ -12,19 +13,19 @@ import {
 import { axiosApiDelete, axiosApiGet, axiosApiPost, axiosApiPut } from '../utils/axios'
 
 class ChapterService {
-  getChaptersList() {
-    return axiosApiGet(GET_CHAPTER).catch((error) => {
+  getChaptersList(courseId: number) {
+    return axiosApiGet(`${GET_CHAPTER}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
 
-  getChapterDetails(chapterId) {
+  getChapterDetails(chapterId: number) {
     return axiosApiGet(GET_CHAPTER_INFO, { id: chapterId }).catch((error) => {
       throw error
     })
   }
 
-  sendNewChapterData({ name, sizeX, sizeY, imageId, posX, posY }) {
+  sendNewChapterData({ name, sizeX, sizeY, imageId, posX, posY }: newChapterData) {
     return axiosApiPost(POST_CHAPTER_CREATE, {
       name,
       sizeX,
@@ -37,7 +38,7 @@ class ChapterService {
     })
   }
 
-  sendEditChapterData({ chapterId, editionForm }) {
+  sendEditChapterData({ chapterId, editionForm }: chapterEditData) {
     return axiosApiPut(PUT_CHAPTER_EDIT, {
       chapterId,
       editionForm
@@ -52,25 +53,25 @@ class ChapterService {
     })
   }
 
-  getChapterImage({ imageId }) {
+  getChapterImage({ imageId }: any) {
     return axiosApiGet(GET_FILE, { id: imageId }).catch((error) => {
       throw error
     })
   }
 
-  deleteChapter(chapterId) {
+  deleteChapter(chapterId: number) {
     return axiosApiDelete(DELETE_CHAPTER, { chapterID: chapterId }).catch((error) => {
       throw error
     })
   }
 
-  getRequirements(chapterId) {
+  getRequirements(chapterId: number) {
     return axiosApiGet(GET_CHAPTER_REQUIREMENTS, { chapterId }).catch((error) => {
       throw error
     })
   }
 
-  setRequirements(chapterId, requirements, isBlocked) {
+  setRequirements(chapterId: number, requirements: any, isBlocked: any) {
     return axiosApiPost(POST_CHAPTER_REQUIREMENTS_UPDATE, {
       chapterId,
       isBlocked,

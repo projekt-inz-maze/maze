@@ -6,11 +6,11 @@ import { connect } from 'react-redux'
 
 import ExportModal from './ExportModal'
 import { ExportButton, GradesTable } from './GradeListAndExportStyles'
+import { useAppSelector } from '../../../hooks/hooks'
 import GroupService from '../../../services/group.service'
 import ProfessorService from '../../../services/professor.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
 import { GameCardOptionPick } from '../../general/GameCardStyles'
-
 
 function UsersTable(props) {
   const [usersList, setUsersList] = useState(undefined)
@@ -20,6 +20,8 @@ function UsersTable(props) {
   const [isButtonDisabled, setButtonDisabled] = useState(true)
   const [isModalVisible, setModalVisible] = useState(false)
   const [gradesList, setGradesList] = useState(null)
+
+  const courseId = useAppSelector((state) => state.user.courseId)
 
   const getStudentGrade = useCallback(
     (studentId) => {
@@ -34,7 +36,7 @@ function UsersTable(props) {
   )
 
   useEffect(() => {
-    ProfessorService.getStudentGrades().then((response) => {
+    ProfessorService.getStudentGrades(courseId).then((response) => {
       setGradesList(response)
     })
   }, [])
@@ -85,7 +87,7 @@ function UsersTable(props) {
     if (!query) return setUsers([...usersList])
     setUsers(
       usersList?.filter((user) =>
-        (`${user.firstName.toLowerCase()  } ${  user.lastName.toLowerCase()}`).includes(query?.toLowerCase())
+        `${user.firstName.toLowerCase()} ${user.lastName.toLowerCase()}`.includes(query?.toLowerCase())
       )
     )
   }, 300)
@@ -94,7 +96,7 @@ function UsersTable(props) {
     let body = null
 
     if (users === undefined) {
-      body = <Spinner animation="border" />
+      body = <Spinner animation='border' />
     } else if (users == null) {
       body = <p>{ERROR_OCCURRED}</p>
     } else if (users.length === 0) {
@@ -104,7 +106,7 @@ function UsersTable(props) {
     if (body) {
       return (
         <tr>
-          <td colSpan='100%' className="text-center">
+          <td colSpan='100%' className='text-center'>
             {body}
           </td>
         </tr>
@@ -114,21 +116,21 @@ function UsersTable(props) {
     return users.map((user, index) => (
       <tr key={index + user.groupName}>
         <td>
-          <input type="checkbox" onChange={checkRow} value={user.id} checked={inputChecked(user.id)} />
+          <input type='checkbox' onChange={checkRow} value={user.id} checked={inputChecked(user.id)} />
         </td>
-        <td className="py-2">{user.groupName}</td>
-        <td className="py-2">
+        <td className='py-2'>{user.groupName}</td>
+        <td className='py-2'>
           {user.firstName} {user.lastName}
         </td>
-        <td className="py-2">{getStudentGrade(user.id)}</td>
+        <td className='py-2'>{getStudentGrade(user.id)}</td>
       </tr>
     ))
   }
 
   return (
     <>
-      <Form.Group className="my-3">
-        <Form.Control type="text" placeholder="Wyszukaj studenta..." onChange={(e) => filterList(e.target.value)} />
+      <Form.Group className='my-3'>
+        <Form.Control type='text' placeholder='Wyszukaj studenta...' onChange={(e) => filterList(e.target.value)} />
       </Form.Group>
 
       <GameCardOptionPick style={{ maxHeight: '75vh', overflowY: 'auto' }}>
@@ -141,7 +143,7 @@ function UsersTable(props) {
           <thead>
             <tr>
               <th>
-                <input type="checkbox" onChange={checkAllRows} />
+                <input type='checkbox' onChange={checkAllRows} />
               </th>
               <th>Grupa</th>
               <th>Imię i nazwisko członka</th>
@@ -166,9 +168,10 @@ function UsersTable(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
   return {
     theme
   }
 }
+
 export default connect(mapStateToProps)(UsersTable)

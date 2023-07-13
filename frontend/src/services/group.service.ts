@@ -1,14 +1,15 @@
+import { addGroupRequest } from './types/serviceTypes'
 import {
-  POST_GROUP,
-  GET_STUDENTS_WITH_GROUP_ALL,
   GET_GROUP_INVITATION_CODE_LIST,
-  POST_USER_GROUP,
-  GET_GROUP_STUDENTS
+  GET_GROUP_STUDENTS,
+  GET_STUDENTS_WITH_GROUP_ALL,
+  POST_GROUP,
+  POST_USER_GROUP
 } from './urls'
 import { axiosApiGet, axiosApiPost } from '../utils/axios'
 
 class GroupService {
-  addGroup({ groupName, groupKey }) {
+  addGroup({ groupName, groupKey }: addGroupRequest) {
     return axiosApiPost(POST_GROUP, {
       name: groupName,
       invitationCode: groupKey
@@ -17,8 +18,8 @@ class GroupService {
     })
   }
 
-  getGroups() {
-    return axiosApiGet(GET_GROUP_INVITATION_CODE_LIST).catch((error) => {
+  getGroups(courseId: number) {
+    return axiosApiGet(`${GET_GROUP_INVITATION_CODE_LIST}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
@@ -29,13 +30,13 @@ class GroupService {
     })
   }
 
-  getGroupStudents(groupId) {
+  getGroupStudents(groupId: number) {
     return axiosApiGet(GET_GROUP_STUDENTS, { groupId }).catch((error) => {
       throw error
     })
   }
 
-  changeStudentGroup(studentId, newGroupId) {
+  changeStudentGroup(studentId: number, newGroupId: number) {
     return axiosApiPost(POST_USER_GROUP, {
       studentId,
       newGroupId

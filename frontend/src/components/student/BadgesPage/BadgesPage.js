@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 
 import { HorizontalPointsLine, PercentageBar } from './BadgesStyle'
 import ContentCard from './ContentCard'
+import { useAppSelector } from '../../../hooks/hooks'
 import RankService from '../../../services/rank.service'
 import UserService from '../../../services/user.service'
 import { base64Header, ERROR_OCCURRED } from '../../../utils/constants'
@@ -28,8 +29,10 @@ function BadgesPage(props) {
   const [unlockedBadgesList, setUnlockedBadgesList] = useState(undefined)
   const [lastUnlockedBadge, setLastUnlockedBadge] = useState(null)
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   useEffect(() => {
-    RankService.getCurrentStudentRank()
+    RankService.getCurrentStudentRank(courseId)
       .then((response) => {
         setRankInfo(response)
       })
@@ -37,7 +40,7 @@ function BadgesPage(props) {
         setRankInfo(null)
       })
 
-    UserService.getAllBadges()
+    UserService.getAllBadges(courseId)
       .then((response) => {
         setAllBadgesList(response)
       })
@@ -45,7 +48,7 @@ function BadgesPage(props) {
         setAllBadgesList(null)
       })
 
-    UserService.getUnlockedBadges()
+    UserService.getUnlockedBadges(courseId)
       .then((response) => {
         setUnlockedBadgesList(response)
         setLastUnlockedBadge(sortArray(response, 'DESC', ['unlockedDateMillis'], {})[0])

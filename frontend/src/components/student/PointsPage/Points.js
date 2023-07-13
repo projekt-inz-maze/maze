@@ -7,6 +7,7 @@ import PercentageCircle from './ChartAndStats/PercentageCircle'
 import { TabsContainer } from './PointsPageStyle'
 import BonusPointsTable from './Tables/BonusPointsTable'
 import LastPointsTable from './Tables/LastPointsTable'
+import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
 import { Content } from '../../App/AppGeneralStyles'
@@ -15,23 +16,26 @@ import Loader from '../../general/Loader/Loader'
 function Points(props) {
   const [pointsData, setPointsData] = useState(undefined)
   const [totalPointsData, setTotalPointsData] = useState(undefined)
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   const calculatedPercentageValue = useCallback(() => {
     if (totalPointsData.totalPointsPossibleToReceive === 0) {
       return 0
     }
     return Math.round(100 * (totalPointsData.totalPointsReceived / totalPointsData.totalPointsPossibleToReceive))
   }, [totalPointsData])
+
   const pointsToNextRank = 210
 
   useEffect(() => {
-    StudentService.getPointsStats()
+    StudentService.getPointsStats(courseId)
       .then((response) => {
         setPointsData(response)
       })
       .catch(() => {
         setPointsData(null)
       })
-    StudentService.getTotalReceivedPoints()
+    StudentService.getTotalReceivedPoints(courseId)
       .then((response) => {
         setTotalPointsData(response)
       })

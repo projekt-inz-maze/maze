@@ -21,6 +21,7 @@ import { connect } from 'react-redux'
 
 import GameSummaryCard from './GameSummaryCard'
 import { lineChartConfig } from './lineChartHelper'
+import { useAppSelector } from '../../../hooks/hooks'
 import ProfessorService from '../../../services/professor.service'
 import { ERROR_OCCURRED, getActivityTypeName } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
@@ -38,10 +39,12 @@ function GameSummary(props) {
   const [barChartActiveChapterId, setBarChartActiveChapterId] = useState(0)
   const [lineChartActiveChapterId, setLineChartActiveChapterId] = useState(0)
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   const isMobileDisplay = isMobileView()
 
   useEffect(() => {
-    ProfessorService.getGameSummaryStats()
+    ProfessorService.getGameSummaryStats(courseId)
       .then((response) => {
         setSummaryDetails(response)
       })
@@ -79,12 +82,16 @@ function GameSummary(props) {
     summaryDetails?.avgActivitiesScore[lineChartActiveChapterId]?.activitiesScore
   )
 
-  const statsCardBody = useCallback((titles) => titles.map((title, index) => (
-      <p key={index + Date.now()} className="mb-1" style={{ fontSize: 15 }}>
-        <strong>{title.text} </strong>
-        <span>{title.value}</span>
-      </p>
-    )), [])
+  const statsCardBody = useCallback(
+    (titles) =>
+      titles.map((title, index) => (
+        <p key={index + Date.now()} className='mb-1' style={{ fontSize: 15 }}>
+          <strong>{title.text} </strong>
+          <span>{title.value}</span>
+        </p>
+      )),
+    []
+  )
 
   const carousel = useCallback(
     (onSelectCallback) => {
@@ -103,7 +110,7 @@ function GameSummary(props) {
         >
           {getChapterNames().map((name, index) => (
             <CarouselItem key={index + Date.now()}>
-              <p className="text-center m-0">{name}</p>
+              <p className='text-center m-0'>{name}</p>
             </CarouselItem>
           ))}
         </Carousel>
@@ -117,10 +124,10 @@ function GameSummary(props) {
       {summaryDetails === undefined ? (
         <Loader />
       ) : summaryDetails == null ? (
-        <p className="text-center h3">{ERROR_OCCURRED}</p>
+        <p className='text-center h3'>{ERROR_OCCURRED}</p>
       ) : (
         <>
-          <Row className="m-0" style={{ height: isMobileDisplay ? 'auto' : '50vh' }}>
+          <Row className='m-0' style={{ height: isMobileDisplay ? 'auto' : '50vh' }}>
             <Col md={6}>
               <Row className={`${isMobileDisplay ? 'h-auto' : 'h-50'} py-2`}>
                 <GameSummaryCard
@@ -135,7 +142,7 @@ function GameSummary(props) {
                 />
               </Row>
             </Col>
-            <Col md={6} className="py-2">
+            <Col md={6} className='py-2'>
               <CustomCard
                 $fontColor={props.theme.font}
                 $background={props.theme.primary}
@@ -146,7 +153,7 @@ function GameSummary(props) {
                 </CardHeader>
                 <Card.Body>
                   {carousel(setBarChartActiveChapterId)}
-                  <ChartCol className="top-50 translate-middle-y">
+                  <ChartCol className='top-50 translate-middle-y'>
                     <Bar data={barChartData} options={barChartOptions} />
                   </ChartCol>
                 </Card.Body>
@@ -154,7 +161,7 @@ function GameSummary(props) {
             </Col>
           </Row>
           <Row style={{ height: isMobileDisplay ? 'auto' : '50vh', margin: isMobileDisplay ? '0 0 85px 0' : 0 }}>
-            <Col md={6} className="py-2">
+            <Col md={6} className='py-2'>
               <CustomCard
                 $fontColor={props.theme.font}
                 $background={props.theme.primary}
@@ -165,7 +172,7 @@ function GameSummary(props) {
                 </CardHeader>
                 <Card.Body style={{ maxHeight: '42vh' }}>
                   {carousel(setLineChartActiveChapterId)}
-                  <ChartCol className="top-50 translate-middle-y">
+                  <ChartCol className='top-50 translate-middle-y'>
                     {lineChartData && lineChartOptions ? (
                       <Line data={lineChartData} options={lineChartOptions} />
                     ) : (
@@ -175,7 +182,7 @@ function GameSummary(props) {
                 </Card.Body>
               </CustomCard>
             </Col>
-            <Col md={6} className="py-2">
+            <Col md={6} className='py-2'>
               <CustomCard
                 $fontColor={props.theme.font}
                 $background={props.theme.primary}
@@ -190,7 +197,7 @@ function GameSummary(props) {
                     $borderColor={props.theme.primary}
                     $background={props.theme.secondary}
                   >
-                    <thead className="position-sticky" style={{ top: '-5%', background: props.theme.secondary }}>
+                    <thead className='position-sticky' style={{ top: '-5%', background: props.theme.secondary }}>
                       <tr>
                         <th>Nazwa aktywności</th>
                         <th>Typ aktywności</th>
@@ -208,7 +215,7 @@ function GameSummary(props) {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={3} className="text-center">
+                          <td colSpan={3} className='text-center'>
                             Brak aktywności
                           </td>
                         </tr>
@@ -226,9 +233,10 @@ function GameSummary(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
   return {
     theme
   }
 }
+
 export default connect(mapStateToProps)(GameSummary)

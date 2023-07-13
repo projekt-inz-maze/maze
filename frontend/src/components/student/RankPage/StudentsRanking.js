@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Tab } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
+import { useAppSelector } from '../../../hooks/hooks'
 import RankingService from '../../../services/ranking.service'
 import { Content } from '../../App/AppGeneralStyles'
 import Ranking from '../../general/Ranking/Ranking'
@@ -15,8 +16,10 @@ function StudentsRanking(props) {
   const [studentRankingPosition, setStudentRankingPosition] = useState(undefined)
   const [studentRankingGroupPosition, setStudentRankingGroupPosition] = useState(undefined)
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   useEffect(() => {
-    RankingService.getGlobalRankingList()
+    RankingService.getGlobalRankingList(courseId)
       .then((response) => {
         setRanking(response)
       })
@@ -32,7 +35,7 @@ function StudentsRanking(props) {
         setStudentGroupRanking(null)
       })
 
-    RankingService.getStudentPositionInGlobalRanking()
+    RankingService.getStudentPositionInGlobalRanking(courseId)
       .then((response) => {
         setStudentRankingPosition(response)
       })
@@ -40,7 +43,7 @@ function StudentsRanking(props) {
         setStudentGroupRanking(null)
       })
 
-    RankingService.getStudentPositionInGroupRanking()
+    RankingService.getStudentPositionInGroupRanking(courseId)
       .then((response) => {
         setStudentRankingGroupPosition(response)
       })

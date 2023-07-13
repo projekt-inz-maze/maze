@@ -17,20 +17,20 @@ class StudentService {
     })
   }
 
-  getPointsStats() {
-    return axiosApiGet(GET_TASK_RESULT_POINTS_STATISTICS).catch((error) => {
+  getPointsStats(courseId: number) {
+    return axiosApiGet(`${GET_TASK_RESULT_POINTS_STATISTICS}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
 
-  getBonusPointsList() {
-    return axiosApiGet(GET_ADDITIONAL_POINTS).catch((error) => {
+  getBonusPointsList(courseId: number) {
+    return axiosApiGet(`${GET_ADDITIONAL_POINTS}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
 
-  getTotalReceivedPoints() {
-    return axiosApiGet(GET_POINTS_ALL_TOTAL).catch((error) => {
+  getTotalReceivedPoints(courseId: number) {
+    return axiosApiGet(`${GET_POINTS_ALL_TOTAL}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }

@@ -4,8 +4,9 @@ interface userState {
   courseId: number
 }
 
+// TODO: Due to reloading window on sidebar we reset store state. Either add persistent store or deal with sidebar.
 const initialState: userState = {
-  courseId: -1
+  courseId: 0
 }
 
 export const userSlice = createSlice({

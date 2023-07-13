@@ -2,7 +2,7 @@ import { DELETE_RANK, GET_RANK_ALL, GET_RANK_CURRENT, POST_RANK, PUT_RANK_UPDATE
 import { axiosApiDelete, axiosApiGet, axiosApiMultipartPut, axiosApiMultipartPost } from '../utils/axios'
 
 class RankService {
-  editRank(rankId, rankName, minPoints, image, rankType) {
+  editRank(rankId: number, rankName: string, minPoints: number, image: any, rankType: string) {
     return axiosApiMultipartPut(PUT_RANK_UPDATE, {
       name: rankName,
       minPoints,
@@ -14,7 +14,7 @@ class RankService {
     })
   }
 
-  addNewRank(rankName, minPoints, image, rankType) {
+  addNewRank(rankName: string, minPoints: number, image: any, rankType: string) {
     return axiosApiMultipartPost(POST_RANK, {
       name: rankName,
       minPoints,
@@ -25,19 +25,19 @@ class RankService {
     })
   }
 
-  getCurrentStudentRank() {
-    return axiosApiGet(GET_RANK_CURRENT).catch((error) => {
+  getCurrentStudentRank(courseId: number) {
+    return axiosApiGet(`${GET_RANK_CURRENT}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
 
-  getAllRanks() {
-    return axiosApiGet(GET_RANK_ALL).catch((error) => {
+  getAllRanks(courseId: number) {
+    return axiosApiGet(`${GET_RANK_ALL}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
 
-  deleteRank(rankId) {
+  deleteRank(rankId: number) {
     return axiosApiDelete(DELETE_RANK, { rankId }).catch((error) => {
       throw error
     })
