@@ -5,15 +5,17 @@ import { Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import { TableContainer } from './TableStyle'
+import { useAppSelector } from '../../../../hooks/hooks'
 import StudentService from '../../../../services/student.service'
 import { ERROR_OCCURRED } from '../../../../utils/constants'
 
 
 function BonusPointsTable(props) {
   const [bonusPoints, setBonusPoints] = useState(undefined)
+  const courseId = useAppSelector((state) => state.user.courseId)
 
   useEffect(() => {
-    StudentService.getBonusPointsList()
+    StudentService.getBonusPointsList(courseId)
       .then((response) => {
         setBonusPoints(response)
       })

@@ -10,6 +10,7 @@ import GameLoaderModal from './GameLoader/GameLoaderModal'
 import SuperPowerEditionModal from './GameSettings/SuperPowerEditionModal'
 import ManagementCard from './ManagementCard'
 import { TableBodyRow } from './TableStyles'
+import { useAppSelector } from '../../../hooks/hooks'
 import { TeacherRoutes } from '../../../routes/PageRoutes'
 import ChapterService from '../../../services/chapter.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
@@ -29,12 +30,14 @@ function GameManagement(props) {
   const [shouldLoadAddChapterModal, setShouldLoadAddChapterModal] = useState(false)
   const [isSuperpowerModalVisible, setIsSuperpowerModalVisible] = useState(false)
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   useEffect(() => {
     fetchChaptersList()
   }, [])
 
   const fetchChaptersList = () => {
-    ChapterService.getChaptersList()
+    ChapterService.getChaptersList(courseId)
       .then((response) => {
         setChapterList(response)
       })

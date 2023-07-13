@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import ChapterMapModal from './ChapterMapModal'
 import GameMapContainer from './GameMapContainer'
+import { useAppSelector } from '../../../hooks/hooks'
 import ChapterService from '../../../services/chapter.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
@@ -15,8 +16,10 @@ function GameMap() {
   const [isChapterMapOpen, setIsChapterMapOpen] = useState(false)
   const [chosenChapterId, setChosenChapterId] = useState(null)
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   useEffect(() => {
-    ChapterService.getChaptersList()
+    ChapterService.getChaptersList(courseId)
       .then((response) => {
         setChaptersList(response)
       })

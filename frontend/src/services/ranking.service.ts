@@ -8,8 +8,8 @@ import {
 import { axiosApiGet } from '../utils/axios'
 
 class RankingService {
-  getGlobalRankingList() {
-    return axiosApiGet(GET_RANKING).catch((error) => {
+  getGlobalRankingList(courseId: number) {
+    return axiosApiGet(`${GET_RANKING}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
@@ -20,20 +20,20 @@ class RankingService {
     })
   }
 
-  getFilteredRanking(filterQuery) {
+  getFilteredRanking(filterQuery: string) {
     return axiosApiGet(GET_RANKING_SEARCH, { search: filterQuery }).catch((error) => {
       throw error
     })
   }
 
-  getStudentPositionInGlobalRanking() {
-    return axiosApiGet(GET_RANKING_POSITION).catch((error) => {
+  getStudentPositionInGlobalRanking(courseId: number) {
+    return axiosApiGet(`${GET_RANKING_POSITION}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
 
-  getStudentPositionInGroupRanking() {
-    return axiosApiGet(GET_RANKING_GROUP_POSITION).catch((error) => {
+  getStudentPositionInGroupRanking(courseId: number) {
+    return axiosApiGet(`${GET_RANKING_GROUP_POSITION}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }

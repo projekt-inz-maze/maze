@@ -3,8 +3,7 @@ import {
   DELETE_BADGE,
   GET_BADGE_ALL,
   GET_BADGE_UNLOCKED_ALL,
-  GET_PASSWORD_RESET_EMAIL,
-  GET_USER_CURRENT,
+  GET_PASSWORD_RESET_EMAIL, GET_USER_CURRENT,
   PUT_BADGE_UPDATE,
   PUT_PASSWORD_RESET
 } from './urls'
@@ -13,7 +12,8 @@ import { axiosApiDelete, axiosApiGet, axiosApiMultipartPost, axiosApiMultipartPu
 
 class UserService {
   getUser() {
-    return JSON.parse(localStorage.getItem('user'))
+    const user = localStorage.getItem('user')
+    return user ? JSON.parse(user) : null
   }
 
   getEmail() {
@@ -26,25 +26,25 @@ class UserService {
     })
   }
 
-  getAllBadges() {
-    return axiosApiGet(GET_BADGE_ALL).catch((error) => {
+  getAllBadges(courseId: number) {
+    return axiosApiGet(`${GET_BADGE_ALL}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
 
-  getUnlockedBadges() {
-    return axiosApiGet(GET_BADGE_UNLOCKED_ALL).catch((error) => {
+  getUnlockedBadges(courseId: number) {
+    return axiosApiGet(`${GET_BADGE_UNLOCKED_ALL}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
 
-  deleteBadge(badgeId) {
+  deleteBadge(badgeId: number) {
     return axiosApiDelete(DELETE_BADGE, { badgeId }).catch((error) => {
       throw error
     })
   }
 
-  addBadge(title, description, image, value, forGroup, type) {
+  addBadge(title: string, description: string, image: any, value: string, forGroup: boolean, type: any) {
     return axiosApiMultipartPost(ADD_BADGE, {
       title,
       description,
@@ -57,7 +57,7 @@ class UserService {
     })
   }
 
-  editBadge(title, description, image, value, forGroup, id) {
+  editBadge(title: string, description: string, image: any, value: string, forGroup: boolean, id: any) {
     return axiosApiMultipartPut(PUT_BADGE_UPDATE, {
       title,
       description,
@@ -70,13 +70,13 @@ class UserService {
     })
   }
 
-  sendPasswordResetEmail(email) {
+  sendPasswordResetEmail(email: string) {
     return axiosApiGet(GET_PASSWORD_RESET_EMAIL, { email }).catch((error) => {
       throw error
     })
   }
 
-  sendNewPassword(email, password, token) {
+  sendNewPassword(email: string, password: string, token: string) {
     return axiosApiPut(PUT_PASSWORD_RESET, {
       email,
       passwordResetToken: token,
