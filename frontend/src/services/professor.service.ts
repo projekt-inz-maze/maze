@@ -25,14 +25,15 @@ import {
 
 class ProfessorService {
   getUser() {
-    return JSON.parse(localStorage.getItem('user'))
+    const user = localStorage.getItem('user')
+    return user ? JSON.parse(user) : null
   }
 
   getEmail() {
     return parseJwt(this.getUser().access_token).sub
   }
 
-  getCSVGradesFile(studentsId, activitiesId) {
+  getCSVGradesFile(studentsId: number[], activitiesId: number[]) {
     return axiosApiGetFile(POST_TASK_RESULT_CSV, { studentIds: studentsId, activityIds: activitiesId }).catch(
       (error) => {
         throw error
@@ -40,19 +41,19 @@ class ProfessorService {
     )
   }
 
-  getTasksToEvaluateList() {
-    return axiosApiGet(GET_TASK_EVALUATE_ALL).catch((error) => {
+  getTasksToEvaluateList(courseId: number) {
+    return axiosApiGet(`${GET_TASK_EVALUATE_ALL}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
 
-  getFirstTaskToEvaluate(taskId) {
+  getFirstTaskToEvaluate(taskId: number) {
     return axiosApiGet(GET_TASK_EVALUATE_FIRST, { fileTaskId: taskId }).catch((error) => {
       throw error
     })
   }
 
-  sendTaskEvaluation(taskId, remarks, points, file, fileName) {
+  sendTaskEvaluation(taskId: number, remarks: string, points: number, file: any, fileName: string) {
     return axiosApiMultipartPost(POST_FEEDBACK_PROFESSOR, {
       fileTaskResultId: taskId,
       content: remarks,
@@ -64,7 +65,7 @@ class ProfessorService {
     })
   }
 
-  sendBonusPoints(studentId, points, description, dateInMillis) {
+  sendBonusPoints(studentId: number, points: number, description: string, dateInMillis: number) {
     return axiosApiPost(POST_ADDITIONAL_POINTS, {
       studentId,
       points,
@@ -75,14 +76,14 @@ class ProfessorService {
     })
   }
 
-  getStudentPointsList(studentEmail) {
+  getStudentPointsList(studentEmail: string) {
     return axiosApiGet(GET_POINTS_ALL_LIST_PROFESSOR, { studentEmail }).catch((error) => {
       throw error
     })
   }
 
-  getGameSummaryStats() {
-    return axiosApiGet(GET_SUMMARY).catch((error) => {
+  getGameSummaryStats(courseId: number) {
+    return axiosApiGet(`${GET_SUMMARY}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
@@ -93,13 +94,13 @@ class ProfessorService {
     })
   }
 
-  getStudentGrades() {
-    return axiosApiGet(GET_GRADES).catch((error) => {
+  getStudentGrades(courseId: number) {
+    return axiosApiGet(`${GET_GRADES}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
 
-  deleteAccount(newProfessorEmail) {
+  deleteAccount(newProfessorEmail: string) {
     return axiosApiDelete(DELETE_USER_PROFESSOR, { professorEmail: newProfessorEmail }).catch((error) => {
       throw error
     })
@@ -111,7 +112,7 @@ class ProfessorService {
     })
   }
 
-  editHeroSuperPower(heroType, powerBaseValue, coolDownMs) {
+  editHeroSuperPower(heroType: any, powerBaseValue: number, coolDownMs: number) {
     return axiosApiPut(PUT_HERO, {
       type: heroType,
       value: powerBaseValue,

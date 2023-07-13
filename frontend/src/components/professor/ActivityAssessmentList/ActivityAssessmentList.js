@@ -4,6 +4,7 @@ import { Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import ActivityListItem from './ActivityListItem'
+import { useAppSelector } from '../../../hooks/hooks'
 import ProfessorService from '../../../services/professor.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
 import { Content } from '../../App/AppGeneralStyles'
@@ -17,8 +18,10 @@ import Loader from '../../general/Loader/Loader'
 function ActivityAssessmentList(props) {
   const [activityList, setActivityList] = useState(undefined)
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   useEffect(() => {
-    ProfessorService.getTasksToEvaluateList()
+    ProfessorService.getTasksToEvaluateList(courseId)
       .then((activityList) => {
         Promise.allSettled(
           activityList

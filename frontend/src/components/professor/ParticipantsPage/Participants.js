@@ -5,15 +5,17 @@ import { connect } from 'react-redux'
 
 import { ParticipantsContent, TabsContainer } from './ParticipantsStyles'
 import ParticipantsTable from './ParticipantsTable'
+import { useAppSelector } from '../../../hooks/hooks'
 import GroupService from '../../../services/group.service'
 import Loader from '../../general/Loader/Loader'
-
 
 function Participants(props) {
   const [allGroups, setAllGroups] = useState(undefined)
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   useEffect(() => {
-    GroupService.getGroups()
+    GroupService.getGroups(courseId)
       .then((response) => setAllGroups(response))
       .catch(() => setAllGroups(null))
   }, [])
@@ -27,9 +29,9 @@ function Participants(props) {
           $background={props.theme.success}
           $fontColor={props.theme.background}
           $linkColor={props.theme.primary}
-          defaultActiveKey="wszyscy"
+          defaultActiveKey='wszyscy'
         >
-          <Tab eventKey="wszyscy" title="Wszyscy">
+          <Tab eventKey='wszyscy' title='Wszyscy'>
             <ParticipantsTable />
           </Tab>
 
@@ -46,9 +48,10 @@ function Participants(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
   return {
     theme
   }
 }
+
 export default connect(mapStateToProps)(Participants)

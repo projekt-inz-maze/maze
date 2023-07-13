@@ -31,8 +31,8 @@ class RankService {
     })
   }
 
-  getAllRanks() {
-    return axiosApiGet(GET_RANK_ALL).catch((error) => {
+  getAllRanks(courseId: number) {
+    return axiosApiGet(`${GET_RANK_ALL}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }

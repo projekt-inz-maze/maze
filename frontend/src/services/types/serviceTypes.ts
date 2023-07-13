@@ -11,3 +11,16 @@ export type newChapterData = {
   posX: number
   posY: number
 }
+
+export type addGroupRequest = {
+  groupName: string
+  groupKey: string
+}
+
+export type professorFeedback = {
+  taskId: number
+  remarks: string
+  points: number
+  file: any
+  fileName: string
+}
