@@ -1,7 +1,7 @@
 package com.example.api.activity.result.service.ranking;
 
-import com.example.api.ranking.dto.response.RankingResponse;
-import com.example.api.ranking.dto.response.SurveyAnswerResponse;
+import com.example.api.activity.result.dto.response.RankingResponse;
+import com.example.api.activity.result.dto.response.SurveyAnswerResponse;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -13,18 +13,18 @@ import com.example.api.activity.task.model.GraphTask;
 import com.example.api.activity.task.model.Survey;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
-import com.example.api.activity.repository.result.FileTaskResultRepository;
-import com.example.api.activity.repository.result.GraphTaskResultRepository;
-import com.example.api.activity.repository.result.SurveyResultRepository;
-import com.example.api.activity.repository.task.FileTaskRepository;
-import com.example.api.activity.repository.task.GraphTaskRepository;
-import com.example.api.activity.repository.task.SurveyRepository;
+import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.result.repository.FileTaskResultRepository;
+import com.example.api.activity.result.repository.GraphTaskResultRepository;
+import com.example.api.activity.result.repository.SurveyResultRepository;
+import com.example.api.activity.task.repository.FileTaskRepository;
+import com.example.api.activity.task.repository.GraphTaskRepository;
+import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.user.service.RankService;
 import com.example.api.user.service.UserService;
-import com.example.api.validator.GroupValidator;
+import com.example.api.group.validator.GroupValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class RankingService {
     private final FileTaskRepository fileTaskRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final SurveyRepository surveyRepository;
-    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final AdditionalPointsRepository additionalPointsRepository;
     private final AuthenticationService authService;
     private final UserValidator userValidator;
     private final GroupValidator groupValidator;
@@ -99,10 +99,9 @@ public class RankingService {
         return rankingList;
     }
 
-    public List<RankingResponse> getActivityRanking(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
-        String professorEmail = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(professorEmail);
-        userValidator.validateProfessorAccount(professor, professorEmail);
+    public List<RankingResponse> getActivityRanking(Long activityID) throws WrongUserTypeException {
+        User professor = userService.getCurrentUser();
+        userValidator.validateProfessorAccount(professor);
 
 
         List<RankingResponse> rankingList =  userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
@@ -117,7 +116,7 @@ public class RankingService {
         return rankingList;
     }
 
-    public List<RankingResponse> getActivityRankingSearch(Long activityID, String search) throws WrongUserTypeException, EntityNotFoundException {
+    public List<RankingResponse> getActivityRankingSearch(Long activityID, String search) throws WrongUserTypeException {
         String searchLower = search.toLowerCase().replaceAll("\\s",""); // removing whitespaces
         List<RankingResponse> rankingList = getActivityRanking(activityID)
                 .stream()
@@ -175,7 +174,7 @@ public class RankingService {
         return getPositionFromRanking(getRanking(), email);
     }
 
-    public Integer getGroupRankingPosition() throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException, EntityNotFoundException {
+    public Integer getGroupRankingPosition() throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException {
         String email = authService.getAuthentication().getName();
         User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student, email);
@@ -236,7 +235,7 @@ public class RankingService {
     }
 
     private Double getAdditionalPoints(User student) {
-        return professorFeedbackRepository.findAllByUser(student)
+        return additionalPointsRepository.findAllByUser(student)
                 .stream()
                 .mapToDouble(points -> {
                     try {

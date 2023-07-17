@@ -1,4 +1,4 @@
-package com.example.api.activity.repository.result;
+package com.example.api.activity.result.repository;
 
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.task.model.Survey;

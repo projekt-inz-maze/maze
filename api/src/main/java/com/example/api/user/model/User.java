@@ -1,8 +1,10 @@
 package com.example.api.user.model;
 
+import com.example.api.course.model.Course;
 import com.example.api.group.model.Group;
 import com.example.api.user.model.badge.UnlockedBadge;
 import com.example.api.user.model.hero.UserHero;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -58,6 +60,10 @@ public class User {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
     private List<UnlockedBadge> unlockedBadges = new LinkedList<>();
+
+    @OneToMany(mappedBy = "owner")
+    @JsonBackReference
+    private List<Course> courses = new LinkedList<>();
 
     public synchronized void changePoints(Double diff) {
         if (points + diff < 0) return;

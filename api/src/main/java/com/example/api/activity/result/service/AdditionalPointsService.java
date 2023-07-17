@@ -7,7 +7,7 @@ import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.AdditionalPoints;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
+import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.user.service.BadgeService;
@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class AdditionalPointsService {
-    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final AdditionalPointsRepository additionalPointsRepository;
     private final UserRepository userRepository;
     private final AuthenticationService authService;
     private final BadgeService badgeService;
@@ -41,11 +41,12 @@ public class AdditionalPointsService {
                 form.getPoints(),
                 form.getDateInMillis(),
                 professorEmail,
-                "");
+                "",
+                null);
         if (form.getDescription() != null) {
             additionalPoints.setDescription(form.getDescription());
         }
-        professorFeedbackRepository.save(additionalPoints);
+        additionalPointsRepository.save(additionalPoints);
         badgeService.checkAllBadges();
     }
 
@@ -57,7 +58,7 @@ public class AdditionalPointsService {
     public List<AdditionalPointsResponse> getAdditionalPoints(String email) {
         User user = userRepository.findUserByEmail(email);
         log.info("Fetching additional points for user {}", email);
-        List<AdditionalPoints> additionalPoints = professorFeedbackRepository.findAllByUser(user);
+        List<AdditionalPoints> additionalPoints = additionalPointsRepository.findAllByUser(user);
         return additionalPoints.stream()
                 .map(additionalPoint -> {
                     String professorEmail = additionalPoint.getProfessorEmail();

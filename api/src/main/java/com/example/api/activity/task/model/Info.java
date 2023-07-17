@@ -1,6 +1,7 @@
 package com.example.api.activity.task.model;
 
 import com.example.api.activity.task.dto.request.create.CreateInfoForm;
+import com.example.api.course.model.Course;
 import com.example.api.map.dto.response.task.ActivityType;
 import com.example.api.user.model.User;
 import com.example.api.util.model.Url;
@@ -31,8 +32,8 @@ public class Info extends Activity {
     @Column(length=1000)
     private String content;
 
-    public Info(CreateInfoForm form, User professor, List<Url> imageUrls) {
-        super(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), professor);
+    public Info(CreateInfoForm form, User professor, List<Url> imageUrls, Course course) {
+        super(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), professor, course);
         this.imageUrls = imageUrls;
         this.content = form.getInfoContent();
     }

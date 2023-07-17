@@ -7,7 +7,7 @@ import com.example.api.activity.task.service.GraphTaskService;
 import com.example.api.activity.task.service.InfoService;
 import com.example.api.activity.task.service.SurveyService;
 import com.example.api.map.dto.response.task.ActivityType;
-import com.example.api.ranking.dto.response.RankingResponse;
+import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -19,10 +19,10 @@ import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
-import com.example.api.activity.repository.result.FileTaskResultRepository;
-import com.example.api.activity.repository.result.GraphTaskResultRepository;
-import com.example.api.activity.repository.result.SurveyResultRepository;
+import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.result.repository.FileTaskResultRepository;
+import com.example.api.activity.result.repository.GraphTaskResultRepository;
+import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.map.service.ChapterService;
@@ -52,7 +52,7 @@ public class DashboardService {
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
-    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final AdditionalPointsRepository additionalPointsRepository;
     private final GraphTaskService graphTaskService;
     private final FileTaskService fileTaskService;
     private final SurveyService surveyService;
@@ -156,7 +156,7 @@ public class DashboardService {
     }
 
     private Double getAdditionalPoints(User student) {
-        return getTaskPoints(professorFeedbackRepository.findAllByUser(student));
+        return getTaskPoints(additionalPointsRepository.findAllByUser(student));
     }
 
     private Double getSurveyPoints(User student) {

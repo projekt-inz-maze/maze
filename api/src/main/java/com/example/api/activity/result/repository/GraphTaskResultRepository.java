@@ -1,4 +1,4 @@
-package com.example.api.activity.repository.result;
+package com.example.api.activity.result.repository;
 
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.task.model.GraphTask;

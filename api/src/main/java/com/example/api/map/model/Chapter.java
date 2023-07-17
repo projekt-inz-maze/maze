@@ -2,6 +2,7 @@ package com.example.api.map.model;
 import com.example.api.activity.task.model.FileTask;
 import com.example.api.activity.task.model.GraphTask;
 import com.example.api.activity.task.model.Survey;
+import com.example.api.course.model.Course;
 import com.example.api.map.model.requirement.Requirement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,11 +36,16 @@ public class Chapter {
     private List<Requirement> requirements = new LinkedList<>();
     private Boolean isBlocked = true;
 
-    public Chapter(String name, ActivityMap activityMap, Integer posX, Integer poxY) {
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
+    public Chapter(String name, ActivityMap activityMap, Integer posX, Integer poxY, Course course) {
         this.name = name;
         this.activityMap = activityMap;
         this.posX = posX;
         this.posY = poxY;
+        this.course = course;
     }
 
     public int getNoActivities() {

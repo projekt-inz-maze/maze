@@ -10,11 +10,11 @@ import com.example.api.error.exception.*;
 import com.example.api.group.model.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
-import com.example.api.activity.repository.task.FileTaskRepository;
-import com.example.api.activity.repository.task.GraphTaskRepository;
-import com.example.api.activity.repository.task.InfoRepository;
-import com.example.api.activity.repository.task.SurveyRepository;
+import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.task.repository.FileTaskRepository;
+import com.example.api.activity.task.repository.GraphTaskRepository;
+import com.example.api.activity.task.repository.InfoRepository;
+import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
     private final FileTaskRepository fileTaskRepository;
     private final SurveyRepository surveyRepository;
     private final InfoRepository infoRepository;
-    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final AdditionalPointsRepository additionalPointsRepository;
     private final AuthenticationService authService;
     private final PasswordEncoder passwordEncoder;
     private final UserValidator userValidator;
@@ -97,7 +97,9 @@ public class UserService implements UserDetailsService {
 
     public User getCurrentUser() throws UsernameNotFoundException {
         String email = authService.getAuthentication().getName();
-        return getUser(email);
+        User user = getUser(email);
+        userValidator.validateUserIsNotNull(user, email);
+        return user;
     }
 
     public List<User> getUsers() {
@@ -156,7 +158,7 @@ public class UserService implements UserDetailsService {
 
     public String getProfessorRegisterToken() throws WrongUserTypeException {
         User user = getCurrentUser();
-        userValidator.validateProfessorAccount(user, authService.getAuthentication().getName());
+        userValidator.validateProfessorAccount(user);
 
         log.info("Professor {} fetch ProfessorRegisterToken", user.getEmail());
         return professorRegisterToken.getToken();
@@ -165,8 +167,8 @@ public class UserService implements UserDetailsService {
     public void deleteProfessorAccount(String professorEmail) throws WrongUserTypeException {
         User professor = getCurrentUser();
         User newProfessor = userRepository.findUserByEmail(professorEmail);
-        userValidator.validateProfessorAccount(professor, professorEmail);
-        userValidator.validateProfessorAccount(newProfessor, newProfessor.getEmail());
+        userValidator.validateProfessorAccount(professor);
+        userValidator.validateProfessorAccount(newProfessor);
 
         changeUserForActivitiesAndAdditionalPoints(professor, newProfessor);
         userRepository.delete(professor);
@@ -186,7 +188,7 @@ public class UserService implements UserDetailsService {
                 .flatMap(Collection::stream)
                 .filter(activity -> activity.getProfessor() == from)
                 .forEach(activity -> activity.setProfessor(to));
-        professorFeedbackRepository.findAll()
+        additionalPointsRepository.findAll()
                 .stream()
                 .filter(additionalPoint -> additionalPoint.getProfessorEmail().equals(from.getEmail()))
                 .forEach(additionalPoint -> additionalPoint.setProfessorEmail(to.getEmail()));

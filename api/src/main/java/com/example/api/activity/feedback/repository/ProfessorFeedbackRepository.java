@@ -1,4 +1,4 @@
-package com.example.api.activity.repository.feedback;
+package com.example.api.activity.feedback.repository;
 
 import com.example.api.activity.feedback.model.ProfessorFeedback;
 import com.example.api.activity.result.model.FileTaskResult;

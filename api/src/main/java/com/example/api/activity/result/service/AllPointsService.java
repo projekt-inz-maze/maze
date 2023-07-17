@@ -7,10 +7,10 @@ import com.example.api.activity.task.dto.response.result.TotalPointsResponse;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
-import com.example.api.activity.repository.result.FileTaskResultRepository;
-import com.example.api.activity.repository.result.GraphTaskResultRepository;
-import com.example.api.activity.repository.result.SurveyResultRepository;
+import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.result.repository.FileTaskResultRepository;
+import com.example.api.activity.result.repository.GraphTaskResultRepository;
+import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.validator.UserValidator;
@@ -37,12 +37,12 @@ public class AllPointsService {
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
-    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final AdditionalPointsRepository additionalPointsRepository;
 
     public List<?> getAllPointsListForProfessor(String studentEmail) throws WrongUserTypeException {
         String professorEmail = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(professorEmail);
-        userValidator.validateProfessorAccount(professor, professorEmail);
+        userValidator.validateProfessorAccount(professor);
         log.info("Fetching student all points {} for professor {}", studentEmail, professorEmail);
 
         return getAllPointsList(studentEmail);
@@ -81,7 +81,7 @@ public class AllPointsService {
                     totalPointsReceived.updateAndGet(v -> v + surveyTaskResult.getPointsReceived());
                     totalPointsToReceive.updateAndGet(v -> v + surveyTaskResult.getPointsReceived());
                 });
-        professorFeedbackRepository.findAllByUser(student)
+        additionalPointsRepository.findAllByUser(student)
                 .forEach(additionalPoints -> {
                     totalPointsReceived.updateAndGet(v -> v + additionalPoints.getPointsReceived());
                 });

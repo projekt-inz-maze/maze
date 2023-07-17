@@ -13,9 +13,9 @@ import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.task.model.FileTask;
 import com.example.api.map.model.Chapter;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.feedback.ProfessorFeedbackRepository;
-import com.example.api.activity.repository.result.FileTaskResultRepository;
-import com.example.api.activity.repository.task.FileTaskRepository;
+import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;
+import com.example.api.activity.result.repository.FileTaskResultRepository;
+import com.example.api.activity.task.repository.FileTaskRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
@@ -105,9 +105,9 @@ public class FileTaskService {
 
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
-        FileTask fileTask = new FileTask(form, professor);
+        FileTask fileTask = new FileTask(form, professor, null);
         fileTask.setRequirements(requirementService.getDefaultRequirements(true));
         fileTaskRepository.save(fileTask);
         chapter.getActivityMap().getFileTasks().add(fileTask);

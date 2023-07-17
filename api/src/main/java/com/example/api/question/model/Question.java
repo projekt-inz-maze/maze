@@ -1,6 +1,7 @@
 package com.example.api.question.model;
 
 
+import com.example.api.course.model.Course;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,6 +44,10 @@ public class Question {
 
     @Nullable
     private String answerForOpenedQuestion;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
     // Only for QuestionType.OPENED
     public Question(QuestionType type,

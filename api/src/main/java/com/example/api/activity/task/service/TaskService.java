@@ -20,12 +20,12 @@ import com.example.api.map.model.ActivityMap;
 import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;
 import com.example.api.user.model.User;
-import com.example.api.activity.repository.result.ProfessorFeedbackRepository;
-import com.example.api.activity.repository.result.FileTaskResultRepository;
-import com.example.api.activity.repository.task.FileTaskRepository;
-import com.example.api.activity.repository.task.GraphTaskRepository;
-import com.example.api.activity.repository.task.InfoRepository;
-import com.example.api.activity.repository.task.SurveyRepository;
+import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.result.repository.FileTaskResultRepository;
+import com.example.api.activity.task.repository.FileTaskRepository;
+import com.example.api.activity.task.repository.GraphTaskRepository;
+import com.example.api.activity.task.repository.InfoRepository;
+import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
@@ -53,7 +53,7 @@ public class TaskService {
     private final FileTaskResultRepository fileTaskResultRepository;
     private final UserRepository userRepository;
     private final ChapterRepository chapterRepository;
-    private final ProfessorFeedbackRepository professorFeedbackRepository;
+    private final AdditionalPointsRepository additionalPointsRepository;
     private final AuthenticationService authService;
     private final UserValidator userValidator;
     private final ActivityValidator activityValidator;
@@ -64,7 +64,7 @@ public class TaskService {
         String email = authService.getAuthentication().getName();
         log.info("Fetching all activities that are needed to be evaluated for professor {}", email);
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
         List<ActivityToEvaluateResponse> response = new LinkedList<>();
         List<FileTask> fileTasks = fileTaskRepository.findAll()
                 .stream()

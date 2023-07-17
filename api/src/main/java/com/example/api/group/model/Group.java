@@ -1,5 +1,6 @@
 package com.example.api.group.model;
 
+import com.example.api.course.model.Course;
 import com.example.api.user.model.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
@@ -26,4 +27,8 @@ public class Group {
     @JsonBackReference
     private List<User> users;
     private String invitationCode;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 }

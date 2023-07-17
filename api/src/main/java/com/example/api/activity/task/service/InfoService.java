@@ -10,7 +10,7 @@ import com.example.api.activity.task.model.Info;
 import com.example.api.map.model.Chapter;
 import com.example.api.user.model.User;
 import com.example.api.util.model.Url;
-import com.example.api.activity.repository.task.InfoRepository;
+import com.example.api.activity.task.repository.InfoRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.util.repository.UrlRepository;
@@ -68,7 +68,7 @@ public class InfoService {
 
         String email = authService.getAuthentication().getName();
         User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor, email);
+        userValidator.validateProfessorAccount(professor);
 
         List<Url> imageUrls = form.getImageUrls()
                 .stream()
@@ -79,7 +79,8 @@ public class InfoService {
         Info info = new Info(
                 form,
                 professor,
-                imageUrls
+                imageUrls,
+                null
         );
         info.setRequirements(requirementService.getDefaultRequirements(true));
         infoRepository.save(info);

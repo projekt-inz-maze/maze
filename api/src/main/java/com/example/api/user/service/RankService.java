@@ -85,7 +85,8 @@ public class RankService {
                 form.getType(),
                 form.getName(),
                 form.getMinPoints(),
-                image
+                image,
+                null
         );
         rankRepository.save(rank);
     }
