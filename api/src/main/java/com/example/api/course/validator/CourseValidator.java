@@ -7,14 +7,17 @@ import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.user.model.User;
 import com.example.api.validator.UserValidator;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@AllArgsConstructor
 public class CourseValidator {
 
     UserValidator userValidator;
+
     public void validateCourse(boolean courseExists, SaveCourseForm form) throws RequestValidationException {
         if (courseExists) {
             log.error("Course with {} name already exists.", form.getName());

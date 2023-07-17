@@ -38,6 +38,5 @@ public class CourseController {
     @DeleteMapping("/edit")
     ResponseEntity<?> editCourse(@RequestBody CourseDTO dto) throws RequestValidationException {
         return ResponseEntity.ok().body(courseService.editCourse(dto));
-
     }
 }
