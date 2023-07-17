@@ -8,7 +8,6 @@ import com.example.api.map.dto.response.chapter.ChapterInfoResponse;
 import com.example.api.map.dto.response.chapter.ChapterResponse;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.map.service.ChapterService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +25,8 @@ public class ChapterController {
     private final ChapterService chapterService;
 
     @GetMapping
-    public ResponseEntity<List<? extends ChapterResponse>> getAllChapters(@RequestParam Long courseId) {
-        return ResponseEntity.ok().body(chapterService.getAllChapters());
+    public ResponseEntity<List<? extends ChapterResponse>> getAllChapters(@RequestParam Long courseId) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(chapterService.getAllChapters(courseId));
     }
 
     @GetMapping("/info")
@@ -42,7 +41,7 @@ public class ChapterController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteChapter(@RequestParam Long chapterID) throws WrongUserTypeException, EntityNotFoundException {
+    public ResponseEntity<?> deleteChapter(@RequestParam Long chapterID) throws RequestValidationException {
         chapterService.deleteChapter(chapterID);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -54,8 +53,7 @@ public class ChapterController {
     }
 
     @GetMapping("/requirements")
-    ResponseEntity<RequirementResponse> getRequirementsForChapter(@RequestParam Long chapterId)
-            throws EntityNotFoundException {
+    ResponseEntity<RequirementResponse> getRequirementsForChapter(@RequestParam Long chapterId) throws EntityNotFoundException {
         return ResponseEntity.ok().body(chapterService.getRequirementsForChapter(chapterId));
     }
 

@@ -5,6 +5,7 @@ import com.example.api.course.dto.response.CourseDTO;
 import com.example.api.course.model.Course;
 import com.example.api.course.repository.CourseRepository;
 import com.example.api.course.validator.CourseValidator;
+import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
@@ -35,7 +36,7 @@ public class CourseService {
 
         log.info("Saving course to database with name {}", form.getName());
         boolean courseWithSameName = courseRepository.existsCourseByName(form.getName());
-        courseValidator.validateCourse(courseWithSameName, form);
+        courseValidator.validatePotentialCourse(courseWithSameName, form);
 
         Course course = new Course(null, form.getName(), form.getDescription(), false, professor);
         courseRepository.save(course);
@@ -58,14 +59,14 @@ public class CourseService {
     public void deleteCourse(Long courseId) throws RequestValidationException {
         User professor = userService.getCurrentUser();
         Course course = courseRepository.getById(courseId);
-        courseValidator.validateCourseOwner(course, courseId, professor);
+        courseValidator.validateCourseOwner(course, professor);
         courseRepository.delete(course);
     }
 
     public CourseDTO editCourse(CourseDTO dto) throws RequestValidationException {
         User professor = userService.getCurrentUser();
         Course course = courseRepository.getById(dto.getId());
-        courseValidator.validateCourseOwner(course, dto.getId(), professor);
+        courseValidator.validateCourseOwner(course, professor);
 
         if (dto.getName() != null) {
             course.setName(dto.getName());
@@ -77,5 +78,11 @@ public class CourseService {
         courseRepository.save(course);
 
         return new CourseDTO(course);
+    }
+
+    public Course getCourse(Long courseId) throws EntityNotFoundException {
+        Course course = courseRepository.getById(courseId);
+        courseValidator.validateCourseIsNotNull(course, courseId);
+        return course;
     }
 }
