@@ -1,51 +1,58 @@
 package com.example.api.config;
 
-import com.example.api.activity.feedback.service.ProfessorFeedbackService;
-import com.example.api.activity.feedback.service.SurveyResultService;
+import com.example.api.activity.result.model.AdditionalPoints;
+import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
-import com.example.api.activity.result.service.FileTaskResultService;
-import com.example.api.activity.result.service.GraphTaskResultService;
 import com.example.api.activity.task.model.FileTask;
 import com.example.api.activity.task.model.GraphTask;
 import com.example.api.activity.task.model.Info;
-import com.example.api.activity.task.service.FileTaskService;
-import com.example.api.activity.task.service.GraphTaskService;
-import com.example.api.activity.task.service.InfoService;
-import com.example.api.activity.task.service.SurveyService;
+import com.example.api.activity.task.model.Survey;
 import com.example.api.course.model.Course;
 import com.example.api.course.repository.CourseRepository;
 import com.example.api.group.model.AccessDate;
 import com.example.api.group.model.Group;
-import com.example.api.group.service.AccessDateService;
-import com.example.api.group.service.GroupService;
+import com.example.api.map.model.ActivityMap;
+import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.*;
-import com.example.api.map.repository.ChapterRepository;
-import com.example.api.map.repository.RequirementRepository;
-import com.example.api.map.service.ActivityMapService;
-import com.example.api.map.service.RequirementService;
 import com.example.api.question.model.Difficulty;
 import com.example.api.question.model.Option;
 import com.example.api.question.model.Question;
 import com.example.api.question.model.QuestionType;
-import com.example.api.question.service.OptionService;
-import com.example.api.question.service.QuestionService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.HeroType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.user.model.badge.*;
 import com.example.api.user.model.hero.*;
-import com.example.api.user.repository.*;
-import com.example.api.user.service.BadgeService;
-import com.example.api.user.service.UserService;
-import com.example.api.util.message.MessageManager;
+import com.example.api.util.model.File;
 import com.example.api.util.model.Image;
 import com.example.api.util.model.ImageType;
 import com.example.api.util.model.Url;
+import com.example.api.map.repository.ChapterRepository;
+import com.example.api.map.repository.RequirementRepository;
+import com.example.api.user.repository.*;
 import com.example.api.util.repository.FileRepository;
 import com.example.api.util.repository.UrlRepository;
+import com.example.api.activity.feedback.service.ProfessorFeedbackService;
+import com.example.api.activity.feedback.service.SurveyResultService;
+import com.example.api.activity.result.service.FileTaskResultService;
+import com.example.api.activity.result.service.GraphTaskResultService;
+import com.example.api.activity.task.service.FileTaskService;
+import com.example.api.activity.task.service.GraphTaskService;
+import com.example.api.activity.task.service.InfoService;
+import com.example.api.activity.task.service.SurveyService;
+import com.example.api.group.service.AccessDateService;
+import com.example.api.group.service.GroupService;
+import com.example.api.map.service.ActivityMapService;
+import com.example.api.map.service.RequirementService;
+import com.example.api.question.service.OptionService;
+import com.example.api.question.service.QuestionService;
+import com.example.api.user.service.BadgeService;
+import com.example.api.user.service.UserService;
+import com.example.api.util.message.MessageManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -91,6 +98,7 @@ public class DatabaseConfig {
         return args -> {
 
             // HEROES
+
             long week = TimeUnit.DAYS.toMillis(7);
             Hero priest = new Priest(HeroType.PRIEST, week);
             Hero rogue = new Rogue(HeroType.ROGUE, week);
@@ -98,346 +106,430 @@ public class DatabaseConfig {
             Hero wizard = new Wizard(HeroType.WIZARD, week);
             heroRepository.saveAll(List.of(priest, rogue, wizard, warrior));
 
-            User professor1 = new User("bmaj@agh.edu.pl",
-                    "Bernard",
-                    "Maj",
-                    AccountType.PROFESSOR);
-            professor1.setPassword("12345");
-
-            User professor2 = new User("szielinski@agh.edu.pl",
-                    "Sławomir",
-                    "Zieliński",
-                    AccountType.PROFESSOR);
-            professor2.setPassword("12345");
-
-            userRepository.save(professor1);
-            userRepository.save(professor2);
-
-            Course course1 = new Course(null, "course1", "description for course1", false, professor1);
-            Course course2 = new Course(null, "course2", "description for course1", false, professor2);
+            Course course1 = new Course(null, "course1", "description for course1", false, null);
+            Course course2 = new Course(null, "course2", "description for course1", false, null);
 
             courseRepository.save(course1);
             courseRepository.save(course2);
 
-            professor1.getCourses().add(course1);
-            professor2.getCourses().add(course2);
-
-            userRepository.save(professor1);
-            userRepository.save(professor2);
-
             // USERS & GROUPS
-//            List<User> students1 = new ArrayList<>();
-//            students1.add(createStudent("jgorski@student.agh.edu.pl", "Jerzy", "Górski", 123456, priest, course1));
-//            students1.add(createStudent("smazur@student.agh.edu.pl", "Szymon", "Mazur", 123457, rogue, course1));
-//            students1.add(createStudent("murbanska@student.agh.edu.pl", "Matylda", "Urbańska",123458, wizard, course1));
-//            students1.add(createStudent("pwasilewski@student.agh.edu.pl", "Patryk", "Wasilewski",123459, warrior, course1));
-//            students1.add(createStudent("awojcik@student.agh.edu.pl", "Amelia", "Wójcik",223456, priest, course1));
-//            students1.add(createStudent("kkruk@student.agh.edu.pl", "Kornel", "Kruk",323456, rogue, course1));
-//            students1.add(createStudent("mdabrowska@student.agh.edu.pl", "Maria", "Dąbrowska",423456, wizard, course1));
-//            students1.add(createStudent("aczajkowski@student.agh.edu.pl", "Antoni", "Czajkowski",523456, warrior, course1));
-//
-//            List<User> students2 = new ArrayList<>();
-//
-//            students2.add(createStudent("mnowak@student.agh.edu.pl", "Magdalena", "Nowak", 623456, priest, course2));
-//            students2.add(createStudent("jlewandowska@student.agh.edu.pl", "Julia", "Lewandowska", 723456, rogue, course2));
-//            students2.add(createStudent("mwojcik@student.agh.edu.pl", "Milena", "Wójcik", 823456, wizard, course2));
-//            students2.add(createStudent("kpaluch@student.agh.edu.pl", "Kacper", "Paluch", 923456, warrior, course2));
-//            students2.add(createStudent("fzalewski@student.agh.edu.pl", "Filip", "Zalewski", 133456, priest, course2));
-//            students2.add(createStudent("jmichalak@student.agh.edu.pl", "Jan", "Michalak", 143456, rogue, course2));
-//            students2.add(createStudent("kostrowska@student.agh.edu.pl", "Karina", "Ostrowska", 153456, wizard, course2));
-//            students2.add(createStudent("dkowalska@student.agh.edu.pl", "Dominika", "Kowalska", 163456, warrior, course2));
-//            students2.add(createStudent("manowak@student.agh.edu.pl", "Małgorzata Anna", "Kowalska", 163457, priest, course2));
-//
-//            Group group1 = new Group();
-//            group1.setInvitationCode("1111");
-//            group1.setName("pn-1440-A");
-//            group1.setUsers(students1);
-//            group1.setCourse(course1);
-//            course1.getGroups().add(group1);
-//            groupService.saveGroup(group1);
-//
-//            Group group2 = new Group();
-//            group2.setInvitationCode("2222");
-//            group2.setName("pn-1440-B");
-//            group2.setUsers(students2);
-//            group2.setCourse(course2);
-//            course2.getGroups().add(group2);
-//            groupService.saveGroup(group2);
-//
-//            students1.forEach(user -> {
-//                user.setLevel(1);
-//                user.setGroup(group1);
-//                userService.saveUser(user);
-//            });
-//
-//            students2.forEach(user -> {
-//                user.setLevel(1);
-//                user.setGroup(group2);
-//                userService.saveUser(user);
-//            });
-//
-//            professor1.getCourses().add(course1);
-//            professor2.getCourses().add(course2);
-//            userService.saveUser(professor1);
-//            userService.saveUser(professor2);
-//
-//            // TASKS
-//            GraphTask graphTask1 = getGraphTask(graphTaskService, questionService, optionService, accessDateService, course1, professor1, group1, group2);
-//            GraphTask graphTask2 = getGraphTask(graphTaskService, questionService, optionService, accessDateService, course1, professor1, group1, group2);
-//
-//            FileTask fileTask = getFileTask(fileTaskService, professor1);
-//
-//            Info info1 = getInfo(infoService, professor1);
-//
-//            Survey survey = new Survey();
-//            survey.setIsBlocked(false);
-//            survey.setTitle("Example map feedback");
-//            survey.setDescription("Pomóż nam polepszyć kurs dzieląc się swoją opinią!");
-//            survey.setPosX(7);
-//            survey.setPosY(3);
-//            survey.setPoints(10.0);
-//            survey.setExperience(5D);
-//            survey.setRequirements(createDefaultRequirements());
-//            surveyService.saveSurvey(survey);
-//
-//            byte[] chapterImageBytes = getByteArrayForFile("src/main/resources/images/chapter_image.png", "png");
-//            Image chapterImage = new Image("Chapter image 1", chapterImageBytes, ImageType.CHAPTER);
-//            fileRepository.save(chapterImage);
-//
-//            ActivityMap activityMap1 = new ActivityMap();
-//            activityMap1.setMapSizeX(8);
-//            activityMap1.setMapSizeY(5);
-//            activityMap1.setGraphTasks(List.of(graphTask1, graphTask2));
-//            activityMap1.setFileTasks(List.of(fileTask));
-//            activityMap1.setInfos(List.of(info1));
-//            activityMap1.setSurveys(List.of(survey));
-//            activityMap1.setImage(chapterImage);
-//            activityMapService.saveActivityMap(activityMap1);
-//
-//            Calendar calendar = Calendar.getInstance();
-//
-//            addGraphTaskResult(students1.get(0), 28, graphTaskResultService, graphTask1, calendar);
-//            addGraphTaskResult(students1.get(1), 13, graphTaskResultService, graphTask2, calendar);
-//
-//            addGraphTaskResult(students2.get(0), 14, graphTaskResultService, graphTask2, calendar);
-//            addGraphTaskResult(students2.get(1), 14, graphTaskResultService, graphTask2, calendar);
-//
-//
-//            FileTaskResult fileResult = new FileTaskResult();
-//            fileResult.setId(1L);
-//            fileResult.setFileTask(fileTask);
-//            fileResult.setUser(students1.get(0));
-//            fileResult.setEvaluated(false);
-//            fileResult.setAnswer("Lorem ipsum");
-//            calendar.set(2022, Calendar.JUNE, 11);
-//            fileResult.setSendDateMillis(calendar.getTimeInMillis());
-//            fileTaskResultService.saveFileTaskResult(fileResult);
-//
-//            Chapter chapter = new Chapter();
-//            chapter.setName("Rozdział 1");
-//            chapter.setPosX(2);
-//            chapter.setPosY(2);
-//            chapter.setActivityMap(activityMap1);
-//            chapter.setRequirements(requirementService.getDefaultRequirements(false));
-//            chapter.setIsBlocked(false);
-//            chapter.setCourse(course1);
-//            chapterRepository.save(chapter);
-//
-//            calendar.set(2022, Calendar.JUNE, 15);
-//            AdditionalPoints additionalPoints = new AdditionalPoints();
-//            additionalPoints.setId(1L);
-//            additionalPoints.setUser(students1.get(0));
-//            additionalPoints.setPointsReceived(100D);
-//            additionalPoints.setSendDateMillis(calendar.getTimeInMillis());
-//            additionalPoints.setProfessorEmail(professor1.getEmail());
-//            additionalPoints.setDescription("Good job");
-//            addReceivedPointsForUser(students1.get(0), additionalPoints.getPointsReceived());
-//            additionalPointsRepository.save(additionalPoints);
-//
-//            SurveyResult surveyResult1 = new SurveyResult();
-//            surveyResult1.setSurvey(survey);
-//            surveyResult1.setId(1L);
-//            surveyResult1.setUser(students1.get(0));
-//            surveyResult1.setPointsReceived(survey.getMaxPoints());
-//            addReceivedPointsForUser(students1.get(0), surveyResult1.getPointsReceived());
-//            calendar.set(2022, Calendar.JUNE, 16);
-//            surveyResult1.setSendDateMillis(calendar.getTimeInMillis());
-//            surveyResultRepository.save(surveyResult1);
-//
-//            SurveyResult surveyResult2 = new SurveyResult();
-//            surveyResult2.setSurvey(survey);
-//            surveyResult2.setId(2L);
-//            surveyResult2.setUser(students1.get(1));
-//            surveyResult2.setPointsReceived(survey.getMaxPoints());
-//            addReceivedPointsForUser(students1.get(1), surveyResult2.getPointsReceived());
-//            calendar.set(2022, Calendar.JUNE, 18);
-//            surveyResult2.setSendDateMillis(calendar.getTimeInMillis());
-//            surveyResultRepository.save(surveyResult2);
-//
-//            SurveyResult surveyResult3 = new SurveyResult();
-//            surveyResult3.setSurvey(survey);
-//            surveyResult3.setId(3L);
-//            surveyResult3.setUser(students2.get(2));
-//            surveyResult3.setPointsReceived(survey.getMaxPoints());
-//            addReceivedPointsForUser(students2.get(2), surveyResult3.getPointsReceived());
-//            calendar.set(2022, Calendar.JUNE, 19);
-//            surveyResult3.setSendDateMillis(calendar.getTimeInMillis());
-//            surveyResultRepository.save(surveyResult3);
-//
-//            File file = new File();
-//            fileRepository.save(file);
-//
-//
-//            byte[] chapterImageBytes2 = getByteArrayForFile("src/main/resources/images/chapter_image2.png", "png");
-//            Image chapterImage2 = new Image("Chapter image 2", chapterImageBytes2, ImageType.CHAPTER);
-//            fileRepository.save(chapterImage2);
-//
-//            byte[] chapterImageBytes3 = getByteArrayForFile("src/main/resources/images/chapter_image3.png", "png");
-//            Image chapterImage3 = new Image("Chapter image 3", chapterImageBytes3, ImageType.CHAPTER);
-//            fileRepository.save(chapterImage3);
-//
-//            byte[] chapterImageBytes4 = getByteArrayForFile("src/main/resources/images/chapter_image4.png", "png");
-//            Image chapterImage4 = new Image("Chapter image 4", chapterImageBytes4, ImageType.CHAPTER);
-//            fileRepository.save(chapterImage4);
-//
-//            byte[] chapterImageBytes5 = getByteArrayForFile("src/main/resources/images/chapter_image5.png", "png");
-//            Image chapterImage5 = new Image("Chapter image 5", chapterImageBytes5, ImageType.CHAPTER);
-//            fileRepository.save(chapterImage5);
-//
-//            userRepository.saveAll(students1);
-//            userRepository.saveAll(students2);
-//
-//            initAllRanks();
-//            initBadges();
+            List<User> students1 = new ArrayList<>();
+            students1.add(createStudent("jgorski@student.agh.edu.pl", "Jerzy", "Górski", 123456, priest, course1));
+            students1.add(createStudent("smazur@student.agh.edu.pl", "Szymon", "Mazur", 123457, rogue, course1));
+            students1.add(createStudent("murbanska@student.agh.edu.pl", "Matylda", "Urbańska",123458, wizard, course1));
+            students1.add(createStudent("pwasilewski@student.agh.edu.pl", "Patryk", "Wasilewski",123459, warrior, course1));
+            students1.add(createStudent("awojcik@student.agh.edu.pl", "Amelia", "Wójcik",223456, priest, course1));
+            students1.add(createStudent("kkruk@student.agh.edu.pl", "Kornel", "Kruk",323456, rogue, course1));
+            students1.add(createStudent("mdabrowska@student.agh.edu.pl", "Maria", "Dąbrowska",423456, wizard, course1));
+            students1.add(createStudent("aczajkowski@student.agh.edu.pl", "Antoni", "Czajkowski",523456, warrior, course1));
+
+            List<User> students2 = new ArrayList<>();
+
+            students2.add(createStudent("mnowak@student.agh.edu.pl", "Magdalena", "Nowak", 623456, priest, course2));
+            students2.add(createStudent("jlewandowska@student.agh.edu.pl", "Julia", "Lewandowska", 723456, rogue, course2));
+            students2.add(createStudent("mwojcik@student.agh.edu.pl", "Milena", "Wójcik", 823456, wizard, course2));
+            students2.add(createStudent("kpaluch@student.agh.edu.pl", "Kacper", "Paluch", 923456, warrior, course2));
+            students2.add(createStudent("fzalewski@student.agh.edu.pl", "Filip", "Zalewski", 133456, priest, course2));
+            students2.add(createStudent("jmichalak@student.agh.edu.pl", "Jan", "Michalak", 143456, rogue, course2));
+            students2.add(createStudent("kostrowska@student.agh.edu.pl", "Karina", "Ostrowska", 153456, wizard, course2));
+            students2.add(createStudent("dkowalska@student.agh.edu.pl", "Dominika", "Kowalska", 163456, warrior, course2));
+            students2.add(createStudent("manowak@student.agh.edu.pl", "Małgorzata Anna", "Kowalska", 163457, priest, course2));
+
+
+            User professor = new User("bmaj@agh.edu.pl",
+                    "Bernard",
+                    "Maj",
+                    AccountType.PROFESSOR);
+            professor.setPassword("12345");
+
+            User professor1 = new User("szielinski@agh.edu.pl",
+                    "Sławomir",
+                    "Zieliński",
+                    AccountType.PROFESSOR);
+            professor1.setPassword("12345");
+
+            Group group = new Group();
+            group.setInvitationCode("1111");
+            group.setName("pn-1440-A");
+            group.setUsers(students1);
+            group.setCourse(course1);
+            groupService.saveGroup(group);
+
+            Group group1 = new Group();
+            group1.setInvitationCode("2222");
+            group1.setName("pn-1440-B");
+            group1.setUsers(students2);
+            group1.setCourse(course1);
+            groupService.saveGroup(group1);
+
+            for (User user: students1) {
+                user.setLevel(1);
+                user.setGroup(group);
+                userService.saveUser(user);
+            }
+            for (User user: students2) {
+                user.setLevel(1);
+                user.setGroup(group1);
+                userService.saveUser(user);
+            }
+
+            professor.setGroup(group);
+            professor1.setGroup(group1);
+            userService.saveUser(professor);
+            userService.saveUser(professor1);
+
+            professor.getCourses().add(course1);
+            course1.setOwner(professor);
+
+            userRepository.save(professor);
+            courseRepository.save(course1);
+
+            // TASKS
+
+            Option option = new Option(null, "hub z routerem", true, null);
+            Option option1 = new Option(null, "komputer z komputerem", false, null);
+            Option option2 = new Option(null, "switch z routerem", true, null);
+            Option option3 = new Option(null, "hub ze switchem", false, null);
+
+            Option option4 = new Option(null, "Tak", true, null);
+            Option option5 = new Option(null, "Nie", false, null);
+
+            Question startQuestion = new Question();
+
+            Question question1 = new Question(null, QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
+                    Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null, course1);
+            Question question2 = new Question(null, QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
+                    "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null, course1);
+            Question question3 = new Question(null, QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
+                    "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP", course1);
+            Question question4 = new Question(null, QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
+                    "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka", course1);
+            Question question5 = new Question(null, QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
+                    "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski", course1);
+
+            questionService.saveQuestion(startQuestion);
+            questionService.saveQuestion(question1);
+            questionService.saveQuestion(question2);
+            questionService.saveQuestion(question3);
+            questionService.saveQuestion(question4);
+            questionService.saveQuestion(question5);
+
+            startQuestion.getNext().addAll(List.of(question1, question2, question3));
+            question1.getNext().addAll(List.of(question2, question4));
+            question3.getNext().addAll(List.of(question5));
+
+            questionService.saveQuestion(startQuestion);
+            questionService.saveQuestion(question1);
+            questionService.saveQuestion(question2);
+            questionService.saveQuestion(question3);
+            questionService.saveQuestion(question4);
+            questionService.saveQuestion(question5);
+
+            optionService.saveAll(List.of(option, option1, option2, option3, option4, option5));
+
+            option.setQuestion(question1);
+            option1.setQuestion(question1);
+            option2.setQuestion(question1);
+            option3.setQuestion(question1);
+            option4.setQuestion(question2);
+            option5.setQuestion(question2);
+
+            optionService.saveAll(List.of(option, option1, option2, option3, option4, option5));
+
+            AccessDate ac1 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group1));
+            AccessDate ac2 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group));
+            accessDateService.saveAccessDate(ac1);
+            accessDateService.saveAccessDate(ac2);
+
+            GraphTask graphTask = new GraphTask();
+            graphTask.setIsBlocked(false);
+            graphTask.setQuestions(List.of(startQuestion, question1, question2, question3,  question4, question5));
+            graphTask.setTitle("Dżungla kabli");
+            graphTask.setDescription("Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!");
+            graphTask.setRequiredKnowledge("skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą");
+            graphTask.setMaxPoints(60.0);
+            graphTask.setExperience(20D);
+            graphTask.setTimeToSolveMillis(12 * 60 * 1000L);
+            graphTask.setRequirements(createDefaultRequirements());
+            graphTask.setProfessor(professor);
+            graphTask.setPosX(5);
+            graphTask.setPosY(4);
+            graphTaskService.saveGraphTask(graphTask);
+
+            Option optionTwo = new Option(null, "hub z routerem", true, null);
+            Option optionTwo1 = new Option(null, "komputer z komputerem", false, null);
+            Option optionTwo2 = new Option(null, "switch z routerem", true, null);
+            Option optionTwo3 = new Option(null, "hub ze switchem", false, null);
+
+            Option optionTwo4 = new Option(null, "Tak", true, null);
+            Option optionTwo5 = new Option(null, "Nie", false, null);
+
+            Question startQuestionTwo = new Question();
+
+            Question questionTwo1 = new Question(null, QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
+                    Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null, course1);
+            Question questionTwo2 = new Question(null, QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
+                    "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null, course1);
+            Question questionTwo3 = new Question(null, QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
+                    "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP", course1);
+            Question questionTwo4 = new Question(null, QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
+                    "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka", course1);
+            Question questionTwo5 = new Question(null, QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
+                    "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski", course1);
+
+            questionService.saveQuestion(startQuestionTwo);
+            questionService.saveQuestion(questionTwo1);
+            questionService.saveQuestion(questionTwo2);
+            questionService.saveQuestion(questionTwo3);
+            questionService.saveQuestion(questionTwo4);
+            questionService.saveQuestion(questionTwo5);
+
+            startQuestionTwo.getNext().addAll(List.of(questionTwo1, questionTwo2, questionTwo3));
+            questionTwo1.getNext().addAll(List.of(questionTwo2, questionTwo4));
+            questionTwo3.getNext().addAll(List.of(questionTwo5));
+
+            questionService.saveQuestion(startQuestionTwo);
+            questionService.saveQuestion(questionTwo1);
+            questionService.saveQuestion(questionTwo2);
+            questionService.saveQuestion(questionTwo3);
+            questionService.saveQuestion(questionTwo4);
+            questionService.saveQuestion(questionTwo5);
+
+            optionService.saveAll(List.of(optionTwo, optionTwo1, optionTwo2, optionTwo3, optionTwo4, optionTwo5));
+
+            optionTwo.setQuestion(questionTwo1);
+            optionTwo1.setQuestion(questionTwo1);
+            optionTwo2.setQuestion(questionTwo1);
+            optionTwo3.setQuestion(questionTwo1);
+            optionTwo4.setQuestion(questionTwo2);
+            optionTwo5.setQuestion(questionTwo2);
+
+            optionService.saveAll(List.of(optionTwo, optionTwo1, optionTwo2, optionTwo3, optionTwo4, optionTwo5));
+
+            List<Requirement> graphTaskTwoReq = requirementService.getDefaultRequirements(true);
+
+            GraphTask graphTaskTwo = new GraphTask();
+            graphTaskTwo.setIsBlocked(false);
+            graphTaskTwo.setQuestions(List.of(startQuestionTwo, questionTwo1, questionTwo2, questionTwo3,  questionTwo4, questionTwo5));
+            graphTaskTwo.setTitle("Dżungla kabli II");
+            graphTaskTwo.setDescription("Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!");
+            graphTaskTwo.setRequiredKnowledge("skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą");
+            graphTaskTwo.setMaxPoints(60.0);
+            graphTaskTwo.setExperience(25D);
+            graphTaskTwo.setTimeToSolveMillis(12 * 60 * 1000L);
+            graphTaskTwo.setProfessor(professor);
+            graphTaskTwo.setPosX(2);
+            graphTaskTwo.setPosY(2);
+            graphTaskTwo.setCourse(course1);
+            graphTaskTwo.setRequirements(graphTaskTwoReq);
+
+            graphTaskService.saveGraphTask(graphTaskTwo);
+
+            FileTask fileTask = new FileTask();
+            fileTask.setIsBlocked(false);
+            fileTask.setPosX(3);
+            fileTask.setPosY(3);
+            fileTask.setTitle("Niszczator kabli");
+            fileTask.setDescription("Jak złamałbyś kabel światłowodowy? Czym?");
+            fileTask.setProfessor(professor);
+            fileTask.setMaxPoints(30.0);
+            fileTask.setExperience(10D);
+            fileTask.setCourse(course1);
+            fileTask.setRequirements(createDefaultRequirements());
+
+            fileTaskService.saveFileTask(fileTask);
+
+            Info info1 = new Info();
+            info1.setIsBlocked(false);
+            info1.setPosX(3);
+            info1.setPosY(0);
+            info1.setTitle("Skrętki");
+            info1.setDescription("Przewody internetowe da się podzielić także pod względem ich ekranowania.");
+            info1.setContent(MessageManager.LOREM_IPSUM);
+            info1.setRequirements(createDefaultRequirements());
+
+            Url url1 = new Url();
+            Url url2 = new Url();
+            url1.setUrl("https://upload.wikimedia.org/wikipedia/commons/c/cb/UTP_cable.jpg");
+            url2.setUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/25_pair_color_code_chart.svg/800px-25_pair_color_code_chart.svg.png");
+            urlRepository.save(url1);
+            urlRepository.save(url2);
+            info1.setImageUrls(List.of(url1, url2));
+            info1.setTitle("Skrętki");
+            info1.setExperience(10.0);
+            info1.setProfessor(professor);
+            info1.setCourse(course1);
+            infoService.saveInfo(info1);
+
+
+            Survey survey = new Survey();
+            survey.setIsBlocked(false);
+            survey.setTitle("Example map feedback");
+            survey.setDescription("Pomóż nam polepszyć kurs dzieląc się swoją opinią!");
+            survey.setPosX(7);
+            survey.setPosY(3);
+            survey.setPoints(10.0);
+            survey.setExperience(5D);
+            survey.setRequirements(createDefaultRequirements());
+            survey.setCourse(course1);
+            surveyService.saveSurvey(survey);
+
+            byte[] chapterImageBytes = getByteArrayForFile("src/main/resources/images/chapter_image.png", "png");
+            Image chapterImage = new Image("Chapter image 1", chapterImageBytes, ImageType.CHAPTER);
+            fileRepository.save(chapterImage);
+
+            ActivityMap activityMap1 = new ActivityMap();
+            activityMap1.setMapSizeX(8);
+            activityMap1.setMapSizeY(5);
+            activityMap1.setGraphTasks(List.of(graphTask, graphTaskTwo));
+            activityMap1.setFileTasks(List.of(fileTask));
+            activityMap1.setInfos(List.of(info1));
+            activityMap1.setSurveys(List.of(survey));
+            activityMap1.setImage(chapterImage);
+            activityMapService.saveActivityMap(activityMap1);
+
+            Calendar calendar = Calendar.getInstance();
+
+            GraphTaskResult result1 = new GraphTaskResult();
+            result1.setGraphTask(graphTask);
+            result1.setUser(students1.get(0));
+            result1.setPointsReceived(12.0);
+            addReceivedPointsForUser(students1.get(0), result1.getPointsReceived());
+            result1.setTimeSpentSec(60 * 10);
+            calendar.set(2022, Calendar.APRIL, 28);
+            result1.setCourse(course1);
+            result1.setStartDateMillis(calendar.getTimeInMillis());
+            result1.setSendDateMillis(calendar.getTimeInMillis() + result1.getTimeSpentSec() / 1000);
+            graphTaskResultService.saveGraphTaskResult(result1);
+
+            GraphTaskResult result2 = new GraphTaskResult();
+            result2.setGraphTask(graphTaskTwo);
+            result2.setUser(students1.get(1));
+            result2.setPointsReceived(10.0);
+            addReceivedPointsForUser(students1.get(1), result2.getPointsReceived());
+            result2.setCourse(course1);
+            result2.setTimeSpentSec(60 * 10);
+            calendar.set(2022, Calendar.APRIL, 13);
+            result2.setStartDateMillis(calendar.getTimeInMillis());
+            result2.setSendDateMillis(calendar.getTimeInMillis() + result2.getTimeSpentSec() / 1000);
+            graphTaskResultService.saveGraphTaskResult(result2);
+
+            GraphTaskResult result3 = new GraphTaskResult();
+            result3.setGraphTask(graphTaskTwo);
+            result3.setUser(students2.get(0));
+            result3.setPointsReceived(11.0);
+            addReceivedPointsForUser(students2.get(0), result3.getPointsReceived());
+            result3.setTimeSpentSec(60 * 10);
+            result3.setCourse(course1);
+            calendar.set(2022, Calendar.APRIL, 14);
+            result3.setStartDateMillis(calendar.getTimeInMillis());
+            result3.setSendDateMillis(calendar.getTimeInMillis() + result2.getTimeSpentSec() / 1000);
+            graphTaskResultService.saveGraphTaskResult(result3);
+
+            GraphTaskResult result4 = new GraphTaskResult();
+            result4.setGraphTask(graphTaskTwo);
+            result4.setUser(students2.get(1));
+            result4.setPointsReceived(30.5);
+            addReceivedPointsForUser(students2.get(1), result4.getPointsReceived());
+            result4.setTimeSpentSec(60 * 10);
+            calendar.set(2022, Calendar.APRIL, 14);
+            result4.setStartDateMillis(calendar.getTimeInMillis());
+            result4.setCourse(course1);
+            result4.setSendDateMillis(calendar.getTimeInMillis() + result2.getTimeSpentSec() / 1000);
+            graphTaskResultService.saveGraphTaskResult(result4);
+
+            FileTaskResult fileResult = new FileTaskResult();
+            fileResult.setId(1L);
+            fileResult.setFileTask(fileTask);
+            fileResult.setUser(students1.get(0));
+            fileResult.setEvaluated(false);
+            fileResult.setAnswer("Lorem ipsum");
+            calendar.set(2022, Calendar.JUNE, 11);
+            fileResult.setSendDateMillis(calendar.getTimeInMillis());
+            fileResult.setCourse(course1);
+            fileTaskResultService.saveFileTaskResult(fileResult);
+
+            Chapter chapter = new Chapter();
+            chapter.setName("Rozdział 1");
+            chapter.setPosX(2);
+            chapter.setPosY(2);
+            chapter.setActivityMap(activityMap1);
+            chapter.setRequirements(requirementService.getDefaultRequirements(false));
+            chapter.setIsBlocked(false);
+            chapter.setCourse(course1);
+            chapterRepository.save(chapter);
+
+            calendar.set(2022, Calendar.JUNE, 15);
+            AdditionalPoints additionalPoints = new AdditionalPoints();
+            additionalPoints.setId(1L);
+            additionalPoints.setUser(students1.get(0));
+            additionalPoints.setPointsReceived(100D);
+            additionalPoints.setSendDateMillis(calendar.getTimeInMillis());
+            additionalPoints.setProfessorEmail(professor.getEmail());
+            additionalPoints.setDescription("Good job");
+            addReceivedPointsForUser(students1.get(0), additionalPoints.getPointsReceived());
+            additionalPoints.setCourse(course1);
+            additionalPointsRepository.save(additionalPoints);
+
+            SurveyResult surveyResult1 = new SurveyResult();
+            surveyResult1.setSurvey(survey);
+            surveyResult1.setId(1L);
+            surveyResult1.setUser(students1.get(0));
+            surveyResult1.setPointsReceived(survey.getMaxPoints());
+            addReceivedPointsForUser(students1.get(0), surveyResult1.getPointsReceived());
+            calendar.set(2022, Calendar.JUNE, 16);
+            surveyResult1.setSendDateMillis(calendar.getTimeInMillis());
+            surveyResult1.setCourse(course1);
+            surveyResultRepository.save(surveyResult1);
+
+            SurveyResult surveyResult2 = new SurveyResult();
+            surveyResult2.setSurvey(survey);
+            surveyResult2.setId(2L);
+            surveyResult2.setUser(students1.get(1));
+            surveyResult2.setPointsReceived(survey.getMaxPoints());
+            addReceivedPointsForUser(students1.get(1), surveyResult2.getPointsReceived());
+            calendar.set(2022, Calendar.JUNE, 18);
+            surveyResult2.setSendDateMillis(calendar.getTimeInMillis());
+            surveyResult2.setCourse(course1);
+            surveyResultRepository.save(surveyResult2);
+
+            SurveyResult surveyResult3 = new SurveyResult();
+            surveyResult3.setSurvey(survey);
+            surveyResult3.setId(3L);
+            surveyResult3.setUser(students2.get(2));
+            surveyResult3.setPointsReceived(survey.getMaxPoints());
+            addReceivedPointsForUser(students2.get(2), surveyResult3.getPointsReceived());
+            calendar.set(2022, Calendar.JUNE, 19);
+            surveyResult3.setSendDateMillis(calendar.getTimeInMillis());
+            surveyResult3.setCourse(course1);
+            surveyResultRepository.save(surveyResult3);
+
+            File file = new File();
+            fileRepository.save(file);
+
+
+            byte[] chapterImageBytes2 = getByteArrayForFile("src/main/resources/images/chapter_image2.png", "png");
+            Image chapterImage2 = new Image("Chapter image 2", chapterImageBytes2, ImageType.CHAPTER);
+            fileRepository.save(chapterImage2);
+
+            byte[] chapterImageBytes3 = getByteArrayForFile("src/main/resources/images/chapter_image3.png", "png");
+            Image chapterImage3 = new Image("Chapter image 3", chapterImageBytes3, ImageType.CHAPTER);
+            fileRepository.save(chapterImage3);
+
+            byte[] chapterImageBytes4 = getByteArrayForFile("src/main/resources/images/chapter_image4.png", "png");
+            Image chapterImage4 = new Image("Chapter image 4", chapterImageBytes4, ImageType.CHAPTER);
+            fileRepository.save(chapterImage4);
+
+            byte[] chapterImageBytes5 = getByteArrayForFile("src/main/resources/images/chapter_image5.png", "png");
+            Image chapterImage5 = new Image("Chapter image 5", chapterImageBytes5, ImageType.CHAPTER);
+            fileRepository.save(chapterImage5);
+
+            userRepository.saveAll(students1);
+            userRepository.saveAll(students2);
+
+            initAllRanks(course1);
+            initBadges(course1);
         };
-    }
-
-    private void addGraphTaskResult(User student, int day, GraphTaskResultService graphTaskResultService, GraphTask graphTask, Calendar calendar) {
-        GraphTaskResult result1 = new GraphTaskResult();
-        result1.setGraphTask(graphTask);
-        result1.setUser(student);
-        result1.setPointsReceived(12.0);
-        addReceivedPointsForUser(student, result1.getPointsReceived());
-        result1.setTimeSpentSec(60 * 10);
-        calendar.set(2022, Calendar.APRIL, day);
-        result1.setStartDateMillis(calendar.getTimeInMillis());
-        result1.setSendDateMillis(calendar.getTimeInMillis() + result1.getTimeSpentSec() / 1000);
-        graphTaskResultService.saveGraphTaskResult(result1);
-    }
-
-    private Info getInfo(InfoService infoService, User professor1) {
-        Info info1 = new Info();
-        info1.setIsBlocked(false);
-        info1.setPosX(3);
-        info1.setPosY(0);
-        info1.setTitle("Skrętki");
-        info1.setDescription("Przewody internetowe da się podzielić także pod względem ich ekranowania.");
-        info1.setContent(MessageManager.LOREM_IPSUM);
-        info1.setRequirements(createDefaultRequirements());
-
-        Url url1 = new Url();
-        Url url2 = new Url();
-        url1.setUrl("https://upload.wikimedia.org/wikipedia/commons/c/cb/UTP_cable.jpg");
-        url2.setUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/25_pair_color_code_chart.svg/800px-25_pair_color_code_chart.svg.png");
-        urlRepository.save(url1);
-        urlRepository.save(url2);
-        info1.setImageUrls(List.of(url1, url2));
-        info1.setTitle("Skrętki");
-        info1.setExperience(10.0);
-        info1.setProfessor(professor1);
-        infoService.saveInfo(info1);
-        return info1;
-    }
-
-    private FileTask getFileTask(FileTaskService fileTaskService, User professor1) {
-        FileTask fileTask = new FileTask();
-        fileTask.setIsBlocked(false);
-        fileTask.setPosX(3);
-        fileTask.setPosY(3);
-        fileTask.setTitle("Niszczator kabli");
-        fileTask.setDescription("Jak złamałbyś kabel światłowodowy? Czym?");
-        fileTask.setProfessor(professor1);
-        fileTask.setMaxPoints(30.0);
-        fileTask.setExperience(10D);
-        fileTask.setRequirements(createDefaultRequirements());
-
-        fileTaskService.saveFileTask(fileTask);
-        return fileTask;
-    }
-
-    private GraphTask getGraphTask(GraphTaskService graphTaskService, QuestionService questionService, OptionService optionService, AccessDateService accessDateService, Course course1, User professor1, Group group1, Group group2) {
-        List<Option> options1 = getOptionsForOpenQuestion();
-
-        List<Option> options2 = getOptionsForTrueFalseQuestion();
-
-        List<Question> questions = new ArrayList<>();
-
-        questions.add(new Question());
-
-        questions.add(new Question(null, QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
-                Difficulty.EASY, options1, 10.0, new LinkedList<>(), null, course1));
-        questions.add(new Question(null, QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
-                "Manchester", Difficulty.MEDIUM, options2, 20.0, new LinkedList<>(), null, course1));
-        questions.add(new Question(null, QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
-                "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP", course1));
-        questions.add(new Question(null, QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
-                "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka", course1));
-        questions.add(new Question(null, QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
-                "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski", course1));
-
-        questions.forEach(questionService::saveQuestion);
-
-        questions.get(0).getNext().addAll(questions.subList(1, 4));
-        questions.get(1).getNext().addAll(List.of(questions.get(2), questions.get(4)));
-        questions.get(3).getNext().addAll(List.of(questions.get(5)));
-
-        questions.forEach(questionService::saveQuestion);
-
-        optionService.saveAll(options1);
-        optionService.saveAll(options2);
-
-        options1.forEach(option -> option.setQuestion(questions.get(1)));
-        options2.forEach(option -> option.setQuestion(questions.get(2)));
-
-        optionService.saveAll(options1);
-        optionService.saveAll(options2);
-
-        AccessDate ac1 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group2));
-        AccessDate ac2 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group1));
-        accessDateService.saveAccessDate(ac1);
-        accessDateService.saveAccessDate(ac2);
-
-        GraphTask graphTask = new GraphTask();
-        graphTask.setIsBlocked(false);
-        graphTask.setQuestions(questions);
-        graphTask.setTitle("Dżungla kabli");
-        graphTask.setDescription("Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!");
-        graphTask.setRequiredKnowledge("skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą");
-        graphTask.setMaxPoints(60.0);
-        graphTask.setExperience(20D);
-        graphTask.setTimeToSolveMillis(12 * 60 * 1000L);
-        graphTask.setRequirements(createDefaultRequirements());
-        graphTask.setProfessor(professor1);
-        graphTask.setPosX(5);
-        graphTask.setPosY(4);
-        graphTaskService.saveGraphTask(graphTask);
-        return graphTask;
-    }
-
-    private static List<Option> getOptionsForTrueFalseQuestion() {
-        List<Option> options2 = new ArrayList<>();
-        options2.add(new Option(null, "Tak", true, null));
-        options2.add(new Option(null, "Nie", false, null));
-        return options2;
-    }
-
-    private static List<Option> getOptionsForOpenQuestion() {
-        List<Option> options1 = new ArrayList<>();
-        options1.add(new Option(null, "hub z routerem", true, null));
-        options1.add(new Option(null, "komputer z komputerem", false, null));
-        options1.add(new Option(null, "switch z routerem", true, null));
-        options1.add(new Option(null, "hub ze switchem", false, null));
-        return options1;
     }
 
     private List<Requirement> createDefaultRequirements() {
@@ -490,7 +582,7 @@ public class DatabaseConfig {
         return requirements;
     }
 
-    private void initAllRanks() throws IOException {
+    private void initAllRanks(Course course) throws IOException {
         byte[] warriorImageBytes1 = getByteArrayForFile("src/main/resources/images/warrior1.png", "png");
         Image warriorImage1 = new Image("Warrior rank image 1", warriorImageBytes1, ImageType.RANK);
         fileRepository.save(warriorImage1);
@@ -571,29 +663,29 @@ public class DatabaseConfig {
         Image rogueImage5 = new Image("Rogue rank image 5", rogueImageBytes5, ImageType.RANK);
         fileRepository.save(rogueImage5);
 
-        Rank warriorRank1 = new Rank(null, HeroType.WARRIOR, "Chłop", 0.0, warriorImage1, null);
-        Rank warriorRank2 = new Rank(null, HeroType.WARRIOR, "Giermek", 100.0, warriorImage2, null);
-        Rank warriorRank3 = new Rank(null, HeroType.WARRIOR, "Wojownik", 200.0, warriorImage3, null);
-        Rank warriorRank4 = new Rank(null, HeroType.WARRIOR, "Rycerz", 300.0, warriorImage4, null);
-        Rank warriorRank5 = new Rank(null, HeroType.WARRIOR, "Paladyn", 400.0, warriorImage5, null);
+        Rank warriorRank1 = new Rank(null, HeroType.WARRIOR, "Chłop", 0.0, warriorImage1, course);
+        Rank warriorRank2 = new Rank(null, HeroType.WARRIOR, "Giermek", 100.0, warriorImage2, course);
+        Rank warriorRank3 = new Rank(null, HeroType.WARRIOR, "Wojownik", 200.0, warriorImage3, course);
+        Rank warriorRank4 = new Rank(null, HeroType.WARRIOR, "Rycerz", 300.0, warriorImage4, course);
+        Rank warriorRank5 = new Rank(null, HeroType.WARRIOR, "Paladyn", 400.0, warriorImage5, course);
 
-        Rank wizardRank1 = new Rank(null, HeroType.WIZARD, "Adept magii", 0.0, wizardImage1, null);
-        Rank wizardRank2 = new Rank(null, HeroType.WIZARD, "Początkujący czarnoksiężnik", 100.0, wizardImage2, null);
-        Rank wizardRank3 = new Rank(null, HeroType.WIZARD, "Czarnoksiężnik", 200.0, wizardImage3, null);
-        Rank wizardRank4 = new Rank(null, HeroType.WIZARD, "Mistrz magii", 300.0,wizardImage4, null);
-        Rank wizardRank5 = new Rank(null, HeroType.WIZARD, "Arcymistrz magii", 400.0, wizardImage5, null);
+        Rank wizardRank1 = new Rank(null, HeroType.WIZARD, "Adept magii", 0.0, wizardImage1, course);
+        Rank wizardRank2 = new Rank(null, HeroType.WIZARD, "Początkujący czarnoksiężnik", 100.0, wizardImage2, course);
+        Rank wizardRank3 = new Rank(null, HeroType.WIZARD, "Czarnoksiężnik", 200.0, wizardImage3, course);
+        Rank wizardRank4 = new Rank(null, HeroType.WIZARD, "Mistrz magii", 300.0,wizardImage4, course);
+        Rank wizardRank5 = new Rank(null, HeroType.WIZARD, "Arcymistrz magii", 400.0, wizardImage5, course);
 
-        Rank priestRank1 = new Rank(null, HeroType.PRIEST, "Duchowny", 0.0, priestImage1, null);
-        Rank priestRank2 = new Rank(null, HeroType.PRIEST, "Mnich", 100.0, priestImage2, null);
-        Rank priestRank3 = new Rank(null, HeroType.PRIEST, "Inkwizytor", 200.0, priestImage3, null);
-        Rank priestRank4 = new Rank(null, HeroType.PRIEST, "Kapłan", 300.0, priestImage4, null);
-        Rank priestRank5 = new Rank(null, HeroType.PRIEST, "Arcykapłan", 400.0, priestImage5, null);
+        Rank priestRank1 = new Rank(null, HeroType.PRIEST, "Duchowny", 0.0, priestImage1, course);
+        Rank priestRank2 = new Rank(null, HeroType.PRIEST, "Mnich", 100.0, priestImage2, course);
+        Rank priestRank3 = new Rank(null, HeroType.PRIEST, "Inkwizytor", 200.0, priestImage3, course);
+        Rank priestRank4 = new Rank(null, HeroType.PRIEST, "Kapłan", 300.0, priestImage4, course);
+        Rank priestRank5 = new Rank(null, HeroType.PRIEST, "Arcykapłan", 400.0, priestImage5, course);
 
-        Rank rogueRank1 = new Rank(null, HeroType.ROGUE, "Złodziej", 0.0, rogueImage1, null);
-        Rank rogueRank2 = new Rank(null, HeroType.ROGUE, "Zwiadowca", 100.0, rogueImage2, null);
-        Rank rogueRank3 = new Rank(null, HeroType.ROGUE, "Zabójca", 200.0, rogueImage3, null);
-        Rank rogueRank4 = new Rank(null, HeroType.ROGUE, "Skrytobójca", 300.0, rogueImage4, null);
-        Rank rogueRank5 = new Rank(null, HeroType.ROGUE, "Przywódca bractwa", 400.0, rogueImage5, null);
+        Rank rogueRank1 = new Rank(null, HeroType.ROGUE, "Złodziej", 0.0, rogueImage1, course);
+        Rank rogueRank2 = new Rank(null, HeroType.ROGUE, "Zwiadowca", 100.0, rogueImage2, course);
+        Rank rogueRank3 = new Rank(null, HeroType.ROGUE, "Zabójca", 200.0, rogueImage3, course);
+        Rank rogueRank4 = new Rank(null, HeroType.ROGUE, "Skrytobójca", 300.0, rogueImage4, course);
+        Rank rogueRank5 = new Rank(null, HeroType.ROGUE, "Przywódca bractwa", 400.0, rogueImage5, course);
 
         rankRepository.saveAll(List.of(warriorRank1, warriorRank2, warriorRank3, warriorRank4, warriorRank5));
         rankRepository.saveAll(List.of(wizardRank1, wizardRank2, wizardRank3, wizardRank4, wizardRank5));
@@ -608,7 +700,7 @@ public class DatabaseConfig {
         return output.toByteArray();
     }
 
-    private void initBadges() throws IOException {
+    private void initBadges(Course course) throws IOException {
         Image activityMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_master.png", "png"), ImageType.BADGE);
         Image activityExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_experienced.png", "png"), ImageType.BADGE);
         Image fileTaskExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_experienced.png", "png"), ImageType.BADGE);
@@ -639,7 +731,7 @@ public class DatabaseConfig {
                 "Wykonaj co najmniej jedną aktywność w przeciągu tygodnia od poprzedniej aktywności (7 dni) przez okres miesiąca",
                 itsTheBeginning,
                 4,
-                null
+                course
         );
 
         Badge badge2 = new ConsistencyBadge(
@@ -648,7 +740,7 @@ public class DatabaseConfig {
                 "Wykonaj co najmniej jedną aktywność w przeciągu tygodnia od poprzedniej aktywności (7 dni) przez okres 3 miesięcy",
                 longA,
                 12,
-                null
+                course
         );
 
         Badge badge3 = new ConsistencyBadge(
@@ -657,7 +749,7 @@ public class DatabaseConfig {
                 "Wykonaj co najmniej jedną aktywność w przeciągu tygodnia od poprzedniej aktywności (7 dni) przez okres 6 mięsięcy",
                 theEnd,
                 24,
-                null
+                course
         );
 
         Badge badge4 = new TopScoreBadge(
@@ -667,7 +759,7 @@ public class DatabaseConfig {
                 topTwenty,
                 0.2,
                 false,
-                null
+                course
         );
 
 
@@ -678,7 +770,7 @@ public class DatabaseConfig {
                 topFive,
                 0.05,
                 false,
-                null
+                course
         );
 
         Badge badge6 = new TopScoreBadge(
@@ -688,7 +780,7 @@ public class DatabaseConfig {
                 groupLeader,
                 0.0,
                 true,
-                null
+                course
         );
 
         Badge badge7 = new TopScoreBadge(
@@ -698,7 +790,7 @@ public class DatabaseConfig {
                 leader,
                 0.0,
                 false,
-                null
+                course
         );
 
 
@@ -708,7 +800,7 @@ public class DatabaseConfig {
                 "Wykonaj swoją pierwszą ekspedycję",
                 graphTaskFirstSteps,
                 1,
-                null
+                course
         );
 
         Badge badge9 = new GraphTaskNumberBadge(
@@ -717,7 +809,7 @@ public class DatabaseConfig {
                 "Wykonaj 10 ekspedycji",
                 graphTaskExperienced,
                 10,
-                null
+                course
         );
 
         Badge badge10 = new GraphTaskNumberBadge(
@@ -726,7 +818,7 @@ public class DatabaseConfig {
                 "Wykonaj 50 ekspedycji",
                 graphTaskMaster,
                 50,
-                null
+                course
         );
 
         Badge badge11 = new FileTaskNumberBadge(
@@ -744,7 +836,7 @@ public class DatabaseConfig {
                 "Wykonaj 10 zadań bojowych",
                 fileTaskExperienced,
                 10,
-                null
+                course
         );
 
         Badge badge13 = new FileTaskNumberBadge(
@@ -753,7 +845,7 @@ public class DatabaseConfig {
                 "Wykonaj 50 zadań bojowych",
                 fileTaskMaster,
                 50,
-                null
+                course
         );
 
         Badge badge14 = new ActivityNumberBadge(
@@ -762,7 +854,7 @@ public class DatabaseConfig {
                 "Wykonaj 30 aktywności",
                 activityExperienced,
                 30,
-                null
+                course
         );
 
         Badge badge15 = new ActivityNumberBadge(
@@ -771,7 +863,7 @@ public class DatabaseConfig {
                 "Wykonaj 100 aktywności",
                 activityMaster,
                 100,
-                null
+                course
         );
 
         Badge badge16 = new ActivityScoreBadge(
