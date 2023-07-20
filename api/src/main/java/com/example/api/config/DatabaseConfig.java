@@ -1,58 +1,51 @@
 package com.example.api.config;
 
-import com.example.api.activity.result.model.AdditionalPoints;
-import com.example.api.activity.result.model.FileTaskResult;
+import com.example.api.activity.feedback.service.ProfessorFeedbackService;
+import com.example.api.activity.feedback.service.SurveyResultService;
 import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
+import com.example.api.activity.result.service.FileTaskResultService;
+import com.example.api.activity.result.service.GraphTaskResultService;
 import com.example.api.activity.task.model.FileTask;
 import com.example.api.activity.task.model.GraphTask;
 import com.example.api.activity.task.model.Info;
-import com.example.api.activity.task.model.Survey;
+import com.example.api.activity.task.service.FileTaskService;
+import com.example.api.activity.task.service.GraphTaskService;
+import com.example.api.activity.task.service.InfoService;
+import com.example.api.activity.task.service.SurveyService;
 import com.example.api.course.model.Course;
 import com.example.api.course.repository.CourseRepository;
 import com.example.api.group.model.AccessDate;
 import com.example.api.group.model.Group;
-import com.example.api.map.model.ActivityMap;
-import com.example.api.map.model.Chapter;
+import com.example.api.group.service.AccessDateService;
+import com.example.api.group.service.GroupService;
 import com.example.api.map.model.requirement.*;
+import com.example.api.map.repository.ChapterRepository;
+import com.example.api.map.repository.RequirementRepository;
+import com.example.api.map.service.ActivityMapService;
+import com.example.api.map.service.RequirementService;
 import com.example.api.question.model.Difficulty;
 import com.example.api.question.model.Option;
 import com.example.api.question.model.Question;
 import com.example.api.question.model.QuestionType;
+import com.example.api.question.service.OptionService;
+import com.example.api.question.service.QuestionService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.HeroType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.user.model.badge.*;
 import com.example.api.user.model.hero.*;
-import com.example.api.util.model.File;
-import com.example.api.util.model.Image;
-import com.example.api.util.model.ImageType;
-import com.example.api.util.model.Url;
-import com.example.api.map.repository.ChapterRepository;
-import com.example.api.map.repository.RequirementRepository;
 import com.example.api.user.repository.*;
-import com.example.api.util.repository.FileRepository;
-import com.example.api.util.repository.UrlRepository;
-import com.example.api.activity.feedback.service.ProfessorFeedbackService;
-import com.example.api.activity.feedback.service.SurveyResultService;
-import com.example.api.activity.result.service.FileTaskResultService;
-import com.example.api.activity.result.service.GraphTaskResultService;
-import com.example.api.activity.task.service.FileTaskService;
-import com.example.api.activity.task.service.GraphTaskService;
-import com.example.api.activity.task.service.InfoService;
-import com.example.api.activity.task.service.SurveyService;
-import com.example.api.group.service.AccessDateService;
-import com.example.api.group.service.GroupService;
-import com.example.api.map.service.ActivityMapService;
-import com.example.api.map.service.RequirementService;
-import com.example.api.question.service.OptionService;
-import com.example.api.question.service.QuestionService;
 import com.example.api.user.service.BadgeService;
 import com.example.api.user.service.UserService;
 import com.example.api.util.message.MessageManager;
+import com.example.api.util.model.Image;
+import com.example.api.util.model.ImageType;
+import com.example.api.util.model.Url;
+import com.example.api.util.repository.FileRepository;
+import com.example.api.util.repository.UrlRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -94,8 +87,7 @@ public class DatabaseConfig {
                                                FileTaskResultService fileTaskResultService, OptionService optionService,
                                                AccessDateService accessDateService, RequirementService requirementService,
                                                FileTaskService fileTaskService, InfoService infoService,
-                                               SurveyService surveyService, BadgeService badgeService,
-                                               CourseRepository courseRepository){
+                                               SurveyService surveyService, BadgeService badgeService){
         return args -> {
 
             // HEROES
@@ -134,189 +126,189 @@ public class DatabaseConfig {
             userRepository.save(professor2);
 
             // USERS & GROUPS
-            List<User> students1 = new ArrayList<>();
-            students1.add(createStudent("jgorski@student.agh.edu.pl", "Jerzy", "Górski", 123456, priest, course1));
-            students1.add(createStudent("smazur@student.agh.edu.pl", "Szymon", "Mazur", 123457, rogue, course1));
-            students1.add(createStudent("murbanska@student.agh.edu.pl", "Matylda", "Urbańska",123458, wizard, course1));
-            students1.add(createStudent("pwasilewski@student.agh.edu.pl", "Patryk", "Wasilewski",123459, warrior, course1));
-            students1.add(createStudent("awojcik@student.agh.edu.pl", "Amelia", "Wójcik",223456, priest, course1));
-            students1.add(createStudent("kkruk@student.agh.edu.pl", "Kornel", "Kruk",323456, rogue, course1));
-            students1.add(createStudent("mdabrowska@student.agh.edu.pl", "Maria", "Dąbrowska",423456, wizard, course1));
-            students1.add(createStudent("aczajkowski@student.agh.edu.pl", "Antoni", "Czajkowski",523456, warrior, course1));
-
-            List<User> students2 = new ArrayList<>();
-
-            students2.add(createStudent("mnowak@student.agh.edu.pl", "Magdalena", "Nowak", 623456, priest, course2));
-            students2.add(createStudent("jlewandowska@student.agh.edu.pl", "Julia", "Lewandowska", 723456, rogue, course2));
-            students2.add(createStudent("mwojcik@student.agh.edu.pl", "Milena", "Wójcik", 823456, wizard, course2));
-            students2.add(createStudent("kpaluch@student.agh.edu.pl", "Kacper", "Paluch", 923456, warrior, course2));
-            students2.add(createStudent("fzalewski@student.agh.edu.pl", "Filip", "Zalewski", 133456, priest, course2));
-            students2.add(createStudent("jmichalak@student.agh.edu.pl", "Jan", "Michalak", 143456, rogue, course2));
-            students2.add(createStudent("kostrowska@student.agh.edu.pl", "Karina", "Ostrowska", 153456, wizard, course2));
-            students2.add(createStudent("dkowalska@student.agh.edu.pl", "Dominika", "Kowalska", 163456, warrior, course2));
-            students2.add(createStudent("manowak@student.agh.edu.pl", "Małgorzata Anna", "Kowalska", 163457, priest, course2));
-
-            Group group1 = new Group();
-            group1.setInvitationCode("1111");
-            group1.setName("pn-1440-A");
-            group1.setUsers(students1);
-            group1.setCourse(course1);
-            course1.getGroups().add(group1);
-            groupService.saveGroup(group1);
-
-            Group group2 = new Group();
-            group2.setInvitationCode("2222");
-            group2.setName("pn-1440-B");
-            group2.setUsers(students2);
-            group2.setCourse(course2);
-            course2.getGroups().add(group2);
-            groupService.saveGroup(group2);
-
-            students1.forEach(user -> {
-                user.setLevel(1);
-                user.setGroup(group1);
-                userService.saveUser(user);
-            });
-
-            students2.forEach(user -> {
-                user.setLevel(1);
-                user.setGroup(group2);
-                userService.saveUser(user);
-            });
-
-            professor1.getCourses().add(course1);
-            professor2.getCourses().add(course2);
-            userService.saveUser(professor1);
-            userService.saveUser(professor2);
-
-            // TASKS
-            GraphTask graphTask1 = getGraphTask(graphTaskService, questionService, optionService, accessDateService, course1, professor1, group1, group2);
-            GraphTask graphTask2 = getGraphTask(graphTaskService, questionService, optionService, accessDateService, course1, professor1, group1, group2);
-
-            FileTask fileTask = getFileTask(fileTaskService, professor1);
-
-            Info info1 = getInfo(infoService, professor1);
-
-            Survey survey = new Survey();
-            survey.setIsBlocked(false);
-            survey.setTitle("Example map feedback");
-            survey.setDescription("Pomóż nam polepszyć kurs dzieląc się swoją opinią!");
-            survey.setPosX(7);
-            survey.setPosY(3);
-            survey.setPoints(10.0);
-            survey.setExperience(5D);
-            survey.setRequirements(createDefaultRequirements());
-            surveyService.saveSurvey(survey);
-
-            byte[] chapterImageBytes = getByteArrayForFile("src/main/resources/images/chapter_image.png", "png");
-            Image chapterImage = new Image("Chapter image 1", chapterImageBytes, ImageType.CHAPTER);
-            fileRepository.save(chapterImage);
-
-            ActivityMap activityMap1 = new ActivityMap();
-            activityMap1.setMapSizeX(8);
-            activityMap1.setMapSizeY(5);
-            activityMap1.setGraphTasks(List.of(graphTask1, graphTask2));
-            activityMap1.setFileTasks(List.of(fileTask));
-            activityMap1.setInfos(List.of(info1));
-            activityMap1.setSurveys(List.of(survey));
-            activityMap1.setImage(chapterImage);
-            activityMapService.saveActivityMap(activityMap1);
-
-            Calendar calendar = Calendar.getInstance();
-
-            addGraphTaskResult(students1.get(0), 28, graphTaskResultService, graphTask1, calendar);
-            addGraphTaskResult(students1.get(1), 13, graphTaskResultService, graphTask2, calendar);
-
-            addGraphTaskResult(students2.get(0), 14, graphTaskResultService, graphTask2, calendar);
-            addGraphTaskResult(students2.get(1), 14, graphTaskResultService, graphTask2, calendar);
-
-
-            FileTaskResult fileResult = new FileTaskResult();
-            fileResult.setId(1L);
-            fileResult.setFileTask(fileTask);
-            fileResult.setUser(students1.get(0));
-            fileResult.setEvaluated(false);
-            fileResult.setAnswer("Lorem ipsum");
-            calendar.set(2022, Calendar.JUNE, 11);
-            fileResult.setSendDateMillis(calendar.getTimeInMillis());
-            fileTaskResultService.saveFileTaskResult(fileResult);
-
-            Chapter chapter = new Chapter();
-            chapter.setName("Rozdział 1");
-            chapter.setPosX(2);
-            chapter.setPosY(2);
-            chapter.setActivityMap(activityMap1);
-            chapter.setRequirements(requirementService.getDefaultRequirements(false));
-            chapter.setIsBlocked(false);
-            chapter.setCourse(course1);
-            chapterRepository.save(chapter);
-
-            calendar.set(2022, Calendar.JUNE, 15);
-            AdditionalPoints additionalPoints = new AdditionalPoints();
-            additionalPoints.setId(1L);
-            additionalPoints.setUser(students1.get(0));
-            additionalPoints.setPointsReceived(100D);
-            additionalPoints.setSendDateMillis(calendar.getTimeInMillis());
-            additionalPoints.setProfessorEmail(professor1.getEmail());
-            additionalPoints.setDescription("Good job");
-            addReceivedPointsForUser(students1.get(0), additionalPoints.getPointsReceived());
-            additionalPointsRepository.save(additionalPoints);
-
-            SurveyResult surveyResult1 = new SurveyResult();
-            surveyResult1.setSurvey(survey);
-            surveyResult1.setId(1L);
-            surveyResult1.setUser(students1.get(0));
-            surveyResult1.setPointsReceived(survey.getMaxPoints());
-            addReceivedPointsForUser(students1.get(0), surveyResult1.getPointsReceived());
-            calendar.set(2022, Calendar.JUNE, 16);
-            surveyResult1.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResultRepository.save(surveyResult1);
-
-            SurveyResult surveyResult2 = new SurveyResult();
-            surveyResult2.setSurvey(survey);
-            surveyResult2.setId(2L);
-            surveyResult2.setUser(students1.get(1));
-            surveyResult2.setPointsReceived(survey.getMaxPoints());
-            addReceivedPointsForUser(students1.get(1), surveyResult2.getPointsReceived());
-            calendar.set(2022, Calendar.JUNE, 18);
-            surveyResult2.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResultRepository.save(surveyResult2);
-
-            SurveyResult surveyResult3 = new SurveyResult();
-            surveyResult3.setSurvey(survey);
-            surveyResult3.setId(3L);
-            surveyResult3.setUser(students2.get(2));
-            surveyResult3.setPointsReceived(survey.getMaxPoints());
-            addReceivedPointsForUser(students2.get(2), surveyResult3.getPointsReceived());
-            calendar.set(2022, Calendar.JUNE, 19);
-            surveyResult3.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResultRepository.save(surveyResult3);
-
-            File file = new File();
-            fileRepository.save(file);
-
-
-            byte[] chapterImageBytes2 = getByteArrayForFile("src/main/resources/images/chapter_image2.png", "png");
-            Image chapterImage2 = new Image("Chapter image 2", chapterImageBytes2, ImageType.CHAPTER);
-            fileRepository.save(chapterImage2);
-
-            byte[] chapterImageBytes3 = getByteArrayForFile("src/main/resources/images/chapter_image3.png", "png");
-            Image chapterImage3 = new Image("Chapter image 3", chapterImageBytes3, ImageType.CHAPTER);
-            fileRepository.save(chapterImage3);
-
-            byte[] chapterImageBytes4 = getByteArrayForFile("src/main/resources/images/chapter_image4.png", "png");
-            Image chapterImage4 = new Image("Chapter image 4", chapterImageBytes4, ImageType.CHAPTER);
-            fileRepository.save(chapterImage4);
-
-            byte[] chapterImageBytes5 = getByteArrayForFile("src/main/resources/images/chapter_image5.png", "png");
-            Image chapterImage5 = new Image("Chapter image 5", chapterImageBytes5, ImageType.CHAPTER);
-            fileRepository.save(chapterImage5);
-
-            userRepository.saveAll(students1);
-            userRepository.saveAll(students2);
-
-            initAllRanks();
-            initBadges();
+//            List<User> students1 = new ArrayList<>();
+//            students1.add(createStudent("jgorski@student.agh.edu.pl", "Jerzy", "Górski", 123456, priest, course1));
+//            students1.add(createStudent("smazur@student.agh.edu.pl", "Szymon", "Mazur", 123457, rogue, course1));
+//            students1.add(createStudent("murbanska@student.agh.edu.pl", "Matylda", "Urbańska",123458, wizard, course1));
+//            students1.add(createStudent("pwasilewski@student.agh.edu.pl", "Patryk", "Wasilewski",123459, warrior, course1));
+//            students1.add(createStudent("awojcik@student.agh.edu.pl", "Amelia", "Wójcik",223456, priest, course1));
+//            students1.add(createStudent("kkruk@student.agh.edu.pl", "Kornel", "Kruk",323456, rogue, course1));
+//            students1.add(createStudent("mdabrowska@student.agh.edu.pl", "Maria", "Dąbrowska",423456, wizard, course1));
+//            students1.add(createStudent("aczajkowski@student.agh.edu.pl", "Antoni", "Czajkowski",523456, warrior, course1));
+//
+//            List<User> students2 = new ArrayList<>();
+//
+//            students2.add(createStudent("mnowak@student.agh.edu.pl", "Magdalena", "Nowak", 623456, priest, course2));
+//            students2.add(createStudent("jlewandowska@student.agh.edu.pl", "Julia", "Lewandowska", 723456, rogue, course2));
+//            students2.add(createStudent("mwojcik@student.agh.edu.pl", "Milena", "Wójcik", 823456, wizard, course2));
+//            students2.add(createStudent("kpaluch@student.agh.edu.pl", "Kacper", "Paluch", 923456, warrior, course2));
+//            students2.add(createStudent("fzalewski@student.agh.edu.pl", "Filip", "Zalewski", 133456, priest, course2));
+//            students2.add(createStudent("jmichalak@student.agh.edu.pl", "Jan", "Michalak", 143456, rogue, course2));
+//            students2.add(createStudent("kostrowska@student.agh.edu.pl", "Karina", "Ostrowska", 153456, wizard, course2));
+//            students2.add(createStudent("dkowalska@student.agh.edu.pl", "Dominika", "Kowalska", 163456, warrior, course2));
+//            students2.add(createStudent("manowak@student.agh.edu.pl", "Małgorzata Anna", "Kowalska", 163457, priest, course2));
+//
+//            Group group1 = new Group();
+//            group1.setInvitationCode("1111");
+//            group1.setName("pn-1440-A");
+//            group1.setUsers(students1);
+//            group1.setCourse(course1);
+//            course1.getGroups().add(group1);
+//            groupService.saveGroup(group1);
+//
+//            Group group2 = new Group();
+//            group2.setInvitationCode("2222");
+//            group2.setName("pn-1440-B");
+//            group2.setUsers(students2);
+//            group2.setCourse(course2);
+//            course2.getGroups().add(group2);
+//            groupService.saveGroup(group2);
+//
+//            students1.forEach(user -> {
+//                user.setLevel(1);
+//                user.setGroup(group1);
+//                userService.saveUser(user);
+//            });
+//
+//            students2.forEach(user -> {
+//                user.setLevel(1);
+//                user.setGroup(group2);
+//                userService.saveUser(user);
+//            });
+//
+//            professor1.getCourses().add(course1);
+//            professor2.getCourses().add(course2);
+//            userService.saveUser(professor1);
+//            userService.saveUser(professor2);
+//
+//            // TASKS
+//            GraphTask graphTask1 = getGraphTask(graphTaskService, questionService, optionService, accessDateService, course1, professor1, group1, group2);
+//            GraphTask graphTask2 = getGraphTask(graphTaskService, questionService, optionService, accessDateService, course1, professor1, group1, group2);
+//
+//            FileTask fileTask = getFileTask(fileTaskService, professor1);
+//
+//            Info info1 = getInfo(infoService, professor1);
+//
+//            Survey survey = new Survey();
+//            survey.setIsBlocked(false);
+//            survey.setTitle("Example map feedback");
+//            survey.setDescription("Pomóż nam polepszyć kurs dzieląc się swoją opinią!");
+//            survey.setPosX(7);
+//            survey.setPosY(3);
+//            survey.setPoints(10.0);
+//            survey.setExperience(5D);
+//            survey.setRequirements(createDefaultRequirements());
+//            surveyService.saveSurvey(survey);
+//
+//            byte[] chapterImageBytes = getByteArrayForFile("src/main/resources/images/chapter_image.png", "png");
+//            Image chapterImage = new Image("Chapter image 1", chapterImageBytes, ImageType.CHAPTER);
+//            fileRepository.save(chapterImage);
+//
+//            ActivityMap activityMap1 = new ActivityMap();
+//            activityMap1.setMapSizeX(8);
+//            activityMap1.setMapSizeY(5);
+//            activityMap1.setGraphTasks(List.of(graphTask1, graphTask2));
+//            activityMap1.setFileTasks(List.of(fileTask));
+//            activityMap1.setInfos(List.of(info1));
+//            activityMap1.setSurveys(List.of(survey));
+//            activityMap1.setImage(chapterImage);
+//            activityMapService.saveActivityMap(activityMap1);
+//
+//            Calendar calendar = Calendar.getInstance();
+//
+//            addGraphTaskResult(students1.get(0), 28, graphTaskResultService, graphTask1, calendar);
+//            addGraphTaskResult(students1.get(1), 13, graphTaskResultService, graphTask2, calendar);
+//
+//            addGraphTaskResult(students2.get(0), 14, graphTaskResultService, graphTask2, calendar);
+//            addGraphTaskResult(students2.get(1), 14, graphTaskResultService, graphTask2, calendar);
+//
+//
+//            FileTaskResult fileResult = new FileTaskResult();
+//            fileResult.setId(1L);
+//            fileResult.setFileTask(fileTask);
+//            fileResult.setUser(students1.get(0));
+//            fileResult.setEvaluated(false);
+//            fileResult.setAnswer("Lorem ipsum");
+//            calendar.set(2022, Calendar.JUNE, 11);
+//            fileResult.setSendDateMillis(calendar.getTimeInMillis());
+//            fileTaskResultService.saveFileTaskResult(fileResult);
+//
+//            Chapter chapter = new Chapter();
+//            chapter.setName("Rozdział 1");
+//            chapter.setPosX(2);
+//            chapter.setPosY(2);
+//            chapter.setActivityMap(activityMap1);
+//            chapter.setRequirements(requirementService.getDefaultRequirements(false));
+//            chapter.setIsBlocked(false);
+//            chapter.setCourse(course1);
+//            chapterRepository.save(chapter);
+//
+//            calendar.set(2022, Calendar.JUNE, 15);
+//            AdditionalPoints additionalPoints = new AdditionalPoints();
+//            additionalPoints.setId(1L);
+//            additionalPoints.setUser(students1.get(0));
+//            additionalPoints.setPointsReceived(100D);
+//            additionalPoints.setSendDateMillis(calendar.getTimeInMillis());
+//            additionalPoints.setProfessorEmail(professor1.getEmail());
+//            additionalPoints.setDescription("Good job");
+//            addReceivedPointsForUser(students1.get(0), additionalPoints.getPointsReceived());
+//            additionalPointsRepository.save(additionalPoints);
+//
+//            SurveyResult surveyResult1 = new SurveyResult();
+//            surveyResult1.setSurvey(survey);
+//            surveyResult1.setId(1L);
+//            surveyResult1.setUser(students1.get(0));
+//            surveyResult1.setPointsReceived(survey.getMaxPoints());
+//            addReceivedPointsForUser(students1.get(0), surveyResult1.getPointsReceived());
+//            calendar.set(2022, Calendar.JUNE, 16);
+//            surveyResult1.setSendDateMillis(calendar.getTimeInMillis());
+//            surveyResultRepository.save(surveyResult1);
+//
+//            SurveyResult surveyResult2 = new SurveyResult();
+//            surveyResult2.setSurvey(survey);
+//            surveyResult2.setId(2L);
+//            surveyResult2.setUser(students1.get(1));
+//            surveyResult2.setPointsReceived(survey.getMaxPoints());
+//            addReceivedPointsForUser(students1.get(1), surveyResult2.getPointsReceived());
+//            calendar.set(2022, Calendar.JUNE, 18);
+//            surveyResult2.setSendDateMillis(calendar.getTimeInMillis());
+//            surveyResultRepository.save(surveyResult2);
+//
+//            SurveyResult surveyResult3 = new SurveyResult();
+//            surveyResult3.setSurvey(survey);
+//            surveyResult3.setId(3L);
+//            surveyResult3.setUser(students2.get(2));
+//            surveyResult3.setPointsReceived(survey.getMaxPoints());
+//            addReceivedPointsForUser(students2.get(2), surveyResult3.getPointsReceived());
+//            calendar.set(2022, Calendar.JUNE, 19);
+//            surveyResult3.setSendDateMillis(calendar.getTimeInMillis());
+//            surveyResultRepository.save(surveyResult3);
+//
+//            File file = new File();
+//            fileRepository.save(file);
+//
+//
+//            byte[] chapterImageBytes2 = getByteArrayForFile("src/main/resources/images/chapter_image2.png", "png");
+//            Image chapterImage2 = new Image("Chapter image 2", chapterImageBytes2, ImageType.CHAPTER);
+//            fileRepository.save(chapterImage2);
+//
+//            byte[] chapterImageBytes3 = getByteArrayForFile("src/main/resources/images/chapter_image3.png", "png");
+//            Image chapterImage3 = new Image("Chapter image 3", chapterImageBytes3, ImageType.CHAPTER);
+//            fileRepository.save(chapterImage3);
+//
+//            byte[] chapterImageBytes4 = getByteArrayForFile("src/main/resources/images/chapter_image4.png", "png");
+//            Image chapterImage4 = new Image("Chapter image 4", chapterImageBytes4, ImageType.CHAPTER);
+//            fileRepository.save(chapterImage4);
+//
+//            byte[] chapterImageBytes5 = getByteArrayForFile("src/main/resources/images/chapter_image5.png", "png");
+//            Image chapterImage5 = new Image("Chapter image 5", chapterImageBytes5, ImageType.CHAPTER);
+//            fileRepository.save(chapterImage5);
+//
+//            userRepository.saveAll(students1);
+//            userRepository.saveAll(students2);
+//
+//            initAllRanks();
+//            initBadges();
         };
     }
 
