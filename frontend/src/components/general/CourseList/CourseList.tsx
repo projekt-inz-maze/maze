@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { Container, Stack, Col, Button} from 'react-bootstrap'
+import { Button, Col, Container, Stack } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
 import { useNavigate } from 'react-router-dom'
 
@@ -9,21 +9,31 @@ import CourseCard from '../../../common/components/CourseCard'
 import { useAppDispatch } from '../../../hooks/hooks'
 import { setCourseId } from '../../../reducers/userSlice'
 
-
-const CourseList = () => {
+const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
+  useEffect(() => {
+    showNavbar(false)
+    return () => {
+      showNavbar(true)
+    }
+  }, [])
+
   const handleClick = (courseId: number) => {
     dispatch(setCourseId(courseId))
-    navigate('/game-card')
+    if (isStudent) {
+      navigate('/game-card')
+    } else if (isProfessor) {
+      navigate('/game-summary')
+    }
   }
 
   return (
     <Container fluid className={styles.mainContainer}>
       <Col>
         <Row className={styles.headerRow}>
-          <h1>Cześć, Magda!</h1>
+          <h1>Cześć!</h1>
           <h2>Twoje kursy</h2>
         </Row>
         <Row>
