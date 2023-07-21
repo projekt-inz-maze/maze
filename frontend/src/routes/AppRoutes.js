@@ -21,7 +21,7 @@ import PageGuard from '../components/general/PageGuard/PageGuard'
 import CanvasMap from '../components/student/CanvasMapPage/CanvasMap'
 import { Role } from '../utils/userRole'
 
-export default function AppRoutes() {
+export default function AppRoutes({showNavbar, isStudent, isProfessor}) {
   return (
     <Routes>
       <Route
@@ -54,7 +54,7 @@ export default function AppRoutes() {
         }
       />
 
-      <Route path={'/courses/*'} element={<CourseList />} />
+      <Route path={'/courses/*'} element={<CourseList showNavbar={showNavbar} isStudent={isStudent} isProfessor={isProfessor} />} />
 
       <Route path={'/game-card/*'} element={<GameCardRoutes />} />
 
