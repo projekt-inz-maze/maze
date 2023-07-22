@@ -66,7 +66,7 @@ public class DashboardService {
     public DashboardResponse getStudentDashboard() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         String studentEmail = authService.getAuthentication().getName();
         User student = userRepository.findUserByEmail(studentEmail);
-        userValidator.validateStudentAccount(student, studentEmail);
+        userValidator.validateStudentAccount(student);
         badgeService.checkAllBadges();
 
         return new DashboardResponse(
@@ -223,7 +223,7 @@ public class DashboardService {
 
     }
 
-    private HeroStats getHeroStats(User student) {
+    private HeroStats getHeroStats(User student) throws EntityNotFoundException {
         Double experiencePoints = student.getPoints();
         Double nextLvlPoints = getNexLvlPoints(student);
 
@@ -241,8 +241,9 @@ public class DashboardService {
         );
     }
 
-    private Double getNexLvlPoints(User student) {
-        List<Rank> sortedRanks = rankService.getSortedRanksForHeroType(student.getHeroType());
+    private Double getNexLvlPoints(User student) throws EntityNotFoundException {
+        //TODO add actual courseId
+        List<Rank> sortedRanks = rankService.getSortedRanksForHeroType(student.getHeroType(), 0L);
         for (int i=sortedRanks.size()-1; i >= 0; i--) {
             if (student.getPoints() >= sortedRanks.get(i).getMinPoints()) {
                 if (i == sortedRanks.size() - 1) return null;

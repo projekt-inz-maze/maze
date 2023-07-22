@@ -1,5 +1,6 @@
 package com.example.api.activity.result.dto.response;
 
+import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.user.model.HeroType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
@@ -22,7 +23,7 @@ public class RankingResponse {
     @Schema(required = true) private Integer unblockedBadges;
     @Schema(required = false) private SurveyAnswerResponse studentAnswer;
 
-    public RankingResponse(User user, RankService rankService) {
+    public RankingResponse(User user, RankService rankService) throws EntityNotFoundException {
         this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();

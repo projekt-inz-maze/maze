@@ -49,8 +49,7 @@ public class UserValidator {
         }
     }
 
-    public void validateStudentAccount(User student, String email) throws UsernameNotFoundException, WrongUserTypeException {
-        validateUserIsNotNull(student, email);
+    public void validateStudentAccount(User student) throws UsernameNotFoundException, WrongUserTypeException {
         validateUserAccountType(student, AccountType.STUDENT);
     }
 
@@ -71,7 +70,7 @@ public class UserValidator {
             log.error("Group with id {} not found in database", newGroupId);
             throw new EntityNotFoundException("Group with id " + newGroupId + " not found in database");
         }
-        if (previousGroup != null && previousGroup.getId() == newGroupId) {
+        if (previousGroup != null && previousGroup.getId().equals(newGroupId)) {
             log.error("Student try to set same group");
             throw new StudentAlreadyAssignedToGroupException("Student is already assigned to group", user, user.getGroup());
         }

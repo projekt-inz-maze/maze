@@ -61,7 +61,13 @@ public class RankingService {
     public List<RankingResponse> getRanking() {
         List<RankingResponse> rankingList = userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
                 .stream()
-                .map(this::studentToRankingEntry)
+                .map(student -> {
+                    try {
+                        return studentToRankingEntry(student);
+                    } catch (EntityNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .sorted(Comparator.comparingDouble(RankingResponse::getPoints).reversed())
                 .toList();
 
@@ -109,7 +115,11 @@ public class RankingService {
                         .map(user -> {
                             SurveyAnswerResponse holder = new SurveyAnswerResponse();
                             Double points = getStudentPointsForActivity(activityID, user, holder);
-                            return studentAndPointsToRankingEntry(user, points, holder);
+                            try {
+                                return studentAndPointsToRankingEntry(user, points, holder);
+                            } catch (EntityNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
                         })
                         .toList();
         addPositionToRankingList(rankingList);
@@ -170,14 +180,14 @@ public class RankingService {
     public Integer getRankingPosition() throws WrongUserTypeException, UsernameNotFoundException {
         String email = authService.getAuthentication().getName();
         User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student, email);
+        userValidator.validateStudentAccount(student);
         return getPositionFromRanking(getRanking(), email);
     }
 
     public Integer getGroupRankingPosition() throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException {
         String email = authService.getAuthentication().getName();
         User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student, email);
+        userValidator.validateStudentAccount(student);
         groupValidator.validateUserGroupIsNotNull(student);
 
         return getPositionFromRanking(getRankingForLoggedStudentGroup(), email);
@@ -192,13 +202,13 @@ public class RankingService {
                 .orElseThrow(() -> new UsernameNotFoundException("User" + email + " not found in database"));
     }
 
-    private RankingResponse studentToRankingEntry(User student) {
+    private RankingResponse studentToRankingEntry(User student) throws EntityNotFoundException {
         RankingResponse rankingResponse = new RankingResponse(student, rankService);
         rankingResponse.setPoints(getStudentPoints(student));
         return rankingResponse;
     }
 
-    private RankingResponse studentAndPointsToRankingEntry(User student, Double points, SurveyAnswerResponse studentAnswer) {
+    private RankingResponse studentAndPointsToRankingEntry(User student, Double points, SurveyAnswerResponse studentAnswer) throws EntityNotFoundException {
         RankingResponse rankingResponse = new RankingResponse(student, rankService);
         rankingResponse.setPoints(points);
         if (studentAnswer.getStudentPoints() != null) {
