@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Button, Col, Container, Stack } from 'react-bootstrap'
+import { Col, Container, Stack } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,6 +8,7 @@ import styles from './CourseList.module.scss'
 import CourseCard from '../../../common/components/CourseCard'
 import { useAppDispatch } from '../../../hooks/hooks'
 import { setCourseId } from '../../../reducers/userSlice'
+import CourseNav from '../CourseNav/CourseNav'
 
 const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
   const navigate = useNavigate()
@@ -30,14 +31,16 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
   }
 
   return (
-    <Container fluid className={styles.mainContainer}>
-      <Col>
-        <Row className={styles.headerRow}>
-          <h1>Cześć!</h1>
-          <h2>Twoje kursy</h2>
-        </Row>
-        <Row>
-          <Col xs={7}>
+    <div className={styles.color}>
+      <CourseNav />
+      <Container className={styles.mainContainer}>
+        <Col>
+          <Row className={styles.headerRow}>
+            <h1>Cześć!</h1>
+            <h2>Twoje kursy</h2>
+          </Row>
+
+          <Row>
             <Stack className={styles.stackContainer} direction='horizontal' gap={3}>
               <CourseCard
                 title='Sieci komputerowe'
@@ -54,21 +57,46 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
                 description='Przedmiot na 7 semestrze studiów informatycznych.'
                 onEnterCourse={() => handleClick(3)}
               />
+              <CourseCard
+                title='Wirtualne sieci prywatne'
+                description='Przedmiot na 7 semestrze studiów informatycznych.'
+                onEnterCourse={() => handleClick(4)}
+              />
+              <CourseCard
+                title='Wirtualne sieci prywatne'
+                description='Przedmiot na 7 semestrze studiów informatycznych.'
+                onEnterCourse={() => handleClick(5)}
+              />
+              <CourseCard
+                title='Wirtualne sieci prywatne'
+                description='Przedmiot na 7 semestrze studiów informatycznych.'
+                onEnterCourse={() => handleClick(6)}
+              />
+              <CourseCard
+                title='Wirtualne sieci prywatne'
+                description='Przedmiot na 7 semestrze studiów informatycznych.'
+                onEnterCourse={() => handleClick(7)}
+              />
+              <CourseCard
+                title='Wirtualne sieci prywatne'
+                description='Przedmiot na 7 semestrze studiów informatycznych.'
+                onEnterCourse={() => handleClick(8)}
+              />
+              <CourseCard
+                title='Wirtualne sieci prywatne'
+                description='Przedmiot na 7 semestrze studiów informatycznych.'
+                onEnterCourse={() => handleClick(9)}
+              />
+              <CourseCard
+                title='Wirtualne sieci prywatne'
+                description='Przedmiot na 7 semestrze studiów informatycznych.'
+                onEnterCourse={() => handleClick(10)}
+              />
             </Stack>
-          </Col>
-
-          <Col className={styles.enrollSection}>
-            <p>Aby zapisać się na kurs, podaj kod grupy</p>
-            <div className={styles.enterCode}>
-              <input type='text' />
-              <Button type='submit' className={styles.enrollBtn}>
-                Zapisz się
-              </Button>
-            </div>
-          </Col>
-        </Row>
-      </Col>
-    </Container>
+          </Row>
+        </Col>
+      </Container>
+    </div>
   )
 }
 
