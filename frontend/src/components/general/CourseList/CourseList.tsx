@@ -8,11 +8,13 @@ import styles from './CourseList.module.scss'
 import CourseCard from '../../../common/components/CourseCard'
 import { useAppDispatch } from '../../../hooks/hooks'
 import { setCourseId } from '../../../reducers/userSlice'
+import { Role } from '../../../utils/userRole'
 import CourseNav from '../CourseNav/CourseNav'
 
 const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const role = isStudent ? Role.LOGGED_IN_AS_STUDENT : Role.LOGGED_IN_AS_TEACHER
 
   useEffect(() => {
     showNavbar(false)
@@ -32,7 +34,7 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
 
   return (
     <div className={styles.color}>
-      <CourseNav />
+      <CourseNav userRole={role} />
       <Container className={styles.mainContainer}>
         <Col>
           <Row className={styles.headerRow}>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { faFire } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,10 +9,38 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from './CourseNav.module.scss'
 import { logout } from '../../../actions/auth'
+import CustomModal from '../../../common/components/CustomModal/CustomModal'
+import { Role } from '../../../utils/userRole'
 
-const CourseNav = (props: any): JSX.Element => {
+type CourseNavProps = {
+  dispatch: any
+  userRole: number
+}
+
+const CourseNav = (props: CourseNavProps): JSX.Element => {
   const navigate = useNavigate()
+  const [showModal, setShowModal] = useState(false)
+
+  const studentModalTitle = 'Dołącz do kursu'
+  const studentModalBody = (
+    <>
+      <p>Wpisz kod kursu, aby dołączyć do niego.</p>
+      <input type='text' placeholder='Kod kursu' />
+    </>
+  )
+  const professorModalTitle = 'Dodaj kurs'
+  const professorModalBody = (
+    <>
+      <p>Wpisz nazwę kursu, aby go dodać.</p>
+      <input type='text' placeholder='Nazwa kursu' />
+    </>
+  )
+
   const logOut = () => props.dispatch(logout(navigate))
+
+  const handleModalDisplay = () => {
+    setShowModal(!showModal)
+  }
 
   return (
     <Row className={styles.topRow}>
@@ -22,8 +50,8 @@ const CourseNav = (props: any): JSX.Element => {
       </Col>
       <Col xs={10}>
         <div className={styles.links}>
-          <button type='button' className={styles.actionButton}>
-            + Dodaj kurs
+          <button type='button' className={styles.actionButton} onClick={handleModalDisplay}>
+            {props.userRole === Role.LOGGED_IN_AS_STUDENT ? 'Dołącz do kursu' : '+ Dodaj kurs'}
           </button>
           <button type='button'>Ustawienia</button>
           <button type='button' onClick={logOut}>
@@ -31,6 +59,12 @@ const CourseNav = (props: any): JSX.Element => {
           </button>
         </div>
       </Col>
+      <CustomModal
+        title={props.userRole === Role.LOGGED_IN_AS_STUDENT ? studentModalTitle : professorModalTitle}
+        body={props.userRole === Role.LOGGED_IN_AS_STUDENT ? studentModalBody : professorModalBody}
+        isModalVisible={showModal}
+        onCloseModal={handleModalDisplay}
+      />
     </Row>
   )
 }
