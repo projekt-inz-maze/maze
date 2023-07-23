@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Col, Container, Stack } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
@@ -32,6 +32,25 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
     }
   }
 
+  const stackConfig = [
+    { title: 'Sieci komputerowe', description: 'Przedmiot na 5 semestrze studiów informatycznych.', id: 1 },
+    {
+      title: 'Bezpieczeństwo sieci komputerowych',
+      description: 'Przedmiot na 6 semestrze studiów informatycznych.',
+      id: 2
+    },
+    { title: 'Wirtualne sieci prywatne', description: 'Przedmiot na 7 semestrze studiów informatycznych.', id: 3 },
+    { title: 'Projektowanie obiektowe', description: 'Przedmiot na 4 semestrze studiów informatycznych.', id: 4 },
+    { title: 'Podstawy baz danych', description: 'Przedmiot na 3 semestrze studiów informatycznych.', id: 5 },
+    {
+      title: 'Wprowadzenie do aplikacji internetowych',
+      description: 'Przedmiot na 3 semestrze studiów informatycznych.',
+      id: 6
+    },
+    { title: 'Inżynieria oprogramowania', description: 'Przedmiot na 6 semestrze studiów informatycznych.', id: 7 }
+    // Add more course configurations as needed
+  ]
+
   return (
     <div className={styles.color}>
       <CourseNav userRole={role} />
@@ -44,56 +63,14 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
 
           <Row>
             <Stack className={styles.stackContainer} direction='horizontal' gap={3}>
-              <CourseCard
-                title='Sieci komputerowe'
-                description='Przedmiot na 5 semestrze studiów informatycznych.'
-                onEnterCourse={() => handleClick(1)}
-              />
-              <CourseCard
-                title='Bezpieczeństwo sieci komputerowych'
-                description='Przedmiot na 6 semestrze studiów informatycznych.'
-                onEnterCourse={() => handleClick(2)}
-              />
-              <CourseCard
-                title='Wirtualne sieci prywatne'
-                description='Przedmiot na 7 semestrze studiów informatycznych.'
-                onEnterCourse={() => handleClick(3)}
-              />
-              <CourseCard
-                title='Wirtualne sieci prywatne'
-                description='Przedmiot na 7 semestrze studiów informatycznych.'
-                onEnterCourse={() => handleClick(4)}
-              />
-              <CourseCard
-                title='Wirtualne sieci prywatne'
-                description='Przedmiot na 7 semestrze studiów informatycznych.'
-                onEnterCourse={() => handleClick(5)}
-              />
-              <CourseCard
-                title='Wirtualne sieci prywatne'
-                description='Przedmiot na 7 semestrze studiów informatycznych.'
-                onEnterCourse={() => handleClick(6)}
-              />
-              <CourseCard
-                title='Wirtualne sieci prywatne'
-                description='Przedmiot na 7 semestrze studiów informatycznych.'
-                onEnterCourse={() => handleClick(7)}
-              />
-              <CourseCard
-                title='Wirtualne sieci prywatne'
-                description='Przedmiot na 7 semestrze studiów informatycznych.'
-                onEnterCourse={() => handleClick(8)}
-              />
-              <CourseCard
-                title='Wirtualne sieci prywatne'
-                description='Przedmiot na 7 semestrze studiów informatycznych.'
-                onEnterCourse={() => handleClick(9)}
-              />
-              <CourseCard
-                title='Wirtualne sieci prywatne'
-                description='Przedmiot na 7 semestrze studiów informatycznych.'
-                onEnterCourse={() => handleClick(10)}
-              />
+              {stackConfig.map((course) => (
+                <CourseCard
+                  key={course.id}
+                  title={course.title}
+                  description={course.description}
+                  onEnterCourse={() => handleClick(course.id)}
+                />
+              ))}
             </Stack>
           </Row>
         </Col>

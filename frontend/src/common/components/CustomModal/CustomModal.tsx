@@ -16,8 +16,8 @@ const CustomModal = (props: CustomModalProps) => (
     </Modal.Header>
     <Modal.Body>{props.body}</Modal.Body>
     <Modal.Footer>
-      <Button variant='secondary' onClick={props.onCloseModal}>Close</Button>
-      <Button variant='primary'>Save Changes</Button>
+      <Button variant='secondary' onClick={props.onCloseModal}>Zamknij</Button>
+      <Button variant='primary'>Zapisz zmiany</Button>
     </Modal.Footer>
   </Modal>
 )

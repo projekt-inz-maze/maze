@@ -1,11 +1,11 @@
 .color {
     background-color: #071542;
+    height: 100vh;
 }
 
 .mainContainer {
     background-color: #071542;
     color: whitesmoke;
-    height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -28,6 +28,7 @@
 .stackContainer {
     display: flex;
     width: 100%;
+    height: 100%;
     align-items: stretch;
     color: black;
     flex: 3;
