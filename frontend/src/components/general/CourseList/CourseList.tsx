@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from './CourseList.module.scss'
 import { useGetAllCoursesQuery } from '../../../api/apiCourses'
+import { Course } from '../../../api/types'
 import CourseCard from '../../../common/components/CourseCard'
 import { useAppDispatch } from '../../../hooks/hooks'
 import { setCourseId } from '../../../reducers/userSlice'
@@ -17,9 +18,9 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
   const dispatch = useAppDispatch()
   const role = isStudent ? Role.LOGGED_IN_AS_STUDENT : Role.LOGGED_IN_AS_TEACHER
 
-  const [coursesList, setCoursesList] = useState([])
+  const [coursesList, setCoursesList] = useState<Course[]>([])
 
-  const { data: courses, isSuccess: coursesSuccess } = useGetAllCoursesQuery({})
+  const { data: courses, isSuccess: coursesSuccess } = useGetAllCoursesQuery()
 
   useEffect(() => {
     showNavbar(false)

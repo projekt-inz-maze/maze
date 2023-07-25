@@ -8,7 +8,7 @@ import CustomDropdownToggle from './CustomDropdownToggle/CustomDropdownToggle'
 
 type CourseCardProps = {
   title: string
-  description: string
+  description: string | JSX.Element
   onEnterCourse: () => void
 }
 
