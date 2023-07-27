@@ -1,5 +1,8 @@
 package com.example.api.user.service;
 
+import com.example.api.course.model.Course;
+import com.example.api.course.service.CourseService;
+import com.example.api.course.validator.CourseValidator;
 import com.example.api.user.dto.request.badge.BadgeAddForm;
 import com.example.api.user.dto.request.badge.BadgeType;
 import com.example.api.user.dto.request.badge.BadgeUpdateForm;
@@ -38,20 +41,26 @@ public class BadgeService {
     private final UserService userService;
     private final BadgeValidator badgeValidator;
     private final BadgeVisitor badgeVisitor;
+    private final CourseService courseService;
+    private final CourseValidator courseValidator;
 
-    public List<? extends BadgeResponse<?>> getAllBadges() {
-        return badgeRepository.findAll()
+    public List<? extends BadgeResponse<?>> getAllBadges(Long courseId) throws EntityNotFoundException {
+        Course course = courseService.getCourse(courseId);
+        courseValidator.validateUserCanAccess(courseId);
+
+        return badgeRepository.findBadgesByCourse(course)
                 .stream()
                 .sorted(Comparator.comparingLong(Badge::getId))
                 .map(Badge::getResponse)
                 .toList();
     }
 
-    public List<UnlockedBadgeResponse> getAllUnlockedBadges() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+    public List<UnlockedBadgeResponse> getAllUnlockedBadges(Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         checkAllBadges();
         User student = userService.getCurrentUser();
         return student.getUnlockedBadges()
                 .stream()
+                .filter(badge -> badge.getBadge().getCourse().getId().equals(courseId))
                 .map(UnlockedBadgeResponse::new)
                 .toList();
     }
@@ -96,6 +105,10 @@ public class BadgeService {
     }
 
     private Badge getBadgeFromForm(BadgeAddForm form) throws RequestValidationException, IOException {
+
+        Course course = courseService.getCourse(form.getCourseId());
+        courseValidator.validateCourseOwner(course, userService.getCurrentUser());
+
         BadgeType type = form.getType();
         String title = form.getTitle();
         String description = form.getDescription();
@@ -106,17 +119,17 @@ public class BadgeService {
         Badge badge = null;
         switch (type) {
             case ACTIVITY_NUMBER ->
-                    badge = new ActivityNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), null);
+                    badge = new ActivityNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
             case ACTIVITY_SCORE ->
-                    badge = new ActivityScoreBadge(null, title, description, image, badgeValidator.validateAndGetDoubleValue(value), forValue);
+                    badge = new ActivityScoreBadge(null, title, description, image, badgeValidator.validateAndGetDoubleValue(value), forValue, course);
             case CONSISTENCY ->
-                    badge = new ConsistencyBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), null);
+                    badge = new ConsistencyBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
             case FILE_TASK_NUMBER ->
-                    badge = new FileTaskNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), null);
+                    badge = new FileTaskNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
             case GRAPH_TASK_NUMBER ->
-                    badge = new GraphTaskNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), null);
+                    badge = new GraphTaskNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
             case TOP_SCORE ->
-                    badge = new TopScoreBadge(null, title, description, image, badgeValidator.validateAndGetDoubleValue(value), forValue, null);
+                    badge = new TopScoreBadge(null, title, description, image, badgeValidator.validateAndGetDoubleValue(value), forValue, course);
         }
         return badge;
     }
