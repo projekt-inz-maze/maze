@@ -76,7 +76,8 @@ public class RankingService {
     }
 
     public List<RankingResponse> getRankingForLoggedStudentGroup() {
-        String groupName = userService.getUserGroup().getName();
+//TODO add courseId
+        String groupName = userService.getUserGroup(courseId).getName();
         List<RankingResponse> rankingList = userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
                 .stream()
                 .filter(student -> Objects.equals(student.getGroup().getName(), groupName))

@@ -147,8 +147,8 @@ public class BadgeVisitor {
             if (badge.getTopScore() == 0) {
                 return rankingInGroupPosition.equals(BigDecimal.ONE);
             }
-
-            BigDecimal numStudentsInGroup = BigDecimal.valueOf(userService.getUserGroup()
+//TODO add courseId
+            BigDecimal numStudentsInGroup = BigDecimal.valueOf(userService.getUserGroup(courseId)
                     .getUsers()
                     .stream()
                     .filter(user -> user.getAccountType() == AccountType.STUDENT)
