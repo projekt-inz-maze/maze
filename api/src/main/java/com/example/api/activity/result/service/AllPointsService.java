@@ -57,7 +57,7 @@ public class AllPointsService {
     public TotalPointsResponse getAllPointsTotal() throws WrongUserTypeException {
         String studentEmail = authService.getAuthentication().getName();
         User student = userRepository.findUserByEmail(studentEmail);
-        userValidator.validateStudentAccount(student, studentEmail);
+        userValidator.validateStudentAccount(student);
 
         log.info("Fetching student all points total {}", studentEmail);
         AtomicReference<Double> totalPointsReceived = new AtomicReference<>(0D);
@@ -90,10 +90,11 @@ public class AllPointsService {
 
     private List<?> getAllPointsList(String studentEmail) throws WrongUserTypeException {
         User student = userRepository.findUserByEmail(studentEmail);
-        userValidator.validateStudentAccount(student, studentEmail);
+        userValidator.validateStudentAccount(student);
 
         List<TaskPointsStatisticsResponse> taskPoints = taskResultService.getUserPointsStatistics(studentEmail);
-        List<AdditionalPointsResponse> additionalPoints = additionalPointsService.getAdditionalPoints(studentEmail);
+        //TODO add valid courseId
+        List<AdditionalPointsResponse> additionalPoints = additionalPointsService.getAdditionalPoints(student, courseId);
         List<AdditionalPointsListResponse> additionalPointsList = additionalPoints
                 .stream()
                 .map(AdditionalPointsListResponse::new)

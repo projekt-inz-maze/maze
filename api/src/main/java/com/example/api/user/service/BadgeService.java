@@ -46,7 +46,7 @@ public class BadgeService {
 
     public List<? extends BadgeResponse<?>> getAllBadges(Long courseId) throws EntityNotFoundException {
         Course course = courseService.getCourse(courseId);
-        courseValidator.validateUserCanAccess(courseId);
+        courseValidator.validateCurrentUserCanAccess(courseId);
 
         return badgeRepository.findBadgesByCourse(course)
                 .stream()

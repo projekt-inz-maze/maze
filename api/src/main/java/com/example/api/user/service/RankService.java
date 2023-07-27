@@ -17,9 +17,7 @@ import com.example.api.user.model.User;
 import com.example.api.util.model.Image;
 import com.example.api.util.model.ImageType;
 import com.example.api.user.repository.RankRepository;
-import com.example.api.user.repository.UserRepository;
 import com.example.api.util.repository.ImageRepository;
-import com.example.api.security.AuthenticationService;
 import com.example.api.validator.RankValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -64,14 +62,14 @@ public class RankService {
 
     public Map<HeroType, List<Rank>> getHeroTypeToRanks(Long courseId) throws EntityNotFoundException {
         Course course = courseService.getCourse(courseId);
-        courseValidator.validateUserCanAccess(courseId);
+        courseValidator.validateCurrentUserCanAccess(courseId);
 
         return rankRepository.findAllByCourse(course).stream().collect(Collectors.groupingBy(Rank::getHeroType));
     }
 
     public void addRank(AddRankForm form) throws RequestValidationException, IOException {
         rankValidator.validateAddRankForm(form);
-        courseValidator.validateUserCanAccess(form.getCourseId());
+        courseValidator.validateCurrentUserCanAccess(form.getCourseId());
         Course course = courseService.getCourse(form.getCourseId());
         MultipartFile multipartFile = form.getImage();
         Image image = new Image(form.getName() + " image", multipartFile.getBytes(), ImageType.RANK);

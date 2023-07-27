@@ -10,6 +10,5 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
     Chapter findChapterById(Long id);
     Long deleteChapterById(Long id);
     List<Chapter> findAllByCourse(Course course);
-
     Chapter findFirstByCourseIsAndNextChapterIsNull(Course course);
 }

@@ -6,13 +6,15 @@ import com.example.api.activity.task.dto.response.ActivitiesResponse;
 import com.example.api.activity.task.dto.response.ActivityToEvaluateResponse;
 import com.example.api.activity.task.dto.response.TaskToEvaluateResponse;
 import com.example.api.activity.task.dto.response.util.FileResponse;
+import com.example.api.course.model.Course;
+import com.example.api.course.service.CourseService;
+import com.example.api.course.validator.CourseValidator;
 import com.example.api.map.dto.response.RequirementDTO;
 import com.example.api.map.dto.response.RequirementResponse;
 import com.example.api.map.dto.response.task.ActivityType;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.task.model.Activity;
 import com.example.api.activity.task.model.FileTask;
@@ -20,17 +22,14 @@ import com.example.api.map.model.ActivityMap;
 import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;
 import com.example.api.user.model.User;
-import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.task.repository.FileTaskRepository;
 import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.activity.task.repository.InfoRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.map.repository.ChapterRepository;
-import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
 import com.example.api.map.service.RequirementService;
-import com.example.api.validator.UserValidator;
+import com.example.api.user.service.UserService;
 import com.example.api.activity.validator.ActivityValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,24 +50,23 @@ public class TaskService {
     private final SurveyRepository surveyRepository;
     private final InfoRepository infoRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
-    private final UserRepository userRepository;
     private final ChapterRepository chapterRepository;
-    private final AdditionalPointsRepository additionalPointsRepository;
-    private final AuthenticationService authService;
-    private final UserValidator userValidator;
     private final ActivityValidator activityValidator;
     private final RequirementService requirementService;
+    private final UserService userService;
+    private final CourseValidator courseValidator;
+    private final CourseService courseService;
 
-    public List<ActivityToEvaluateResponse> getAllActivitiesToEvaluate()
-            throws WrongUserTypeException, UsernameNotFoundException {
-        String email = authService.getAuthentication().getName();
-        log.info("Fetching all activities that are needed to be evaluated for professor {}", email);
-        User professor = userRepository.findUserByEmail(email);
-        userValidator.validateProfessorAccount(professor);
+    public List<ActivityToEvaluateResponse> getAllActivitiesToEvaluate(Long courseId)
+            throws RequestValidationException, UsernameNotFoundException {
+        User professor = userService.getCurrentUser();
+        Course course = courseService.getCourse(courseId);
+        courseValidator.validateCourseOwner(course, professor);
+        log.info("Fetching all activities that are needed to be evaluated for professor {}", professor.getEmail());
         List<ActivityToEvaluateResponse> response = new LinkedList<>();
-        List<FileTask> fileTasks = fileTaskRepository.findAll()
+        List<FileTask> fileTasks = fileTaskRepository.findFileTasksByCourse(course)
                 .stream()
-                .filter(fileTask -> fileTask.getProfessor().getEmail().equals(email))
+                .filter(fileTask -> fileTask.getProfessor().equals(professor))
                 .toList();
         List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAll();
         for (FileTask task : fileTasks) {
@@ -110,9 +108,11 @@ public class TaskService {
                 result.getAnswer(), filesResponse, task.getMaxPoints(), id, num-1);
     }
 
-    public List<ActivitiesResponse> getAllActivities() {
-        log.info("Fetching all activities");
-        List<Chapter> chapters = chapterRepository.findAll();
+    public List<ActivitiesResponse> getAllActivities(Long courseId) throws EntityNotFoundException {
+        log.info("Fetching all activities for course {}", courseId);
+        Course course = courseService.getCourse(courseId);
+        courseValidator.validateCurrentUserCanAccess(courseId);
+        List<Chapter> chapters = chapterRepository.findAllByCourse(course);
         List<List<ActivitiesResponse>> activitiesResponses = new LinkedList<>();
         chapters.forEach(chapter -> {
             ActivityMap activityMap = chapter.getActivityMap();
@@ -147,7 +147,6 @@ public class TaskService {
                 .toList();
         return new RequirementResponse(activity.getIsBlocked(), requirements);
     }
-
 
     public void updateRequirementForActivity(ActivityRequirementForm form) throws RequestValidationException {
         Activity activity = getActivity(form.getActivityId());

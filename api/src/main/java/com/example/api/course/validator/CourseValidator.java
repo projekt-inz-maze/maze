@@ -60,7 +60,7 @@ public class CourseValidator {
         }
     }
 
-    public void validateUserCanAccess(Long courseId) throws EntityNotFoundException {
+    public void validateCurrentUserCanAccess(Long courseId) throws EntityNotFoundException {
         validateUserCanAccess(userService.getCurrentUser(), courseId);
     }
 
