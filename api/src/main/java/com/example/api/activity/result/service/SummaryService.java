@@ -3,8 +3,11 @@ package com.example.api.activity.result.service;
 import com.example.api.activity.task.dto.response.result.summary.*;
 import com.example.api.activity.task.dto.response.result.summary.util.AverageGradeForChapterCreator;
 import com.example.api.activity.task.dto.response.result.summary.util.ScoreCreator;
+import com.example.api.course.model.Course;
+import com.example.api.course.service.CourseService;
+import com.example.api.course.validator.CourseValidator;
+import com.example.api.error.exception.RequestValidationException;
 import com.example.api.map.dto.response.task.ActivityType;
-import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.TaskResult;
 import com.example.api.activity.task.model.Activity;
 import com.example.api.activity.task.model.FileTask;
@@ -21,9 +24,7 @@ import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.group.repository.GroupRepository;
 import com.example.api.map.repository.ChapterRepository;
-import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
-import com.example.api.validator.UserValidator;
+import com.example.api.user.service.UserService;
 import com.example.api.util.calculator.GradesCalculator;
 import com.example.api.util.csv.PointsToGradeMapper;
 import lombok.RequiredArgsConstructor;
@@ -41,9 +42,6 @@ import java.util.stream.Stream;
 @Slf4j
 @Transactional
 public class SummaryService {
-    private final AuthenticationService authService;
-    private final UserRepository userRepository;
-    private final UserValidator userValidator;
     private final GroupRepository groupRepository;
     private final GraphTaskRepository graphTaskRepository;
     private final GraphTaskResultRepository graphTaskResultRepository;
@@ -53,19 +51,26 @@ public class SummaryService {
     private final SurveyResultRepository surveyResultRepository;
     private final ChapterRepository chapterRepository;
     private final PointsToGradeMapper pointsToGradeMapper;
+    private final UserService userService;
+    private final CourseService courseService;
+    private final CourseValidator courseValidator;
 
-    public SummaryResponse getSummary() throws WrongUserTypeException {
-        String professorEmail = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(professorEmail);
-        userValidator.validateProfessorAccount(professor);
-        log.info("Fetching summary for professor {}", professorEmail);
+    public SummaryResponse getSummary(Long courseId) throws RequestValidationException {
+        User professor = userService.getCurrentUser();
+        Course course = courseService.getCourse(courseId);
+        courseValidator.validateCourseOwner(course, professor);
 
-        List<AverageGrade> avgGradesList = getAvgGradesList(professor);
-        List<AverageActivityScore> avgActivitiesScore = getAvgActivitiesScore(professor);
-        List<NotAssessedActivity> notAssessedActivitiesTable = getNotAssessedActivitiesTable(professor);
+        log.info("Fetching summary for professor {}", professor.getEmail());
+
+        List<AverageGrade> avgGradesList = getAvgGradesList(professor, course);
+
+        List<AverageActivityScore> avgActivitiesScore = getAvgActivitiesScore(professor, course);
+
+        List<NotAssessedActivity> notAssessedActivitiesTable = getNotAssessedActivitiesTable(professor, course);
 
         Double avgGrade = getAvgGrade(avgGradesList);
-        Double medianGrade = getMedianGrade(professor);
+
+        Double medianGrade = getMedianGrade(professor, course);
         String bestScoreActivityName = getBestScoreActivityName(avgActivitiesScore);
         String worstScoreActivityName = getWorstScoreActivityName(avgActivitiesScore);
 
@@ -107,8 +112,8 @@ public class SummaryService {
         return grade.isPresent() ? GradesCalculator.roundGrade(grade.getAsDouble()) : null;
     }
 
-    public Double getMedianGrade(User professor) {
-        List<Double> grades = getAllProfessorGrades(professor);
+    public Double getMedianGrade(User professor, Course course) {
+        List<Double> grades = getAllProfessorGrades(professor, course);
         Double medianGrade = GradesCalculator.getMedian(grades);
         if (medianGrade == null) return medianGrade;
         return GradesCalculator.roundGrade(medianGrade);
@@ -159,46 +164,37 @@ public class SummaryService {
                 .sum();
     }
 
-    /////////////////////////////
-    // avgGradesList
-    /////////////////////////////
-    private List<AverageGrade> getAvgGradesList(User professor) {
-        return chapterRepository.findAll()
+    private List<AverageGrade> getAvgGradesList(User professor, Course course) {
+        return chapterRepository.findAllByCourse(course)
                 .stream()
                 .map(chapter -> toAverageGrade(chapter, professor))
                 .toList();
     }
 
     private AverageGrade toAverageGrade(Chapter chapter, User professor) {
-        AverageGrade averageGrade = new AverageGrade(chapter);
-        averageGrade.setAvgGradesForChapter(getAvgGradesForChapter(chapter, professor));
-        return averageGrade;
+        return new AverageGrade(chapter.getName(), calculateAverageGradeForChapter(chapter, professor));
     }
 
-    private List<AverageGradeForChapter> getAvgGradesForChapter(Chapter chapter, User professor) {
-        return groupRepository.findAll()
+    private List<AverageGradeForChapter> calculateAverageGradeForChapter(Chapter chapter, User professor) {
+        return groupRepository.findAllByCourse(chapter.getCourse())
                 .stream()
                 .map(group -> toAvgGradeForChapter(chapter, group, professor))
                 .toList();
     }
 
     private AverageGradeForChapter toAvgGradeForChapter(Chapter chapter, Group group, User professor) {
-        AverageGradeForChapterCreator averageGradeForChapterCreator = new AverageGradeForChapterCreator(group);
-        AtomicReference<AverageGradeForChapterCreator> avgGradeForChapterCreator =
-                new AtomicReference<>(averageGradeForChapterCreator);
-        getAllProfessorChapterActivitiesResult(chapter, professor)
+        List<Double> grades = getAllProfessorChapterActivitiesResult(chapter, professor)
                 .stream()
                 .filter(TaskResult::isEvaluated)
                 .filter(taskResult -> taskResult.getUser().getGroup().equals(group))
-                .forEach(taskResult -> avgGradeForChapterCreator.get().add(pointsToGradeMapper.getGrade(taskResult)));
-        return avgGradeForChapterCreator.get().create(); // it will return entities with no results from group
+                .map(pointsToGradeMapper::getGrade)
+                .toList();
+
+        return new AverageGradeForChapterCreator(group.getName(), grades).create(); // it will return entities with no results from group
     }
 
-    /////////////////////////////
-    // avgActivitiesScore
-    /////////////////////////////
-    private List<AverageActivityScore> getAvgActivitiesScore(User professor) {
-        return chapterRepository.findAll()
+    private List<AverageActivityScore> getAvgActivitiesScore(User professor, Course course) {
+        return chapterRepository.findAllByCourse(course)
                 .stream()
                 .map(chapter -> toAvgActivityScore(chapter, professor))
                 .toList();
@@ -229,7 +225,8 @@ public class SummaryService {
         Double avgScore = activityScore.getScores()
                 .stream()
                 .mapToDouble(Score::getScore)
-                .average().getAsDouble();
+                .average()
+                .getAsDouble();
 
         activityScore.setAvgScore(GradesCalculator.roundGrade(avgScore));
         return activityScore;
@@ -254,13 +251,8 @@ public class SummaryService {
         return scoreRef.get().getNumberOfScores() > 0 ? scoreRef.get().create() : null;
     }
 
-
-
-    /////////////////////////////
-    // notAssessedActivitiesTable
-    /////////////////////////////
-    private List<NotAssessedActivity> getNotAssessedActivitiesTable(User professor) {
-        return getAllProfessorActivities(professor)
+    private List<NotAssessedActivity> getNotAssessedActivitiesTable(User professor, Course course) {
+        return getAllProfessorActivities(professor, course)
                 .stream()
                 .map(this::toNotAssessedActivity)
                 .filter(notAssessedActivity -> notAssessedActivity.getWaitingAnswersNumber() > 0) // only activities with left answers
@@ -279,23 +271,18 @@ public class SummaryService {
         return notAssessedActivity;
     }
 
-
-    /////////////////////////////
-    // help methods
-    /////////////////////////////
-    private List<? extends Activity> getAllActivities() { // without Info
-        List<GraphTask> graphTasks = graphTaskRepository.findAll();
-        List<FileTask> fileTasks = fileTaskRepository.findAll();
-        List<Survey> surveys = surveyRepository.findAll();
-
+    private List<? extends Activity> getAllActivities(Course course) {
+        List<GraphTask> graphTasks = graphTaskRepository.findAllByCourse(course);
+        List<FileTask> fileTasks = fileTaskRepository.findAllByCourse(course);
+        List<Survey> surveys = surveyRepository.findAllByCourse(course);
 
         return Stream.of(graphTasks, fileTasks, surveys)
                 .flatMap(Collection::stream)
                 .toList();
     }
 
-    private List<? extends Activity> getAllProfessorActivities(User professor) { // without Info
-        return getAllActivities()
+    private List<? extends Activity> getAllProfessorActivities(User professor, Course course) {
+        return getAllActivities(course)
                 .stream()
                 .filter(activity -> isProfessorActivity(activity, professor))
                 .toList();
@@ -307,7 +294,7 @@ public class SummaryService {
 
 
     private List<? extends Activity> getAllProfessorChapterActivities(Chapter chapter, User professor) { // without Info
-        return getAllActivities()
+        return getAllActivities(chapter.getCourse())
                 .stream()
                 .filter(activity -> chapter.getActivityMap().hasActivity(activity))
                 .filter(activity -> isProfessorActivity(activity, professor))
@@ -335,8 +322,8 @@ public class SummaryService {
                 .toList();
     }
 
-    private List<Double> getAllProfessorGrades(User professor) {
-        return getAllProfessorActivities(professor)
+    private List<Double> getAllProfessorGrades(User professor, Course course) {
+        return getAllProfessorActivities(professor, course)
                 .stream()
                 .map(this::getAllResultsForActivity)
                 .flatMap(Collection::stream)

@@ -1,16 +1,13 @@
 package com.example.api.activity.task.dto.response.result.summary;
 
-import com.example.api.map.model.Chapter;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class AverageGrade {
     private String chapterName;
     private List<AverageGradeForChapter> avgGradesForChapter;
-
-    public AverageGrade(Chapter chapter) {
-        this.chapterName = chapter.getName();
-    }
 }
