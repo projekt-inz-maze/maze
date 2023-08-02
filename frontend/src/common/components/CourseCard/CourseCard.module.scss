@@ -4,12 +4,14 @@
   transition: all 0.2s ease-in-out;
   flex-shrink: 0;
 
-  &:hover {
-    transform: scale(1.05);
+  .clickable,
+  .clickableImg {
+    cursor: pointer;
+    max-height: 200px;
   }
 
-  .clickable {
-    cursor: pointer;
+  .clickableImg {
+    min-height: 200px;
   }
 
   .menu {
@@ -19,6 +21,7 @@
     padding: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    z-index: 999;
   }
 
   .dropdownMenu {

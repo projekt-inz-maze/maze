@@ -10,7 +10,7 @@ const apiCourses = api.injectEndpoints({
       }),
       providesTags: ['Courses']
     }),
-    addNewCourse: build.mutation<AddCourseRequest, AddCourseResponse>({
+    addNewCourse: build.mutation<AddCourseResponse, AddCourseRequest>({
       query: (body) => ({
         url: '/course',
         method: 'POST',
@@ -18,14 +18,14 @@ const apiCourses = api.injectEndpoints({
       }),
       invalidatesTags: ['Courses']
     }),
-    deleteCourse: build.mutation<void, Course>({
+    deleteCourse: build.mutation<void, number>({
       query: (args) => ({
-        url: `/course/delete?courseId=${args.id}`,
+        url: `/course/delete?courseId=${args}`,
         method: 'DELETE'
       }),
       invalidatesTags: ['Courses']
     }),
-    updateCourse: build.mutation<void, Course>({
+    updateCourse: build.mutation({
       query: (args) => ({
         url: '/course/edit',
         method: 'PUT',

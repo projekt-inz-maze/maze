@@ -15,27 +15,12 @@ import { Role } from '../../../utils/userRole'
 type CourseNavProps = {
   dispatch: any
   userRole: number
+  onAddCourse: (name: string, description: string) => void
 }
 
 const CourseNav = (props: CourseNavProps): JSX.Element => {
   const navigate = useNavigate()
   const [showModal, setShowModal] = useState(false)
-
-  const studentModalTitle = 'Dołącz do kursu'
-  const studentModalBody = (
-    <>
-      <p>Wpisz kod kursu, aby dołączyć do niego.</p>
-      <input type='text' placeholder='Kod kursu' />
-    </>
-  )
-  const professorModalTitle = 'Dodaj kurs'
-  const professorModalBody = (
-    <>
-      <p>Wpisz nazwę kursu, aby go dodać.</p>
-      <input type='text' placeholder='Nazwa kursu' />
-    </>
-  )
-
   const logOut = () => props.dispatch(logout(navigate))
 
   const handleModalDisplay = () => {
@@ -60,10 +45,10 @@ const CourseNav = (props: CourseNavProps): JSX.Element => {
         </div>
       </Col>
       <CustomModal
-        title={props.userRole === Role.LOGGED_IN_AS_STUDENT ? studentModalTitle : professorModalTitle}
-        body={props.userRole === Role.LOGGED_IN_AS_STUDENT ? studentModalBody : professorModalBody}
+        userRole={props.userRole}
         isModalVisible={showModal}
         onCloseModal={handleModalDisplay}
+        onAddCourse={props.onAddCourse}
       />
     </Row>
   )

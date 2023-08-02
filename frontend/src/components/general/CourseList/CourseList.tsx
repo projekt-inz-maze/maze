@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-import { Col, Container, Stack } from 'react-bootstrap'
+import { Button, Col, Container, Stack } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './CourseList.module.scss'
-import { useGetAllCoursesQuery } from '../../../api/apiCourses'
+import { useAddNewCourseMutation, useDeleteCourseMutation, useGetAllCoursesQuery } from '../../../api/apiCourses'
 import { Course } from '../../../api/types'
-import CourseCard from '../../../common/components/CourseCard'
+import CourseCard from '../../../common/components/CourseCard/CourseCard'
 import { useAppDispatch } from '../../../hooks/hooks'
 import { setCourseId } from '../../../reducers/userSlice'
 import { Role } from '../../../utils/userRole'
@@ -21,6 +21,8 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
   const [coursesList, setCoursesList] = useState<Course[]>([])
 
   const { data: courses, isSuccess: coursesSuccess } = useGetAllCoursesQuery()
+  const [addNewCourse] = useAddNewCourseMutation()
+  const [deleteCourse] = useDeleteCourseMutation()
 
   useEffect(() => {
     showNavbar(false)
@@ -34,7 +36,6 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
       return
     }
     setCoursesList(courses)
-    console.log(courses, coursesList)
   }, [courses, coursesSuccess])
 
   const handleClick = (courseId: number) => {
@@ -46,28 +47,17 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
     }
   }
 
-  const stackConfig = [
-    { title: 'Sieci komputerowe', description: 'Przedmiot na 5 semestrze studiów informatycznych.', id: 1 },
-    {
-      title: 'Bezpieczeństwo sieci komputerowych',
-      description: 'Przedmiot na 6 semestrze studiów informatycznych.',
-      id: 2
-    },
-    { title: 'Wirtualne sieci prywatne', description: 'Przedmiot na 7 semestrze studiów informatycznych.', id: 3 },
-    { title: 'Projektowanie obiektowe', description: 'Przedmiot na 4 semestrze studiów informatycznych.', id: 4 },
-    { title: 'Podstawy baz danych', description: 'Przedmiot na 3 semestrze studiów informatycznych.', id: 5 },
-    {
-      title: 'Wprowadzenie do aplikacji internetowych',
-      description: 'Przedmiot na 3 semestrze studiów informatycznych.',
-      id: 6
-    },
-    { title: 'Inżynieria oprogramowania', description: 'Przedmiot na 6 semestrze studiów informatycznych.', id: 7 }
-    // Add more course configurations as needed
-  ]
+  const handleAddNewCourse = async (name: string, description: string) => {
+    await addNewCourse({ name, description }).unwrap()
+  }
+
+  const handleDeleteCourse = async (courseId: number) => {
+    await deleteCourse(courseId).unwrap()
+  }
 
   return (
     <div className={styles.color}>
-      <CourseNav userRole={role} />
+      <CourseNav userRole={role} onAddCourse={handleAddNewCourse} />
       <Container className={styles.mainContainer}>
         <Col>
           <Row className={styles.headerRow}>
@@ -77,14 +67,28 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
 
           <Row>
             <Stack className={styles.stackContainer} direction='horizontal' gap={3}>
-              {stackConfig.map((course) => (
-                <CourseCard
-                  key={course.id}
-                  title={course.title}
-                  description={course.description}
-                  onEnterCourse={() => handleClick(course.id)}
-                />
-              ))}
+              {coursesList.length > 0 ? (
+                coursesList.map((course) => (
+                  <CourseCard
+                    key={course.id}
+                    course={course}
+                    role={role}
+                    onEnterCourse={() => handleClick(course.id)}
+                    onDeleteCourse={() => handleDeleteCourse(course.id)}
+                  />
+                ))
+              ) : (
+                <>
+                  <p className='text-white'>No courses found. Displaying mock card</p>
+                  <CourseCard
+                    key={1}
+                    course={{ id: 1, name: 'Mock course', description: 'Mock description' }}
+                    role={role}
+                    onEnterCourse={() => handleClick(1)}
+                    onDeleteCourse={() => handleDeleteCourse(1)}
+                  />
+                </>
+              )}
             </Stack>
           </Row>
         </Col>
