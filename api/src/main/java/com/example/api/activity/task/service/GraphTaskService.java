@@ -7,6 +7,7 @@ import com.example.api.activity.task.dto.request.create.QuestionForm;
 import com.example.api.activity.task.dto.request.edit.EditGraphTaskForm;
 import com.example.api.activity.task.dto.response.GraphNode;
 import com.example.api.activity.task.dto.response.result.GraphTaskResponse;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.task.model.GraphTask;
@@ -105,11 +106,8 @@ public class GraphTaskService {
         chapter.getActivityMap().getGraphTasks().add(graphTask);
     }
 
-    public List<GraphTask> getStudentGraphTasks() {
-        return graphTaskRepository.findAll()
-                .stream()
-                .filter(graphTask -> !graphTask.getIsBlocked())
-                .toList();
+    public List<GraphTask> getStudentGraphTasks(Course course) {
+        return graphTaskRepository.findAllByCourseAndIsBlockedFalse(course);
     }
 
     private List<Question> questionFormsToQuestions(List<QuestionForm> questionForms) throws RequestValidationException {

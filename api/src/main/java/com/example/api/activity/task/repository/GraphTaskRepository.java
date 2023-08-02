@@ -12,4 +12,5 @@ public interface GraphTaskRepository extends JpaRepository<GraphTask, Long> {
     GraphTask findGraphTaskById(Long id);
     GraphTask findGraphTaskByTitle(String title);
     List<GraphTask> findAllByCourse(Course course);
+    List<GraphTask> findAllByCourseAndIsBlockedFalse(Course course);
 }

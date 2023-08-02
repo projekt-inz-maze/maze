@@ -13,4 +13,5 @@ public interface FileTaskRepository extends JpaRepository<FileTask, Long> {
     FileTask findFileTaskByTitle(String title);
     List<FileTask> findFileTasksByCourse(Course course);
     List<FileTask> findAllByCourse(Course course);
+    List<FileTask> findAllByCourseAndIsBlockedFalse(Course course);
 }

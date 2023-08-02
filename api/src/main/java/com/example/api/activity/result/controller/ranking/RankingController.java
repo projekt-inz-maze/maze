@@ -24,19 +24,19 @@ public class RankingController {
     private final RankingService rankingService;
 
     @GetMapping
-    public ResponseEntity<List<RankingResponse>> getRanking(@RequestParam Long courseId) {
-        return ResponseEntity.ok().body(rankingService.getRanking());
+    public ResponseEntity<List<RankingResponse>> getRanking(@RequestParam Long courseId) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(rankingService.getRanking(courseId));
     }
 
     @GetMapping("/group")
-    public ResponseEntity<List<RankingResponse>> getRankingForGroup()
+    public ResponseEntity<List<RankingResponse>> getRankingForGroup(@RequestParam Long courseId)
             throws EntityNotFoundException {
-        return ResponseEntity.ok().body(rankingService.getRankingForLoggedStudentGroup());
+        return ResponseEntity.ok().body(rankingService.getRankingForLoggedStudentGroup(courseId));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<RankingResponse>> getSearchedRanking(@RequestParam Long courseId, @RequestParam String search) {
-        return ResponseEntity.ok().body(rankingService.getSearchedRanking(search));
+    public ResponseEntity<List<RankingResponse>> getSearchedRanking(@RequestParam Long courseId, @RequestParam String search) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(rankingService.getSearchedRanking(courseId, search));
     }
 
     @GetMapping("/position")

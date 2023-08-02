@@ -22,6 +22,6 @@ public class DashboardController {
 
     @GetMapping
     public ResponseEntity<DashboardResponse> getStudentDashboard(@RequestParam Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        return ResponseEntity.ok().body(dashboardService.getStudentDashboard());
+        return ResponseEntity.ok().body(dashboardService.getStudentDashboard(courseId));
     }
 }
