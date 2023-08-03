@@ -47,7 +47,7 @@ public class RankingController {
 
     @GetMapping("/group/position")
     public ResponseEntity<Integer> getGroupRankingPosition(@RequestParam Long courseId)
-            throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException, EntityNotFoundException {
+            throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException {
         return ResponseEntity.ok().body(rankingService.getGroupRankingPosition());
     }
 
@@ -61,7 +61,7 @@ public class RankingController {
             @RequestParam Long courseId,
             @RequestParam Long activityID,
             @RequestParam String search
-    ) throws WrongUserTypeException, EntityNotFoundException {
+    ) throws WrongUserTypeException {
         return ResponseEntity.ok().body(rankingService.getActivityRankingSearch(activityID, search));
     }
 }

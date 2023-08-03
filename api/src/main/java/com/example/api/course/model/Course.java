@@ -52,4 +52,8 @@ public class Course {
         this.isArchived = isArchived;
         this.owner = owner;
     }
+
+    public List<User> getAllStudents() {
+        return groups.stream().flatMap(group -> group.getUsers().stream()).toList();
+    }
 }
