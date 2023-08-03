@@ -11,6 +11,7 @@ import java.util.List;
 public interface FileTaskRepository extends JpaRepository<FileTask, Long> {
     FileTask findFileTaskById(Long id);
     FileTask findFileTaskByTitle(String title);
-    boolean existsById(long id);
     List<FileTask> findFileTasksByCourse(Course course);
+    List<FileTask> findAllByCourse(Course course);
+    List<FileTask> findAllByCourseAndIsBlockedFalse(Course course);
 }

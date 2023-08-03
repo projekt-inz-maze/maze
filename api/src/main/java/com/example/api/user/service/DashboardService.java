@@ -6,6 +6,9 @@ import com.example.api.activity.task.service.FileTaskService;
 import com.example.api.activity.task.service.GraphTaskService;
 import com.example.api.activity.task.service.InfoService;
 import com.example.api.activity.task.service.SurveyService;
+import com.example.api.course.model.Course;
+import com.example.api.course.service.CourseService;
+import com.example.api.course.validator.CourseValidator;
 import com.example.api.map.dto.response.task.ActivityType;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -60,27 +63,30 @@ public class DashboardService {
     private final ChapterService chapterService;
     private final RankService rankService;
     private final BadgeService badgeService;
+    private final UserService userService;
+    private final CourseService courseService;
+    private final CourseValidator courseValidator;
 
     private final long MAX_LAST_ACTIVITIES_IN_DASHBOARD = 8;
 
-    public DashboardResponse getStudentDashboard() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        String studentEmail = authService.getAuthentication().getName();
-        User student = userRepository.findUserByEmail(studentEmail);
-        userValidator.validateStudentAccount(student);
+    public DashboardResponse getStudentDashboard(Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+        User student = userService.getCurrentUserAndValidateStudentAccount();
+        Course course = courseService.getCourse(courseId);
+        courseValidator.validateUserCanAccess(student, courseId);
         badgeService.checkAllBadges();
 
         return new DashboardResponse(
-                getHeroTypeStats(student),
-                getGeneralStats(student),
-                getLastAddedActivities(),
-                getHeroStats(student)
+                getHeroTypeStats(student, course),
+                getGeneralStats(student, course),
+                getLastAddedActivities(course),
+                getHeroStats(student, course)
         );
     }
 
-    private HeroTypeStats getHeroTypeStats(User student) throws EntityNotFoundException {
+    private HeroTypeStats getHeroTypeStats(User student, Course course) throws EntityNotFoundException {
         String heroType = String.valueOf(student.getHeroType());
 
-        List<RankingResponse> ranking = rankingService.getRanking();
+        List<RankingResponse> ranking = rankingService.getRanking(course);
         RankingResponse rank = getRank(student, ranking);
         if (rank == null) {
             log.error("Student {} not found in ranking", student.getEmail());
@@ -102,16 +108,16 @@ public class DashboardService {
                 .orElse(null);
     }
 
-    private GeneralStats getGeneralStats(User student) {
-        Double avgGraphTask = getAvgGraphTask(student);
-        Double avgFileTask = getAvgFileTask(student);
-        Long surveysNumber = getSurveysNumber(student);
-        Double graphTaskPoints = getGraphTaskPoints(student);
-        Double fileTaskPoints = getFileTaskPoints(student);
-        Double additionalPoints =  getAdditionalPoints(student);
-        Double surveyPoints = getSurveyPoints(student);
+    private GeneralStats getGeneralStats(User student, Course course) {
+        Double avgGraphTask = getAvgGraphTask(student, course);
+        Double avgFileTask = getAvgFileTask(student, course);
+        Long surveysNumber = getSurveysNumber(student, course);
+        Double graphTaskPoints = getGraphTaskPoints(student, course);
+        Double fileTaskPoints = getFileTaskPoints(student, course);
+        Double additionalPoints =  getAdditionalPoints(student, course);
+        Double surveyPoints = getSurveyPoints(student, course);
         Double allPoints = graphTaskPoints + fileTaskPoints + additionalPoints + surveyPoints;
-        Double maxPoints = getMaxPoints(student);
+        Double maxPoints = getMaxPoints(student, course);
 
         return new GeneralStats(
                 avgGraphTask,
@@ -124,8 +130,8 @@ public class DashboardService {
         );
     }
 
-    private Double getAvgGraphTask(User student) {
-        OptionalDouble avg = graphTaskResultRepository.findAllByUser(student)
+    private Double getAvgGraphTask(User student, Course course) {
+        OptionalDouble avg = graphTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .filter(GraphTaskResult::isEvaluated)
                 .mapToDouble(result -> 100 * result.getPointsReceived() / result.getGraphTask().getMaxPoints())
@@ -133,8 +139,8 @@ public class DashboardService {
         return avg.isPresent() ? PointsCalculator.round(avg.getAsDouble(), 2) : null;
     }
 
-    private Double getAvgFileTask(User student) {
-        OptionalDouble avg = fileTaskResultRepository.findAllByUser(student)
+    private Double getAvgFileTask(User student, Course course) {
+        OptionalDouble avg = fileTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .mapToDouble(result -> 100 * result.getPointsReceived() / result.getFileTask().getMaxPoints())
@@ -142,25 +148,24 @@ public class DashboardService {
         return avg.isPresent() ? PointsCalculator.round(avg.getAsDouble(), 2) : null;
     }
 
-    private Long getSurveysNumber(User student) {
-        return (long) surveyResultRepository.findAllByUser(student)
-                .size();
+    private Long getSurveysNumber(User student, Course course) {
+        return surveyResultRepository.countAllByUserAndCourse(student, course);
     }
 
-    private Double getGraphTaskPoints(User student) {
-        return getTaskPoints(graphTaskResultRepository.findAllByUser(student));
+    private Double getGraphTaskPoints(User student, Course course) {
+        return getTaskPoints(graphTaskResultRepository.findAllByUserAndCourse(student, course));
     }
 
-    private Double getFileTaskPoints(User student) {
-        return getTaskPoints(fileTaskResultRepository.findAllByUser(student));
+    private Double getFileTaskPoints(User student, Course course) {
+        return getTaskPoints(fileTaskResultRepository.findAllByUserAndCourse(student, course));
     }
 
-    private Double getAdditionalPoints(User student) {
-        return getTaskPoints(additionalPointsRepository.findAllByUser(student));
+    private Double getAdditionalPoints(User student, Course course) {
+        return getTaskPoints(additionalPointsRepository.findAllByUserAndCourse(student, course));
     }
 
-    private Double getSurveyPoints(User student) {
-        return getTaskPoints(surveyResultRepository.findAllByUser(student));
+    private Double getSurveyPoints(User student, Course course) {
+        return getTaskPoints(surveyResultRepository.findAllByUserAndCourse(student, course));
     }
 
     private Double getTaskPoints(List<? extends TaskResult> taskResults) {
@@ -171,18 +176,18 @@ public class DashboardService {
                 .sum();
     }
 
-    private Double getMaxPoints(User student) {
-        Double maxPointsGraphTask = graphTaskResultRepository.findAllByUser(student)
+    private Double getMaxPoints(User student, Course course) {
+        Double maxPointsGraphTask = graphTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .filter(GraphTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getGraphTask().getMaxPoints())
                 .sum();
-        Double maxPointsFileTask = fileTaskResultRepository.findAllByUser(student)
+        Double maxPointsFileTask = fileTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getFileTask().getMaxPoints())
                 .sum();
-        Double maxPointsSurvey = surveyResultRepository.findAllByUser(student)
+        Double maxPointsSurvey = surveyResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .filter(SurveyResult::isEvaluated)
                 .mapToDouble(result -> result.getSurvey().getMaxPoints())
@@ -190,11 +195,11 @@ public class DashboardService {
         return maxPointsGraphTask + maxPointsFileTask + maxPointsSurvey;
     }
 
-    private List<LastAddedActivity> getLastAddedActivities() {
-        List<GraphTask> graphTasks = graphTaskService.getStudentGraphTasks();
-        List<FileTask> fileTasks = fileTaskService.getStudentFileTasks();
-        List<Survey> surveys = surveyService.getStudentSurvey();
-        List<Info> infos = infoService.getStudentInfos();
+    private List<LastAddedActivity> getLastAddedActivities(Course course) {
+        List<GraphTask> graphTasks = graphTaskService.getStudentGraphTasks(course);
+        List<FileTask> fileTasks = fileTaskService.getStudentFileTasks(course);
+        List<Survey> surveys = surveyService.getStudentSurvey(course);
+        List<Info> infos = infoService.getStudentInfos(course);
 
         return Stream.of(graphTasks, fileTasks, surveys, infos)
                 .flatMap(Collection::stream)
@@ -223,11 +228,11 @@ public class DashboardService {
 
     }
 
-    private HeroStats getHeroStats(User student) throws EntityNotFoundException {
+    private HeroStats getHeroStats(User student, Course course) throws EntityNotFoundException {
         Double experiencePoints = student.getPoints();
-        Double nextLvlPoints = getNexLvlPoints(student);
+        Double nextLvlPoints = getNexLvlPoints(student, course);
 
-        Rank rank = rankService.getCurrentRank(student);
+        Rank rank = rankService.getCurrentRank(student, course);
         String rankName = rank != null ? rank.getName() : null;
         Long badgesNumber = (long) student.getUnlockedBadges().size();
         Long completedActivities = getCompletedActivities(student);
@@ -241,9 +246,9 @@ public class DashboardService {
         );
     }
 
-    private Double getNexLvlPoints(User student) throws EntityNotFoundException {
-        //TODO add actual courseId
-        List<Rank> sortedRanks = rankService.getSortedRanksForHeroType(student.getHeroType(), 0L);
+    private Double getNexLvlPoints(User student, Course course) throws EntityNotFoundException {
+        //TODO add actual course
+        List<Rank> sortedRanks = rankService.getSortedRanksForHeroType(student.getHeroType(), course);
         for (int i=sortedRanks.size()-1; i >= 0; i--) {
             if (student.getPoints() >= sortedRanks.get(i).getMinPoints()) {
                 if (i == sortedRanks.size() - 1) return null;

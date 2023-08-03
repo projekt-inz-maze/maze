@@ -15,4 +15,5 @@ public interface SurveyResultRepository extends JpaRepository<SurveyResult, Long
     List<SurveyResult> findAllByUserAndCourse(User user, Course course);
     SurveyResult findSurveyResultBySurveyAndUser(Survey survey, User user);
     List<SurveyResult> findAllBySurvey(Survey survey);
+    long countAllByUserAndCourse(User user, Course course);
 }

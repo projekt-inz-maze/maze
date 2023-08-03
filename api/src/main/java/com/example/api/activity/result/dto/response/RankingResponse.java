@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 @Data
 @NoArgsConstructor
 public class RankingResponse {
@@ -21,17 +23,16 @@ public class RankingResponse {
     @Schema(required = true) private Integer position;
     @Schema(required = true) private String rank;
     @Schema(required = true) private Integer unblockedBadges;
-    @Schema(required = false) private SurveyAnswerResponse studentAnswer;
+    @Schema private SurveyAnswerResponse studentAnswer;
 
-    public RankingResponse(User user, RankService rankService) throws EntityNotFoundException {
+    public RankingResponse(User user, Optional<Rank> rank) {
         this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.groupName = user.getGroup().getName();
         this.heroType = user.getHeroType();
         this.unblockedBadges = user.getUnlockedBadges().size();
-
-        Rank rank = rankService.getCurrentRank(user);
-        this.rank = rank != null ? rank.getName() : null;
+        this.rank = rank.map(Rank::getName).orElse(null);
     }
+
 }

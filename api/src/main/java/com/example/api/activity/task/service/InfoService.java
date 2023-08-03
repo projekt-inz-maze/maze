@@ -4,6 +4,7 @@ import com.example.api.activity.task.dto.request.create.CreateInfoChapterForm;
 import com.example.api.activity.task.dto.request.create.CreateInfoForm;
 import com.example.api.activity.task.dto.request.edit.EditInfoForm;
 import com.example.api.activity.task.dto.response.InfoResponse;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.task.model.Info;
@@ -87,8 +88,8 @@ public class InfoService {
         chapter.getActivityMap().getInfos().add(info);
     }
 
-    public List<Info> getStudentInfos() {
-        return infoRepository.findAll()
+    public List<Info> getStudentInfos(Course course) {
+        return infoRepository.findAllByCourseAndIsBlockedFalse(course)
                 .stream()
                 .filter(info -> !info.getIsBlocked())
                 .toList();

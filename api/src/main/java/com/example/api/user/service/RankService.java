@@ -44,7 +44,10 @@ public class RankService {
     private final CourseValidator courseValidator;
 
     public List<RanksForHeroTypeResponse> getAllRanks(Long courseId) throws EntityNotFoundException {
-        return getHeroTypeToRanks(courseId).entrySet().stream().map(e -> new RanksForHeroTypeResponse(
+        Course course = courseService.getCourse(courseId);
+        courseValidator.validateCurrentUserCanAccess(courseId);
+
+        return getHeroTypeToRanks(course).entrySet().stream().map(e -> new RanksForHeroTypeResponse(
                 e.getKey(),
                 e.getValue()
                         .stream()
@@ -60,10 +63,7 @@ public class RankService {
                 .toList();
     }
 
-    public Map<HeroType, List<Rank>> getHeroTypeToRanks(Long courseId) throws EntityNotFoundException {
-        Course course = courseService.getCourse(courseId);
-        courseValidator.validateCurrentUserCanAccess(courseId);
-
+    public Map<HeroType, List<Rank>> getHeroTypeToRanks(Course course) {
         return rankRepository.findAllByCourse(course).stream().collect(Collectors.groupingBy(Rank::getHeroType));
     }
 
@@ -108,13 +108,13 @@ public class RankService {
     }
 
     public CurrentRankResponse getCurrentRank(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
-        User user = userService.getCurrentUser();
-        userValidator.validateStudentAccount(user);
+        User user = userService.getCurrentUserAndValidateStudentAccount();
         courseValidator.validateUserCanAccess(user, courseId);
+        Course course = courseService.getCourse(courseId);
 
         double points = user.getPoints();
         HeroType heroType = user.getHeroType();
-        List<Rank> ranks = getSortedRanksForHeroType(heroType, courseId);
+        List<Rank> ranks = getSortedRanksForHeroType(heroType, course);
         Rank currentRank = getCurrentRank(ranks, points);
         if (currentRank == null) {
             if (ranks.size() == 0) {
@@ -155,16 +155,15 @@ public class RankService {
         return currRank;
     }
 
-    public List<Rank> getSortedRanksForHeroType(HeroType heroType, Long courseId) throws EntityNotFoundException {
-        return getHeroTypeToRanks(courseId).get(heroType)
+    public List<Rank> getSortedRanksForHeroType(HeroType heroType, Course course) throws EntityNotFoundException {
+        return getHeroTypeToRanks(course).get(heroType)
                 .stream()
                 .sorted(Comparator.comparingDouble(Rank::getMinPoints))
                 .toList();
     }
 
-    public Rank getCurrentRank(User user) throws EntityNotFoundException {
-        //TODO add actual courseId
-        List<Rank> ranks = getSortedRanksForHeroType(user.getHeroType(), 0L);
+    public Rank getCurrentRank(User user, Course course) throws EntityNotFoundException {
+        List<Rank> ranks = getSortedRanksForHeroType(user.getHeroType(), course);
         return getCurrentRank(ranks, user.getPoints());
     }
 

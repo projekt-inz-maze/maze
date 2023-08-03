@@ -2,6 +2,8 @@ package com.example.api.activity.result.service.ranking;
 
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.dto.response.SurveyAnswerResponse;
+import com.example.api.course.model.Course;
+import com.example.api.course.service.CourseService;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -12,6 +14,7 @@ import com.example.api.activity.task.model.FileTask;
 import com.example.api.activity.task.model.GraphTask;
 import com.example.api.activity.task.model.Survey;
 import com.example.api.user.model.AccountType;
+import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
@@ -56,11 +59,18 @@ public class RankingService {
     private final GroupValidator groupValidator;
     private final UserService userService;
     private final RankService rankService;
+    private final CourseService courseService;
 
 
-    public List<RankingResponse> getRanking() {
-        List<RankingResponse> rankingList = userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
+    public List<RankingResponse> getRanking(Long courseId) throws EntityNotFoundException {
+        return getRanking(courseService.getCourse(courseId));
+    }
+
+    public List<RankingResponse> getRanking(Course course) {
+        List<RankingResponse> rankingList = course
+                .getGroups()
                 .stream()
+                .flatMap(group -> group.getUsers().stream())
                 .map(student -> {
                     try {
                         return studentToRankingEntry(student);
@@ -75,13 +85,18 @@ public class RankingService {
         return rankingList;
     }
 
-    public List<RankingResponse> getRankingForLoggedStudentGroup() {
-//TODO add courseId
+    public List<RankingResponse> getRankingForLoggedStudentGroup(Long courseId) throws EntityNotFoundException {
         String groupName = userService.getUserGroup(courseId).getName();
-        List<RankingResponse> rankingList = userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
+        List<RankingResponse> rankingList = courseService.getCourse(courseId).getAllStudents()
                 .stream()
                 .filter(student -> Objects.equals(student.getGroup().getName(), groupName))
-                .map(this::studentToRankingEntry)
+                .map(student -> {
+                    try {
+                        return studentToRankingEntry(student);
+                    } catch (EntityNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .sorted(Comparator.comparingDouble(RankingResponse::getPoints).reversed())
                 .toList();
 
@@ -89,16 +104,24 @@ public class RankingService {
         return rankingList;
     }
 
-    public List<RankingResponse> getSearchedRanking(String search) {
-        String searchLower = search.toLowerCase().replaceAll("\\s",""); // removing whitespaces
-        List<RankingResponse> rankingList = userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
+    public List<RankingResponse> getSearchedRanking(Long courseId, String search) throws EntityNotFoundException {
+        String searchLower = search.toLowerCase().replaceAll("\\s","");
+
+        List<RankingResponse> rankingList = courseService.getCourse(courseId)
+                .getAllStudents()
                 .stream()
                 .filter(student ->
                                 student.getFirstName().concat(student.getLastName()).toLowerCase().replaceAll("\\s","").contains(searchLower) ||
                                 student.getLastName().concat(student.getFirstName()).toLowerCase().replaceAll("\\s","").contains(searchLower) ||
                                 student.getHeroType().getPolishTypeName().toLowerCase().contains(searchLower) ||
                                 student.getGroup().getName().toLowerCase().contains(searchLower))
-                .map(this::studentToRankingEntry)
+                .map(student1 -> {
+                    try {
+                        return studentToRankingEntry(student1);
+                    } catch (EntityNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .sorted(Comparator.comparingDouble(RankingResponse::getPoints).reversed())
                 .toList();
 
@@ -182,7 +205,7 @@ public class RankingService {
         String email = authService.getAuthentication().getName();
         User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student);
-        return getPositionFromRanking(getRanking(), email);
+        return getPositionFromRanking(getRanking(courseId), email);
     }
 
     public Integer getGroupRankingPosition() throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException {
@@ -204,13 +227,16 @@ public class RankingService {
     }
 
     private RankingResponse studentToRankingEntry(User student) throws EntityNotFoundException {
-        RankingResponse rankingResponse = new RankingResponse(student, rankService);
+        Rank rank = rankService.getCurrentRank();
+        RankingResponse rankingResponse = new RankingResponse(student, rank);
         rankingResponse.setPoints(getStudentPoints(student));
         return rankingResponse;
     }
 
     private RankingResponse studentAndPointsToRankingEntry(User student, Double points, SurveyAnswerResponse studentAnswer) throws EntityNotFoundException {
-        RankingResponse rankingResponse = new RankingResponse(student, rankService);
+        Rank rank = rankService.getCurrentRank();
+
+        RankingResponse rankingResponse = new RankingResponse(student, rank);
         rankingResponse.setPoints(points);
         if (studentAnswer.getStudentPoints() != null) {
             rankingResponse.setStudentAnswer(studentAnswer);

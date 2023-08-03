@@ -44,6 +44,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
     private Integer level;
+    //TODO kluczowe - dodac punkty <-> grupa i sprawdzic czy nie ma tego typ innych syfow [*]
     private Double points;
 
     @Embedded

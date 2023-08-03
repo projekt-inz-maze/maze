@@ -5,6 +5,7 @@ import com.example.api.activity.task.dto.request.create.CreateSurveyForm;
 import com.example.api.activity.task.dto.request.edit.EditSurveyForm;
 import com.example.api.activity.result.dto.response.SurveyResultInfoResponse;
 import com.example.api.activity.task.dto.response.SurveyInfoResponse;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -50,7 +51,7 @@ public class SurveyService {
     public SurveyInfoResponse getSurveyInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
         String email = authService.getAuthentication().getName();
         User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student, email);
+        userValidator.validateStudentAccount(student);
         Survey survey = surveyRepository.findSurveyById(id);
         activityValidator.validateActivityIsNotNull(survey, id);
         log.info("Fetching survey info");
@@ -87,11 +88,8 @@ public class SurveyService {
         chapter.getActivityMap().getSurveys().add(survey);
     }
 
-    public List<Survey> getStudentSurvey() {
-        return surveyRepository.findAll()
-                .stream()
-                .filter(survey -> !survey.getIsBlocked())
-                .toList();
+    public List<Survey> getStudentSurvey(Course course) {
+        return surveyRepository.findAllByCourseAndIsBlockedFalse(course);
     }
 
     public void editSurvey(Survey survey, EditSurveyForm form) {
