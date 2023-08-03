@@ -39,7 +39,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -133,13 +132,13 @@ public class TaskResultService {
                 .toList();
     }
 
-    public List<TaskPointsStatisticsResponse> getUserPointsStatistics(Long courseId) throws WrongUserTypeException {
+    public List<TaskPointsStatisticsResponse> getUserPointsStatistics(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
         User user = userService.getCurrentUserAndValidateStudentAccount();
         Course course = courseService.getCourse(courseId);
         return getUserPointsStatistics(user, course);
     }
 
-    public List<TaskPointsStatisticsResponse> getUserPointsStatistics(User student, Course course) throws WrongUserTypeException {
+    public List<TaskPointsStatisticsResponse> getUserPointsStatistics(User student, Course course) {
 
         List<TaskPointsStatisticsResponse> graphTaskStatistics = graphTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()

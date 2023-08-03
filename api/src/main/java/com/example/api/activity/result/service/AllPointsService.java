@@ -1,7 +1,6 @@
 package com.example.api.activity.result.service;
 
 import com.example.api.activity.task.dto.response.result.AdditionalPointsListResponse;
-import com.example.api.activity.task.dto.response.result.AdditionalPointsResponse;
 import com.example.api.activity.task.dto.response.result.TaskPointsStatisticsResponse;
 import com.example.api.activity.task.dto.response.result.TotalPointsResponse;
 import com.example.api.course.model.Course;
