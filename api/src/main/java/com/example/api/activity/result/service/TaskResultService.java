@@ -6,6 +6,8 @@ import com.example.api.activity.task.dto.request.GetCSVForm;
 import com.example.api.activity.task.dto.response.result.ActivityStatisticsResponse;
 import com.example.api.activity.task.dto.response.result.TaskPointsStatisticsResponse;
 import com.example.api.activity.task.model.*;
+import com.example.api.course.model.Course;
+import com.example.api.course.service.CourseService;
 import com.example.api.map.dto.response.task.ActivityType;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -26,6 +28,7 @@ import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
+import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.util.csv.CSVConverter;
@@ -59,6 +62,8 @@ public class TaskResultService {
     private final UserValidator userValidator;
     private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final ActivityValidator activityValidator;
+    private final UserService userService;
+    private final CourseService courseService;
 
     public ByteArrayResource getCSVFile(GetCSVForm csvForm) {
         log.info("Fetching csv files for students");
@@ -128,25 +133,25 @@ public class TaskResultService {
                 .toList();
     }
 
-    public List<TaskPointsStatisticsResponse> getUserPointsStatistics() throws WrongUserTypeException {
-        String email = authService.getAuthentication().getName();
-        return getUserPointsStatistics(email);
+    public List<TaskPointsStatisticsResponse> getUserPointsStatistics(Long courseId) throws WrongUserTypeException {
+        User user = userService.getCurrentUserAndValidateStudentAccount();
+        Course course = courseService.getCourse(courseId);
+        return getUserPointsStatistics(user, course);
     }
 
-    public List<TaskPointsStatisticsResponse> getUserPointsStatistics(String email) throws WrongUserTypeException {
-        User user = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(user, email);
-        List<TaskPointsStatisticsResponse> graphTaskStatistics = graphTaskResultRepository.findAllByUser(user)
+    public List<TaskPointsStatisticsResponse> getUserPointsStatistics(User student, Course course) throws WrongUserTypeException {
+
+        List<TaskPointsStatisticsResponse> graphTaskStatistics = graphTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .filter(graphTaskResult -> graphTaskResult.getSendDateMillis() != null)
                 .map(TaskPointsStatisticsResponse::new)
                 .toList();
-        List<TaskPointsStatisticsResponse> fileTaskResults = fileTaskResultRepository.findAllByUser(user)
+        List<TaskPointsStatisticsResponse> fileTaskResults = fileTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .map(TaskPointsStatisticsResponse::new)
                 .toList();
-        List<TaskPointsStatisticsResponse> surveyResults = surveyResultRepository.findAllByUser(user)
+        List<TaskPointsStatisticsResponse> surveyResults = surveyResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .map(TaskPointsStatisticsResponse::new)
                 .toList();

@@ -93,9 +93,11 @@ public class AllPointsService {
         User student = userRepository.findUserByEmail(studentEmail);
         userValidator.validateStudentAccount(student);
 
-        List<TaskPointsStatisticsResponse> taskPoints = taskResultService.getUserPointsStatistics(studentEmail);
-        List<AdditionalPointsResponse> additionalPoints = additionalPointsService.getAdditionalPoints(student, courseId);
-        List<AdditionalPointsListResponse> additionalPointsList = additionalPoints
+        Course course = courseService.getCourse(courseId);
+
+        List<TaskPointsStatisticsResponse> taskPoints = taskResultService.getUserPointsStatistics(student, course);
+        List<AdditionalPointsListResponse> additionalPointsList = additionalPointsService
+                .getAdditionalPoints(student, courseId)
                 .stream()
                 .map(AdditionalPointsListResponse::new)
                 .toList();

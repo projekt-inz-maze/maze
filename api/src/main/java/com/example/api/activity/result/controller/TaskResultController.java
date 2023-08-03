@@ -29,7 +29,7 @@ public class TaskResultController {
 
     @GetMapping("/points/statistics")
     public ResponseEntity<List<TaskPointsStatisticsResponse>> getUserPointsStatistics(@RequestParam Long courseId) throws WrongUserTypeException {
-        return ResponseEntity.ok().body(resultService.getUserPointsStatistics());
+        return ResponseEntity.ok().body(resultService.getUserPointsStatistics(courseId));
     }
 
     @GetMapping("/activity/statistics")
