@@ -142,7 +142,7 @@ public class BadgeVisitor {
         }
         Boolean forGroup = badge.getForGroup();
         if (forGroup != null && forGroup) {
-            BigDecimal rankingInGroupPosition = BigDecimal.valueOf(rankingService.getGroupRankingPosition());
+            BigDecimal rankingInGroupPosition = BigDecimal.valueOf(rankingService.getGroupRankingPosition(courseId));
 
             if (badge.getTopScore() == 0) {
                 return rankingInGroupPosition.equals(BigDecimal.ONE);

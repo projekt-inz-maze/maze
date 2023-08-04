@@ -206,13 +206,11 @@ public class RankingService {
         return getPositionFromRanking(getRanking(courseId), student.getEmail());
     }
 
-    public Integer getGroupRankingPosition() throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException {
-        String email = authService.getAuthentication().getName();
-        User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student);
+    public Integer getGroupRankingPosition(Long courseId) throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException, EntityNotFoundException {
+        User student = userService.getCurrentUserAndValidateStudentAccount();
         groupValidator.validateUserGroupIsNotNull(student);
 
-        return getPositionFromRanking(getRankingForLoggedStudentGroup(), email);
+        return getPositionFromRanking(getRankingForLoggedStudentGroup(courseId), student.getEmail());
     }
 
     private Integer getPositionFromRanking(List<RankingResponse> ranking, String email) throws UsernameNotFoundException {
