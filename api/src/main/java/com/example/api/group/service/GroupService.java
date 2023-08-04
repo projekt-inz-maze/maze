@@ -71,13 +71,13 @@ public class GroupService {
         return group;
     }
 
-    public List<GroupCode> getInvitationCodeList() throws WrongUserTypeException {
+    public List<GroupCode> getInvitationCodeList(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
         log.info("Fetching group code list");
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
+        User professor = userService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
+        Course course = courseService.getCourse(courseId);
 
-        return groupRepository.findAll()
+        return groupRepository.findAllByCourse(course)
                 .stream()
                 .map(group -> new GroupCode(
                         group.getId(),
