@@ -407,7 +407,7 @@ public class BadgeVisitorTest {
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
         when(userService.getUsers()).thenReturn(users);
-        when(rankingService.getRankingPosition()).thenReturn(2);
+        when(rankingService.getRankingPosition(courseId)).thenReturn(2);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.5, false);
 
@@ -435,7 +435,7 @@ public class BadgeVisitorTest {
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
         when(userService.getUsers()).thenReturn(users);
-        when(rankingService.getRankingPosition()).thenReturn(1);
+        when(rankingService.getRankingPosition(courseId)).thenReturn(1);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.0, false);
 

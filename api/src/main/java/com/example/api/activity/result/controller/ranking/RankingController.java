@@ -41,8 +41,8 @@ public class RankingController {
 
     @GetMapping("/position")
     public ResponseEntity<Integer> getRankingPosition(@RequestParam Long courseId)
-            throws WrongUserTypeException {
-        return ResponseEntity.ok().body(rankingService.getRankingPosition());
+            throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(rankingService.getRankingPosition(courseId));
     }
 
     @GetMapping("/group/position")

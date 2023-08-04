@@ -201,11 +201,9 @@ public class RankingService {
         rankingResponses.forEach(item -> item.setPosition(position.getAndIncrement()));
     }
 
-    public Integer getRankingPosition() throws WrongUserTypeException, UsernameNotFoundException {
-        String email = authService.getAuthentication().getName();
-        User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student);
-        return getPositionFromRanking(getRanking(courseId), email);
+    public Integer getRankingPosition(Long courseId) throws WrongUserTypeException, UsernameNotFoundException, EntityNotFoundException {
+        User student = userService.getCurrentUserAndValidateStudentAccount();
+        return getPositionFromRanking(getRanking(courseId), student.getEmail());
     }
 
     public Integer getGroupRankingPosition() throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException {

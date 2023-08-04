@@ -157,7 +157,7 @@ public class BadgeVisitor {
             BigDecimal topScore = rankingInGroupPosition.divide(numStudentsInGroup, 2, RoundingMode.HALF_UP);
             return topScore.compareTo(BigDecimal.valueOf(badge.getTopScore())) <= 0;
         } else {
-            BigDecimal rankingPosition = BigDecimal.valueOf(rankingService.getRankingPosition());
+            BigDecimal rankingPosition = BigDecimal.valueOf(rankingService.getRankingPosition(courseId));
 
             if (badge.getTopScore() == 0) {
                 return rankingPosition.equals(BigDecimal.ONE);
