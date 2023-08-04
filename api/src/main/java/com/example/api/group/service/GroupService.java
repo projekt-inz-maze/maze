@@ -1,5 +1,8 @@
 package com.example.api.group.service;
 
+import com.example.api.course.model.Course;
+import com.example.api.course.service.CourseService;
+import com.example.api.course.validator.CourseValidator;
 import com.example.api.group.dto.request.SaveGroupForm;
 import com.example.api.group.dto.response.GroupCode;
 import com.example.api.user.dto.response.BasicUser;
@@ -13,6 +16,7 @@ import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.group.validator.GroupValidator;
+import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +37,9 @@ public class GroupService {
     private final GroupValidator groupValidator;
     private final UserRepository userRepository;
     private final UserValidator userValidator;
+    private final CourseService courseService;
+    private final CourseValidator courseValidator;
+    private final UserService userService;
 
     public Group saveGroup(Group group) {
         log.info("Saving group to database with name {}", group.getName());
@@ -43,7 +50,9 @@ public class GroupService {
         log.info("Saving group to database with name {}", form.getName());
         List<Group> groups = groupRepository.findAll();
         groupValidator.validateGroup(groups, form);
-        Group group = new Group(null, form.getName(), new ArrayList<>(), form.getInvitationCode(), null);
+        Course course = courseService.getCourse(form.getCourseId());
+        courseValidator.validateCourseOwner(course, userService.getCurrentUser());
+        Group group = new Group(null, form.getName(), new ArrayList<>(), form.getInvitationCode(), course);
         groupRepository.save(group);
         return group.getId();
     }
