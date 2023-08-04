@@ -54,7 +54,6 @@ public class RankingService {
     private final SurveyResultRepository surveyResultRepository;
     private final SurveyRepository surveyRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
-    private final AuthenticationService authService;
     private final UserValidator userValidator;
     private final GroupValidator groupValidator;
     private final UserService userService;
