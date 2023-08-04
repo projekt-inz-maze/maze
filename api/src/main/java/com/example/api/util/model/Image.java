@@ -1,5 +1,6 @@
 package com.example.api.util.model;
 
+import com.example.api.course.model.Course;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,8 @@ import javax.persistence.Entity;
 public class Image extends File{
     private ImageType type;
 
-    public Image(String name, byte[] file, ImageType type) {
-        super(null, name, file);
+    public Image(String name, byte[] file, ImageType type, Course course) {
+        super(null, name, course, file);
         this.type = type;
     }
 }
