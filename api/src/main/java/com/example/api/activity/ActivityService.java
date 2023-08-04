@@ -83,13 +83,6 @@ public class ActivityService {
         }
     }
 
-    private Activity getActivity(Long id) {
-        return getAllActivities().stream()
-                .filter(activity -> activity.getId() == id)
-                .findFirst()
-                .orElse(null);
-    }
-
     private List<? extends Activity> getAllActivities() {
         List<GraphTask> graphTasks = graphTaskRepository.findAll();
         List<FileTask> fileTasks = fileTaskRepository.findAll();
@@ -152,6 +145,30 @@ public class ActivityService {
             case INFO -> infoRepository.delete((Info) activity);
             case SURVEY -> surveyRepository.delete((Survey) activity);
         }
+    }
 
+    public Activity getActivity(Long activityId) throws EntityNotFoundException {
+
+        GraphTask graphTask = graphTaskRepository.findGraphTaskById(activityId);
+        if (graphTask != null) {
+            return graphTask;
+        }
+
+        FileTask fileTask = fileTaskRepository.findFileTaskById(activityId);
+        if (fileTask != null) {
+            return fileTask;
+        }
+
+        Survey survey = surveyRepository.findSurveyById(activityId);
+        if (survey != null) {
+            return survey;
+        }
+
+        Info info = infoRepository.findInfoById(activityId);
+        if (info != null) {
+            return info;
+        }
+
+        throw new EntityNotFoundException("Activity not found");
     }
 }
