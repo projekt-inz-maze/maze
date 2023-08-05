@@ -75,7 +75,7 @@ public class TaskResultService {
                 .toList();
         Map<User, List<CSVTaskResult>> userToResultMap = new HashMap<>();
         List<String> firstRow = new LinkedList<>(
-                List.of("Imię", "Nazwisko", "NumerID", "Instytucja", "Wydział", "E-mail"));
+                List.of("Imię", "Nazwisko", "NumerId", "Instytucja", "Wydział", "E-mail"));
         Map<Long, GraphTask> formToGraphTaskMap = new HashMap<>();
         Map<Long, FileTask> formToFileTaskMap = new HashMap<>();
         Map<Long, Survey> formToSurveyMap = new HashMap<>();
