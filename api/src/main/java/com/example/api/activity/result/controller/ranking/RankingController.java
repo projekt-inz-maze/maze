@@ -52,7 +52,7 @@ public class RankingController {
     }
 
     @GetMapping("/activity")
-    public ResponseEntity<List<RankingResponse>> getAllPointsActivityList(@RequestParam Long activityID) throws WrongUserTypeException {
+    public ResponseEntity<List<RankingResponse>> getAllPointsActivityList(@RequestParam Long activityID) throws WrongUserTypeException, EntityNotFoundException {
         return ResponseEntity.ok().body(rankingService.getActivityRanking(activityID));
     }
 
@@ -60,7 +60,7 @@ public class RankingController {
     public ResponseEntity<List<RankingResponse>> getAllPointsActivityListSearch(
             @RequestParam Long activityID,
             @RequestParam String search
-    ) throws WrongUserTypeException {
+    ) throws WrongUserTypeException, EntityNotFoundException {
         return ResponseEntity.ok().body(rankingService.getActivityRankingSearch(activityID, search));
     }
 }

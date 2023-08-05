@@ -43,7 +43,7 @@ public class SurveyResultService {
         String email = authService.getAuthentication().getName();
         log.info("Saving user {} feedback for survey with id {}", email, form.getSurveyId());
         User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student, email);
+        userValidator.validateStudentAccount(student);
         Long id = form.getSurveyId();
         Survey survey = surveyRepository.findSurveyById(id);
         activityValidator.validateActivityIsNotNull(survey, id);
@@ -76,7 +76,7 @@ public class SurveyResultService {
         String email = authService.getAuthentication().getName();
         log.info("Getting user {} feedback for survey with id {}", email, surveyId);
         User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student, email);
+        userValidator.validateStudentAccount(student);
 
         Survey survey = surveyRepository.findSurveyById(surveyId);
         activityValidator.validateActivityIsNotNull(survey, surveyId);

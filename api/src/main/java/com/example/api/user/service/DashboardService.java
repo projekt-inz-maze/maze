@@ -232,7 +232,7 @@ public class DashboardService {
         Double experiencePoints = student.getPoints();
         Double nextLvlPoints = getNexLvlPoints(student, course);
 
-        Rank rank = rankService.getCurrentRank(student, course);
+        Rank rank = rankService.getCurrentRankB(student, course);
         String rankName = rank != null ? rank.getName() : null;
         Long badgesNumber = (long) student.getUnlockedBadges().size();
         Long completedActivities = getCompletedActivities(student);

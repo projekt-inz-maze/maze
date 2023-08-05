@@ -11,6 +11,7 @@ import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.task.model.FileTask;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
+import com.example.api.user.service.UserService;
 import com.example.api.util.model.File;
 import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
@@ -37,6 +38,8 @@ public class FeedbackValidator {
     private final FileRepository fileRepository;
     private final UserRepository userRepository;
     private final BadgeService badgeService;
+    private final UserService userService;
+    private final UserValidator userValidator;
 
     /**
      * Function creates professor feedback for fileTaskResult. If feedback already exists its attributes
@@ -45,18 +48,12 @@ public class FeedbackValidator {
     */
     public ProfessorFeedback validateAndSetProfessorFeedbackTaskForm(SaveProfessorFeedbackForm form)
             throws WrongUserTypeException, EntityNotFoundException, WrongPointsNumberException, IOException, MissingAttributeException {
-        String professorEmail = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(professorEmail);
-        if(professor == null) {
-            log.error("User {} not found in database", professorEmail);
-            throw new UsernameNotFoundException("User " + professorEmail + " not found in database");
-        }
-        if(professor.getAccountType() != AccountType.PROFESSOR) {
-            throw new WrongUserTypeException("Wrong user type!", AccountType.PROFESSOR);
-        }
+        User professor = userService.getCurrentUser();
+        userValidator.validateProfessorAccount(professor);
+
         Long id = form.getFileTaskResultId();
         FileTaskResult fileTaskResult = fileTaskResultRepository.findFileTaskResultById(id);
-        if(fileTaskResult == null) {
+        if (fileTaskResult == null) {
             log.error("File task result with id {} not found in database", id);
             throw new EntityNotFoundException("File task result with id " + id + " not found in database");
         }
@@ -84,7 +81,7 @@ public class FeedbackValidator {
 
         // Feedback file can be set only once
         if(feedback.getFeedbackFile() == null && form.getFile() != null) {
-            File file = new File(null, form.getFileName(), form.getFile().getBytes());
+            File file = new File(null, form.getFileName(), fileTaskResult.getCourse(), form.getFile().getBytes());
             fileRepository.save(file);
             feedback.setFeedbackFile(file);
         }

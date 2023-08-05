@@ -50,7 +50,7 @@ public class GraphTaskResultService {
             throws WrongUserTypeException, EntityNotFoundException {
         String email = authService.getAuthentication().getName();
         User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student, email);
+        userValidator.validateStudentAccount(student);
         GraphTask graphTask = graphTaskRepository.findGraphTaskById(graphTaskId);
         activityValidator.validateActivityIsNotNull(graphTask, graphTaskId);
         GraphTaskResult graphTaskResult = graphTaskResultRepository.findGraphTaskResultByGraphTaskAndUser(graphTask, student);
@@ -68,7 +68,7 @@ public class GraphTaskResultService {
 
         String email = authService.getAuthentication().getName();
         User user = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(user, email);
+        userValidator.validateStudentAccount(user);
 
         GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskAndUser(graphTask, user);
         resultValidator.validateGraphTaskResultIsNotInDatabase(result, id, email);
@@ -151,7 +151,7 @@ public class GraphTaskResultService {
     public GraphTaskResult getGraphTaskResult(Long graphTaskId, String email)
             throws EntityNotFoundException, WrongUserTypeException {
         User user = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(user, email);
+        userValidator.validateStudentAccount(user);
 
         GraphTask graphTask = graphTaskRepository.findGraphTaskById(graphTaskId);
         activityValidator.validateActivityIsNotNull(graphTask, graphTaskId);

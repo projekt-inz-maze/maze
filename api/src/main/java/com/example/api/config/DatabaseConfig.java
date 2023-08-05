@@ -375,7 +375,7 @@ public class DatabaseConfig {
             surveyService.saveSurvey(survey);
 
             byte[] chapterImageBytes = getByteArrayForFile("src/main/resources/images/chapter_image.png", "png");
-            Image chapterImage = new Image("Chapter image 1", chapterImageBytes, ImageType.CHAPTER);
+            Image chapterImage = new Image("Chapter image 1", chapterImageBytes, ImageType.CHAPTER, null);
             fileRepository.save(chapterImage);
 
             ActivityMap activityMap1 = new ActivityMap();
@@ -509,19 +509,19 @@ public class DatabaseConfig {
 
 
             byte[] chapterImageBytes2 = getByteArrayForFile("src/main/resources/images/chapter_image2.png", "png");
-            Image chapterImage2 = new Image("Chapter image 2", chapterImageBytes2, ImageType.CHAPTER);
+            Image chapterImage2 = new Image("Chapter image 2", chapterImageBytes2, ImageType.CHAPTER, null);
             fileRepository.save(chapterImage2);
 
             byte[] chapterImageBytes3 = getByteArrayForFile("src/main/resources/images/chapter_image3.png", "png");
-            Image chapterImage3 = new Image("Chapter image 3", chapterImageBytes3, ImageType.CHAPTER);
+            Image chapterImage3 = new Image("Chapter image 3", chapterImageBytes3, ImageType.CHAPTER, null);
             fileRepository.save(chapterImage3);
 
             byte[] chapterImageBytes4 = getByteArrayForFile("src/main/resources/images/chapter_image4.png", "png");
-            Image chapterImage4 = new Image("Chapter image 4", chapterImageBytes4, ImageType.CHAPTER);
+            Image chapterImage4 = new Image("Chapter image 4", chapterImageBytes4, ImageType.CHAPTER, null);
             fileRepository.save(chapterImage4);
 
             byte[] chapterImageBytes5 = getByteArrayForFile("src/main/resources/images/chapter_image5.png", "png");
-            Image chapterImage5 = new Image("Chapter image 5", chapterImageBytes5, ImageType.CHAPTER);
+            Image chapterImage5 = new Image("Chapter image 5", chapterImageBytes5, ImageType.CHAPTER, null);
             fileRepository.save(chapterImage5);
 
             userRepository.saveAll(students1);
@@ -584,83 +584,83 @@ public class DatabaseConfig {
 
     private void initAllRanks(Course course) throws IOException {
         byte[] warriorImageBytes1 = getByteArrayForFile("src/main/resources/images/warrior1.png", "png");
-        Image warriorImage1 = new Image("Warrior rank image 1", warriorImageBytes1, ImageType.RANK);
+        Image warriorImage1 = new Image("Warrior rank image 1", warriorImageBytes1, ImageType.RANK, null);
         fileRepository.save(warriorImage1);
 
         byte[] warriorImageBytes2 = getByteArrayForFile("src/main/resources/images/warrior.png", "png");
-        Image warriorImage2 = new Image("Warrior rank image 2", warriorImageBytes2, ImageType.RANK);
+        Image warriorImage2 = new Image("Warrior rank image 2", warriorImageBytes2, ImageType.RANK, null);
         fileRepository.save(warriorImage2);
 
         byte[] warriorImageBytes3 = getByteArrayForFile("src/main/resources/images/swordsman.png", "png");
-        Image warriorImage3 = new Image("Warrior rank image 3", warriorImageBytes3, ImageType.RANK);
+        Image warriorImage3 = new Image("Warrior rank image 3", warriorImageBytes3, ImageType.RANK, null);
         fileRepository.save(warriorImage3);
 
         byte[] warriorImageBytes4 = getByteArrayForFile("src/main/resources/images/knight.png", "png");
-        Image warriorImage4 = new Image("Warrior rank image 4", warriorImageBytes4, ImageType.RANK);
+        Image warriorImage4 = new Image("Warrior rank image 4", warriorImageBytes4, ImageType.RANK, null);
         fileRepository.save(warriorImage4);
 
         byte[] warriorImageBytes5 = getByteArrayForFile("src/main/resources/images/knightHorse.png", "png");
-        Image warriorImage5 = new Image("Warrior rank image 5", warriorImageBytes5, ImageType.RANK);
+        Image warriorImage5 = new Image("Warrior rank image 5", warriorImageBytes5, ImageType.RANK, null);
         fileRepository.save(warriorImage5);
 
         byte[] wizardImageBytes1 = getByteArrayForFile("src/main/resources/images/wizard1.png", "png");
-        Image wizardImage1 = new Image("Wizard rank image 1", wizardImageBytes1, ImageType.RANK);
+        Image wizardImage1 = new Image("Wizard rank image 1", wizardImageBytes1, ImageType.RANK, null);
         fileRepository.save(wizardImage1);
 
         byte[] wizardImageBytes2 = getByteArrayForFile("src/main/resources/images/wizard2.png", "png");
-        Image wizardImage2 = new Image("Wizard rank image 2", wizardImageBytes2, ImageType.RANK);
+        Image wizardImage2 = new Image("Wizard rank image 2", wizardImageBytes2, ImageType.RANK, null);
         fileRepository.save(wizardImage2);
 
         byte[] wizardImageBytes3 = getByteArrayForFile("src/main/resources/images/wizard3.png", "png");
-        Image wizardImage3 = new Image("Wizard rank image 3", wizardImageBytes3, ImageType.RANK);
+        Image wizardImage3 = new Image("Wizard rank image 3", wizardImageBytes3, ImageType.RANK, null);
         fileRepository.save(wizardImage3);
 
         byte[] wizardImageBytes4 = getByteArrayForFile("src/main/resources/images/wizard4.png", "png");
-        Image wizardImage4 = new Image("Wizard rank image 4", wizardImageBytes4, ImageType.RANK);
+        Image wizardImage4 = new Image("Wizard rank image 4", wizardImageBytes4, ImageType.RANK, null);
         fileRepository.save(wizardImage4);
 
         byte[] wizardImageBytes5 = getByteArrayForFile("src/main/resources/images/wizard5.png", "png");
-        Image wizardImage5 = new Image("Wizard rank image 5", wizardImageBytes5, ImageType.RANK);
+        Image wizardImage5 = new Image("Wizard rank image 5", wizardImageBytes5, ImageType.RANK, null);
         fileRepository.save(wizardImage5);
 
         byte[] priestImageBytes1 = getByteArrayForFile("src/main/resources/images/priest1.png", "png");
-        Image priestImage1 = new Image("Priest rank image 1", priestImageBytes1, ImageType.RANK);
+        Image priestImage1 = new Image("Priest rank image 1", priestImageBytes1, ImageType.RANK, null);
         fileRepository.save(priestImage1);
 
         byte[] priestImageBytes2 = getByteArrayForFile("src/main/resources/images/priest2.png", "png");
-        Image priestImage2 = new Image("Priest rank image 2", priestImageBytes2, ImageType.RANK);
+        Image priestImage2 = new Image("Priest rank image 2", priestImageBytes2, ImageType.RANK, null);
         fileRepository.save(priestImage2);
 
         byte[] priestImageBytes3 = getByteArrayForFile("src/main/resources/images/priest3.png", "png");
-        Image priestImage3 = new Image("Priest rank image 3", priestImageBytes3, ImageType.RANK);
+        Image priestImage3 = new Image("Priest rank image 3", priestImageBytes3, ImageType.RANK, null);
         fileRepository.save(priestImage3);
 
         byte[] priestImageBytes4 = getByteArrayForFile("src/main/resources/images/priest4.png", "png");
-        Image priestImage4 = new Image("Priest rank image 4", priestImageBytes4, ImageType.RANK);
+        Image priestImage4 = new Image("Priest rank image 4", priestImageBytes4, ImageType.RANK, null);
         fileRepository.save(priestImage4);
 
         byte[] priestImageBytes5 = getByteArrayForFile("src/main/resources/images/priest5.png", "png");
-        Image priestImage5 = new Image("Priest rank image 5", priestImageBytes5, ImageType.RANK);
+        Image priestImage5 = new Image("Priest rank image 5", priestImageBytes5, ImageType.RANK, null);
         fileRepository.save(priestImage5);
 
         byte[] rogueImageBytes1 = getByteArrayForFile("src/main/resources/images/rogue1.png", "png");
-        Image rogueImage1 = new Image("Rogue rank image 1", rogueImageBytes1, ImageType.RANK);
+        Image rogueImage1 = new Image("Rogue rank image 1", rogueImageBytes1, ImageType.RANK, null);
         fileRepository.save(rogueImage1);
 
         byte[] rogueImageBytes2 = getByteArrayForFile("src/main/resources/images/rogue2.png", "png");
-        Image rogueImage2 = new Image("Rogue rank image 2", rogueImageBytes2, ImageType.RANK);
+        Image rogueImage2 = new Image("Rogue rank image 2", rogueImageBytes2, ImageType.RANK, null);
         fileRepository.save(rogueImage2);
 
         byte[] rogueImageBytes3 = getByteArrayForFile("src/main/resources/images/rogue3.png", "png");
-        Image rogueImage3 = new Image("Rogue rank image 3", rogueImageBytes3, ImageType.RANK);
+        Image rogueImage3 = new Image("Rogue rank image 3", rogueImageBytes3, ImageType.RANK, null);
         fileRepository.save(rogueImage3);
 
         byte[] rogueImageBytes4 = getByteArrayForFile("src/main/resources/images/rogue4.png", "png");
-        Image rogueImage4 = new Image("Rogue rank image 4", rogueImageBytes4, ImageType.RANK);
+        Image rogueImage4 = new Image("Rogue rank image 4", rogueImageBytes4, ImageType.RANK, null);
         fileRepository.save(rogueImage4);
 
         byte[] rogueImageBytes5 = getByteArrayForFile("src/main/resources/images/rogue5.png", "png");
-        Image rogueImage5 = new Image("Rogue rank image 5", rogueImageBytes5, ImageType.RANK);
+        Image rogueImage5 = new Image("Rogue rank image 5", rogueImageBytes5, ImageType.RANK, null);
         fileRepository.save(rogueImage5);
 
         Rank warriorRank1 = new Rank(null, HeroType.WARRIOR, "Chłop", 0.0, warriorImage1, course);
@@ -701,25 +701,25 @@ public class DatabaseConfig {
     }
 
     private void initBadges(Course course) throws IOException {
-        Image activityMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_master.png", "png"), ImageType.BADGE);
-        Image activityExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_experienced.png", "png"), ImageType.BADGE);
-        Image fileTaskExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_experienced.png", "png"), ImageType.BADGE);
-        Image fileTaskFirstSteps = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_first_steps.png", "png"), ImageType.BADGE);
-        Image fileTaskMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_master.png", "png"), ImageType.BADGE);
-        Image topFive = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/five.png", "png"), ImageType.BADGE);
-        Image graphTaskExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_experienced.png", "png"), ImageType.BADGE);
-        Image graphTaskFirstSteps = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_first_steps.png", "png"), ImageType.BADGE);
-        Image graphTaskMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_master.png", "png"), ImageType.BADGE);
-        Image groupLeader = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/group_leader.png", "png"), ImageType.BADGE);
-        Image handshake = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/handshake.png", "png"), ImageType.BADGE);
-        Image inTheMiddle = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/in_the_middle.png", "png"), ImageType.BADGE);
-        Image itsTheBeginning = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/its_the_beginning.png", "png"), ImageType.BADGE);
-        Image leader = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/leader.png", "png"), ImageType.BADGE);
-        Image longA = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/long.png", "png"), ImageType.BADGE);
-        Image lookingUp = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/looking_up.png", "png"), ImageType.BADGE);
-        Image smileFromProfessor = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/smile.png", "png"), ImageType.BADGE);
-        Image theEnd = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/the_end.png", "png"), ImageType.BADGE);
-        Image topTwenty = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/twenty.png", "png"), ImageType.BADGE);
+        Image activityMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_master.png", "png"), ImageType.BADGE, null);
+        Image activityExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_experienced.png", "png"), ImageType.BADGE, null);
+        Image fileTaskExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_experienced.png", "png"), ImageType.BADGE, null);
+        Image fileTaskFirstSteps = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_first_steps.png", "png"), ImageType.BADGE, null);
+        Image fileTaskMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_master.png", "png"), ImageType.BADGE, null);
+        Image topFive = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/five.png", "png"), ImageType.BADGE, null);
+        Image graphTaskExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_experienced.png", "png"), ImageType.BADGE, null);
+        Image graphTaskFirstSteps = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_first_steps.png", "png"), ImageType.BADGE, null);
+        Image graphTaskMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_master.png", "png"), ImageType.BADGE, null);
+        Image groupLeader = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/group_leader.png", "png"), ImageType.BADGE, null);
+        Image handshake = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/handshake.png", "png"), ImageType.BADGE, null);
+        Image inTheMiddle = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/in_the_middle.png", "png"), ImageType.BADGE, null);
+        Image itsTheBeginning = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/its_the_beginning.png", "png"), ImageType.BADGE, null);
+        Image leader = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/leader.png", "png"), ImageType.BADGE, null);
+        Image longA = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/long.png", "png"), ImageType.BADGE, null);
+        Image lookingUp = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/looking_up.png", "png"), ImageType.BADGE, null);
+        Image smileFromProfessor = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/smile.png", "png"), ImageType.BADGE, null);
+        Image theEnd = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/the_end.png", "png"), ImageType.BADGE, null);
+        Image topTwenty = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/twenty.png", "png"), ImageType.BADGE, null);
 
         fileRepository.saveAll(List.of(activityMaster, activityExperienced, fileTaskExperienced,fileTaskFirstSteps,
                 fileTaskMaster,topFive,graphTaskExperienced,graphTaskFirstSteps,graphTaskMaster,groupLeader

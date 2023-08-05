@@ -72,7 +72,7 @@ public class RankService {
         courseValidator.validateCurrentUserCanAccess(form.getCourseId());
         Course course = courseService.getCourse(form.getCourseId());
         MultipartFile multipartFile = form.getImage();
-        Image image = new Image(form.getName() + " image", multipartFile.getBytes(), ImageType.RANK);
+        Image image = new Image(form.getName() + " image", multipartFile.getBytes(), ImageType.RANK, course);
         imageRepository.save(image);
         Rank rank = new Rank(
                 null,
@@ -109,6 +109,10 @@ public class RankService {
 
     public CurrentRankResponse getCurrentRank(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
         User user = userService.getCurrentUserAndValidateStudentAccount();
+        return getCurrentRank(user, courseId);
+    }
+
+    public CurrentRankResponse getCurrentRank(User user, Long courseId) throws EntityNotFoundException {
         courseValidator.validateUserCanAccess(user, courseId);
         Course course = courseService.getCourse(courseId);
 
@@ -162,7 +166,7 @@ public class RankService {
                 .toList();
     }
 
-    public Rank getCurrentRank(User user, Course course) throws EntityNotFoundException {
+    public Rank getCurrentRankB(User user, Course course) throws EntityNotFoundException {
         List<Rank> ranks = getSortedRanksForHeroType(user.getHeroType(), course);
         return getCurrentRank(ranks, user.getPoints());
     }

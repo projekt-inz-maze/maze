@@ -141,13 +141,14 @@ public class BadgeVisitor {
             return false;
         }
         Boolean forGroup = badge.getForGroup();
+        Long courseId = badge.getCourse().getId();
+
         if (forGroup != null && forGroup) {
             BigDecimal rankingInGroupPosition = BigDecimal.valueOf(rankingService.getGroupRankingPosition(courseId));
 
             if (badge.getTopScore() == 0) {
                 return rankingInGroupPosition.equals(BigDecimal.ONE);
             }
-//TODO add courseId
             BigDecimal numStudentsInGroup = BigDecimal.valueOf(userService.getUserGroup(courseId)
                     .getUsers()
                     .stream()

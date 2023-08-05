@@ -44,7 +44,7 @@ public class FileTaskResultService {
         log.info("Saving file to file task result with id {}", form.getFileTaskId());
         String email = authService.getAuthentication().getName();
         FileTaskResult result = getFileTaskResultByFileTaskAndUser(form.getFileTaskId(), email);
-        if(result == null){
+        if (result == null){
             result = new FileTaskResult();
             result.setAnswer("");
             result.setFileTask(fileTaskRepository.findFileTaskById(form.getFileTaskId()));
@@ -52,8 +52,8 @@ public class FileTaskResultService {
             result.setEvaluated(false);
             result.setUser(userRepository.findUserByEmail(email));
         }
-        if(form.getFile() != null) {
-            File file = new File(null, form.getFileName(), form.getFile().getBytes());
+        if (form.getFile() != null) {
+            File file = new File(null, form.getFileName(), result.getCourse(), form.getFile().getBytes());
             fileRepository.save(file);
             result.getFiles().add(file);
             fileTaskResultRepository.save(result);
@@ -77,7 +77,7 @@ public class FileTaskResultService {
         FileTask fileTask = fileTaskRepository.findFileTaskById(fileTaskId);
         activityValidator.validateActivityIsNotNull(fileTask, fileTaskId);
         User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student, email);
+        userValidator.validateStudentAccount(student);
         return fileTaskResultRepository.findFileTaskResultByFileTaskAndUser(fileTask, student);
     }
 
