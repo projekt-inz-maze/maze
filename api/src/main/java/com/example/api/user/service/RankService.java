@@ -38,7 +38,6 @@ public class RankService {
     private final RankRepository rankRepository;
     private final ImageRepository imageRepository;
     private final RankValidator rankValidator;
-    private final UserValidator userValidator;
     private final CourseService courseService;
     private final UserService userService;
     private final CourseValidator courseValidator;
@@ -64,7 +63,10 @@ public class RankService {
     }
 
     public Map<HeroType, List<Rank>> getHeroTypeToRanks(Course course) {
-        return rankRepository.findAllByCourse(course).stream().collect(Collectors.groupingBy(Rank::getHeroType));
+        return rankRepository.findAllByCourseIs(course).stream().collect(Collectors.groupingBy(Rank::getHeroType));
+    }
+    public List<Rank> getAllForHeroType(Course course, HeroType heroType) {
+        return rankRepository.findAllByCourseIsAndHeroTypeIs(course, heroType);
     }
 
     public void addRank(AddRankForm form) throws RequestValidationException, IOException {
@@ -107,19 +109,19 @@ public class RankService {
         }
     }
 
-    public CurrentRankResponse getCurrentRank(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
+    public CurrentRankResponse getCurrentRankResponse(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
         User user = userService.getCurrentUserAndValidateStudentAccount();
-        return getCurrentRank(user, courseId);
+        return getCurrentRankResponse(user, courseId);
     }
 
-    public CurrentRankResponse getCurrentRank(User user, Long courseId) throws EntityNotFoundException {
+    public CurrentRankResponse getCurrentRankResponse(User user, Long courseId) throws EntityNotFoundException {
         courseValidator.validateUserCanAccess(user, courseId);
         Course course = courseService.getCourse(courseId);
 
         double points = user.getPoints();
         HeroType heroType = user.getHeroType();
         List<Rank> ranks = getSortedRanksForHeroType(heroType, course);
-        Rank currentRank = getCurrentRank(ranks, points);
+        Rank currentRank = getCurrentRankResponse(ranks, points);
         if (currentRank == null) {
             if (ranks.size() == 0) {
                 return new CurrentRankResponse(null, null, null, points);
@@ -149,7 +151,7 @@ public class RankService {
         );
     }
 
-    private Rank getCurrentRank(List<Rank> ranks, double points) {
+    private Rank getCurrentRankResponse(List<Rank> ranks, double points) {
         Rank currRank = null;
         for (Rank rank: ranks) {
             if (rank.getMinPoints() <= points) {
@@ -159,16 +161,16 @@ public class RankService {
         return currRank;
     }
 
-    public List<Rank> getSortedRanksForHeroType(HeroType heroType, Course course) throws EntityNotFoundException {
-        return getHeroTypeToRanks(course).get(heroType)
+    public List<Rank> getSortedRanksForHeroType(HeroType heroType, Course course) {
+        return getAllForHeroType(course, heroType)
                 .stream()
                 .sorted(Comparator.comparingDouble(Rank::getMinPoints))
                 .toList();
     }
 
-    public Rank getCurrentRankB(User user, Course course) throws EntityNotFoundException {
+    public Rank getCurrentRank(User user, Course course) {
         List<Rank> ranks = getSortedRanksForHeroType(user.getHeroType(), course);
-        return getCurrentRank(ranks, user.getPoints());
+        return getCurrentRankResponse(ranks, user.getPoints());
     }
 
     public void deleteRank(Long id) throws RequestValidationException {

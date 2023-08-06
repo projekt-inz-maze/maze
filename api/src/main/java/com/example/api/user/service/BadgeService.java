@@ -66,7 +66,7 @@ public class BadgeService {
     }
 
     public void checkAllBadges(User student) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        log.info("checkAllBadges");
+        System.out.println("checkAllBadges");
         List<Badge> studentBadges = student.getUnlockedBadges()
                 .stream()
                 .map(UnlockedBadge::getBadge)

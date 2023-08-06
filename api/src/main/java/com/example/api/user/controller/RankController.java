@@ -43,7 +43,7 @@ public class RankController {
 
     @GetMapping("/current")
     public ResponseEntity<CurrentRankResponse> getCurrentRankInfo(@RequestParam Long courseId) throws RequestValidationException {
-        return ResponseEntity.ok().body(rankService.getCurrentRank(courseId));
+        return ResponseEntity.ok().body(rankService.getCurrentRankResponse(courseId));
     }
 
     @DeleteMapping("/delete")

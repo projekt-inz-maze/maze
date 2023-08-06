@@ -24,7 +24,7 @@ public class RankingResponse {
     @Schema(required = true) private Integer unblockedBadges;
     @Schema(required = false) private SurveyAnswerResponse studentAnswer;
 
-    public RankingResponse(User user, RankService rankService, Course course) throws EntityNotFoundException {
+    public RankingResponse(User user, RankService rankService, Course course) {
         this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
@@ -32,7 +32,18 @@ public class RankingResponse {
         this.heroType = user.getHeroType();
         this.unblockedBadges = user.getUnlockedBadges().size();
 
-        Rank rank = rankService.getCurrentRankB(user, course);
+        Rank rank = rankService.getCurrentRank(user, course);
         this.rank = rank != null ? rank.getName() : null;
+    }
+
+    public RankingResponse(User user, String rankname){
+        this.email = user.getEmail();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.groupName = user.getGroup().getName();
+        this.heroType = user.getHeroType();
+        this.unblockedBadges = user.getUnlockedBadges().size();
+
+        this.rank = rankname;
     }
 }

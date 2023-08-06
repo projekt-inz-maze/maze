@@ -202,8 +202,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User getCurrentUserAndValidateStudentAccount() throws WrongUserTypeException {
-        String email = authService.getAuthentication().getName();
-        User user = userRepository.findUserByEmail(email);
+        User user = getCurrentUser();
         userValidator.validateStudentAccount(user);
         return user;
     }

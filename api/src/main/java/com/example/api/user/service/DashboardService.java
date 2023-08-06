@@ -1,5 +1,14 @@
 package com.example.api.user.service;
 
+import com.example.api.activity.result.dto.response.RankingResponse;
+import com.example.api.activity.result.model.FileTaskResult;
+import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.activity.result.model.SurveyResult;
+import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.result.repository.FileTaskResultRepository;
+import com.example.api.activity.result.repository.GraphTaskResultRepository;
+import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.result.service.ranking.RankingService;
 import com.example.api.activity.task.model.*;
 import com.example.api.activity.task.service.FileTaskService;
@@ -9,28 +18,16 @@ import com.example.api.activity.task.service.SurveyService;
 import com.example.api.course.model.Course;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
-import com.example.api.map.dto.response.task.ActivityType;
-import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.result.model.TaskResult;
+import com.example.api.map.dto.response.task.ActivityType;
 import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;
+import com.example.api.map.service.ChapterService;
+import com.example.api.user.dto.response.dashboard.*;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
-import com.example.api.activity.result.repository.AdditionalPointsRepository;
-import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.activity.result.repository.GraphTaskResultRepository;
-import com.example.api.activity.result.repository.SurveyResultRepository;
-import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
-import com.example.api.map.service.ChapterService;
-import com.example.api.validator.UserValidator;
-import com.example.api.user.dto.response.dashboard.*;
 import com.example.api.util.calculator.PointsCalculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,9 +45,6 @@ import java.util.stream.Stream;
 @Slf4j
 @Transactional
 public class DashboardService {
-    private final UserRepository userRepository;
-    private final AuthenticationService authService;
-    private final UserValidator userValidator;
     private final RankingService rankingService;
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
@@ -84,8 +78,6 @@ public class DashboardService {
     }
 
     private HeroTypeStats getHeroTypeStats(User student, Course course) throws EntityNotFoundException {
-        log.info("getHeroTypeStats");
-
         String heroType = String.valueOf(student.getHeroType());
 
         List<RankingResponse> ranking = rankingService.getRanking(course);
@@ -240,7 +232,7 @@ public class DashboardService {
         Double experiencePoints = student.getPoints();
         Double nextLvlPoints = getNexLvlPoints(student, course);
 
-        Rank rank = rankService.getCurrentRankB(student, course);
+        Rank rank = rankService.getCurrentRank(student, course);
         String rankName = rank != null ? rank.getName() : null;
         Long badgesNumber = (long) student.getUnlockedBadges().size();
         Long completedActivities = getCompletedActivities(student);

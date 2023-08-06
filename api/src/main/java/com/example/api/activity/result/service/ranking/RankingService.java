@@ -23,9 +23,6 @@ import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
-import com.example.api.activity.task.repository.FileTaskRepository;
-import com.example.api.activity.task.repository.GraphTaskRepository;
-import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.user.service.RankService;
 import com.example.api.user.service.UserService;
@@ -39,7 +36,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.DoubleStream;
 
@@ -50,11 +46,8 @@ import java.util.stream.DoubleStream;
 public class RankingService {
     private final UserRepository userRepository;
     private final GraphTaskResultRepository graphTaskResultRepository;
-    private final GraphTaskRepository graphTaskRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
-    private final FileTaskRepository fileTaskRepository;
     private final SurveyResultRepository surveyResultRepository;
-    private final SurveyRepository surveyRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
     private final UserValidator userValidator;
     private final GroupValidator groupValidator;
@@ -70,9 +63,8 @@ public class RankingService {
 
     public List<RankingResponse> getRanking(Course course) {
         List<RankingResponse> rankingList = course
-                .getGroups()
+                .getAllStudents()
                 .stream()
-                .flatMap(group -> group.getUsers().stream())
                 .map(student -> {
                     try {
                         return studentToRankingEntry(student, course);
@@ -207,7 +199,7 @@ public class RankingService {
         return getPositionFromRanking(getRanking(courseId), student.getEmail());
     }
 
-    public Integer getGroupRankingPosition(Long courseId) throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException, EntityNotFoundException {
+    public Integer getGroupRankingPosition(Long courseId) throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
         groupValidator.validateUserGroupIsNotNull(student);
 
@@ -224,7 +216,8 @@ public class RankingService {
     }
 
     private RankingResponse studentToRankingEntry(User student, Course course) throws EntityNotFoundException {
-        RankingResponse rankingResponse = new RankingResponse(student, rankService, course);
+        Rank rank = rankService.getCurrentRank(student, course);
+        RankingResponse rankingResponse = new RankingResponse(student, rank == null? null : rank.getName());
         rankingResponse.setPoints(getStudentPoints(student));
         return rankingResponse;
     }

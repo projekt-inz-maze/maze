@@ -189,9 +189,13 @@ public class DatabaseConfig {
             userRepository.save(professor2);
             courseRepository.save(course2);
 
+            List<Group> groups = new ArrayList<>();
+            groups.add(group);
+            groups.add(group1);
+            course1.setGroups(groups);
+            courseRepository.save(course1);
+
             // TASKS
-
-
             List<Question> questions = addQuestionSet(course1, questionService, optionService);
             AccessDate ac1 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group1));
             AccessDate ac2 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group));
@@ -441,6 +445,7 @@ public class DatabaseConfig {
             userRepository.saveAll(students2);
 
             initAllRanks(course1);
+            initAllRanks(course2);
             initBadges(course1);
         };
     }
@@ -604,6 +609,7 @@ public class DatabaseConfig {
         rankRepository.saveAll(List.of(wizardRank1, wizardRank2, wizardRank3, wizardRank4, wizardRank5));
         rankRepository.saveAll(List.of(priestRank1, priestRank2, priestRank3, priestRank4, priestRank5));
         rankRepository.saveAll(List.of(rogueRank1, rogueRank2, rogueRank3, rogueRank4, rogueRank5));
+        courseRepository.save(course);
     }
 
     private byte[] getByteArrayForFile(String path) throws IOException {

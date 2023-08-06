@@ -45,7 +45,7 @@ public class User {
     private AccountType accountType;
     private Integer level;
     //TODO kluczowe - dodac punkty <-> grupa i sprawdzic czy nie ma tego typ innych syfow [*]
-    private Double points;
+    private Double points = 0D;
 
     @Embedded
     @JsonInclude(JsonInclude.Include.NON_NULL)
