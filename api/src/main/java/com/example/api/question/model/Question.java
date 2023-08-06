@@ -46,8 +46,27 @@ public class Question {
     private String answerForOpenedQuestion;
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
     private Course course;
+
+    public Question(QuestionType type,
+                    String content,
+                    String hint,
+                    Difficulty difficulty,
+                    List<Option> options,
+                    Double points,
+                    List<Question> next,
+                    @Nullable String answerForOpenedQuestion,
+                    Course course) {
+        this.type = type;
+        this.content = content;
+        this.hint = hint;
+        this.difficulty = difficulty;
+        this.options = options;
+        this.points = points;
+        this.next = next;
+        this.answerForOpenedQuestion = answerForOpenedQuestion;
+        this.course = course;
+    }
 
     // Only for QuestionType.OPENED
     public Question(QuestionType type,

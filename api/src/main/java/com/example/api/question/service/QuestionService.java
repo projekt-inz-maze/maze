@@ -48,8 +48,8 @@ public class QuestionService {
     private final BadgeService badgeService;
     private final PointsCalculator pointsCalculator;
 
-    public Question saveQuestion(Question question) {
-        return questionRepository.save(question);
+    public List<Question> saveQuestions(List<Question> questions) {
+        return questionRepository.saveAll(questions);
     }
 
     public Question getQuestion(Long id) throws EntityNotFoundException {

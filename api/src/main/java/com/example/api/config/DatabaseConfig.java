@@ -81,7 +81,6 @@ public class DatabaseConfig {
     private final FileRepository fileRepository;
     private final UserRepository userRepository;
     private final BadgeRepository badgeRepository;
-    private final UnlockedBadgeRepository unlockedBadgeRepository;
     private final RequirementRepository requirementRepository;
     private final HeroRepository heroRepository;
     private final CourseRepository courseRepository;
@@ -98,7 +97,6 @@ public class DatabaseConfig {
         return args -> {
 
             // HEROES
-
             long week = TimeUnit.DAYS.toMillis(7);
             Hero priest = new Priest(HeroType.PRIEST, week);
             Hero rogue = new Rogue(HeroType.ROGUE, week);
@@ -136,17 +134,17 @@ public class DatabaseConfig {
             students2.add(createStudent("manowak@student.agh.edu.pl", "Małgorzata Anna", "Kowalska", 163457, priest, course2));
 
 
-            User professor = new User("bmaj@agh.edu.pl",
+            User professor1 = new User("bmaj@agh.edu.pl",
                     "Bernard",
                     "Maj",
                     AccountType.PROFESSOR);
-            professor.setPassword("12345");
+            professor1.setPassword("12345");
 
-            User professor1 = new User("szielinski@agh.edu.pl",
+            User professor2 = new User("szielinski@agh.edu.pl",
                     "Sławomir",
                     "Zieliński",
                     AccountType.PROFESSOR);
-            professor1.setPassword("12345");
+            professor2.setPassword("12345");
 
             Group group = new Group();
             group.setInvitationCode("1111");
@@ -167,75 +165,34 @@ public class DatabaseConfig {
                 user.setGroup(group);
                 userService.saveUser(user);
             }
+
             for (User user: students2) {
                 user.setLevel(1);
                 user.setGroup(group1);
                 userService.saveUser(user);
             }
 
-            professor.setGroup(group);
-            professor1.setGroup(group1);
-            userService.saveUser(professor);
+            professor1.setGroup(group);
+            professor2.setGroup(group1);
             userService.saveUser(professor1);
+            userService.saveUser(professor2);
 
-            professor.getCourses().add(course1);
-            course1.setOwner(professor);
+            professor1.getCourses().add(course1);
+            course1.setOwner(professor1);
 
-            userRepository.save(professor);
+            professor2.getCourses().add(course2);
+            course2.setOwner(professor2);
+
+            userRepository.save(professor1);
             courseRepository.save(course1);
+
+            userRepository.save(professor2);
+            courseRepository.save(course2);
 
             // TASKS
 
-            Option option = new Option(null, "hub z routerem", true, null);
-            Option option1 = new Option(null, "komputer z komputerem", false, null);
-            Option option2 = new Option(null, "switch z routerem", true, null);
-            Option option3 = new Option(null, "hub ze switchem", false, null);
 
-            Option option4 = new Option(null, "Tak", true, null);
-            Option option5 = new Option(null, "Nie", false, null);
-
-            Question startQuestion = new Question();
-
-            Question question1 = new Question(null, QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
-                    Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null, course1);
-            Question question2 = new Question(null, QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
-                    "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null, course1);
-            Question question3 = new Question(null, QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
-                    "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP", course1);
-            Question question4 = new Question(null, QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
-                    "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka", course1);
-            Question question5 = new Question(null, QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
-                    "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski", course1);
-
-            questionService.saveQuestion(startQuestion);
-            questionService.saveQuestion(question1);
-            questionService.saveQuestion(question2);
-            questionService.saveQuestion(question3);
-            questionService.saveQuestion(question4);
-            questionService.saveQuestion(question5);
-
-            startQuestion.getNext().addAll(List.of(question1, question2, question3));
-            question1.getNext().addAll(List.of(question2, question4));
-            question3.getNext().addAll(List.of(question5));
-
-            questionService.saveQuestion(startQuestion);
-            questionService.saveQuestion(question1);
-            questionService.saveQuestion(question2);
-            questionService.saveQuestion(question3);
-            questionService.saveQuestion(question4);
-            questionService.saveQuestion(question5);
-
-            optionService.saveAll(List.of(option, option1, option2, option3, option4, option5));
-
-            option.setQuestion(question1);
-            option1.setQuestion(question1);
-            option2.setQuestion(question1);
-            option3.setQuestion(question1);
-            option4.setQuestion(question2);
-            option5.setQuestion(question2);
-
-            optionService.saveAll(List.of(option, option1, option2, option3, option4, option5));
-
+            List<Question> questions = addQuestionSet(course1, questionService, optionService);
             AccessDate ac1 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group1));
             AccessDate ac2 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group));
             accessDateService.saveAccessDate(ac1);
@@ -243,7 +200,7 @@ public class DatabaseConfig {
 
             GraphTask graphTask = new GraphTask();
             graphTask.setIsBlocked(false);
-            graphTask.setQuestions(List.of(startQuestion, question1, question2, question3,  question4, question5));
+            graphTask.setQuestions(questions);
             graphTask.setTitle("Dżungla kabli");
             graphTask.setDescription("Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!");
             graphTask.setRequiredKnowledge("skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą");
@@ -251,77 +208,32 @@ public class DatabaseConfig {
             graphTask.setExperience(20D);
             graphTask.setTimeToSolveMillis(12 * 60 * 1000L);
             graphTask.setRequirements(createDefaultRequirements());
-            graphTask.setProfessor(professor);
+            graphTask.setProfessor(professor1);
             graphTask.setPosX(5);
             graphTask.setPosY(4);
+            graphTask.setCourse(course1);
+
             graphTaskService.saveGraphTask(graphTask);
 
-            Option optionTwo = new Option(null, "hub z routerem", true, null);
-            Option optionTwo1 = new Option(null, "komputer z komputerem", false, null);
-            Option optionTwo2 = new Option(null, "switch z routerem", true, null);
-            Option optionTwo3 = new Option(null, "hub ze switchem", false, null);
-
-            Option optionTwo4 = new Option(null, "Tak", true, null);
-            Option optionTwo5 = new Option(null, "Nie", false, null);
-
-            Question startQuestionTwo = new Question();
-
-            Question questionTwo1 = new Question(null, QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
-                    Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null, course1);
-            Question questionTwo2 = new Question(null, QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
-                    "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null, course1);
-            Question questionTwo3 = new Question(null, QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
-                    "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP", course1);
-            Question questionTwo4 = new Question(null, QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
-                    "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka", course1);
-            Question questionTwo5 = new Question(null, QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
-                    "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski", course1);
-
-            questionService.saveQuestion(startQuestionTwo);
-            questionService.saveQuestion(questionTwo1);
-            questionService.saveQuestion(questionTwo2);
-            questionService.saveQuestion(questionTwo3);
-            questionService.saveQuestion(questionTwo4);
-            questionService.saveQuestion(questionTwo5);
-
-            startQuestionTwo.getNext().addAll(List.of(questionTwo1, questionTwo2, questionTwo3));
-            questionTwo1.getNext().addAll(List.of(questionTwo2, questionTwo4));
-            questionTwo3.getNext().addAll(List.of(questionTwo5));
-
-            questionService.saveQuestion(startQuestionTwo);
-            questionService.saveQuestion(questionTwo1);
-            questionService.saveQuestion(questionTwo2);
-            questionService.saveQuestion(questionTwo3);
-            questionService.saveQuestion(questionTwo4);
-            questionService.saveQuestion(questionTwo5);
-
-            optionService.saveAll(List.of(optionTwo, optionTwo1, optionTwo2, optionTwo3, optionTwo4, optionTwo5));
-
-            optionTwo.setQuestion(questionTwo1);
-            optionTwo1.setQuestion(questionTwo1);
-            optionTwo2.setQuestion(questionTwo1);
-            optionTwo3.setQuestion(questionTwo1);
-            optionTwo4.setQuestion(questionTwo2);
-            optionTwo5.setQuestion(questionTwo2);
-
-            optionService.saveAll(List.of(optionTwo, optionTwo1, optionTwo2, optionTwo3, optionTwo4, optionTwo5));
+            List<Question> questions2 = addQuestionSet(course1, questionService, optionService);
 
             List<Requirement> graphTaskTwoReq = requirementService.getDefaultRequirements(true);
 
             GraphTask graphTaskTwo = new GraphTask();
             graphTaskTwo.setIsBlocked(false);
-            graphTaskTwo.setQuestions(List.of(startQuestionTwo, questionTwo1, questionTwo2, questionTwo3,  questionTwo4, questionTwo5));
+            graphTaskTwo.setQuestions(questions2);
             graphTaskTwo.setTitle("Dżungla kabli II");
             graphTaskTwo.setDescription("Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!");
             graphTaskTwo.setRequiredKnowledge("skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą");
             graphTaskTwo.setMaxPoints(60.0);
             graphTaskTwo.setExperience(25D);
             graphTaskTwo.setTimeToSolveMillis(12 * 60 * 1000L);
-            graphTaskTwo.setProfessor(professor);
+            graphTaskTwo.setProfessor(professor1);
             graphTaskTwo.setPosX(2);
             graphTaskTwo.setPosY(2);
             graphTaskTwo.setCourse(course1);
             graphTaskTwo.setRequirements(graphTaskTwoReq);
+            graphTaskTwo.setCourse(course1);
 
             graphTaskService.saveGraphTask(graphTaskTwo);
 
@@ -331,7 +243,7 @@ public class DatabaseConfig {
             fileTask.setPosY(3);
             fileTask.setTitle("Niszczator kabli");
             fileTask.setDescription("Jak złamałbyś kabel światłowodowy? Czym?");
-            fileTask.setProfessor(professor);
+            fileTask.setProfessor(professor1);
             fileTask.setMaxPoints(30.0);
             fileTask.setExperience(10D);
             fileTask.setCourse(course1);
@@ -347,6 +259,7 @@ public class DatabaseConfig {
             info1.setDescription("Przewody internetowe da się podzielić także pod względem ich ekranowania.");
             info1.setContent(MessageManager.LOREM_IPSUM);
             info1.setRequirements(createDefaultRequirements());
+            info1.setCourse(course1);
 
             Url url1 = new Url();
             Url url2 = new Url();
@@ -357,7 +270,7 @@ public class DatabaseConfig {
             info1.setImageUrls(List.of(url1, url2));
             info1.setTitle("Skrętki");
             info1.setExperience(10.0);
-            info1.setProfessor(professor);
+            info1.setProfessor(professor1);
             info1.setCourse(course1);
             infoService.saveInfo(info1);
 
@@ -374,8 +287,8 @@ public class DatabaseConfig {
             survey.setCourse(course1);
             surveyService.saveSurvey(survey);
 
-            byte[] chapterImageBytes = getByteArrayForFile("src/main/resources/images/chapter_image.png", "png");
-            Image chapterImage = new Image("Chapter image 1", chapterImageBytes, ImageType.CHAPTER, null);
+            byte[] chapterImageBytes = getByteArrayForFile("src/main/resources/images/chapter_image.png");
+            Image chapterImage = new Image("Chapter image 1", chapterImageBytes, ImageType.CHAPTER, course1);
             fileRepository.save(chapterImage);
 
             ActivityMap activityMap1 = new ActivityMap();
@@ -465,7 +378,7 @@ public class DatabaseConfig {
             additionalPoints.setUser(students1.get(0));
             additionalPoints.setPointsReceived(100D);
             additionalPoints.setSendDateMillis(calendar.getTimeInMillis());
-            additionalPoints.setProfessorEmail(professor.getEmail());
+            additionalPoints.setProfessorEmail(professor1.getEmail());
             additionalPoints.setDescription("Good job");
             addReceivedPointsForUser(students1.get(0), additionalPoints.getPointsReceived());
             additionalPoints.setCourse(course1);
@@ -508,20 +421,20 @@ public class DatabaseConfig {
             fileRepository.save(file);
 
 
-            byte[] chapterImageBytes2 = getByteArrayForFile("src/main/resources/images/chapter_image2.png", "png");
-            Image chapterImage2 = new Image("Chapter image 2", chapterImageBytes2, ImageType.CHAPTER, null);
+            byte[] chapterImageBytes2 = getByteArrayForFile("src/main/resources/images/chapter_image2.png");
+            Image chapterImage2 = new Image("Chapter image 2", chapterImageBytes2, ImageType.CHAPTER, course1);
             fileRepository.save(chapterImage2);
 
-            byte[] chapterImageBytes3 = getByteArrayForFile("src/main/resources/images/chapter_image3.png", "png");
-            Image chapterImage3 = new Image("Chapter image 3", chapterImageBytes3, ImageType.CHAPTER, null);
+            byte[] chapterImageBytes3 = getByteArrayForFile("src/main/resources/images/chapter_image3.png");
+            Image chapterImage3 = new Image("Chapter image 3", chapterImageBytes3, ImageType.CHAPTER, course1);
             fileRepository.save(chapterImage3);
 
-            byte[] chapterImageBytes4 = getByteArrayForFile("src/main/resources/images/chapter_image4.png", "png");
-            Image chapterImage4 = new Image("Chapter image 4", chapterImageBytes4, ImageType.CHAPTER, null);
+            byte[] chapterImageBytes4 = getByteArrayForFile("src/main/resources/images/chapter_image4.png");
+            Image chapterImage4 = new Image("Chapter image 4", chapterImageBytes4, ImageType.CHAPTER, course1);
             fileRepository.save(chapterImage4);
 
-            byte[] chapterImageBytes5 = getByteArrayForFile("src/main/resources/images/chapter_image5.png", "png");
-            Image chapterImage5 = new Image("Chapter image 5", chapterImageBytes5, ImageType.CHAPTER, null);
+            byte[] chapterImageBytes5 = getByteArrayForFile("src/main/resources/images/chapter_image5.png");
+            Image chapterImage5 = new Image("Chapter image 5", chapterImageBytes5, ImageType.CHAPTER, course1);
             fileRepository.save(chapterImage5);
 
             userRepository.saveAll(students1);
@@ -583,84 +496,84 @@ public class DatabaseConfig {
     }
 
     private void initAllRanks(Course course) throws IOException {
-        byte[] warriorImageBytes1 = getByteArrayForFile("src/main/resources/images/warrior1.png", "png");
-        Image warriorImage1 = new Image("Warrior rank image 1", warriorImageBytes1, ImageType.RANK, null);
+        byte[] warriorImageBytes1 = getByteArrayForFile("src/main/resources/images/warrior1.png");
+        Image warriorImage1 = new Image("Warrior rank image 1", warriorImageBytes1, ImageType.RANK, course);
         fileRepository.save(warriorImage1);
 
-        byte[] warriorImageBytes2 = getByteArrayForFile("src/main/resources/images/warrior.png", "png");
-        Image warriorImage2 = new Image("Warrior rank image 2", warriorImageBytes2, ImageType.RANK, null);
+        byte[] warriorImageBytes2 = getByteArrayForFile("src/main/resources/images/warrior.png");
+        Image warriorImage2 = new Image("Warrior rank image 2", warriorImageBytes2, ImageType.RANK, course);
         fileRepository.save(warriorImage2);
 
-        byte[] warriorImageBytes3 = getByteArrayForFile("src/main/resources/images/swordsman.png", "png");
-        Image warriorImage3 = new Image("Warrior rank image 3", warriorImageBytes3, ImageType.RANK, null);
+        byte[] warriorImageBytes3 = getByteArrayForFile("src/main/resources/images/swordsman.png");
+        Image warriorImage3 = new Image("Warrior rank image 3", warriorImageBytes3, ImageType.RANK, course);
         fileRepository.save(warriorImage3);
 
-        byte[] warriorImageBytes4 = getByteArrayForFile("src/main/resources/images/knight.png", "png");
-        Image warriorImage4 = new Image("Warrior rank image 4", warriorImageBytes4, ImageType.RANK, null);
+        byte[] warriorImageBytes4 = getByteArrayForFile("src/main/resources/images/knight.png");
+        Image warriorImage4 = new Image("Warrior rank image 4", warriorImageBytes4, ImageType.RANK, course);
         fileRepository.save(warriorImage4);
 
-        byte[] warriorImageBytes5 = getByteArrayForFile("src/main/resources/images/knightHorse.png", "png");
-        Image warriorImage5 = new Image("Warrior rank image 5", warriorImageBytes5, ImageType.RANK, null);
+        byte[] warriorImageBytes5 = getByteArrayForFile("src/main/resources/images/knightHorse.png");
+        Image warriorImage5 = new Image("Warrior rank image 5", warriorImageBytes5, ImageType.RANK, course);
         fileRepository.save(warriorImage5);
 
-        byte[] wizardImageBytes1 = getByteArrayForFile("src/main/resources/images/wizard1.png", "png");
-        Image wizardImage1 = new Image("Wizard rank image 1", wizardImageBytes1, ImageType.RANK, null);
+        byte[] wizardImageBytes1 = getByteArrayForFile("src/main/resources/images/wizard1.png");
+        Image wizardImage1 = new Image("Wizard rank image 1", wizardImageBytes1, ImageType.RANK, course);
         fileRepository.save(wizardImage1);
 
-        byte[] wizardImageBytes2 = getByteArrayForFile("src/main/resources/images/wizard2.png", "png");
-        Image wizardImage2 = new Image("Wizard rank image 2", wizardImageBytes2, ImageType.RANK, null);
+        byte[] wizardImageBytes2 = getByteArrayForFile("src/main/resources/images/wizard2.png");
+        Image wizardImage2 = new Image("Wizard rank image 2", wizardImageBytes2, ImageType.RANK, course);
         fileRepository.save(wizardImage2);
 
-        byte[] wizardImageBytes3 = getByteArrayForFile("src/main/resources/images/wizard3.png", "png");
-        Image wizardImage3 = new Image("Wizard rank image 3", wizardImageBytes3, ImageType.RANK, null);
+        byte[] wizardImageBytes3 = getByteArrayForFile("src/main/resources/images/wizard3.png");
+        Image wizardImage3 = new Image("Wizard rank image 3", wizardImageBytes3, ImageType.RANK, course);
         fileRepository.save(wizardImage3);
 
-        byte[] wizardImageBytes4 = getByteArrayForFile("src/main/resources/images/wizard4.png", "png");
-        Image wizardImage4 = new Image("Wizard rank image 4", wizardImageBytes4, ImageType.RANK, null);
+        byte[] wizardImageBytes4 = getByteArrayForFile("src/main/resources/images/wizard4.png");
+        Image wizardImage4 = new Image("Wizard rank image 4", wizardImageBytes4, ImageType.RANK, course);
         fileRepository.save(wizardImage4);
 
-        byte[] wizardImageBytes5 = getByteArrayForFile("src/main/resources/images/wizard5.png", "png");
-        Image wizardImage5 = new Image("Wizard rank image 5", wizardImageBytes5, ImageType.RANK, null);
+        byte[] wizardImageBytes5 = getByteArrayForFile("src/main/resources/images/wizard5.png");
+        Image wizardImage5 = new Image("Wizard rank image 5", wizardImageBytes5, ImageType.RANK, course);
         fileRepository.save(wizardImage5);
 
-        byte[] priestImageBytes1 = getByteArrayForFile("src/main/resources/images/priest1.png", "png");
-        Image priestImage1 = new Image("Priest rank image 1", priestImageBytes1, ImageType.RANK, null);
+        byte[] priestImageBytes1 = getByteArrayForFile("src/main/resources/images/priest1.png");
+        Image priestImage1 = new Image("Priest rank image 1", priestImageBytes1, ImageType.RANK, course);
         fileRepository.save(priestImage1);
 
-        byte[] priestImageBytes2 = getByteArrayForFile("src/main/resources/images/priest2.png", "png");
-        Image priestImage2 = new Image("Priest rank image 2", priestImageBytes2, ImageType.RANK, null);
+        byte[] priestImageBytes2 = getByteArrayForFile("src/main/resources/images/priest2.png");
+        Image priestImage2 = new Image("Priest rank image 2", priestImageBytes2, ImageType.RANK, course);
         fileRepository.save(priestImage2);
 
-        byte[] priestImageBytes3 = getByteArrayForFile("src/main/resources/images/priest3.png", "png");
-        Image priestImage3 = new Image("Priest rank image 3", priestImageBytes3, ImageType.RANK, null);
+        byte[] priestImageBytes3 = getByteArrayForFile("src/main/resources/images/priest3.png");
+        Image priestImage3 = new Image("Priest rank image 3", priestImageBytes3, ImageType.RANK, course);
         fileRepository.save(priestImage3);
 
-        byte[] priestImageBytes4 = getByteArrayForFile("src/main/resources/images/priest4.png", "png");
-        Image priestImage4 = new Image("Priest rank image 4", priestImageBytes4, ImageType.RANK, null);
+        byte[] priestImageBytes4 = getByteArrayForFile("src/main/resources/images/priest4.png");
+        Image priestImage4 = new Image("Priest rank image 4", priestImageBytes4, ImageType.RANK, course);
         fileRepository.save(priestImage4);
 
-        byte[] priestImageBytes5 = getByteArrayForFile("src/main/resources/images/priest5.png", "png");
-        Image priestImage5 = new Image("Priest rank image 5", priestImageBytes5, ImageType.RANK, null);
+        byte[] priestImageBytes5 = getByteArrayForFile("src/main/resources/images/priest5.png");
+        Image priestImage5 = new Image("Priest rank image 5", priestImageBytes5, ImageType.RANK, course);
         fileRepository.save(priestImage5);
 
-        byte[] rogueImageBytes1 = getByteArrayForFile("src/main/resources/images/rogue1.png", "png");
-        Image rogueImage1 = new Image("Rogue rank image 1", rogueImageBytes1, ImageType.RANK, null);
+        byte[] rogueImageBytes1 = getByteArrayForFile("src/main/resources/images/rogue1.png");
+        Image rogueImage1 = new Image("Rogue rank image 1", rogueImageBytes1, ImageType.RANK, course);
         fileRepository.save(rogueImage1);
 
-        byte[] rogueImageBytes2 = getByteArrayForFile("src/main/resources/images/rogue2.png", "png");
-        Image rogueImage2 = new Image("Rogue rank image 2", rogueImageBytes2, ImageType.RANK, null);
+        byte[] rogueImageBytes2 = getByteArrayForFile("src/main/resources/images/rogue2.png");
+        Image rogueImage2 = new Image("Rogue rank image 2", rogueImageBytes2, ImageType.RANK, course);
         fileRepository.save(rogueImage2);
 
-        byte[] rogueImageBytes3 = getByteArrayForFile("src/main/resources/images/rogue3.png", "png");
-        Image rogueImage3 = new Image("Rogue rank image 3", rogueImageBytes3, ImageType.RANK, null);
+        byte[] rogueImageBytes3 = getByteArrayForFile("src/main/resources/images/rogue3.png");
+        Image rogueImage3 = new Image("Rogue rank image 3", rogueImageBytes3, ImageType.RANK, course);
         fileRepository.save(rogueImage3);
 
-        byte[] rogueImageBytes4 = getByteArrayForFile("src/main/resources/images/rogue4.png", "png");
-        Image rogueImage4 = new Image("Rogue rank image 4", rogueImageBytes4, ImageType.RANK, null);
+        byte[] rogueImageBytes4 = getByteArrayForFile("src/main/resources/images/rogue4.png");
+        Image rogueImage4 = new Image("Rogue rank image 4", rogueImageBytes4, ImageType.RANK, course);
         fileRepository.save(rogueImage4);
 
-        byte[] rogueImageBytes5 = getByteArrayForFile("src/main/resources/images/rogue5.png", "png");
-        Image rogueImage5 = new Image("Rogue rank image 5", rogueImageBytes5, ImageType.RANK, null);
+        byte[] rogueImageBytes5 = getByteArrayForFile("src/main/resources/images/rogue5.png");
+        Image rogueImage5 = new Image("Rogue rank image 5", rogueImageBytes5, ImageType.RANK, course);
         fileRepository.save(rogueImage5);
 
         Rank warriorRank1 = new Rank(null, HeroType.WARRIOR, "Chłop", 0.0, warriorImage1, course);
@@ -693,7 +606,7 @@ public class DatabaseConfig {
         rankRepository.saveAll(List.of(rogueRank1, rogueRank2, rogueRank3, rogueRank4, rogueRank5));
     }
 
-    private byte[] getByteArrayForFile(String path, String format) throws IOException {
+    private byte[] getByteArrayForFile(String path) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(new java.io.File(path));
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "png", output);
@@ -701,25 +614,25 @@ public class DatabaseConfig {
     }
 
     private void initBadges(Course course) throws IOException {
-        Image activityMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_master.png", "png"), ImageType.BADGE, null);
-        Image activityExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_experienced.png", "png"), ImageType.BADGE, null);
-        Image fileTaskExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_experienced.png", "png"), ImageType.BADGE, null);
-        Image fileTaskFirstSteps = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_first_steps.png", "png"), ImageType.BADGE, null);
-        Image fileTaskMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_master.png", "png"), ImageType.BADGE, null);
-        Image topFive = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/five.png", "png"), ImageType.BADGE, null);
-        Image graphTaskExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_experienced.png", "png"), ImageType.BADGE, null);
-        Image graphTaskFirstSteps = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_first_steps.png", "png"), ImageType.BADGE, null);
-        Image graphTaskMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_master.png", "png"), ImageType.BADGE, null);
-        Image groupLeader = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/group_leader.png", "png"), ImageType.BADGE, null);
-        Image handshake = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/handshake.png", "png"), ImageType.BADGE, null);
-        Image inTheMiddle = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/in_the_middle.png", "png"), ImageType.BADGE, null);
-        Image itsTheBeginning = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/its_the_beginning.png", "png"), ImageType.BADGE, null);
-        Image leader = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/leader.png", "png"), ImageType.BADGE, null);
-        Image longA = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/long.png", "png"), ImageType.BADGE, null);
-        Image lookingUp = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/looking_up.png", "png"), ImageType.BADGE, null);
-        Image smileFromProfessor = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/smile.png", "png"), ImageType.BADGE, null);
-        Image theEnd = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/the_end.png", "png"), ImageType.BADGE, null);
-        Image topTwenty = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/twenty.png", "png"), ImageType.BADGE, null);
+        Image activityMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_master.png"), ImageType.BADGE, course);
+        Image activityExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_experienced.png"), ImageType.BADGE, course);
+        Image fileTaskExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_experienced.png"), ImageType.BADGE, course);
+        Image fileTaskFirstSteps = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_first_steps.png"), ImageType.BADGE, course);
+        Image fileTaskMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_master.png"), ImageType.BADGE, course);
+        Image topFive = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/five.png"), ImageType.BADGE, course);
+        Image graphTaskExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_experienced.png"), ImageType.BADGE, course);
+        Image graphTaskFirstSteps = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_first_steps.png"), ImageType.BADGE, course);
+        Image graphTaskMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_master.png"), ImageType.BADGE, course);
+        Image groupLeader = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/group_leader.png"), ImageType.BADGE, course);
+        Image handshake = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/handshake.png"), ImageType.BADGE, course);
+        Image inTheMiddle = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/in_the_middle.png"), ImageType.BADGE, course);
+        Image itsTheBeginning = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/its_the_beginning.png"), ImageType.BADGE, course);
+        Image leader = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/leader.png"), ImageType.BADGE, course);
+        Image longA = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/long.png"), ImageType.BADGE, course);
+        Image lookingUp = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/looking_up.png"), ImageType.BADGE, course);
+        Image smileFromProfessor = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/smile.png"), ImageType.BADGE, course);
+        Image theEnd = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/the_end.png"), ImageType.BADGE, course);
+        Image topTwenty = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/twenty.png"), ImageType.BADGE, course);
 
         fileRepository.saveAll(List.of(activityMaster, activityExperienced, fileTaskExperienced,fileTaskFirstSteps,
                 fileTaskMaster,topFive,graphTaskExperienced,graphTaskFirstSteps,graphTaskMaster,groupLeader
@@ -929,5 +842,51 @@ public class DatabaseConfig {
         student.setUserHero(new UserHero(hero, 0, 0L, course));
         student.setPoints(0D);
         return student;
+    }
+
+    private List<Question> addQuestionSet(Course course, QuestionService questionService, OptionService optionService) {
+        Option option = new Option("hub z routerem", true, null);
+        Option option1 = new Option("komputer z komputerem", false, null);
+        Option option2 = new Option("switch z routerem", true, null);
+        Option option3 = new Option("hub ze switchem", false, null);
+
+        Option option4 = new Option("Tak", true, null);
+        Option option5 = new Option("Nie", false, null);
+
+        List<Option> options = List.of(option, option1, option2, option3, option4, option5);
+
+        Question startQuestion = new Question();
+        Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
+                Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null, course);
+        Question question2 = new Question(QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
+                "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null, course);
+        Question question3 = new Question(QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
+                "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP", course);
+        Question question4 = new Question(QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
+                "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka", course);
+        Question question5 = new Question(QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
+                "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski", course);
+
+        List<Question> questions = List.of(startQuestion, question1, question2, question3, question4, question5);
+
+        questionService.saveQuestions(questions);
+
+        startQuestion.getNext().addAll(List.of(question1, question2, question3));
+
+        question1.getNext().addAll(List.of(question2, question4));
+        question3.getNext().addAll(List.of(question5));
+
+        questionService.saveQuestions(questions);
+        optionService.saveAll(options);
+
+        option.setQuestion(question1);
+        option1.setQuestion(question1);
+        option2.setQuestion(question1);
+        option3.setQuestion(question1);
+        option4.setQuestion(question2);
+        option5.setQuestion(question2);
+        optionService.saveAll(options);
+
+        return questions;
     }
 }

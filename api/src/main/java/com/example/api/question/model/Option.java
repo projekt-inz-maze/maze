@@ -29,5 +29,12 @@ public class Option {
     public Option(OptionForm form, Question question) {
         this.content = form.getContent();
         this.isCorrect = form.getIsCorrect();
+        this.question = question;
+    }
+
+    public Option(String content, boolean isCorrect, Question question) {
+        this.content = content;
+        this.isCorrect = isCorrect;
+        this.question = question;
     }
 }
