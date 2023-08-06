@@ -9,7 +9,6 @@ import com.example.api.activity.feedback.model.ProfessorFeedback;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.task.model.FileTask;
-import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.user.service.UserService;
 import com.example.api.util.model.File;
@@ -21,7 +20,6 @@ import com.example.api.security.AuthenticationService;
 import com.example.api.user.service.BadgeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -76,7 +74,8 @@ public class FeedbackValidator {
             feedback.setPoints(form.getPoints());
             fileTaskResult.setPointsReceived(form.getPoints());
             fileTaskResultRepository.save(fileTaskResult);
-            badgeService.checkAllBadges();
+            //TODO figure out if its needed here
+            badgeService.checkAllBadges(professor);
         }
 
         // Feedback file can be set only once

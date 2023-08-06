@@ -73,7 +73,7 @@ public class DashboardService {
         User student = userService.getCurrentUserAndValidateStudentAccount();
         Course course = courseService.getCourse(courseId);
         courseValidator.validateUserCanAccess(student, courseId);
-        badgeService.checkAllBadges();
+        badgeService.checkAllBadges(student);
 
         return new DashboardResponse(
                 getHeroTypeStats(student, course),
@@ -84,14 +84,18 @@ public class DashboardService {
     }
 
     private HeroTypeStats getHeroTypeStats(User student, Course course) throws EntityNotFoundException {
+        log.info("getHeroTypeStats");
+
         String heroType = String.valueOf(student.getHeroType());
 
         List<RankingResponse> ranking = rankingService.getRanking(course);
         RankingResponse rank = getRank(student, ranking);
+
         if (rank == null) {
             log.error("Student {} not found in ranking", student.getEmail());
             throw new EntityNotFoundException("Student " + student.getEmail() + " not found in ranking");
         }
+
         Integer rankPosition = rank.getPosition();
         Long rankLength = (long) ranking.size();
         Double betterPlayerPoints = rankPosition > 1 ? ranking.get(rankPosition - 2).getPoints() : null;
@@ -109,6 +113,8 @@ public class DashboardService {
     }
 
     private GeneralStats getGeneralStats(User student, Course course) {
+        log.info("getGeneralStats");
+
         Double avgGraphTask = getAvgGraphTask(student, course);
         Double avgFileTask = getAvgFileTask(student, course);
         Long surveysNumber = getSurveysNumber(student, course);
@@ -196,6 +202,7 @@ public class DashboardService {
     }
 
     private List<LastAddedActivity> getLastAddedActivities(Course course) {
+        log.info("getLastAddedActivities");
         List<GraphTask> graphTasks = graphTaskService.getStudentGraphTasks(course);
         List<FileTask> fileTasks = fileTaskService.getStudentFileTasks(course);
         List<Survey> surveys = surveyService.getStudentSurvey(course);
@@ -229,6 +236,7 @@ public class DashboardService {
     }
 
     private HeroStats getHeroStats(User student, Course course) throws EntityNotFoundException {
+        log.info("getHeroStats");
         Double experiencePoints = student.getPoints();
         Double nextLvlPoints = getNexLvlPoints(student, course);
 
@@ -247,7 +255,6 @@ public class DashboardService {
     }
 
     private Double getNexLvlPoints(User student, Course course) throws EntityNotFoundException {
-        //TODO add actual course
         List<Rank> sortedRanks = rankService.getSortedRanksForHeroType(student.getHeroType(), course);
         for (int i=sortedRanks.size()-1; i >= 0; i--) {
             if (student.getPoints() >= sortedRanks.get(i).getMinPoints()) {

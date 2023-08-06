@@ -19,6 +19,7 @@ import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.activity.result.service.GraphTaskResultService;
 import com.example.api.user.service.BadgeService;
+import com.example.api.user.service.UserService;
 import com.example.api.validator.QuestionValidator;
 import com.example.api.validator.ResultValidator;
 import com.example.api.util.calculator.PointsCalculator;
@@ -47,6 +48,7 @@ public class QuestionService {
     private final GraphTaskResultService graphTaskResultService;
     private final BadgeService badgeService;
     private final PointsCalculator pointsCalculator;
+    private final UserService userService;
 
     public List<Question> saveQuestions(List<Question> questions) {
         return questionRepository.saveAll(questions);
@@ -60,13 +62,12 @@ public class QuestionService {
     }
 
     public Long performQuestionAction(QuestionActionForm form) throws RequestValidationException, TimeLimitExceededException {
-        String email = authService.getAuthentication().getName();
-        User user = userRepository.findUserByEmail(email);
+        User user = userService.getCurrentUser();
 
         ResultStatus status = form.getStatus();
         Long graphTaskId = form.getGraphTaskId();
 
-        GraphTaskResult result = graphTaskResultService.getGraphTaskResult(graphTaskId, email);
+        GraphTaskResult result = graphTaskResultService.getGraphTaskResult(graphTaskId, user.getEmail());
 
         Long timeRemaining = graphTaskResultService.getTimeRemaining(result);
         if (timeRemaining < 0) {
@@ -104,7 +105,7 @@ public class QuestionService {
                     result.setFinished(true);
                     user.getUserHero().setTimesSuperPowerUsedInResult(0);
                     log.info("Expedition finished");
-                    badgeService.checkAllBadges();
+                    badgeService.checkAllBadges(user);
                 }
 
                 return timeRemaining;

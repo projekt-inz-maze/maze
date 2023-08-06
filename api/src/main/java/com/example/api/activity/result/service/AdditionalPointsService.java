@@ -56,7 +56,7 @@ public class AdditionalPointsService {
             additionalPoints.setDescription(form.getDescription());
         }
         additionalPointsRepository.save(additionalPoints);
-        badgeService.checkAllBadges();
+        badgeService.checkAllBadges(user);
     }
 
     public List<AdditionalPointsResponse> getAdditionalPoints(Long courseId) throws EntityNotFoundException {

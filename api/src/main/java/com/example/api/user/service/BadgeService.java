@@ -56,8 +56,8 @@ public class BadgeService {
     }
 
     public List<UnlockedBadgeResponse> getAllUnlockedBadges(Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        checkAllBadges();
-        User student = userService.getCurrentUser();
+        User student = userService.getCurrentUserAndValidateStudentAccount();
+        checkAllBadges(student);
         return student.getUnlockedBadges()
                 .stream()
                 .filter(badge -> badge.getBadge().getCourse().getId().equals(courseId))
@@ -65,8 +65,8 @@ public class BadgeService {
                 .toList();
     }
 
-    public void checkAllBadges() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        User student = userService.getCurrentUser();
+    public void checkAllBadges(User student) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+        log.info("checkAllBadges");
         List<Badge> studentBadges = student.getUnlockedBadges()
                 .stream()
                 .map(UnlockedBadge::getBadge)
@@ -92,9 +92,10 @@ public class BadgeService {
         Long id = form.getId();
         Badge badge = badgeRepository.findBadgeById(id);
         badgeValidator.validateBadgeIsNotNull(badge, id);
+        User student = userService.getCurrentUserAndValidateStudentAccount();
 
         badge.update(form, badgeValidator);
-        checkAllBadges();
+        checkAllBadges(student);
         badgeRepository.save(badge);
     }
 
