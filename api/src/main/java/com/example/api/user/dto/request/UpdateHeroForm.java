@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateHeroForm {
     @Schema(required = true) private HeroType type;
-    @Schema(required = true) private Long courseId;
     @Schema(required = false) private Double value;
     @Schema(required = false) private Long coolDownMillis;
 }

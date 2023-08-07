@@ -2,6 +2,7 @@ package com.example.api.course.model;
 
 import com.example.api.group.model.Group;
 import com.example.api.map.model.Chapter;
+import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
@@ -51,5 +52,12 @@ public class Course {
         this.description = description;
         this.isArchived = isArchived;
         this.owner = owner;
+    }
+
+    public List<User> getAllStudents() {
+        return groups.stream()
+                .flatMap(group -> group.getUsers().stream())
+                .filter(user -> user.getAccountType().equals(AccountType.STUDENT))
+                .toList();
     }
 }

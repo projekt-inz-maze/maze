@@ -2,10 +2,13 @@ package com.example.api.course.validator;
 
 import com.example.api.course.dto.request.SaveCourseForm;
 import com.example.api.course.model.Course;
+import com.example.api.course.repository.CourseRepository;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
+import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
+import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +20,10 @@ import org.springframework.stereotype.Component;
 public class CourseValidator {
 
     UserValidator userValidator;
+    UserService userService;
+    CourseRepository courseRepository;
 
-    public void validateCourse(boolean courseExists, SaveCourseForm form) throws RequestValidationException {
+    public void validatePotentialCourse(boolean courseExists, SaveCourseForm form) throws RequestValidationException {
         if (courseExists) {
             log.error("Course with {} name already exists.", form.getName());
             throw new RequestValidationException(ExceptionMessage.COURSE_NAME_TAKEN);
@@ -30,11 +35,19 @@ public class CourseValidator {
         }
     }
 
-    public void validateCourseOwner(Course course, Long courseId, User professor) throws RequestValidationException {
-        validateCourseIsNotNull(course, courseId);
+    public void validateCourseOwner(Course course, User professor) throws RequestValidationException {
         userValidator.validateProfessorAccount(professor);
 
         if (!course.getOwner().equals(professor)) {
+            log.error("Course owner invalid.");
+            throw new RequestValidationException(ExceptionMessage.COURSE_OWNER_INVALID);
+        }
+    }
+
+    public void validateCourseOwner(Long courseId, User professor) throws RequestValidationException {
+        userValidator.validateProfessorAccount(professor);
+
+        if (!courseRepository.existsCourseByIdIsAndOwnerIs(courseId, professor)) {
             log.error("Course owner invalid.");
             throw new RequestValidationException(ExceptionMessage.COURSE_OWNER_INVALID);
         }
@@ -47,4 +60,16 @@ public class CourseValidator {
         }
     }
 
+    public void validateCurrentUserCanAccess(Long courseId) throws EntityNotFoundException {
+        validateUserCanAccess(userService.getCurrentUser(), courseId);
+    }
+
+    public void validateUserCanAccess(User user, Long courseId) throws EntityNotFoundException {
+        if ((user.getAccountType().equals(AccountType.PROFESSOR) &&
+                user.getCourses().stream().map(Course::getId).noneMatch(id -> id.equals(courseId)))
+            || (user.getAccountType().equals(AccountType.STUDENT) && !user.getGroup().getCourse().getId().equals(courseId))) {
+            log.error("User {} does not have access to course {}", user.getId(), courseId);
+            throw new EntityNotFoundException("User " + user.getId() +" does not have access to course " + courseId);
+        }
+    }
 }

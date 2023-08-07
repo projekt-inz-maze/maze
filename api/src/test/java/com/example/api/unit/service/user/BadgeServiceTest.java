@@ -77,7 +77,7 @@ public class BadgeServiceTest {
         doReturn(badges).when(badgeRepository).findAll();
 
         //when
-        badgeService.checkAllBadges();
+        badgeService.checkAllBadges(user);
 
         //then
         List<UnlockedBadge> unlockedBadges = user.getUnlockedBadges();
@@ -101,7 +101,7 @@ public class BadgeServiceTest {
         doReturn(badges).when(badgeRepository).findAll();
 
         //when
-        badgeService.checkAllBadges();
+        badgeService.checkAllBadges(user);
 
         //then
         List<UnlockedBadge> unlockedBadges = user.getUnlockedBadges();

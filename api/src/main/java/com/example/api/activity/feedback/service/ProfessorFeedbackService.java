@@ -76,7 +76,7 @@ public class ProfessorFeedbackService {
         FileTask fileTask = fileTaskRepository.findFileTaskById(fileTaskId);
         activityValidator.validateActivityIsNotNull(fileTask, fileTaskId);
         User student = userRepository.findUserByEmail(studentEmail);
-        userValidator.validateStudentAccount(student, studentEmail);
+        userValidator.validateStudentAccount(student);
         FileTaskResult result = fileTaskResultRepository.findFileTaskResultByFileTaskAndUser(fileTask, student);
         activityValidator.validateTaskResultIsNotNull(result, student, fileTask);
         return professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(result);

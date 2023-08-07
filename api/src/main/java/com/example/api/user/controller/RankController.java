@@ -25,8 +25,8 @@ public class RankController {
     private final RankService rankService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<RanksForHeroTypeResponse>> getAllRanks(@RequestParam Long courseId) {
-        return ResponseEntity.ok().body(rankService.getAllRanks());
+    public ResponseEntity<List<RanksForHeroTypeResponse>> getAllRanks(@RequestParam Long courseId) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(rankService.getAllRanks(courseId));
     }
 
     @PostMapping(path = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -37,18 +37,17 @@ public class RankController {
 
     @PutMapping(path = "/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> updateRank(@ModelAttribute EditRankForm form) throws RequestValidationException, IOException {
-        //TODO validate user type
         rankService.updateRank(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/current")
-    public ResponseEntity<CurrentRankResponse> getCurrentRankInfo(@RequestParam Long courseId) throws RequestValidationException, IOException {
-        return ResponseEntity.ok().body(rankService.getCurrentRank());
+    public ResponseEntity<CurrentRankResponse> getCurrentRankInfo(@RequestParam Long courseId) throws RequestValidationException {
+        return ResponseEntity.ok().body(rankService.getCurrentRankResponse(courseId));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteRank(@RequestParam Long rankId) throws EntityNotFoundException {
+    public ResponseEntity<?> deleteRank(@RequestParam Long rankId) throws RequestValidationException {
         rankService.deleteRank(rankId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

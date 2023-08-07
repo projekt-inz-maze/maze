@@ -3,6 +3,7 @@ package com.example.api.activity.result.controller;
 import com.example.api.activity.result.dto.request.AddAdditionalPointsForm;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
+import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.service.AdditionalPointsService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -19,13 +20,13 @@ public class AdditionalPointsController {
 
     @PostMapping("/add")
     public ResponseEntity<?> addAdditionalPoints(@RequestBody AddAdditionalPointsForm form)
-            throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+            throws RequestValidationException {
         additionalPointsService.saveAdditionalPoints(form);
         return ResponseEntity.ok().body(null);
     }
 
     @GetMapping
-    public ResponseEntity<?> getAdditionalPoints(@RequestParam Long courseId) {
-        return ResponseEntity.ok().body(additionalPointsService.getAdditionalPoints());
+    public ResponseEntity<?> getAdditionalPoints(@RequestParam Long courseId) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(additionalPointsService.getAdditionalPoints(courseId));
     }
 }

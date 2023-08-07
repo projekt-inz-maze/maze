@@ -1,5 +1,6 @@
 package com.example.api.validator;
 
+import com.example.api.course.model.Course;
 import com.example.api.map.dto.request.ChapterForm;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
@@ -8,6 +9,8 @@ import com.example.api.activity.task.model.Activity;
 import com.example.api.map.model.ActivityMap;
 import com.example.api.map.model.Chapter;
 import com.example.api.map.repository.ChapterRepository;
+import com.example.api.user.model.AccountType;
+import com.example.api.user.model.User;
 import com.example.api.util.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,6 +82,16 @@ public class ChapterValidator {
         if (fileRepository.findFileById(newImageId) == null){
             log.error("Image with id {} not found in database", newImageId);
             throw new RequestValidationException(ExceptionMessage.IMAGE_NOT_EXISTS);
+        }
+    }
+
+    public void validateUserCanAccess(User user, Chapter chapter) throws EntityNotFoundException {
+        if ((user.getAccountType().equals(AccountType.PROFESSOR) &&
+                user.getCourses().stream().map(Course::getId).noneMatch(id -> id.equals(chapter.getCourse().getId())))
+                || (user.getAccountType().equals(AccountType.STUDENT)
+                && !user.getGroup().getCourse().getId().equals(chapter.getCourse().getId()))) {
+            log.error("User {} does not have access to chapter {}", user.getId(), chapter.getId());
+            throw new EntityNotFoundException("User " + user.getId() +" does not have access to chapter " + chapter.getId());
         }
     }
 }

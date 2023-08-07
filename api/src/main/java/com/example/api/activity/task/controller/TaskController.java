@@ -24,19 +24,19 @@ public class TaskController {
 
     @GetMapping("/evaluate/all")
     ResponseEntity<List<ActivityToEvaluateResponse>> getAllActivitiesToEvaluate(@RequestParam Long courseId)
-            throws WrongUserTypeException {
-        return ResponseEntity.ok().body(taskService.getAllActivitiesToEvaluate());
+            throws RequestValidationException {
+        return ResponseEntity.ok().body(taskService.getAllActivitiesToEvaluate(courseId));
     }
 
     @GetMapping("/evaluate/first")
     ResponseEntity<TaskToEvaluateResponse> getFirstAnswerToEvaluate(@RequestParam Long fileTaskId)
-            throws EntityNotFoundException, EntityRequiredAttributeNullException {
+            throws EntityNotFoundException {
         return ResponseEntity.ok().body(taskService.getFirstAnswerToEvaluate(fileTaskId));
     }
 
     @GetMapping("/activities")
-    ResponseEntity<List<ActivitiesResponse>> getAllActivities(@RequestParam Long courseId) {
-        return ResponseEntity.ok().body(taskService.getAllActivities());
+    ResponseEntity<List<ActivitiesResponse>> getAllActivities(@RequestParam Long courseId) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(taskService.getAllActivities(courseId));
     }
 
     @GetMapping("/requirements")

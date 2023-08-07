@@ -1,21 +1,15 @@
 package com.example.api.activity.task.dto.response.result.summary.util;
 
 import com.example.api.activity.task.dto.response.result.summary.AverageGradeForChapter;
-import com.example.api.group.model.Group;
 import com.example.api.util.calculator.GradesCalculator;
+import lombok.AllArgsConstructor;
 
-import java.util.LinkedList;
 import java.util.List;
 
-
+@AllArgsConstructor
 public class AverageGradeForChapterCreator {
     private String groupName;
     private List<Double> grades;
-
-    public AverageGradeForChapterCreator(Group group) {
-        this.groupName = group.getName();
-        this.grades = new LinkedList<>();
-    }
 
     public void add(Double grade) {
         grades.add(grade);

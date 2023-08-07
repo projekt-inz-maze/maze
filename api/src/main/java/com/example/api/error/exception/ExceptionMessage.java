@@ -37,7 +37,7 @@ public class ExceptionMessage {
     public static final String FILE_TASK_TITLE_CONTAINS_SEMICOLON ="Nazwa zadania bojowego nie może zawierać średnika";
     public static final String GRAPH_TASK_TITLE_CONTAINS_SEMICOLON ="Nazwa ekspedycji nie może zawierać średnika";
     public static final String COURSE_CONTAINS_SEMICOLON ="Nazwa kursy nie może zawierać średnika";
-    public static final String COURSE_OWNER_INVALID ="Kurs może zostać usunięty jedynie przez prowadzącego";
+    public static final String COURSE_OWNER_INVALID ="użytkownik nie jest prowadzącym kursu prowadzącego";
     public static final String TIME_REMAINING_IS_UP ="Czas na przejście ekspedycji się skończył";
     public static final String CHAPTER_MAP_SIZE_TOO_SMALL = "Podane wymiary mapy są zbyt małe dla istniejących na niej aktywności";
     public static final String IMAGE_NOT_EXISTS = "Zdjęcia o podanym id nie ma w bazie danych.";

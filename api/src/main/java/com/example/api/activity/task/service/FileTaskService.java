@@ -5,6 +5,7 @@ import com.example.api.activity.task.dto.request.create.CreateFileTaskForm;
 import com.example.api.activity.task.dto.request.edit.EditFileTaskForm;
 import com.example.api.activity.task.dto.response.FileTaskInfoResponse;
 import com.example.api.activity.task.dto.response.util.FileResponse;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -63,9 +64,10 @@ public class FileTaskService {
         result.setDescription(fileTask.getDescription());
 
         User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student, email);
+        userValidator.validateStudentAccount(student);
         FileTaskResult fileTaskResult = fileTaskResultRepository.findFileTaskResultByFileTaskAndUser(fileTask, student);
-        if(fileTaskResult == null){
+
+        if (fileTaskResult == null){
             log.debug("File task result for {} and file task with id {} does not exist", email, fileTask.getId());
             return result;
         }
@@ -113,11 +115,8 @@ public class FileTaskService {
         chapter.getActivityMap().getFileTasks().add(fileTask);
     }
 
-    public List<FileTask> getStudentFileTasks() {
-        return fileTaskRepository.findAll()
-                .stream()
-                .filter(fileTask -> !fileTask.getIsBlocked())
-                .toList();
+    public List<FileTask> getStudentFileTasks(Course course) {
+        return fileTaskRepository.findAllByCourseAndIsBlockedFalse(course);
     }
 
     public void editFileTask(FileTask fileTask, EditFileTaskForm form) {

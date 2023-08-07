@@ -1,5 +1,6 @@
 package com.example.api.user.controller;
 
+import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.user.dto.response.grade.GradeResponse;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.user.service.GradeService;
@@ -21,7 +22,7 @@ public class GradeController {
     private final GradeService gradeService;
 
     @GetMapping
-    public ResponseEntity<List<GradeResponse>> getAllGrades(@RequestParam Long courseId) throws WrongUserTypeException {
-        return ResponseEntity.ok().body(gradeService.getAllGrades());
+    public ResponseEntity<List<GradeResponse>> getAllGrades(@RequestParam Long courseId) throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(gradeService.getAllGrades(courseId));
     }
 }

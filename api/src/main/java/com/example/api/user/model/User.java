@@ -44,7 +44,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
     private Integer level;
-    private Double points;
+    //TODO kluczowe - dodac punkty <-> grupa i sprawdzic czy nie ma tego typ innych syfow [*]
+    private Double points = 0D;
 
     @Embedded
     @JsonInclude(JsonInclude.Include.NON_NULL)

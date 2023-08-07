@@ -141,14 +141,15 @@ public class BadgeVisitor {
             return false;
         }
         Boolean forGroup = badge.getForGroup();
+        Long courseId = badge.getCourse().getId();
+
         if (forGroup != null && forGroup) {
-            BigDecimal rankingInGroupPosition = BigDecimal.valueOf(rankingService.getGroupRankingPosition());
+            BigDecimal rankingInGroupPosition = BigDecimal.valueOf(rankingService.getGroupRankingPosition(courseId));
 
             if (badge.getTopScore() == 0) {
                 return rankingInGroupPosition.equals(BigDecimal.ONE);
             }
-
-            BigDecimal numStudentsInGroup = BigDecimal.valueOf(userService.getUserGroup()
+            BigDecimal numStudentsInGroup = BigDecimal.valueOf(userService.getUserGroup(courseId)
                     .getUsers()
                     .stream()
                     .filter(user -> user.getAccountType() == AccountType.STUDENT)
@@ -157,7 +158,7 @@ public class BadgeVisitor {
             BigDecimal topScore = rankingInGroupPosition.divide(numStudentsInGroup, 2, RoundingMode.HALF_UP);
             return topScore.compareTo(BigDecimal.valueOf(badge.getTopScore())) <= 0;
         } else {
-            BigDecimal rankingPosition = BigDecimal.valueOf(rankingService.getRankingPosition());
+            BigDecimal rankingPosition = BigDecimal.valueOf(rankingService.getRankingPosition(courseId));
 
             if (badge.getTopScore() == 0) {
                 return rankingPosition.equals(BigDecimal.ONE);

@@ -1,9 +1,11 @@
 package com.example.api.activity.result.service;
 
 import com.example.api.activity.task.dto.response.result.AdditionalPointsListResponse;
-import com.example.api.activity.task.dto.response.result.AdditionalPointsResponse;
 import com.example.api.activity.task.dto.response.result.TaskPointsStatisticsResponse;
 import com.example.api.activity.task.dto.response.result.TotalPointsResponse;
+import com.example.api.course.model.Course;
+import com.example.api.course.service.CourseService;
+import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.user.model.User;
@@ -13,6 +15,7 @@ import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
+import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,63 +41,63 @@ public class AllPointsService {
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
+    private final UserService userService;
+    private final CourseService courseService;
 
-    public List<?> getAllPointsListForProfessor(String studentEmail) throws WrongUserTypeException {
-        String professorEmail = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(professorEmail);
+    public List<?> getAllPointsListForProfessor(Long courseId, String studentEmail) throws WrongUserTypeException, EntityNotFoundException {
+        User professor = userService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
-        log.info("Fetching student all points {} for professor {}", studentEmail, professorEmail);
-
-        return getAllPointsList(studentEmail);
+        log.info("Fetching student all points {} for professor {}", studentEmail, professor.getEmail());
+        return getAllPointsList(courseId, studentEmail);
     }
 
-    public List<?> getAllPointsListForStudent() throws WrongUserTypeException {
+    public List<?> getAllPointsListForStudent(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
         String studentEmail = authService.getAuthentication().getName();
         log.info("Fetching all points for student {}", studentEmail);
-        return getAllPointsList(studentEmail);
+        return getAllPointsList(courseId, studentEmail);
     }
 
-    public TotalPointsResponse getAllPointsTotal() throws WrongUserTypeException {
-        String studentEmail = authService.getAuthentication().getName();
-        User student = userRepository.findUserByEmail(studentEmail);
-        userValidator.validateStudentAccount(student, studentEmail);
+    public TotalPointsResponse getAllPointsTotal(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
+        User student = userService.getCurrentUserAndValidateStudentAccount();
+        Course course = courseService.getCourse(courseId);
 
-        log.info("Fetching student all points total {}", studentEmail);
+        log.info("Fetching student all points total {}", student.getEmail());
         AtomicReference<Double> totalPointsReceived = new AtomicReference<>(0D);
         AtomicReference<Double> totalPointsToReceive = new AtomicReference<>(0D);
-        graphTaskResultRepository.findAllByUser(student)
+        graphTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .filter(graphTaskResult -> graphTaskResult.getPointsReceived() != null)
                 .forEach(graphTaskResult -> {
                     totalPointsReceived.updateAndGet(v -> v + graphTaskResult.getPointsReceived());
                     totalPointsToReceive.updateAndGet(v -> v + graphTaskResult.getGraphTask().getMaxPoints());
                 });
-        fileTaskResultRepository.findAllByUser(student)
+        fileTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .forEach(fileTaskResult -> {
                     totalPointsReceived.updateAndGet(v -> v + fileTaskResult.getPointsReceived());
                     totalPointsToReceive.updateAndGet(v -> v + fileTaskResult.getFileTask().getMaxPoints());
                 });
-        surveyResultRepository.findAllByUser(student)
+        surveyResultRepository.findAllByUserAndCourse(student, course)
                 .forEach(surveyTaskResult -> {
                     totalPointsReceived.updateAndGet(v -> v + surveyTaskResult.getPointsReceived());
                     totalPointsToReceive.updateAndGet(v -> v + surveyTaskResult.getPointsReceived());
                 });
-        additionalPointsRepository.findAllByUser(student)
-                .forEach(additionalPoints -> {
-                    totalPointsReceived.updateAndGet(v -> v + additionalPoints.getPointsReceived());
-                });
+        additionalPointsRepository.findAllByUserAndCourse(student, course)
+                .forEach(additionalPoints -> totalPointsReceived.updateAndGet(v -> v + additionalPoints.getPointsReceived()));
         return new TotalPointsResponse(totalPointsReceived.get(), totalPointsToReceive.get());
     }
 
-    private List<?> getAllPointsList(String studentEmail) throws WrongUserTypeException {
+    private List<?> getAllPointsList(Long courseId, String studentEmail) throws WrongUserTypeException, EntityNotFoundException {
         User student = userRepository.findUserByEmail(studentEmail);
-        userValidator.validateStudentAccount(student, studentEmail);
+        userValidator.validateUserIsNotNull(student, studentEmail);
+        userValidator.validateStudentAccount(student);
 
-        List<TaskPointsStatisticsResponse> taskPoints = taskResultService.getUserPointsStatistics(studentEmail);
-        List<AdditionalPointsResponse> additionalPoints = additionalPointsService.getAdditionalPoints(studentEmail);
-        List<AdditionalPointsListResponse> additionalPointsList = additionalPoints
+        Course course = courseService.getCourse(courseId);
+
+        List<TaskPointsStatisticsResponse> taskPoints = taskResultService.getUserPointsStatistics(student, course);
+        List<AdditionalPointsListResponse> additionalPointsList = additionalPointsService
+                .getAdditionalPoints(student, courseId)
                 .stream()
                 .map(AdditionalPointsListResponse::new)
                 .toList();

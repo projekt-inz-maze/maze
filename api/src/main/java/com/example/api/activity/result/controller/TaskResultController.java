@@ -12,7 +12,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,13 +22,13 @@ public class TaskResultController {
     private final TaskResultService resultService;
 
     @PostMapping("/csv")
-    public ResponseEntity<ByteArrayResource> getCSVFile(@RequestBody GetCSVForm form) throws IOException {
+    public ResponseEntity<ByteArrayResource> getCSVFile(@RequestBody GetCSVForm form) {
         return ResponseEntity.ok().body(resultService.getCSVFile(form));
     }
 
     @GetMapping("/points/statistics")
-    public ResponseEntity<List<TaskPointsStatisticsResponse>> getUserPointsStatistics(@RequestParam Long courseId) throws WrongUserTypeException {
-        return ResponseEntity.ok().body(resultService.getUserPointsStatistics());
+    public ResponseEntity<List<TaskPointsStatisticsResponse>> getUserPointsStatistics(@RequestParam Long courseId) throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(resultService.getUserPointsStatistics(courseId));
     }
 
     @GetMapping("/activity/statistics")

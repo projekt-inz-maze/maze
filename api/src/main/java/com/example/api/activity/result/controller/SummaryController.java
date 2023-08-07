@@ -1,7 +1,7 @@
 package com.example.api.activity.result.controller;
 
 import com.example.api.activity.task.dto.response.result.summary.SummaryResponse;
-import com.example.api.error.exception.WrongUserTypeException;
+import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.service.SummaryService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SummaryController {
     private final SummaryService summaryService;
     @GetMapping("")
-    public ResponseEntity<SummaryResponse> getUserPointsStatistics(@RequestParam Long courseId) throws WrongUserTypeException {
-        return ResponseEntity.ok().body(summaryService.getSummary());
+    public ResponseEntity<SummaryResponse> getUserPointsStatistics(@RequestParam Long courseId) throws RequestValidationException {
+        return ResponseEntity.ok().body(summaryService.getSummary(courseId));
     }
 }

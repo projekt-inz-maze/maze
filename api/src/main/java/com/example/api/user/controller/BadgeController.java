@@ -27,13 +27,13 @@ public class BadgeController {
     private final BadgeService badgeService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<? extends BadgeResponse<?>>> getAllBadges(@RequestParam Long courseId){
-        return ResponseEntity.ok().body(badgeService.getAllBadges());
+    public ResponseEntity<List<? extends BadgeResponse<?>>> getAllBadges(@RequestParam Long courseId) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(badgeService.getAllBadges(courseId));
     }
 
     @GetMapping("/unlocked/all")
     public ResponseEntity<List<UnlockedBadgeResponse>> getAllUnlockedBadges(@RequestParam Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        return ResponseEntity.ok().body(badgeService.getAllUnlockedBadges());
+        return ResponseEntity.ok().body(badgeService.getAllUnlockedBadges(courseId));
     }
 
     @DeleteMapping("/delete")

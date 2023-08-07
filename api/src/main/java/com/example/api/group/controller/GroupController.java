@@ -27,8 +27,8 @@ public class GroupController {
     }
 
     @GetMapping("/invitation-code/list")
-    ResponseEntity<List<GroupCode>> getInvitationCodeList(@RequestParam Long courseId) throws WrongUserTypeException {
-        return ResponseEntity.ok().body(groupService.getInvitationCodeList());
+    ResponseEntity<List<GroupCode>> getInvitationCodeList(@RequestParam Long courseId) throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(groupService.getInvitationCodeList(courseId));
     }
 
     @GetMapping("/users")

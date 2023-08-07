@@ -1,6 +1,7 @@
 package com.example.api.activity.result.controller;
 
 import com.example.api.activity.task.dto.response.result.TotalPointsResponse;
+import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.service.AllPointsService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -21,17 +22,17 @@ public class AllPointsController {
     private final AllPointsService allPointsService;
 
     @GetMapping("/list/professor")
-    public ResponseEntity<List<?>> getAllPointsListForProfessor(@RequestParam Long courseId, @RequestParam String studentEmail) throws WrongUserTypeException {
-        return ResponseEntity.ok().body(allPointsService.getAllPointsListForProfessor(studentEmail));
+    public ResponseEntity<List<?>> getAllPointsListForProfessor(@RequestParam Long courseId, @RequestParam String studentEmail) throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(allPointsService.getAllPointsListForProfessor(courseId, studentEmail));
     }
 
     @GetMapping("/list/student")
-    public ResponseEntity<List<?>> getAllPointsListForStudent(@RequestParam Long courseId) throws WrongUserTypeException {
-        return ResponseEntity.ok().body(allPointsService.getAllPointsListForStudent());
+    public ResponseEntity<List<?>> getAllPointsListForStudent(@RequestParam Long courseId) throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(allPointsService.getAllPointsListForStudent(courseId));
     }
 
     @GetMapping("/total")
-    public ResponseEntity<TotalPointsResponse> getAllPointsTotal(@RequestParam Long courseId) throws WrongUserTypeException {
-        return ResponseEntity.ok().body(allPointsService.getAllPointsTotal());
+    public ResponseEntity<TotalPointsResponse> getAllPointsTotal(@RequestParam Long courseId) throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(allPointsService.getAllPointsTotal(courseId));
     }
 }

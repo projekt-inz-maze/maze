@@ -1,5 +1,6 @@
 package com.example.api.user.model.badge;
 
+import com.example.api.course.model.Course;
 import com.example.api.user.dto.request.badge.BadgeUpdateForm;
 import com.example.api.user.dto.response.badge.BadgeResponse;
 import com.example.api.error.exception.RequestValidationException;
@@ -28,8 +29,9 @@ public class ActivityScoreBadge extends Badge{
                               String title,
                               String description,
                               Image image, Double activityScore,
-                              boolean forOneActivity) {
-        super(id, title, description, image, null);
+                              boolean forOneActivity,
+                              Course course) {
+        super(id, title, description, image, course);
         this.activityScore = activityScore;
         this.forOneActivity = forOneActivity;
     }

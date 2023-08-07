@@ -11,6 +11,7 @@ import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.user.service.BadgeService;
+import com.example.api.user.service.UserService;
 import com.example.api.validator.FeedbackValidator;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
@@ -34,16 +35,15 @@ public class SurveyResultService {
     private final ActivityValidator activityValidator;
     private final BadgeService badgeService;
     private final FeedbackValidator feedbackValidator;
+    private final UserService userService;
 
     public SurveyResult saveSurveyResult(SurveyResult surveyResult) {
         return surveyResultRepository.save(surveyResult);
     }
 
     public SurveyResultInfoResponse saveSurveyResult(SurveyResultForm form) throws RequestValidationException {
-        String email = authService.getAuthentication().getName();
-        log.info("Saving user {} feedback for survey with id {}", email, form.getSurveyId());
-        User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student, email);
+        User student = userService.getCurrentUserAndValidateStudentAccount();
+        log.info("Saving user {} feedback for survey with id {}", student.getEmail(), form.getSurveyId());
         Long id = form.getSurveyId();
         Survey survey = surveyRepository.findSurveyById(id);
         activityValidator.validateActivityIsNotNull(survey, id);
@@ -54,7 +54,7 @@ public class SurveyResultService {
             surveyResult.setSurvey(survey);
             surveyResult.setUser(student);
             surveyResult.setPointsReceived(survey.getMaxPoints());
-            badgeService.checkAllBadges();
+            badgeService.checkAllBadges(student);
         }
         else if (!surveyResult.isEvaluated()) {
             surveyResult.setPointsReceived(survey.getMaxPoints());
@@ -73,10 +73,8 @@ public class SurveyResultService {
     }
 
     public SurveyResultInfoResponse getSurveyResult(Long surveyId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        String email = authService.getAuthentication().getName();
-        log.info("Getting user {} feedback for survey with id {}", email, surveyId);
-        User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student, email);
+        User student = userService.getCurrentUserAndValidateStudentAccount();
+        log.info("Getting user {} feedback for survey with id {}", student.getEmail(), surveyId);
 
         Survey survey = surveyRepository.findSurveyById(surveyId);
         activityValidator.validateActivityIsNotNull(survey, surveyId);
@@ -84,13 +82,13 @@ public class SurveyResultService {
         SurveyResult surveyResult = surveyResultRepository.findSurveyResultBySurveyAndUser(survey, student);
 
         try {
-            feedbackValidator.validateFeedbackIsNotNull(surveyResult, surveyId, email);
+            feedbackValidator.validateFeedbackIsNotNull(surveyResult, surveyId, student.getEmail());
         }
         catch (EntityNotFoundException ex) {
             surveyResult = new SurveyResult(survey, null, null);
             surveyResult.setUser(student);
             surveyResultRepository.save(surveyResult);
-            badgeService.checkAllBadges();
+            badgeService.checkAllBadges(student);
         }
 
         return new SurveyResultInfoResponse(surveyResult);

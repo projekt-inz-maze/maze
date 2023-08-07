@@ -52,7 +52,6 @@ public class UserService implements UserDetailsService {
     private final UserValidator userValidator;
     private final ProfessorRegisterToken professorRegisterToken;
     private final PasswordValidator passwordValidator;
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findUserByEmail(email);
@@ -107,11 +106,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public Group getUserGroup() {
-        String email = authService.getAuthentication().getName();
-        log.info("Fetching group for user {}", email);
-        User user = userRepository.findUserByEmail(email);
-        userValidator.validateUserIsNotNull(user, email);
+    public Group getUserGroup(Long courseId) {
+        User user = getCurrentUser();
+        log.info("Fetching group for user {}", user.getEmail());
         return user.getGroup();
     }
 
@@ -140,7 +137,7 @@ public class UserService implements UserDetailsService {
         String email = authService.getAuthentication().getName();
         log.info("Setting index number {} for user with email {}", setStudentIndexForm.getNewIndexNumber(), email);
         User student = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(student, email);
+        userValidator.validateStudentAccount(student);
 
         if (student.getIndexNumber().equals(setStudentIndexForm.getNewIndexNumber())) {
             log.info("Student with email {} set again index number to {}", email, setStudentIndexForm.getNewIndexNumber());
@@ -176,7 +173,7 @@ public class UserService implements UserDetailsService {
 
     public void deleteStudentAccount() throws WrongUserTypeException {
         User user = getCurrentUser();
-        userValidator.validateStudentAccount(user, user.getEmail());
+        userValidator.validateStudentAccount(user);
         userRepository.delete(user);
     }
 
@@ -205,9 +202,8 @@ public class UserService implements UserDetailsService {
     }
 
     public User getCurrentUserAndValidateStudentAccount() throws WrongUserTypeException {
-        String email = authService.getAuthentication().getName();
-        User user = userRepository.findUserByEmail(email);
-        userValidator.validateStudentAccount(user, email);
+        User user = getCurrentUser();
+        userValidator.validateStudentAccount(user);
         return user;
     }
 }

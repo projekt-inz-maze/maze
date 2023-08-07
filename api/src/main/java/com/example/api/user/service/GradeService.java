@@ -1,6 +1,9 @@
 package com.example.api.user.service;
 
 import com.example.api.activity.result.model.*;
+import com.example.api.course.model.Course;
+import com.example.api.course.service.CourseService;
+import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.user.dto.response.BasicUser;
 import com.example.api.user.dto.response.grade.GradeResponse;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -36,13 +39,15 @@ public class GradeService {
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
+    private final UserService userService;
+    private final CourseService courseService;
 
-    public List<GradeResponse> getAllGrades() throws WrongUserTypeException {
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
+    public List<GradeResponse> getAllGrades(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
+        User professor = userService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
-        return userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
+        return courseService.getCourse(courseId)
+                .getAllStudents()
                 .stream()
                 .map(this::getStudentFinalGrade)
                 .sorted(Comparator.comparing(entry -> entry.getStudent().getLastName().toLowerCase() + entry.getStudent().getFirstName().toLowerCase()))
