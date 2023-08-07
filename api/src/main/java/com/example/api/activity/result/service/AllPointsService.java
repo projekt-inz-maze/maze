@@ -90,6 +90,7 @@ public class AllPointsService {
 
     private List<?> getAllPointsList(Long courseId, String studentEmail) throws WrongUserTypeException, EntityNotFoundException {
         User student = userRepository.findUserByEmail(studentEmail);
+        userValidator.validateUserIsNotNull(student, studentEmail);
         userValidator.validateStudentAccount(student);
 
         Course course = courseService.getCourse(courseId);
