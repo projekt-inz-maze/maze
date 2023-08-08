@@ -52,7 +52,9 @@ public class CourseService {
                     .map(CourseDTO::new)
                     .toList();
         } else {
-            return List.of(new CourseDTO(user.getGroup().getCourse()));
+            return courseRepository.getAllById(user.getCourseMemberships().keySet())
+                    .stream().map(CourseDTO::new)
+                    .toList();
         }
     }
 

@@ -349,7 +349,7 @@ public class BadgeVisitorTest {
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
         //TODO add courseId
         when(userService.getUserGroup(0L)).thenReturn(group);
-        when(rankingService.getGroupRankingPosition(courseId)).thenReturn(2);
+        when(rankingService.getGroupRankingPosition(0l)).thenReturn(2);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.5, true);
 
@@ -379,7 +379,7 @@ public class BadgeVisitorTest {
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
         //TODO add courseId
         when(userService.getUserGroup(0L)).thenReturn(group);
-        when(rankingService.getGroupRankingPosition(courseId)).thenReturn(1);
+        when(rankingService.getGroupRankingPosition(0L)).thenReturn(1);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.0, true);
 
@@ -407,7 +407,7 @@ public class BadgeVisitorTest {
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
         when(userService.getUsers()).thenReturn(users);
-        when(rankingService.getRankingPosition(courseId)).thenReturn(2);
+        when(rankingService.getRankingPosition(0L)).thenReturn(2);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.5, false);
 
@@ -435,7 +435,7 @@ public class BadgeVisitorTest {
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
         when(userService.getUsers()).thenReturn(users);
-        when(rankingService.getRankingPosition(courseId)).thenReturn(1);
+        when(rankingService.getRankingPosition(0L)).thenReturn(1);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.0, false);
 

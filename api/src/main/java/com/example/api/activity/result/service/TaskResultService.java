@@ -1,5 +1,6 @@
 package com.example.api.activity.result.service;
 
+import com.example.api.activity.ActivityService;
 import com.example.api.activity.result.service.util.GroupActivityStatisticsCreator;
 import com.example.api.activity.result.service.util.ScaleActivityStatisticsCreator;
 import com.example.api.activity.task.dto.request.GetCSVForm;
@@ -27,9 +28,7 @@ import com.example.api.activity.task.repository.FileTaskRepository;
 import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
 import com.example.api.user.service.UserService;
-import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.util.csv.CSVConverter;
 import com.example.api.util.csv.CSVTaskResult;
@@ -57,11 +56,10 @@ public class TaskResultService {
     private final SurveyResultRepository surveyResultRepository;
     private final SurveyRepository surveyRepository;
     private final CSVConverter csvConverter;
-    private final AuthenticationService authService;
-    private final UserValidator userValidator;
     private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final ActivityValidator activityValidator;
     private final UserService userService;
+    private final ActivityService activityService;
     private final CourseService courseService;
 
     public ByteArrayResource getCSVFile(GetCSVForm csvForm) {
@@ -160,15 +158,12 @@ public class TaskResultService {
                 .toList();
     }
 
-    public ActivityStatisticsResponse getActivityStatistics(Long activityID)
-            throws WrongUserTypeException, EntityNotFoundException {
-        String professorEmail = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(professorEmail);
-        userValidator.validateProfessorAccount(professor);
+    public ActivityStatisticsResponse getActivityStatistics(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
+        userService.getCurrentUserAndValidateProfessorAccount();
 
-        Activity activity = getActivity(activityID);
-        activityValidator.validateActivityIsNotNull(activity, activityID);
-        return getActivityStatisticsForActivity(activity);
+        return activityService.getGradedActivity(activityID)
+                .map(activity -> getActivityStatisticsForActivity(activity))
+                .orElseThrow(() -> new EntityNotFoundException("Activity not found"));
     }
 
     private void fillFirstRowAndAddTasksToMap(List<Long> activityIds,
@@ -233,19 +228,17 @@ public class TaskResultService {
 
     private ActivityStatisticsResponse getActivityStatisticsForActivity(Activity activity) {
         ActivityStatisticsResponse response = new ActivityStatisticsResponse();
+
         boolean activityIsSurvey = activity.getActivityType().equals(ActivityType.SURVEY);
-        if (activityIsSurvey) {
-            response.setActivity100(((Survey) activity).getPoints());
-        } else {
-            response.setActivity100(activity.getMaxPoints());
-        }
+
+        response.setActivity100(activity.getMaxPoints());
+
 
         AtomicInteger answersNumber = new AtomicInteger(0);
         AtomicReference<Double> sumPoints = new AtomicReference<>(0D);
         AtomicReference<Double> bestScore = new AtomicReference<>(null);
         AtomicReference<Double> worstScore = new AtomicReference<>(null);
-        AtomicReference<HashMap<Group, GroupActivityStatisticsCreator>> avgScoreCreators = new AtomicReference<>(
-                new HashMap<>());
+        AtomicReference<HashMap<Group, GroupActivityStatisticsCreator>> avgScoreCreators = new AtomicReference<>(new HashMap<>());
         AtomicReference<ScaleActivityStatisticsCreator> scaleScores = new AtomicReference<>(
                 new ScaleActivityStatisticsCreator(activity));
 
@@ -270,9 +263,9 @@ public class TaskResultService {
                     else
                         worstScore.set(Math.min(worstScore.get(), points));
 
-                    GroupActivityStatisticsCreator creator = avgScoreCreators.get().get(result.getUser().getGroup());
+                    GroupActivityStatisticsCreator creator = avgScoreCreators.get().get(result.getMember().getGroup());
                     if (creator == null)
-                        avgScoreCreators.get().put(result.getUser().getGroup(),
+                        avgScoreCreators.get().put(result.getMember().getGroup(),
                                 new GroupActivityStatisticsCreator(activity, result));
                     else
                         creator.add(result);

@@ -1,7 +1,8 @@
 package com.example.api.activity.result.dto.response;
 
 import com.example.api.course.model.Course;
-import com.example.api.error.exception.EntityNotFoundException;
+import com.example.api.course.model.CourseMember;
+import com.example.api.course.validator.exception.StudentNotEnrolledException;
 import com.example.api.user.model.HeroType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
@@ -28,7 +29,7 @@ public class RankingResponse {
         this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
-        this.groupName = user.getGroup().getName();
+        this.groupName = user.getCourseMember(course.getId()).get().getGroup().getName();
         this.heroType = user.getHeroType();
         this.unblockedBadges = user.getUnlockedBadges().size();
 
@@ -36,14 +37,14 @@ public class RankingResponse {
         this.rank = rank != null ? rank.getName() : null;
     }
 
-    public RankingResponse(User user, String rankname){
+    public RankingResponse(User user, String rankName, CourseMember courseMember){
         this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
-        this.groupName = user.getGroup().getName();
+        this.groupName = courseMember.getGroup().getName();
         this.heroType = user.getHeroType();
         this.unblockedBadges = user.getUnlockedBadges().size();
 
-        this.rank = rankname;
+        this.rank = rankName;
     }
 }

@@ -51,7 +51,9 @@ public class BadgeServiceTest {
                 fileRepository,
                 userService,
                 badgeValidator,
-                badgeVisitor
+                badgeVisitor,
+                null,
+                null
         );
 
         user = new User();

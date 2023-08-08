@@ -28,11 +28,13 @@ public class UserValidator {
     private final UserRepository userRepository;
     private final HeroRepository heroRepository;
     private final ProfessorRegisterToken professorRegisterToken;
+    private final String STUDENT_DOMAIN = "@student.agh.edu.pl";
+    private final String PROFESSOR_DOMAIN = "@agh.edu.pl";
 
-    public void validateUserIsNotNull(User user, String email) throws UsernameNotFoundException {
+    public void validateUserIsNotNull(User user, String identifier) throws UsernameNotFoundException {
         if(user == null) {
-            log.error("User {} not found in database", email);
-            throw new UsernameNotFoundException("User " + email + " not found in database");
+            log.error("User {} not found in database", identifier);
+            throw new UsernameNotFoundException("User " + identifier + " not found in database");
         }
     }
 
@@ -65,76 +67,63 @@ public class UserValidator {
         validateUserAccountType(professor, AccountType.PROFESSOR);
     }
 
-    public void validateAndSetUserGroup(Group newGroup, Group previousGroup, Long newGroupId, User user) throws EntityNotFoundException, StudentAlreadyAssignedToGroupException {
-        if (newGroup == null) {
-            log.error("Group with id {} not found in database", newGroupId);
-            throw new EntityNotFoundException("Group with id " + newGroupId + " not found in database");
-        }
-        if (previousGroup != null && previousGroup.getId().equals(newGroupId)) {
-            log.error("Student try to set same group");
-            throw new StudentAlreadyAssignedToGroupException("Student is already assigned to group", user, user.getGroup());
-        }
-        if (previousGroup == null) {
-            log.warn("Student previous group doesn't exist");
-        }
-        else {
-            previousGroup.getUsers().remove(user);
-            groupRepository.save(previousGroup);
-        }
-        user.setGroup(newGroup);
-        newGroup.getUsers().add(user);
-        userRepository.save(user);
-        groupRepository.save(newGroup);
-    }
-
-    public void validateUserRegistration(User dbUser, User newUser, RegisterUserForm form, String email) throws RequestValidationException {
-        if(dbUser != null) {
+    public void validateUserDoesNotExist(String email) throws EntityAlreadyInDatabaseException {
+        if (userRepository.existsByEmail(email)) {
             log.error("User {} already exist in database", email);
             throw new EntityAlreadyInDatabaseException(ExceptionMessage.EMAIL_TAKEN);
         }
-        int idx = email.indexOf(";");
-        if (idx != -1) {
-            log.error("Email cannot have a semicolon!");
+    }
+
+    public void validateEmail(String email, String domain) throws RequestValidationException {
+        if (email.contains(";")) {
+            log.error("Email cannot contain a semicolon!");
             throw new RequestValidationException(ExceptionMessage.EMAIL_CONTAINS_SEMICOLON);
         }
-        if(form.getAccountType() == AccountType.STUDENT){
-            if(form.getHeroType() == null || form.getInvitationCode() == null) {
-                log.error("Request body for registering student requires 6 body parameters");
-                throw new WrongBodyParametersNumberException("Request body for registering student requires 6 body parameters",
-                        List.of("firstName", "lastName", "email", "password", "heroType", "invitationCode"), 1);
-            }
-            String code = form.getInvitationCode();
-            Group group = groupRepository.findGroupByInvitationCode(code);
-            if(group == null) {
-                log.error("Group with invitational code {} not found in database", code);
-                throw new EntityNotFoundException(ExceptionMessage.GROUP_CODE_NOT_EXIST);
-            }
-            newUser.setGroup(group);
 
-            Hero hero = heroRepository.findHeroByType(form.getHeroType());
-            UserHero userHero = new UserHero(hero, 0, 0L, null);
-            newUser.setUserHero(userHero);
-            Integer indexNumber = form.getIndexNumber();
+        if (!email.endsWith(domain)) {
+            log.error("Email not from AGH domain");
+            throw new RequestValidationException(ExceptionMessage.EMAIL_WRONG_DOMAIN);
+        }
+    }
+    public void validateStudentEmail(String email) throws RequestValidationException {
+        validateEmail(email, STUDENT_DOMAIN);
+    }
+    public void validateProfessorEmail(String email) throws RequestValidationException {
+        validateEmail(email, PROFESSOR_DOMAIN);
+    }
 
-            if(indexNumber == null || userRepository.existsUserByIndexNumber(indexNumber)) {
-                log.error("User with index number {} already in database", indexNumber);
-                throw new EntityAlreadyInDatabaseException(ExceptionMessage.INDEX_TAKEN);
-            }
-            newUser.setIndexNumber(indexNumber);
-        } else {
-            if(form.getHeroType() != null || form.getInvitationCode() != null || form.getIndexNumber() != null){
-                log.error("Request body for registering professor requires 5 body parameters");
-                throw new WrongBodyParametersNumberException("Request body for registering professor requires 5 body parameters",
-                        List.of("firstName", "lastName", "email", "password", "professorRegisterToken"), 1);
-            }
-            if(form.getProfessorRegistrationToken() == null) {
-                log.error("ProfessorRegisterToken not passed for professor registration");
-                throw new RequestValidationException(ExceptionMessage.PROFESSOR_REGISTER_TOKEN_NOT_PASSED);
-            }
-            if(!professorRegisterToken.isValid(form.getProfessorRegistrationToken())) {
-                log.error("Wrong ProfessorRegisterToken passed");
-                throw new RequestValidationException(ExceptionMessage.WRONG_PROFESSOR_REGISTER_TOKEN);
-            }
+
+
+    public void validateStudentRegistrationForm(RegisterUserForm form) throws RequestValidationException {
+        if (form.getHeroType() == null || form.getInvitationCode() == null) {
+            log.error("Request body for registering student requires 6 body parameters");
+            throw new WrongBodyParametersNumberException("Request body for registering student requires 6 body parameters",
+                    List.of("firstName", "lastName", "email", "password", "heroType", "invitationCode"), 1);
+        }
+    }
+
+    public void validateStudentWithIndexNumberDoesNotExist(Integer indexNumber) throws RequestValidationException {
+        if(indexNumber == null || userRepository.existsUserByIndexNumber(indexNumber)) {
+            log.error("User with index number {} already in database", indexNumber);
+            throw new EntityAlreadyInDatabaseException(ExceptionMessage.INDEX_TAKEN);
+        }
+    }
+
+    public void validateProfessorValidationForm(RegisterUserForm form) throws RequestValidationException {
+        if (form.getHeroType() != null || form.getInvitationCode() != null || form.getIndexNumber() != null){
+            log.error("Request body for registering professor requires 5 body parameters");
+            throw new WrongBodyParametersNumberException("Request body for registering professor requires 5 body parameters",
+                    List.of("firstName", "lastName", "email", "password", "professorRegisterToken"), 1);
+        }
+
+        if (form.getProfessorRegistrationToken() == null) {
+            log.error("ProfessorRegisterToken not passed for professor registration");
+            throw new RequestValidationException(ExceptionMessage.PROFESSOR_REGISTER_TOKEN_NOT_PASSED);
+        }
+
+        if (!professorRegisterToken.isValid(form.getProfessorRegistrationToken())) {
+            log.error("Wrong ProfessorRegisterToken passed");
+            throw new RequestValidationException(ExceptionMessage.WRONG_PROFESSOR_REGISTER_TOKEN);
         }
     }
 }

@@ -1,5 +1,12 @@
 package com.example.api.user.service;
 
+import com.example.api.course.model.CourseMember;
+import com.example.api.course.service.CourseMemberService;
+import com.example.api.course.validator.exception.StudentNotEnrolledException;
+import com.example.api.group.service.GroupService;
+import com.example.api.user.model.hero.Hero;
+import com.example.api.user.model.hero.UserHero;
+import com.example.api.user.repository.HeroRepository;
 import com.example.api.user.service.util.ProfessorRegisterToken;
 import com.example.api.user.dto.request.EditPasswordForm;
 import com.example.api.user.dto.request.RegisterUserForm;
@@ -32,7 +39,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -52,6 +59,11 @@ public class UserService implements UserDetailsService {
     private final UserValidator userValidator;
     private final ProfessorRegisterToken professorRegisterToken;
     private final PasswordValidator passwordValidator;
+    private final GroupService groupService;
+    private final UserService userService;
+    private final CourseMemberService courseMemberService;
+    private final HeroRepository heroRepository;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findUserByEmail(email);
@@ -59,6 +71,12 @@ public class UserService implements UserDetailsService {
         log.info("User {} found in database", email);
         Collection<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getAccountType().getName()));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    }
+
+    public User getUser(Long userId) {
+        User user = userRepository.findUserById(userId);
+        userValidator.validateUserIsNotNull(user, userId.toString());
+        return user;
     }
 
     public User saveUser(User user) {
@@ -70,14 +88,50 @@ public class UserService implements UserDetailsService {
     public Long registerUser(RegisterUserForm form) throws RequestValidationException {
         String email = form.getEmail();
         log.info("Registering user {}", email);
-        User dbUser = userRepository.findUserByEmail(email);
+        userValidator.validateUserDoesNotExist(email);
+
+        if (form.getAccountType().equals(AccountType.STUDENT)) {
+            return registerStudent(form);
+        } else if (form.getAccountType().equals(AccountType.PROFESSOR)) {
+            return registerProfessor(form);
+        } else {
+            throw new RequestValidationException(ExceptionMessage.ROLE_NOT_ALLOWED);
+        }
+    }
+
+    private Long registerProfessor(RegisterUserForm form) throws RequestValidationException {
+        userValidator.validateProfessorEmail(form.getEmail());
+
         User user = new User(form.getEmail(), form.getFirstName(), form.getLastName(), form.getAccountType());
-        userValidator.validateUserRegistration(dbUser, user, form, email);
+        userValidator.validateProfessorValidationForm(form);
+        passwordValidator.validatePassword(form.getPassword());
+        user.setPassword(passwordEncoder.encode(form.getPassword()));
+        userRepository.save(user);
+        return user.getId();
+    }
+
+    private Long registerStudent(RegisterUserForm form) throws RequestValidationException {
+        userValidator.validateStudentEmail(form.getEmail());
+        User user = new User(form.getEmail(), form.getFirstName(), form.getLastName(), form.getAccountType());
+        userValidator.validateStudentRegistrationForm(form);
+
+        Hero hero = heroRepository.findHeroByType(form.getHeroType());
+        UserHero userHero = new UserHero(hero, 0, 0L, null);
+        user.setUserHero(userHero);
+
+        Integer indexNumber = form.getIndexNumber();
+        userValidator.validateStudentWithIndexNumberDoesNotExist(indexNumber);
+        user.setIndexNumber(indexNumber);
+
         passwordValidator.validatePassword(form.getPassword());
         user.setPassword(passwordEncoder.encode(form.getPassword()));
         user.setPoints(0D);
         user.setLevel(1);
         userRepository.save(user);
+
+        Group group = groupService.getGroupByInvitationCode(form.getInvitationCode());
+        addUserToGroup(user, group);
+
         return user.getId();
     }
 
@@ -106,33 +160,50 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public Group getUserGroup(Long courseId) {
+    public Group getUserGroup(Long courseId) throws StudentNotEnrolledException {
         User user = getCurrentUser();
         log.info("Fetching group for user {}", user.getEmail());
-        return user.getGroup();
+        return user.getCourseMember(courseId).orElseThrow(() -> new StudentNotEnrolledException(user, courseId)).getGroup();
     }
 
-    public List<BasicStudent> getAllStudentsWithGroup() {
-        log.info("Fetching all students with group");
-        List<User> students = userRepository.findAllByAccountTypeEquals(AccountType.STUDENT);
-        return students.stream()
+    public List<BasicStudent> getAllStudentsWithGroup(Long courseId) {
+        log.info("Fetching all students with group for course {}", courseId);
+
+        return courseMemberService.getAll(courseId)
+                .stream()
                 .map(BasicStudent::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Group setStudentGroup(SetStudentGroupForm setStudentGroupForm)
-            throws EntityNotFoundException, WrongUserTypeException, StudentAlreadyAssignedToGroupException {
+            throws EntityNotFoundException, WrongUserTypeException {
         Long studentId = setStudentGroupForm.getStudentId();
-        Long newGroupId = setStudentGroupForm.getNewGroupId();
-        log.info("Setting group for student with id {}", studentId);
-        User user = userRepository.findUserById(studentId);
+        Long groupId = setStudentGroupForm.getNewGroupId();
+
+        log.info("Adding student {} to group {}", studentId, groupId);
+        User user = userService.getUser(studentId);
         userValidator.validateStudentAccount(user, studentId);
-        Group newGroup = groupRepository.findGroupById(newGroupId);
-        Group previousGroup = user.getGroup();
-        userValidator.validateAndSetUserGroup(newGroup, previousGroup, newGroupId, user);
+        Group newGroup = groupService.getGroupById(groupId);
+        return setStudentGroup(user, newGroup);
+    }
+
+    public Group setStudentGroup(User user, Group newGroup) {
+        Optional<CourseMember> courseMember = user.getCourseMember(newGroup.getCourse().getId());
+        if (courseMember.isPresent()) {
+            courseMemberService.updateGroup(courseMember.get(), newGroup);
+        } else {
+            addUserToGroup(user, newGroup);
+        }
         return newGroup;
     }
 
+
+    private void addUserToGroup(User user, Group group) {
+        CourseMember courseMember = courseMemberService.create(user, group);
+        user.getCourseMemberships().put(group.getCourse().getId(), courseMember);
+        groupService.addUser(courseMember, group);
+        userRepository.save(user);
+    }
     public Integer setIndexNumber(SetStudentIndexForm setStudentIndexForm) throws WrongUserTypeException, EntityAlreadyInDatabaseException {
         String email = authService.getAuthentication().getName();
         log.info("Setting index number {} for user with email {}", setStudentIndexForm.getNewIndexNumber(), email);
@@ -204,6 +275,11 @@ public class UserService implements UserDetailsService {
     public User getCurrentUserAndValidateStudentAccount() throws WrongUserTypeException {
         User user = getCurrentUser();
         userValidator.validateStudentAccount(user);
+        return user;
+    }
+    public User getCurrentUserAndValidateProfessorAccount() throws WrongUserTypeException {
+        User user = getCurrentUser();
+        userValidator.validateProfessorAccount(user);
         return user;
     }
 }

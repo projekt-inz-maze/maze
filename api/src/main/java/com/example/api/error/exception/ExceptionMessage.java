@@ -34,6 +34,7 @@ public class ExceptionMessage {
     public static final String FILE_TASK_NOT_FOUND ="Zadanie bojowe o podanej nazwie nie istnieje: ";
     public static final String GROUP_NAME_CONTAINS_SEMICOLON ="Nazwa grupy nie może zawierać średnika";
     public static final String EMAIL_CONTAINS_SEMICOLON ="Email nie może zawierać średnika";
+    public static final String EMAIL_WRONG_DOMAIN ="Email nie pochodzi z domeny AGH";
     public static final String FILE_TASK_TITLE_CONTAINS_SEMICOLON ="Nazwa zadania bojowego nie może zawierać średnika";
     public static final String GRAPH_TASK_TITLE_CONTAINS_SEMICOLON ="Nazwa ekspedycji nie może zawierać średnika";
     public static final String COURSE_CONTAINS_SEMICOLON ="Nazwa kursy nie może zawierać średnika";
@@ -56,4 +57,5 @@ public class ExceptionMessage {
     public static final String PASSWORD_RESET_TOKEN_EXPIRED = "Ważność tokena do resetu hasła wygasła";
     public static final String PASSWORD_RESET_TOKEN_INCORRECT = "Podany token do resetu hasła jest nieprawidłowy";
     public static final String PASSWORD_NOT_MEET_REQUIREMENTS = "Hasło nie spełnia wymagań";
+    public static final String ROLE_NOT_ALLOWED = "Rola nie jest dozwolona";
 }

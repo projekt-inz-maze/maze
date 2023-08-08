@@ -65,11 +65,27 @@ public class CourseValidator {
     }
 
     public void validateUserCanAccess(User user, Long courseId) throws EntityNotFoundException {
-        if ((user.getAccountType().equals(AccountType.PROFESSOR) &&
-                user.getCourses().stream().map(Course::getId).noneMatch(id -> id.equals(courseId)))
-            || (user.getAccountType().equals(AccountType.STUDENT) && !user.getGroup().getCourse().getId().equals(courseId))) {
+        if (user.getAccountType().equals(AccountType.PROFESSOR)) {
+            validateProfessorCanAccess(user, courseId);
+        }
+        if (user.getAccountType().equals(AccountType.STUDENT)) {
+            validateStudentCanAccess(user, courseId);
+        }
+    }
+
+    public void validateStudentCanAccess(User user, Long courseId) throws EntityNotFoundException {
+        if (!user.inCourse(courseId)) {
             log.error("User {} does not have access to course {}", user.getId(), courseId);
             throw new EntityNotFoundException("User " + user.getId() +" does not have access to course " + courseId);
         }
     }
+
+    public void validateProfessorCanAccess(User user, Long courseId) throws EntityNotFoundException {
+        if (user.getCourses().stream().map(Course::getId).noneMatch(id -> id.equals(courseId))) {
+            log.error("User {} does not have access to course {}", user.getId(), courseId);
+            throw new EntityNotFoundException("User " + user.getId() +" does not have access to course " + courseId);
+        }
+    }
+
+
 }

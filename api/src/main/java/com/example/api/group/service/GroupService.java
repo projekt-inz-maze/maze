@@ -1,6 +1,7 @@
 package com.example.api.group.service;
 
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.group.dto.request.SaveGroupForm;
@@ -52,7 +53,7 @@ public class GroupService {
         groupValidator.validateGroup(groups, form);
         Course course = courseService.getCourse(form.getCourseId());
         courseValidator.validateCourseOwner(course, userService.getCurrentUser());
-        Group group = new Group(null, form.getName(), new ArrayList<>(), form.getInvitationCode(), course);
+        Group group = new Group(null, form.getName(), form.getInvitationCode(), course);
         groupRepository.save(group);
         return group.getId();
     }
@@ -127,4 +128,15 @@ public class GroupService {
                 .toList();
     }
 
+    public void removeUser(CourseMember courseMember, Group group) {
+        group.getUsers().remove(courseMember.getUser());
+        group.getMembers().remove(courseMember);
+        groupRepository.save(group);
+    }
+
+    public void addUser(CourseMember courseMember, Group group) {
+        group.getMembers().add(courseMember);
+        group.getUsers().add(courseMember.getUser());
+        groupRepository.save(group);
+    }
 }

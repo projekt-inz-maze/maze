@@ -33,9 +33,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +69,7 @@ public class ChapterService {
                     .map(chapter ->
                             new ChapterResponseStudent(
                                     chapter,
-                                    requirementService.areRequirementsFulfilled(chapter.getRequirements())
+                                    requirementService.areRequirementsFulfilled(chapter.getRequirements(), chapter.getCourse())
                             )
                     )
                     .sorted(Comparator.comparingLong(ChapterResponse::getId))
@@ -199,5 +201,15 @@ public class ChapterService {
         }
         List<RequirementForm> requirementForms = form.getRequirements();
         requirementService.updateRequirements(requirementForms);
+    }
+
+    public List<? extends Activity> getAllActivitiesForChapter(Chapter chapter) {
+        return Stream.of(chapter.getActivityMap().getGraphTasks(),
+                    chapter.getActivityMap().getFileTasks(),
+                    chapter.getActivityMap().getInfos(),
+                    chapter.getActivityMap().getSurveys()
+                )
+                .flatMap(Collection::stream)
+                .toList();
     }
 }

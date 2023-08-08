@@ -1,13 +1,11 @@
 package com.example.api.user.service;
 
 import com.example.api.activity.result.model.*;
-import com.example.api.course.model.Course;
 import com.example.api.course.service.CourseService;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.user.dto.response.BasicUser;
 import com.example.api.user.dto.response.grade.GradeResponse;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
@@ -47,7 +45,7 @@ public class GradeService {
         userValidator.validateProfessorAccount(professor);
 
         return courseService.getCourse(courseId)
-                .getAllStudents()
+                .getAllStudents2()
                 .stream()
                 .map(this::getStudentFinalGrade)
                 .sorted(Comparator.comparing(entry -> entry.getStudent().getLastName().toLowerCase() + entry.getStudent().getFirstName().toLowerCase()))

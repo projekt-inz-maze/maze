@@ -6,6 +6,8 @@ import com.example.api.activity.result.dto.response.SurveyAnswerResponse;
 import com.example.api.activity.task.model.Activity;
 import com.example.api.course.model.Course;
 import com.example.api.course.service.CourseService;
+import com.example.api.course.validator.CourseValidator;
+import com.example.api.course.validator.exception.StudentNotEnrolledException;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -50,12 +52,11 @@ public class RankingService {
     private final SurveyResultRepository surveyResultRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
     private final UserValidator userValidator;
-    private final GroupValidator groupValidator;
     private final UserService userService;
     private final RankService rankService;
     private final CourseService courseService;
     private final ActivityService activityService;
-
+    private final CourseValidator courseValidator;
 
     public List<RankingResponse> getRanking(Long courseId) throws EntityNotFoundException {
         return getRanking(courseService.getCourse(courseId));
@@ -63,7 +64,7 @@ public class RankingService {
 
     public List<RankingResponse> getRanking(Course course) {
         List<RankingResponse> rankingList = course
-                .getAllStudents()
+                .getAllStudents2()
                 .stream()
                 .map(student -> {
                     try {
@@ -79,7 +80,7 @@ public class RankingService {
         return rankingList;
     }
 
-    public List<RankingResponse> getRankingForLoggedStudentGroup(Long courseId) {
+    public List<RankingResponse> getRankingForLoggedStudentGroup(Long courseId) throws StudentNotEnrolledException {
         Group group = userService.getUserGroup(courseId);
         List<RankingResponse> rankingList = group.getUsers()
                 .stream()
@@ -102,16 +103,15 @@ public class RankingService {
 
         Course course = courseService.getCourse(courseId);
         List<RankingResponse> rankingList = course
-                .getAllStudents()
+                .getAllMembers()
                 .stream()
-                .filter(student ->
-                                student.getFirstName().concat(student.getLastName()).toLowerCase().replaceAll("\\s","").contains(searchLower) ||
-                                student.getLastName().concat(student.getFirstName()).toLowerCase().replaceAll("\\s","").contains(searchLower) ||
-                                student.getHeroType().getPolishTypeName().toLowerCase().contains(searchLower) ||
-                                student.getGroup().getName().toLowerCase().contains(searchLower))
-                .map(student -> {
+                .filter(member -> member.getUser().getFirstName().concat(member.getUser().getLastName()).toLowerCase().replaceAll("\\s","").contains(searchLower)
+                        || member.getUser().getLastName().concat(member.getUser().getFirstName()).toLowerCase().replaceAll("\\s","").contains(searchLower)
+                        || member.getHeroType().getPolishTypeName().toLowerCase().contains(searchLower)
+                        || member.getGroup().getName().toLowerCase().contains(searchLower))
+                .map(member -> {
                     try {
-                        return studentToRankingEntry(student, course);
+                        return studentToRankingEntry(member.getUser(), course);
                     } catch (EntityNotFoundException e) {
                         throw new RuntimeException(e);
                     }
@@ -199,9 +199,9 @@ public class RankingService {
         return getPositionFromRanking(getRanking(courseId), student.getEmail());
     }
 
-    public Integer getGroupRankingPosition(Long courseId) throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException {
+    public Integer getGroupRankingPosition(Long courseId) throws WrongUserTypeException, UsernameNotFoundException, EntityNotFoundException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
-        groupValidator.validateUserGroupIsNotNull(student);
+        courseValidator.validateStudentCanAccess(student, courseId);
 
         return getPositionFromRanking(getRankingForLoggedStudentGroup(courseId), student.getEmail());
     }
@@ -217,7 +217,7 @@ public class RankingService {
 
     private RankingResponse studentToRankingEntry(User student, Course course) throws EntityNotFoundException {
         Rank rank = rankService.getCurrentRank(student, course);
-        RankingResponse rankingResponse = new RankingResponse(student, rank == null? null : rank.getName());
+        RankingResponse rankingResponse = new RankingResponse(student, rank == null? null : rank.getName(), student.getCourseMember(course.getId()).get());
         rankingResponse.setPoints(getStudentPoints(student));
         return rankingResponse;
     }

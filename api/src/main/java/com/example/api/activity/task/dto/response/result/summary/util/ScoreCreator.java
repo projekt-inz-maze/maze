@@ -5,6 +5,8 @@ import com.example.api.activity.result.model.TaskResult;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Optional;
+
 @Getter
 @Setter
 public class ScoreCreator {
@@ -25,9 +27,13 @@ public class ScoreCreator {
             numberOfScores += 1;
     }
 
-    public Score create() {
+    public Optional<Score> create() {
+        if (numberOfScores == 0) {
+            return Optional.empty();
+        }
+
         Double score = 100 * sumOfScores / (maxPoints * numberOfScores);
         score = Math.round(score * 10.0) / 10.0;
-        return new Score(groupName, score);
+        return Optional.of(new Score(groupName, score));
     }
 }

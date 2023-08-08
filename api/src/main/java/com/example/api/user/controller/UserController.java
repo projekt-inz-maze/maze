@@ -86,8 +86,8 @@ public class UserController {
     }
 
     @GetMapping("/students-with-group/all")
-    public ResponseEntity<List<BasicStudent>> getAllStudentsWithGroup() {
-        return ResponseEntity.ok().body(userService.getAllStudentsWithGroup());
+    public ResponseEntity<List<BasicStudent>> getAllStudentsWithGroup(@RequestParam Long courseId) {
+        return ResponseEntity.ok().body(userService.getAllStudentsWithGroup(courseId));
     }
 
     @PostMapping("/user/group/set")

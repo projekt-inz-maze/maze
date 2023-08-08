@@ -30,7 +30,10 @@ import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
+
+import static java.util.Optional.ofNullable;
 
 @Service
 @RequiredArgsConstructor
@@ -147,21 +150,26 @@ public class ActivityService {
         }
     }
 
-    public Activity getActivity(Long activityId) throws EntityNotFoundException {
+    public Optional<Activity> getGradedActivity(Long activityId) {
 
-        GraphTask graphTask = graphTaskRepository.findGraphTaskById(activityId);
-        if (graphTask != null) {
+        Optional<Activity> graphTask = ofNullable(graphTaskRepository.findGraphTaskById(activityId));
+        if (graphTask.isPresent()) {
             return graphTask;
         }
 
-        FileTask fileTask = fileTaskRepository.findFileTaskById(activityId);
-        if (fileTask != null) {
+        Optional<Activity> fileTask = ofNullable(fileTaskRepository.findFileTaskById(activityId));
+        if (fileTask.isPresent()) {
             return fileTask;
         }
 
-        Survey survey = surveyRepository.findSurveyById(activityId);
-        if (survey != null) {
-            return survey;
+         return ofNullable(surveyRepository.findSurveyById(activityId));
+    }
+    public Activity getActivity(Long activityId) throws EntityNotFoundException {
+
+        Optional<Activity> gradedActivity = getGradedActivity(activityId);
+
+        if (gradedActivity.isPresent()) {
+            return gradedActivity.get();
         }
 
         Info info = infoRepository.findInfoById(activityId);

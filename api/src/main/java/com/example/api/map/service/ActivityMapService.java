@@ -114,7 +114,7 @@ public class ActivityMapService {
     }
 
     private Boolean areRequirementsFulfilled(Activity activity) {
-        return requirementService.areRequirementsFulfilled(activity.getRequirements());
+        return requirementService.areRequirementsFulfilled(activity.getRequirements(), activity.getCourse());
     }
 
     private Boolean isGraphTaskCompleted(GraphTask graphTask, User user) {

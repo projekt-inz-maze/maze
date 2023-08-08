@@ -1,6 +1,7 @@
 package com.example.api.map.service;
 
 import com.example.api.activity.task.dto.request.requirement.RequirementForm;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.map.model.requirement.*;
 import com.example.api.map.repository.RequirementRepository;
@@ -79,9 +80,9 @@ public class RequirementService {
         return requirements;
     }
 
-    public boolean areRequirementsFulfilled(List<Requirement> requirements) {
+    public boolean areRequirementsFulfilled(List<Requirement> requirements, Course course) {
         return requirements.stream()
-                .allMatch(requirement -> requirement.isFulfilled(requirementFulfilledVisitor));
+                .allMatch(requirement -> requirement.isFulfilled(requirementFulfilledVisitor, course));
     }
 
     public void updateRequirements(List<RequirementForm> forms) throws RequestValidationException {

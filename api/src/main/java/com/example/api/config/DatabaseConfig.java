@@ -12,6 +12,7 @@ import com.example.api.activity.task.model.Info;
 import com.example.api.activity.task.model.Survey;
 import com.example.api.course.model.Course;
 import com.example.api.course.repository.CourseRepository;
+import com.example.api.course.service.CourseMemberService;
 import com.example.api.group.model.AccessDate;
 import com.example.api.group.model.Group;
 import com.example.api.map.model.ActivityMap;
@@ -86,7 +87,7 @@ public class DatabaseConfig {
     private final CourseRepository courseRepository;
 
     @Bean
-    public CommandLineRunner commandLineRunner(UserService userService, ProfessorFeedbackService professorFeedbackService,
+    public CommandLineRunner commandLineRunner(UserService userService, CourseMemberService courseMemberService, ProfessorFeedbackService professorFeedbackService,
                                                SurveyResultService surveyResultService, GraphTaskService graphTaskService,
                                                GraphTaskResultService graphTaskResultService, GroupService groupService,
                                                ActivityMapService activityMapService, QuestionService questionService,
@@ -162,20 +163,15 @@ public class DatabaseConfig {
 
             for (User user: students1) {
                 user.setLevel(1);
-                user.setGroup(group);
+                userService.setStudentGroup(user, group);
                 userService.saveUser(user);
             }
 
             for (User user: students2) {
                 user.setLevel(1);
-                user.setGroup(group1);
+                userService.setStudentGroup(user, group1);
                 userService.saveUser(user);
             }
-
-            professor1.setGroup(group);
-            professor2.setGroup(group1);
-            userService.saveUser(professor1);
-            userService.saveUser(professor2);
 
             professor1.getCourses().add(course1);
             course1.setOwner(professor1);

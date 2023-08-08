@@ -1,6 +1,8 @@
 package com.example.api.user.model;
 
 import com.example.api.course.model.Course;
+import com.example.api.course.validator.exception.StudentNotEnrolledException;
+import com.example.api.course.model.CourseMember;
 import com.example.api.group.model.Group;
 import com.example.api.user.model.badge.UnlockedBadge;
 import com.example.api.user.model.hero.UserHero;
@@ -15,6 +17,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -43,9 +47,9 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
+
     private Integer level;
-    //TODO kluczowe - dodac punkty <-> grupa i sprawdzic czy nie ma tego typ innych syfow [*]
-    private Double points = 0D;
+    private Double points;
 
     @Embedded
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -57,6 +61,14 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "courses",
+            joinColumns = {@JoinColumn(name = "course_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "coursemember_id", referencedColumnName = "id")})
+    @MapKeyColumn(name = "coursemember_xd")
+    private Map<Long, CourseMember> courseMemberships;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
@@ -74,5 +86,12 @@ public class User {
     public HeroType getHeroType() {
         if (accountType.equals(AccountType.STUDENT)) return userHero.getHero().getType();
         return null;
+    }
+
+    public Optional<CourseMember> getCourseMember(Long courseId) {
+        return Optional.ofNullable(courseMemberships.get(courseId));
+    }
+    public boolean inCourse(Long courseId) {
+        return courseMemberships.containsKey(courseId);
     }
 }

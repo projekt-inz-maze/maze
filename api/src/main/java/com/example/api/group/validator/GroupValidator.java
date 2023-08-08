@@ -53,11 +53,4 @@ public class GroupValidator {
             throw new EntityAlreadyInDatabaseException(ExceptionMessage.GROUP_CODE_TAKEN);
         }
     }
-    
-    public void validateUserGroupIsNotNull(User user) throws MissingAttributeException {
-        if (user.getGroup() == null) {
-            log.error("User with email {} does not have a group", user.getEmail());
-            throw new MissingAttributeException("Usere with email " + user.getEmail() + " does not have a group");
-        }
-    }
 }
