@@ -43,7 +43,9 @@ public class CourseMember {
     @JoinColumn(name = "group_id")
     private Group group;
 
-    private Long xd;
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
@@ -52,7 +54,7 @@ public class CourseMember {
     public CourseMember(User user, Group group) {
         this.user = user;
         this.group = group;
-        this.xd = group.getCourse().getId();
+        this.course = group.getCourse();
     }
 
     public synchronized void changePoints(Double diff) {

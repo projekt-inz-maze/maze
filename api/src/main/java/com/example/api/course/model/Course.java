@@ -44,6 +44,11 @@ public class Course {
     @OneToMany(mappedBy = "course")
     @JsonBackReference
     @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<CourseMember> courseMembers = new LinkedList<>();
+
+    @OneToMany(mappedBy = "course")
+    @JsonBackReference
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Chapter> chapters = new LinkedList<>();
 
     public Course(Long id, String name, String description, Boolean isArchived, User owner) {

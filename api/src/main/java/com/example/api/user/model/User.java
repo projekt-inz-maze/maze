@@ -1,7 +1,6 @@
 package com.example.api.user.model;
 
 import com.example.api.course.model.Course;
-import com.example.api.course.validator.exception.StudentNotEnrolledException;
 import com.example.api.course.model.CourseMember;
 import com.example.api.group.model.Group;
 import com.example.api.user.model.badge.UnlockedBadge;
@@ -64,10 +63,10 @@ public class User {
 
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "courses",
+    @JoinTable(name = "courseMembers",
             joinColumns = {@JoinColumn(name = "course_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "coursemember_id", referencedColumnName = "id")})
-    @MapKeyColumn(name = "coursemember_xd")
+    @MapKeyColumn(name = "course_id")
     private Map<Long, CourseMember> courseMemberships;
 
     @JsonIgnore
