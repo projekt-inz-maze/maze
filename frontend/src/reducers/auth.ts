@@ -4,7 +4,7 @@ const user = localStorage.getItem('user')
 const parsedUser = user ? JSON.parse(user) : null
 const initialState = parsedUser ? { isLoggedIn: true, user: parsedUser } : { isLoggedIn: false, user: null }
 
-export default function useAppSelector(state = initialState, action: any) {
+export default function authReducer(state = initialState, action: any) {
   const { type, payload } = action
   switch (type) {
     case REGISTER_SUCCESS:

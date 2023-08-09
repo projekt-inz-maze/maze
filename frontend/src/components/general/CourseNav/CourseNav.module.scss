@@ -1,0 +1,52 @@
+.topRow {
+  background-color: #071542;
+  color: whitesmoke;
+  padding: 2em;
+  display: flex;
+  align-items: center;
+
+  .appTitle {
+    align-self: center;
+    font-weight: bold;
+    font-size: 2rem;
+  }
+
+  svg {
+    padding: 0 0.4em 0 1.5em;
+    color: #ffb30d; /* Customize the color of the fire icon */
+  }
+
+  .links {
+    display: flex;
+    justify-content: flex-end;
+    align-self: center;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+
+    button {
+      font-weight: bold;
+      margin-right: 2em;
+      cursor: pointer;
+      padding: 0.3em 0.5em;
+      border: none;
+      background-color: #071542;
+      color: whitesmoke;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &:last-child {
+        margin-right: 0; /* Remove margin from the last link */
+      }
+    }
+
+    .actionButton {
+      background-color: #ffb30d;
+      color: #071542;
+      border: none;
+      border-radius: 6px;
+      padding: 0.3em 1.5em;
+    }
+  }
+}
