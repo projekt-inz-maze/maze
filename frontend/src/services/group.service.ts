@@ -24,8 +24,8 @@ class GroupService {
     })
   }
 
-  getAllStudents() {
-    return axiosApiGet(GET_STUDENTS_WITH_GROUP_ALL).catch((error) => {
+  getAllStudents(courseId: number) {
+    return axiosApiGet(`${GET_STUDENTS_WITH_GROUP_ALL}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
