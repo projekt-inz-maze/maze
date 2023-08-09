@@ -7,8 +7,9 @@ type CustomDropdownToggleProps = {
   onClick: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
-const CustomDropdownToggle : React.FC<CustomDropdownToggleProps> = ({ onClick }) => (
+const CustomDropdownToggle : React.ForwardRefRenderFunction<HTMLDivElement, CustomDropdownToggleProps> = ({ onClick }, ref) => (
   <div
+    ref={ref}
     onClick={(e) => {
       e.preventDefault()
       onClick(e)
@@ -32,4 +33,4 @@ const CustomDropdownToggle : React.FC<CustomDropdownToggleProps> = ({ onClick })
   </div>
 )
 
-export default CustomDropdownToggle
+export default React.forwardRef<HTMLDivElement, CustomDropdownToggleProps>(CustomDropdownToggle)

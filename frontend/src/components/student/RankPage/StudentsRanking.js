@@ -27,7 +27,7 @@ function StudentsRanking(props) {
         setRanking(null)
       })
 
-    RankingService.getStudentGroupRankingList()
+    RankingService.getStudentGroupRankingList(courseId)
       .then((response) => {
         setStudentGroupRanking(response)
       })

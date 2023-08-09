@@ -24,7 +24,7 @@ export const NavBarTextContainer = styled(Container)`
 
 export const NavEdit = styled(Nav)`
   font-size: 1.15vw;
-  margin-top: 3vh;
+  margin-top: 0.5em;
   padding: 10px;
   width: 100%;
 `
@@ -60,4 +60,16 @@ export const Badge = styled.div`
   color: white;
   font-size: 10px;
   font-weight: bolder;
+`
+
+export const CourseButton =  styled.button`
+  color: #071542 !important;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 0;
+
+  &:hover {
+    background-color: #071542;
+    transform: scale(1.03);
+  }
 `

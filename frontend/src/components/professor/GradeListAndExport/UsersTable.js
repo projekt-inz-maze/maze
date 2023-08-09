@@ -54,7 +54,7 @@ function UsersTable(props) {
           setUsersList(null)
         })
     } else {
-      GroupService.getAllStudents()
+      GroupService.getAllStudents(courseId)
         .then((response) => {
           setUsersList(response)
           setUsers([...response])

@@ -1,28 +1,35 @@
 import React, { useEffect } from 'react'
 
-import { faAnglesLeft, faAnglesRight, faFire } from '@fortawesome/free-solid-svg-icons'
+import { faAnglesLeft, faAnglesRight, faArrowLeft, faFire } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Nav } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { NavLinkStyles } from './navBuilder'
-import { Badge, LogoDiv, NavBarTextContainer, NavEdit, SidebarEdit } from './SidebarStyles'
+import { Badge, CourseButton, LogoDiv, NavBarTextContainer, NavEdit, SidebarEdit } from './SidebarStyles'
 import { logout } from '../../../actions/auth'
 import { SET_ASSESSMENT_NUMBERS, SET_EXPANDED } from '../../../actions/types'
-import { useAppSelector } from '../../../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
+import { setCourseId } from '../../../reducers/userSlice'
 import { GeneralRoutes } from '../../../routes/PageRoutes'
 import ProfessorService from '../../../services/professor.service'
 import { isStudent } from '../../../utils/storageManager'
 
 function Sidebar(props) {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const logOut = () => props.dispatch(logout(navigate))
 
   const { isExpanded } = props.sidebar
   const assessmentsNumber = props.sidebar.assessments
 
   const courseId = useAppSelector((state) => state.user.courseId)
+
+  const handleGoBack = () => {
+    dispatch(setCourseId(0))
+    navigate('/courses')
+  }
 
   useEffect(() => {
     if (props.user && !isStudent(props.user)) {
@@ -46,7 +53,7 @@ function Sidebar(props) {
       <NavBarTextContainer $fontColor={props.theme.font}>
         <Nav.Link as={LogoDiv} $logoColor={props.theme.font} to={GeneralRoutes.HOME} key={GeneralRoutes.HOME} id='logo'>
           <FontAwesomeIcon icon={faFire} size='2x' />
-          {isExpanded && <p>Systematic Chaos</p>}
+          {isExpanded && <p>Maze</p>}
         </Nav.Link>
 
         <div className={`d-flex w-100  ${isExpanded ? 'justify-content-end pe-3' : 'justify-content-center'}`}>
@@ -58,6 +65,10 @@ function Sidebar(props) {
             style={{ cursor: 'pointer' }}
           />
         </div>
+
+        <CourseButton className='d-flex w-75 justify-content-center mt-4 bg-white text-dark' onClick={handleGoBack}>
+          {isExpanded ? 'Wróć do kursów' : <FontAwesomeIcon icon={faArrowLeft} className='icon' />}
+        </CourseButton>
 
         <NavEdit className='d-flex flex-column' id='menu-options'>
           {props.link_titles.map((link) => (
