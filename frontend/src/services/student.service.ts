@@ -2,7 +2,6 @@ import {
   GET_ADDITIONAL_POINTS,
   GET_TASK_RESULT_POINTS_STATISTICS,
   POST_USER_INDEX,
-  GET_USER_GROUP,
   GET_POINTS_ALL_TOTAL,
   GET_DASHBOARD,
   DELETE_USER_STUDENT
@@ -10,12 +9,6 @@ import {
 import { axiosApiDelete, axiosApiGet, axiosApiPost } from '../utils/axios'
 
 class StudentService {
-
-  getUserGroup() {
-    return axiosApiGet(GET_USER_GROUP).catch((error) => {
-      throw error
-    })
-  }
 
   getPointsStats(courseId: number) {
     return axiosApiGet(`${GET_TASK_RESULT_POINTS_STATISTICS}?courseId=${courseId}`).catch((error) => {

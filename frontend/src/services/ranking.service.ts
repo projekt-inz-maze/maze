@@ -14,8 +14,8 @@ class RankingService {
     })
   }
 
-  getStudentGroupRankingList() {
-    return axiosApiGet(GET_RANKING_GROUP).catch((error) => {
+  getStudentGroupRankingList(courseId: number) {
+    return axiosApiGet(`${GET_RANKING_GROUP}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }

@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import BonusPointsModal from './BonusPointsModal'
 import ChangeGroupModal from './ChangeGroupModal'
 import { TableContainer } from './ParticipantsStyles'
+import { useAppSelector } from '../../../hooks/hooks'
 import GroupService from '../../../services/group.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
@@ -19,12 +20,14 @@ function ParticipantsTable(props) {
   const [chosenStudent, setChosenStudent] = useState()
   const [studentsList, setStudentsList] = useState([])
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   // "if (!modalOpen)" is here because this useEffect is triggered
   // when we have finished group change process and closed this modal
   useEffect(() => {
     if (!changeGroupModalOpen) {
       if (!props.groupId || !props.groupName) {
-        GroupService.getAllStudents()
+        GroupService.getAllStudents(courseId)
           .then((response) => setStudentsList([...response]))
           .catch(() => {
             setStudentsList(null)
