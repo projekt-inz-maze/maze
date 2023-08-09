@@ -25,7 +25,7 @@ public class Group {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany
     @JsonBackReference
     private List<User> users;
 

@@ -2,7 +2,6 @@ package com.example.api.user.model;
 
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
-import com.example.api.group.model.Group;
 import com.example.api.user.model.badge.UnlockedBadge;
 import com.example.api.user.model.hero.UserHero;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -46,9 +45,8 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
-
     private Integer level;
-    private Double points;
+    private Double points = 0D;
 
     @Embedded
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -56,11 +54,6 @@ public class User {
 
     @OneToOne
     PasswordResetToken passwordResetToken;
-
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
-
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "courseMembers",

@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -279,13 +278,13 @@ public class UserServiceTests {
     }
 
     @Test
-    public void setStudentGroup() throws WrongUserTypeException, StudentAlreadyAssignedToGroupException, EntityNotFoundException {
+    public void setStudentGroup() throws WrongUserTypeException, EntityNotFoundException {
         // given
-        user.setAccountType(AccountType.STUDENT);;
+        user.setAccountType(AccountType.STUDENT);
         List<User> oldGroupUsers = new ArrayList<>();
         oldGroupUsers.add(user);
         group.setUsers(oldGroupUsers);
-        user.setGroup(group);
+        //user.setGroup(group);
         Group newGroup = new Group();
         newGroup.setId(2L);
         newGroup.setUsers(new ArrayList<>());
