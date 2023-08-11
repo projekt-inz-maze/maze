@@ -3,10 +3,12 @@ package com.example.api.user.model.hero;
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.question.model.Question;
 import com.example.api.user.model.HeroType;
 import com.example.api.user.model.User;
+import com.example.api.util.message.HeroMessage;
 import com.example.api.util.visitor.HeroVisitor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,8 +25,8 @@ import javax.persistence.Entity;
 public class Wizard extends Hero{
     private Double multiplier = 0.5;
 
-    public Wizard(HeroType type, Long coolDownTimeMillis) {
-        super(type, coolDownTimeMillis);
+    public Wizard(HeroType type, Long coolDownTimeMillis, Course course) {
+        super(type, coolDownTimeMillis, course);
     }
 
     @Override
@@ -32,7 +34,7 @@ public class Wizard extends Hero{
                                                User user,
                                                GraphTaskResult result,
                                                Question question) throws RequestValidationException {
-        return visitor.visitWizard(this, user, result, question);
+        return visitor.visitWizard(this, result, question);
     }
 
     @Override
@@ -45,11 +47,31 @@ public class Wizard extends Hero{
         return result.getStatus() == ResultStatus.CHOOSE;
     }
 
-    public Boolean canPowerBeUsed(User user, GraphTaskResult result) {
-        return super.canPowerBeUsed(user, result, multiplier);
+    public Boolean canPowerBeUsed(GraphTaskResult result) {
+        return super.canPowerBeUsed(result, multiplier);
     }
 
     public String getCanBeUsedMessage(User user, GraphTaskResult result) {
-        return super.getCanBeUsedMessage(user, result, multiplier);
+        if (result.isFinished()) {
+            return HeroMessage.RESULT_FINISHED;
+        }
+        if (!isResultStatusCorrect(result)) {
+            return HeroMessage.INCORRECT_STATUS;
+        }
+
+        int timesSuperPowerUsedInResult = result.getMember().getUserHero().getTimesSuperPowerUsedInResult();
+        int level = result.getMember().getLevel();
+        long timesSuperPowerCanBeUsed = Math.round(multiplier * level);
+        if (timesSuperPowerUsedInResult != 0) {
+            if (timesSuperPowerUsedInResult <= timesSuperPowerCanBeUsed) {
+                return HeroMessage.CANNOT_USE_MORE;
+            }
+        } else {
+            if (isCoolDownActive(result.getMember())) {
+                return HeroMessage.COOL_DOWN_ACTIVE;
+            }
+        }
+        String message = HeroMessage.POWER_READY_TO_BE_USED_WITH_NUMBER;
+        return message.replace("{}", String.valueOf(timesSuperPowerCanBeUsed - timesSuperPowerUsedInResult));
     }
 }

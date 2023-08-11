@@ -9,6 +9,7 @@ import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
+import com.example.api.activity.result.service.ActivityResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
 import com.example.api.activity.task.model.*;
 import com.example.api.activity.task.service.FileTaskService;
@@ -16,6 +17,7 @@ import com.example.api.activity.task.service.GraphTaskService;
 import com.example.api.activity.task.service.InfoService;
 import com.example.api.activity.task.service.SurveyService;
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -60,32 +62,34 @@ public class DashboardService {
     private final UserService userService;
     private final CourseService courseService;
     private final CourseValidator courseValidator;
+    private final ActivityResultService activityResultService;
 
     private final long MAX_LAST_ACTIVITIES_IN_DASHBOARD = 8;
 
     public DashboardResponse getStudentDashboard(Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
+        CourseMember member = student.getCourseMember(courseId).orElseThrow();
         Course course = courseService.getCourse(courseId);
         courseValidator.validateUserCanAccess(student, courseId);
         badgeService.checkAllBadges(student);
 
         return new DashboardResponse(
-                getHeroTypeStats(student, course),
+                getHeroTypeStats(member),
                 getGeneralStats(student, course),
                 getLastAddedActivities(course),
-                getHeroStats(student, course)
+                getHeroStats(member)
         );
     }
 
-    private HeroTypeStats getHeroTypeStats(User student, Course course) throws EntityNotFoundException {
-        String heroType = String.valueOf(student.getHeroType());
+    private HeroTypeStats getHeroTypeStats(CourseMember member) throws EntityNotFoundException {
+        String heroType = String.valueOf(member.getHeroType());
 
-        List<RankingResponse> ranking = rankingService.getRanking(course);
-        RankingResponse rank = getRank(student, ranking);
+        List<RankingResponse> ranking = rankingService.getRanking(member.getCourse().getId());
+        RankingResponse rank = getRank(member.getUser(), ranking);
 
         if (rank == null) {
-            log.error("Student {} not found in ranking", student.getEmail());
-            throw new EntityNotFoundException("Student " + student.getEmail() + " not found in ranking");
+            log.error("Student {} not found in ranking", member.getUser().getId());
+            throw new EntityNotFoundException("Student " + member.getUser().getId() + " not found in ranking");
         }
 
         Integer rankPosition = rank.getPosition();
@@ -227,15 +231,15 @@ public class DashboardService {
 
     }
 
-    private HeroStats getHeroStats(User student, Course course) throws EntityNotFoundException {
+    private HeroStats getHeroStats(CourseMember member) {
         log.info("getHeroStats");
-        Double experiencePoints = student.getPoints();
-        Double nextLvlPoints = getNexLvlPoints(student, course);
+        Double experiencePoints = member.getPoints();
+        Double nextLvlPoints = getNexLvlPoints(member);
 
-        Rank rank = rankService.getCurrentRank(student, course);
+        Rank rank = rankService.getCurrentRank(member);
         String rankName = rank != null ? rank.getName() : null;
-        Long badgesNumber = (long) student.getUnlockedBadges().size();
-        Long completedActivities = getCompletedActivities(student);
+        Long badgesNumber = (long) member.getUnlockedBadges().size();
+        Long completedActivities = activityResultService.countCompletedActivities(member);
 
         return new HeroStats(
                 experiencePoints,
@@ -246,26 +250,14 @@ public class DashboardService {
         );
     }
 
-    private Double getNexLvlPoints(User student, Course course) throws EntityNotFoundException {
-        List<Rank> sortedRanks = rankService.getSortedRanksForHeroType(student.getHeroType(), course);
+    private Double getNexLvlPoints(CourseMember member) {
+        List<Rank> sortedRanks = rankService.getSortedRanksForHeroType(member);
         for (int i=sortedRanks.size()-1; i >= 0; i--) {
-            if (student.getPoints() >= sortedRanks.get(i).getMinPoints()) {
+            if (member.getPoints() >= sortedRanks.get(i).getMinPoints()) {
                 if (i == sortedRanks.size() - 1) return null;
                 else return sortedRanks.get(i+1).getMinPoints();
             }
         }
         return null;
-    }
-
-    // Completed means answer was sent (not necessarily rated)
-    private Long getCompletedActivities(User student) {
-        Long graphTasksCompleted = graphTaskResultRepository.findAllByUser(student)
-                .stream()
-                .filter(result -> Objects.nonNull(result.getSendDateMillis()))
-                .count();
-        Long fileTasksCompleted = (long) fileTaskResultRepository.findAllByUser(student)
-                .size();
-        Long surveysCompleted = (long) surveyResultRepository.findAllByUser(student).size();
-        return graphTasksCompleted + fileTasksCompleted + surveysCompleted;
     }
 }

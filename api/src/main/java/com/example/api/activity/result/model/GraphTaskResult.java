@@ -2,6 +2,7 @@ package com.example.api.activity.result.model;
 
 import com.example.api.activity.task.model.Activity;
 import com.example.api.activity.task.model.GraphTask;
+import com.example.api.course.model.CourseMember;
 import com.example.api.question.model.Answer;
 import com.example.api.question.model.Question;
 import com.example.api.user.model.User;
@@ -52,7 +53,8 @@ public class GraphTaskResult extends TaskResult {
                            User user,
                            Long startDateMillis,
                            ResultStatus status,
-                           Question currQuestion) {
+                           Question currQuestion,
+                           CourseMember member) {
         this.graphTask = graphTask;
         this.setUser(user);
         this.startDateMillis = startDateMillis;
@@ -60,6 +62,7 @@ public class GraphTaskResult extends TaskResult {
         this.status = status;
         this.currQuestion = currQuestion;
         this.finished = false;
+        this.setMember(member);
     }
 }
 

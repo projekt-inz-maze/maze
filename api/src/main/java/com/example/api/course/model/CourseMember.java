@@ -51,10 +51,11 @@ public class CourseMember {
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
     private List<UnlockedBadge> unlockedBadges = new LinkedList<>();
 
-    public CourseMember(User user, Group group) {
+    public CourseMember(User user, Group group, UserHero userHero) {
         this.user = user;
         this.group = group;
         this.course = group.getCourse();
+        this.userHero = userHero;
     }
 
     public synchronized void changePoints(Double diff) {

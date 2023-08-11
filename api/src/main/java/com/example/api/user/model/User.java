@@ -48,10 +48,6 @@ public class User {
     private Integer level;
     private Double points = 0D;
 
-    @Embedded
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private UserHero userHero;
-
     @OneToOne
     PasswordResetToken passwordResetToken;
 
@@ -75,13 +71,11 @@ public class User {
         points = points + diff;
     }
 
-    public HeroType getHeroType() {
-        if (accountType.equals(AccountType.STUDENT)) return userHero.getHero().getType();
-        return null;
-    }
-
     public Optional<CourseMember> getCourseMember(Long courseId) {
         return Optional.ofNullable(courseMemberships.get(courseId));
+    }
+    public Optional<CourseMember> getCourseMember(Course course) {
+        return Optional.ofNullable(courseMemberships.get(course.getId()));
     }
     public boolean inCourse(Long courseId) {
         return courseMemberships.containsKey(courseId);

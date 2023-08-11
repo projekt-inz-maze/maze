@@ -58,4 +58,8 @@ public class ExceptionMessage {
     public static final String PASSWORD_RESET_TOKEN_INCORRECT = "Podany token do resetu hasła jest nieprawidłowy";
     public static final String PASSWORD_NOT_MEET_REQUIREMENTS = "Hasło nie spełnia wymagań";
     public static final String ROLE_NOT_ALLOWED = "Rola nie jest dozwolona";
+
+    public static String graphTaskResultAlreadyExists(Long taskId, Long userId) {
+        return "GraphTaskResult for GraphTask  " + taskId + " and user " + userId + " already exists";
+    }
 }

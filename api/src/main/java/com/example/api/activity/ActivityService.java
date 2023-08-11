@@ -7,6 +7,7 @@ import com.example.api.activity.task.service.GraphTaskService;
 import com.example.api.activity.task.service.InfoService;
 import com.example.api.activity.task.service.SurveyService;
 import com.example.api.activity.task.dto.request.edit.*;
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;

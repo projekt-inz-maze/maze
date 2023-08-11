@@ -224,7 +224,7 @@ public class UserServiceTests {
     @Test
     public void getUserGroup() throws EntityNotFoundException {
         // given
-        userService.setStudentGroup(user, group);
+        userService.updateStudentGroup(user, group);
         given(userRepository.findUserByEmail(user.getEmail())).willReturn(user);
         given(authService.getAuthentication()).willReturn(authentication);
         given(authentication.getName()).willReturn(user.getEmail());
@@ -296,7 +296,7 @@ public class UserServiceTests {
         given(groupRepository.findGroupById(newGroup.getId())).willReturn(newGroup);
 
         //when
-        userService.setStudentGroup(setStudentGroupForm);
+        userService.updateStudentGroup(setStudentGroupForm);
 
         // then
         verify(userRepository).findUserById(idArgumentCaptor.capture());

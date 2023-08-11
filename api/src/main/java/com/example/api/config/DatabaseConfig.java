@@ -97,19 +97,20 @@ public class DatabaseConfig {
                                                SurveyService surveyService, BadgeService badgeService){
         return args -> {
 
-            // HEROES
-            long week = TimeUnit.DAYS.toMillis(7);
-            Hero priest = new Priest(HeroType.PRIEST, week);
-            Hero rogue = new Rogue(HeroType.ROGUE, week);
-            Hero warrior = new Warrior(HeroType.WARRIOR, week);
-            Hero wizard = new Wizard(HeroType.WIZARD, week);
-            heroRepository.saveAll(List.of(priest, rogue, wizard, warrior));
-
             Course course1 = new Course(null, "course1", "description for course1", false, null);
             Course course2 = new Course(null, "course2", "description for course1", false, null);
-
             courseRepository.save(course1);
             courseRepository.save(course2);
+
+            // HEROES
+            long week = TimeUnit.DAYS.toMillis(7);
+            Hero priest = new Priest(HeroType.PRIEST, week, course1);
+            Hero rogue = new Rogue(HeroType.ROGUE, week, course1);
+            Hero warrior = new Warrior(HeroType.WARRIOR, week, course1);
+            Hero wizard = new Wizard(HeroType.WIZARD, week, course1);
+            heroRepository.saveAll(List.of(priest, rogue, wizard, warrior));
+
+
 
             // USERS & GROUPS
             List<User> students1 = new ArrayList<>();
@@ -163,13 +164,13 @@ public class DatabaseConfig {
 
             for (User user: students1) {
                 user.setLevel(1);
-                userService.setStudentGroup(user, group);
+                userService.updateStudentGroup(user, group);
                 userService.saveUser(user);
             }
 
             for (User user: students2) {
                 user.setLevel(1);
-                userService.setStudentGroup(user, group1);
+                userService.updateStudentGroup(user, group1);
                 userService.saveUser(user);
             }
 
@@ -841,7 +842,7 @@ public class DatabaseConfig {
                 AccountType.STUDENT);
         student.setPassword("12345");
         student.setIndexNumber(indexNumber);
-        student.setUserHero(new UserHero(hero, 0, 0L, course));
+        //student.setUserHero(new UserHero(hero, 0, 0L, course));
         student.setPoints(0D);
         return student;
     }

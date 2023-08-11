@@ -1,5 +1,6 @@
 package com.example.api.activity.result.model;
 
+import com.example.api.activity.result.dto.response.SurveyAnswerResponse;
 import com.example.api.activity.task.model.Activity;
 import com.example.api.activity.task.model.Survey;
 import lombok.AllArgsConstructor;
@@ -42,5 +43,9 @@ public class SurveyResult extends TaskResult{
     @Override
     public Activity getActivity() {
         return survey;
+    }
+
+    public SurveyAnswerResponse getSurveyAnswerResponse() {
+        return new SurveyAnswerResponse(feedback, rate);
     }
 }

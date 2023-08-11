@@ -3,6 +3,7 @@ package com.example.api.user.model.hero;
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.question.model.Question;
 import com.example.api.user.model.HeroType;
@@ -23,8 +24,8 @@ import javax.persistence.Entity;
 public class Warrior extends Hero{
     private Double multiplier = 0.5;
 
-    public Warrior(HeroType type, Long coolDownTimeMillis) {
-        super(type, coolDownTimeMillis);
+    public Warrior(HeroType type, Long coolDownTimeMillis, Course course) {
+        super(type, coolDownTimeMillis, course);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class Warrior extends Hero{
                                                User user,
                                                GraphTaskResult result,
                                                Question question) throws RequestValidationException {
-        return visitor.visitWarrior(this, user, result, question);
+        return visitor.visitWarrior(this, result, question);
     }
 
     @Override
@@ -45,11 +46,11 @@ public class Warrior extends Hero{
         return result.getStatus() == ResultStatus.CHOOSE;
     }
 
-    public Boolean canPowerBeUsed(User user, GraphTaskResult result) {
-        return super.canPowerBeUsed(user, result, multiplier);
+    public Boolean canPowerBeUsed(GraphTaskResult result) {
+        return super.canPowerBeUsed(result, multiplier);
     }
 
-    public String getCanBeUsedMessage(User user, GraphTaskResult result) {
-        return super.getCanBeUsedMessage(user, result);
+    public String getCanBeUsedMessage(GraphTaskResult result) {
+        return super.getCanBeUsedMessage(result);
     }
 }

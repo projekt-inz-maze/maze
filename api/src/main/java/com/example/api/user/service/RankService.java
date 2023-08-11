@@ -1,6 +1,7 @@
 package com.example.api.user.service;
 
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.user.dto.request.rank.AddRankForm;
@@ -65,8 +66,8 @@ public class RankService {
     public Map<HeroType, List<Rank>> getHeroTypeToRanks(Course course) {
         return rankRepository.findAllByCourseIs(course).stream().collect(Collectors.groupingBy(Rank::getHeroType));
     }
-    public List<Rank> getAllForHeroType(Course course, HeroType heroType) {
-        return rankRepository.findAllByCourseIsAndHeroTypeIs(course, heroType);
+    public List<Rank> getAllForHeroType(CourseMember member) {
+        return rankRepository.findAllByCourseIsAndHeroTypeIs(member.getCourse(), member.getHeroType());
     }
 
     public void addRank(AddRankForm form) throws RequestValidationException, IOException {
@@ -115,12 +116,10 @@ public class RankService {
     }
 
     public CurrentRankResponse getCurrentRankResponse(User user, Long courseId) throws EntityNotFoundException {
-        courseValidator.validateUserCanAccess(user, courseId);
-        Course course = courseService.getCourse(courseId);
+        CourseMember member = user.getCourseMember(courseId).orElseThrow();
 
-        double points = user.getPoints();
-        HeroType heroType = user.getHeroType();
-        List<Rank> ranks = getSortedRanksForHeroType(heroType, course);
+        double points = member.getPoints();
+        List<Rank> ranks = getSortedRanksForHeroType(member);
         Rank currentRank = getCurrentRankResponse(ranks, points);
         if (currentRank == null) {
             if (ranks.size() == 0) {
@@ -161,16 +160,16 @@ public class RankService {
         return currRank;
     }
 
-    public List<Rank> getSortedRanksForHeroType(HeroType heroType, Course course) {
-        return getAllForHeroType(course, heroType)
+    public List<Rank> getSortedRanksForHeroType(CourseMember courseMember) {
+        return getAllForHeroType(courseMember)
                 .stream()
                 .sorted(Comparator.comparingDouble(Rank::getMinPoints))
                 .toList();
     }
 
-    public Rank getCurrentRank(User user, Course course) {
-        List<Rank> ranks = getSortedRanksForHeroType(user.getHeroType(), course);
-        return getCurrentRankResponse(ranks, user.getPoints());
+    public Rank getCurrentRank(CourseMember member) {
+        List<Rank> ranks = getSortedRanksForHeroType(member);
+        return getCurrentRankResponse(ranks, member.getPoints());
     }
 
     public void deleteRank(Long id) throws RequestValidationException {

@@ -57,7 +57,6 @@ public class TaskResultService {
     private final SurveyRepository surveyRepository;
     private final CSVConverter csvConverter;
     private final ProfessorFeedbackRepository professorFeedbackRepository;
-    private final ActivityValidator activityValidator;
     private final UserService userService;
     private final ActivityService activityService;
     private final CourseService courseService;

@@ -3,6 +3,7 @@ package com.example.api.user.model.hero;
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.question.model.Question;
 import com.example.api.user.model.HeroType;
@@ -24,8 +25,8 @@ import javax.persistence.Entity;
 public class Rogue extends Hero{
     private Double multiplier = 1.0;
 
-    public Rogue(HeroType type, Long coolDownTimeMillis) {
-        super(type, coolDownTimeMillis);
+    public Rogue(HeroType type, Long coolDownTimeMillis, Course course) {
+        super(type, coolDownTimeMillis, course);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class Rogue extends Hero{
                                                User user,
                                                GraphTaskResult result,
                                                Question question) throws RequestValidationException {
-        return visitor.visitRogue(this, user, result);
+        return visitor.visitRogue(this, result);
     }
 
     @Override
@@ -46,30 +47,30 @@ public class Rogue extends Hero{
         setMultiplier(value);
     }
 
-    public Boolean canPowerBeUsed(User user, GraphTaskResult result) {
-        int level = user.getLevel();
+    public Boolean canPowerBeUsed(GraphTaskResult result) {
+        int level = result.getMember().getLevel();
         double points = result.getCurrQuestion().getPoints();
         if (!canSkipQuestion(level, points)) {
             return false;
         }
-        return super.canPowerBeUsed(user, result);
+        return super.canPowerBeUsed(result);
     }
 
     private boolean canSkipQuestion(int level, double points) {
         return level * multiplier >= points;
     }
 
-    public String getCanBeUsedMessage(User user, GraphTaskResult result) {
+    public String getCanBeUsedMessage(GraphTaskResult result) {
         if (result.isFinished()) {
             return HeroMessage.RESULT_FINISHED;
         }
         if (!isResultStatusCorrect(result)) {
             return HeroMessage.INCORRECT_STATUS;
         }
-        if (isCoolDownActive(user)) {
+        if (isCoolDownActive(result.getMember())) {
             return HeroMessage.COOL_DOWN_ACTIVE;
         }
-        int level = user.getLevel();
+        int level = result.getMember().getLevel();
         double points = result.getCurrQuestion().getPoints();
         if (!canSkipQuestion(level, points)) {
             String message = HeroMessage.CANNOT_SKIP;

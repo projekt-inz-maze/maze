@@ -1,5 +1,6 @@
 package com.example.api.user.service;
 
+import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.user.dto.request.UpdateHeroForm;
 import com.example.api.user.model.hero.Hero;
 import com.example.api.user.repository.HeroRepository;
@@ -15,10 +16,11 @@ import javax.transaction.Transactional;
 @Transactional
 public class HeroService {
     private final HeroRepository heroRepository;
+    private final UserService userService;
 
-    public void updateHero(UpdateHeroForm form) {
-        //TODO Add role validation?
-        Hero hero = heroRepository.findHeroByType(form.getType());
+    public void updateHero(UpdateHeroForm form) throws WrongUserTypeException {
+        userService.getCurrentUserAndValidateProfessorAccount();
+        Hero hero = heroRepository.findHeroByTypeAndCourseId(form.getType(), form.getCourseId());
         Long coolDown = form.getCoolDownMillis();
         if (coolDown != null) {
             hero.setCoolDownTimeMillis(coolDown);

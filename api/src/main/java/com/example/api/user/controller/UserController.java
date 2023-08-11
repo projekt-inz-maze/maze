@@ -91,10 +91,9 @@ public class UserController {
     }
 
     @PostMapping("/user/group/set")
-    public ResponseEntity<Group> setUserGroup(
-            @RequestBody SetStudentGroupForm setStudentGroupForm)
-            throws EntityNotFoundException, WrongUserTypeException, StudentAlreadyAssignedToGroupException {
-        return ResponseEntity.ok().body(userService.setStudentGroup(setStudentGroupForm));
+    public ResponseEntity<Group> setUserGroup(@RequestBody SetStudentGroupForm setStudentGroupForm)
+            throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(userService.updateStudentGroup(setStudentGroupForm));
     }
 
     @PostMapping("/user/index/set")

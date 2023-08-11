@@ -1,5 +1,6 @@
 package com.example.api.user.controller;
 
+import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.user.dto.request.UpdateHeroForm;
 import com.example.api.user.service.HeroService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -19,7 +20,7 @@ public class HeroController {
     private final HeroService heroService;
 
     @PutMapping
-    public ResponseEntity<?> updateHero(@RequestBody UpdateHeroForm form) {
+    public ResponseEntity<?> updateHero(@RequestBody UpdateHeroForm form) throws WrongUserTypeException {
         heroService.updateHero(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }

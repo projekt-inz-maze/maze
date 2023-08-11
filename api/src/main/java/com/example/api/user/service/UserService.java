@@ -116,8 +116,6 @@ public class UserService implements UserDetailsService {
         userValidator.validateStudentRegistrationForm(form);
 
         Hero hero = heroRepository.findHeroByType(form.getHeroType());
-        UserHero userHero = new UserHero(hero, 0, 0L, null);
-        user.setUserHero(userHero);
 
         Integer indexNumber = form.getIndexNumber();
         userValidator.validateStudentWithIndexNumberDoesNotExist(indexNumber);
@@ -130,7 +128,8 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
 
         Group group = groupService.getGroupByInvitationCode(form.getInvitationCode());
-        addUserToGroup(user, group);
+        UserHero userHero = new UserHero(hero, 0, 0L, group.getCourse());
+        addUserToGroup(user, group, userHero);
 
         return user.getId();
     }
@@ -175,7 +174,7 @@ public class UserService implements UserDetailsService {
                 .toList();
     }
 
-    public Group setStudentGroup(SetStudentGroupForm setStudentGroupForm)
+    public Group updateStudentGroup(SetStudentGroupForm setStudentGroupForm)
             throws EntityNotFoundException, WrongUserTypeException {
         Long studentId = setStudentGroupForm.getStudentId();
         Long groupId = setStudentGroupForm.getNewGroupId();
@@ -183,27 +182,25 @@ public class UserService implements UserDetailsService {
         log.info("Adding student {} to group {}", studentId, groupId);
         User user = userService.getUser(studentId);
         userValidator.validateStudentAccount(user, studentId);
+
         Group newGroup = groupService.getGroupById(groupId);
-        return setStudentGroup(user, newGroup);
+        return updateStudentGroup(user, newGroup);
     }
 
-    public Group setStudentGroup(User user, Group newGroup) {
+    public Group updateStudentGroup(User user, Group newGroup) {
         Optional<CourseMember> courseMember = user.getCourseMember(newGroup.getCourse().getId());
-        if (courseMember.isPresent()) {
-            courseMemberService.updateGroup(courseMember.get(), newGroup);
-        } else {
-            addUserToGroup(user, newGroup);
-        }
+            courseMemberService.updateGroup(courseMember.orElseThrow(), newGroup);
         return newGroup;
     }
 
 
-    private void addUserToGroup(User user, Group group) {
-        CourseMember courseMember = courseMemberService.create(user, group);
+    private void addUserToGroup(User user, Group group, UserHero hero) {
+        CourseMember courseMember = courseMemberService.create(user, group, hero);
         user.getCourseMemberships().put(group.getCourse().getId(), courseMember);
         groupService.addUser(courseMember, group);
         userRepository.save(user);
     }
+
     public Integer setIndexNumber(SetStudentIndexForm setStudentIndexForm) throws WrongUserTypeException, EntityAlreadyInDatabaseException {
         String email = authService.getAuthentication().getName();
         log.info("Setting index number {} for user with email {}", setStudentIndexForm.getNewIndexNumber(), email);

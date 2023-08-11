@@ -1,12 +1,12 @@
 package com.example.api.util.visitor;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;
 import com.example.api.question.model.Question;
 import com.example.api.question.model.QuestionType;
-import com.example.api.user.model.User;
 import com.example.api.user.model.hero.*;
 import com.example.api.util.calculator.TimeCalculator;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 public class HeroVisitor {
     private final TimeCalculator timeCalculator;
     public SuperPowerResponse<Long> visitPriest(Priest priest,
-                                             User user,
-                                             GraphTaskResult result) throws RequestValidationException {
-        checkIfHeroPowerCanBeUsed(priest, user, result);
+                                                GraphTaskResult result) throws RequestValidationException {
+        checkIfHeroPowerCanBeUsed(priest, result);
+        CourseMember user = result.getMember();
 
         int level = user.getLevel();
         long healValue = priest.getHealValueForLevel(level);
@@ -33,46 +33,41 @@ public class HeroVisitor {
         return new SuperPowerResponse<>(timeCalculator.getTimeRemaining(newStartDateMillis, timeToSolveMillis));
     }
 
-    public SuperPowerResponse<Boolean> visitRogue(Rogue rogue,
-                                                  User user,
-                                                  GraphTaskResult result) throws RequestValidationException {
-        checkIfHeroPowerCanBeUsed(rogue, user, result);
+    public SuperPowerResponse<Boolean> visitRogue(Rogue rogue, GraphTaskResult result) throws RequestValidationException {
+        checkIfHeroPowerCanBeUsed(rogue, result);
         result.setStatus(ResultStatus.CHOOSE);
 
-        user.getUserHero().setLastSuperPowerUsageTimeMillis(System.currentTimeMillis());
+        result.getMember().getUserHero().setLastSuperPowerUsageTimeMillis(System.currentTimeMillis());
         return new SuperPowerResponse<>(true);
     }
 
     public SuperPowerResponse<QuestionType> visitWarrior(Warrior warrior,
-                                                         User user,
                                                          GraphTaskResult result,
                                                          Question question) throws RequestValidationException {
-        checkIfHeroPowerCanBeUsed(warrior, user, result);
+        checkIfHeroPowerCanBeUsed(warrior, result);
 
         QuestionType type = question.getType();
-        UserHero userHero = user.getUserHero();
+        UserHero userHero = result.getMember().getUserHero();
         userHero.setTimesSuperPowerUsedInResult(userHero.getTimesSuperPowerUsedInResult() + 1);
-        user.getUserHero().setLastSuperPowerUsageTimeMillis(System.currentTimeMillis());
+        userHero.setLastSuperPowerUsageTimeMillis(System.currentTimeMillis());
         return new SuperPowerResponse<>(type);
     }
 
     public SuperPowerResponse<Double> visitWizard(Wizard wizard,
-                                                  User user,
                                                   GraphTaskResult result,
                                                   Question question) throws RequestValidationException {
-        checkIfHeroPowerCanBeUsed(wizard, user, result);
+        checkIfHeroPowerCanBeUsed(wizard, result);
 
         Double points = question.getPoints();
-        UserHero userHero = user.getUserHero();
+        UserHero userHero = result.getMember().getUserHero();
         userHero.setTimesSuperPowerUsedInResult(userHero.getTimesSuperPowerUsedInResult() + 1);
-        user.getUserHero().setLastSuperPowerUsageTimeMillis(System.currentTimeMillis());
+        userHero.setLastSuperPowerUsageTimeMillis(System.currentTimeMillis());
         return new SuperPowerResponse<>(points);
     }
 
-    public void checkIfHeroPowerCanBeUsed(Hero hero,
-                                          User user,
+    private void checkIfHeroPowerCanBeUsed(Hero hero,
                                           GraphTaskResult result) throws RequestValidationException {
-        if (!hero.canPowerBeUsed(user, result)) {
+        if (!hero.canPowerBeUsed(result)) {
             throw new RequestValidationException("You cannot use hero power now!");
         }
     }

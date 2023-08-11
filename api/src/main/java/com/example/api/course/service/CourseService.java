@@ -30,7 +30,7 @@ public class CourseService {
     private final UserService userService;
 
     public Long saveCourse(SaveCourseForm form) throws RequestValidationException {
-
+//TODO Add Hero setup
         User professor = userService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
