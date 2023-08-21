@@ -29,7 +29,7 @@ public class CourseMember {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private Integer level;
@@ -44,7 +44,7 @@ public class CourseMember {
     private Group group;
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
+    @JoinColumn(name = "course", referencedColumnName = "id")
     private Course course;
 
     @JsonIgnore

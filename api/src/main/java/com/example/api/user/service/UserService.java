@@ -200,7 +200,7 @@ public class UserService implements UserDetailsService {
 
     private void addUserToGroup(User user, Group group) {
         CourseMember courseMember = courseMemberService.create(user, group);
-        user.getCourseMemberships().put(group.getCourse().getId(), courseMember);
+        user.getCourseMemberships().add(courseMember);
         groupService.addUser(courseMember, group);
         userRepository.save(user);
     }
