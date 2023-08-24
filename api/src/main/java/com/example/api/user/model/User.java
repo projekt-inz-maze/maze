@@ -3,10 +3,8 @@ package com.example.api.user.model;
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.user.model.badge.UnlockedBadge;
-import com.example.api.user.model.hero.UserHero;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -70,10 +68,12 @@ public class User {
                 .findAny();
     }
     public Optional<CourseMember> getCourseMember(Course course) {
-        return Optional.ofNullable(courseMemberships.get(course.getId()));
+        return courseMemberships.stream()
+                .filter(member -> member.getCourse().equals(course))
+                .findAny();
     }
 
     public boolean inCourse(Long courseId) {
-        return courseMemberships.stream().anyMatch(member -> member.getCourse().getId() == courseId);
+        return courseMemberships.stream().anyMatch(member -> member.getCourse().getId().equals(courseId));
     }
 }

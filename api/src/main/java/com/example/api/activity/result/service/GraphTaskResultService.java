@@ -164,7 +164,10 @@ public class GraphTaskResultService {
         GraphTaskResult result = getGraphTaskResultWithGraphTaskAndUser(graphTask, user);
         Question question = questionRepository.findQuestionById(questionId);
 
-        Hero hero = user.getCourseMember(graphTask.getCourse()).orElseThrow().getUserHero().getHero();
+        Hero hero = user.getCourseMember(graphTask.getCourse())
+                .orElseThrow()
+                .getUserHero()
+                .getHero();
 
         return hero.useSuperPower(heroVisitor, user, result, question);
     }
@@ -190,8 +193,5 @@ public class GraphTaskResultService {
         GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskIdAndUser(graphTaskId, user);
         resultValidator.validateResultIsNotNull(result, graphTaskId, user.getEmail());
         return result;
-    }
-    private GraphTaskResult getGraphTaskResultWithGraphTaskAndUser(Long graphTaskId, CourseMember member) {
-        return Optional.ofNullable(graphTaskResultRepository.findGraphTaskResultByGraphTaskIdAndMember(graphTaskId, member)).orElseThrow();
     }
 }
