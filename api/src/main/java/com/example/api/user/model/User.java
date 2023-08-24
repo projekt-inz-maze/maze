@@ -13,10 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
@@ -51,12 +48,8 @@ public class User {
     @OneToOne
     PasswordResetToken passwordResetToken;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "courseMembers",
-            joinColumns = {@JoinColumn(name = "course_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "coursemember_id", referencedColumnName = "id")})
-    @MapKeyColumn(name = "course_id")
-    private Map<Long, CourseMember> courseMemberships;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<CourseMember> courseMemberships = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
@@ -72,12 +65,15 @@ public class User {
     }
 
     public Optional<CourseMember> getCourseMember(Long courseId) {
-        return Optional.ofNullable(courseMemberships.get(courseId));
+        return courseMemberships.stream()
+                .filter(member -> member.getCourse().getId().equals(courseId))
+                .findAny();
     }
     public Optional<CourseMember> getCourseMember(Course course) {
         return Optional.ofNullable(courseMemberships.get(course.getId()));
     }
+
     public boolean inCourse(Long courseId) {
-        return courseMemberships.containsKey(courseId);
+        return courseMemberships.stream().anyMatch(member -> member.getCourse().getId() == courseId);
     }
 }

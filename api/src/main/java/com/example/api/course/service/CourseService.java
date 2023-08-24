@@ -52,8 +52,10 @@ public class CourseService {
                     .map(CourseDTO::new)
                     .toList();
         } else {
-            return courseRepository.getAllById(user.getCourseMemberships().keySet())
-                    .stream().map(CourseDTO::new)
+            return user.getCourseMemberships()
+                    .stream()
+                    .map(member -> member.getCourse())
+                    .map(CourseDTO::new)
                     .toList();
         }
     }
