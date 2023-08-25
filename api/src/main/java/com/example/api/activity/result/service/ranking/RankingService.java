@@ -22,6 +22,7 @@ import com.example.api.activity.task.model.GraphTask;
 import com.example.api.activity.task.model.Survey;
 import com.example.api.group.model.Group;
 import com.example.api.question.model.Option;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
@@ -65,6 +66,7 @@ public class RankingService {
     private final CourseValidator courseValidator;
     private final ActivityResultService activityResultService;
     private final CourseMemberService courseMemberService;
+    private final AuthenticationService authService;
 
     public List<RankingResponse> getRanking(Long courseId) {
         List<RankingResponse> rankingList = courseMemberService.getAll(courseId)
@@ -84,7 +86,7 @@ public class RankingService {
     }
 
     public List<RankingResponse> getRankingForLoggedStudentGroup(Long courseId) throws StudentNotEnrolledException {
-        CourseMember member = userService.getCurrentUser().getCourseMember(courseId).orElseThrow();
+        CourseMember member = authService.getCurrentUser().getCourseMember(courseId).orElseThrow();
         Group group = userService.getUserGroup(courseId);
         List<RankingResponse> rankingList = group.getMembers()
                 .stream()

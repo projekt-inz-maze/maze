@@ -46,7 +46,7 @@ public class FeedbackValidator {
     */
     public ProfessorFeedback validateAndSetProfessorFeedbackTaskForm(SaveProfessorFeedbackForm form)
             throws WrongUserTypeException, EntityNotFoundException, WrongPointsNumberException, IOException, MissingAttributeException {
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
         Long id = form.getFileTaskResultId();

@@ -45,7 +45,7 @@ public class AllPointsService {
     private final CourseService courseService;
 
     public List<?> getAllPointsListForProfessor(Long courseId, String studentEmail) throws WrongUserTypeException, EntityNotFoundException {
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
         log.info("Fetching student all points {} for professor {}", studentEmail, professor.getEmail());
         return getAllPointsList(courseId, studentEmail);

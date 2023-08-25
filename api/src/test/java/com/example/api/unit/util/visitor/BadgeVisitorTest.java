@@ -7,6 +7,7 @@ import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.task.model.FileTask;
 import com.example.api.activity.task.model.GraphTask;
 import com.example.api.group.model.Group;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.service.FileTaskResultService;
@@ -37,6 +38,7 @@ public class BadgeVisitorTest {
     @Mock private FileTaskResultService fileTaskResultService;
     @Mock private  UserService userService;
     @Mock private RankingService rankingService;
+    @Mock private AuthenticationService authService;
 
     private User user;
     private List<TaskResult> results;
@@ -55,7 +57,8 @@ public class BadgeVisitorTest {
                 graphTaskResultService,
                 fileTaskResultService,
                 userService,
-                rankingService
+                rankingService,
+                authService
         );
 
         user = new User();
@@ -99,7 +102,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitActivityNumberBadgeGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         doReturn(results).when(taskResultService).getAllResultsForStudent(user);
         ActivityNumberBadge activityNumberBadge = new ActivityNumberBadge(6);
 
@@ -113,7 +116,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitActivityNumberBadgeNotGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         doReturn(results).when(taskResultService).getAllResultsForStudent(user);
         ActivityNumberBadge activityNumberBadge = new ActivityNumberBadge(7);
 
@@ -127,7 +130,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitActivityScoreBadgeGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
@@ -158,7 +161,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitActivityScoreBadgeNotGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
@@ -189,7 +192,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitConsistencyBadgeGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2022, Calendar.OCTOBER, 1, 0, 0);
@@ -218,7 +221,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitConsistencyBadgeNorGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2022, Calendar.OCTOBER, 1, 0, 0);
@@ -247,7 +250,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitGraphTaskNumberBadgeGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         results = List.of(graphTaskResult1, graphTaskResult2);
 
@@ -264,7 +267,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitGraphTaskNumberBadgeNotGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         results = List.of(graphTaskResult1, graphTaskResult2);
 
@@ -281,7 +284,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitFileTaskNumberBadgeGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         results = List.of(fileTaskResult1, fileTaskResult2);
 
@@ -298,7 +301,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitFileTaskNumberBadgeNotGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         results = List.of(fileTaskResult1, fileTaskResult2);
 
@@ -315,7 +318,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitTopScoreTaskNumberBadgeResultsLessThanFive() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
@@ -333,7 +336,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitTopScoreTaskNumberBadgeResultsGroupIsGranted() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
@@ -363,7 +366,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitTopScoreTaskNumberBadgeResultsGroupIsGrantedFirstPlace() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
@@ -393,7 +396,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitTopScoreTaskNumberBadgeResultsIsGranted() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
@@ -421,7 +424,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitTopScoreTaskNumberBadgeResultsIsGrantedFirstPlace() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);

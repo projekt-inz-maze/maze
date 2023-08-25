@@ -41,7 +41,7 @@ public class GradeService {
     private final CourseService courseService;
 
     public List<GradeResponse> getAllGrades(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
         return courseService.getCourse(courseId)

@@ -3,6 +3,7 @@ package com.example.api.user.service;
 import com.example.api.course.model.Course;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.dto.request.badge.BadgeAddForm;
 import com.example.api.user.dto.request.badge.BadgeType;
 import com.example.api.user.dto.request.badge.BadgeUpdateForm;
@@ -43,6 +44,7 @@ public class BadgeService {
     private final BadgeVisitor badgeVisitor;
     private final CourseService courseService;
     private final CourseValidator courseValidator;
+    private final AuthenticationService authService;
 
     public List<? extends BadgeResponse<?>> getAllBadges(Long courseId) throws EntityNotFoundException {
         Course course = courseService.getCourse(courseId);
@@ -108,7 +110,7 @@ public class BadgeService {
     private Badge getBadgeFromForm(BadgeAddForm form) throws RequestValidationException, IOException {
 
         Course course = courseService.getCourse(form.getCourseId());
-        courseValidator.validateCourseOwner(course, userService.getCurrentUser());
+        courseValidator.validateCourseOwner(course, authService.getCurrentUser());
 
         BadgeType type = form.getType();
         String title = form.getTitle();

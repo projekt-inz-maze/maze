@@ -11,6 +11,8 @@ import com.example.api.activity.task.model.GraphTask;
 import com.example.api.activity.task.model.Info;
 import com.example.api.activity.task.model.Survey;
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
+import com.example.api.course.repository.CourseMemberRepository;
 import com.example.api.course.repository.CourseRepository;
 import com.example.api.course.service.CourseMemberService;
 import com.example.api.group.model.AccessDate;
@@ -54,6 +56,7 @@ import com.example.api.question.service.QuestionService;
 import com.example.api.user.service.BadgeService;
 import com.example.api.user.service.UserService;
 import com.example.api.util.message.MessageManager;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -64,14 +67,11 @@ import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Transactional
 public class DatabaseConfig {
     private final UrlRepository urlRepository;
@@ -85,6 +85,7 @@ public class DatabaseConfig {
     private final RequirementRepository requirementRepository;
     private final HeroRepository heroRepository;
     private final CourseRepository courseRepository;
+    private final CourseMemberRepository courseMemberRepository;
 
     @Bean
     public CommandLineRunner commandLineRunner(UserService userService, CourseMemberService courseMemberService, ProfessorFeedbackService professorFeedbackService,
@@ -110,10 +111,8 @@ public class DatabaseConfig {
             Hero wizard = new Wizard(HeroType.WIZARD, week, course1);
             heroRepository.saveAll(List.of(priest, rogue, wizard, warrior));
 
-
-
             // USERS & GROUPS
-            List<User> students1 = new ArrayList<>();
+            List<User> students1 = Collections.synchronizedList(new ArrayList<>());
             students1.add(createStudent("jgorski@student.agh.edu.pl", "Jerzy", "Górski", 123456, priest, course1));
             students1.add(createStudent("smazur@student.agh.edu.pl", "Szymon", "Mazur", 123457, rogue, course1));
             students1.add(createStudent("murbanska@student.agh.edu.pl", "Matylda", "Urbańska",123458, wizard, course1));
@@ -123,7 +122,9 @@ public class DatabaseConfig {
             students1.add(createStudent("mdabrowska@student.agh.edu.pl", "Maria", "Dąbrowska",423456, wizard, course1));
             students1.add(createStudent("aczajkowski@student.agh.edu.pl", "Antoni", "Czajkowski",523456, warrior, course1));
 
-            List<User> students2 = new ArrayList<>();
+            userRepository.saveAll(students1);
+
+            List<User> students2 = Collections.synchronizedList(new ArrayList<>());
 
             students2.add(createStudent("mnowak@student.agh.edu.pl", "Magdalena", "Nowak", 623456, priest, course2));
             students2.add(createStudent("jlewandowska@student.agh.edu.pl", "Julia", "Lewandowska", 723456, rogue, course2));
@@ -135,18 +136,22 @@ public class DatabaseConfig {
             students2.add(createStudent("dkowalska@student.agh.edu.pl", "Dominika", "Kowalska", 163456, warrior, course2));
             students2.add(createStudent("manowak@student.agh.edu.pl", "Małgorzata Anna", "Kowalska", 163457, priest, course2));
 
+            userRepository.saveAll(students2);
+
 
             User professor1 = new User("bmaj@agh.edu.pl",
                     "Bernard",
                     "Maj",
                     AccountType.PROFESSOR);
             professor1.setPassword("12345");
+            userRepository.save(professor1);
 
             User professor2 = new User("szielinski@agh.edu.pl",
                     "Sławomir",
                     "Zieliński",
                     AccountType.PROFESSOR);
             professor2.setPassword("12345");
+            userRepository.save(professor2);
 
             Group group = new Group();
             group.setInvitationCode("1111");
@@ -162,17 +167,23 @@ public class DatabaseConfig {
             group1.setCourse(course1);
             groupService.saveGroup(group1);
 
-            for (User user: students1) {
-                user.setLevel(1);
-                userService.updateStudentGroup(user, group);
-                userService.saveUser(user);
-            }
+            addToGroup(students1.get(0), group);
+            addToGroup(students1.get(1), group);
+            addToGroup(students1.get(2), group);
+            addToGroup(students1.get(3), group);
+            addToGroup(students1.get(4), group);
+            addToGroup(students1.get(5), group);
+            addToGroup(students1.get(6), group);
+            addToGroup(students1.get(7), group);
 
-            for (User user: students2) {
-                user.setLevel(1);
-                userService.updateStudentGroup(user, group1);
-                userService.saveUser(user);
-            }
+            addToGroup(students2.get(0), group1);
+            addToGroup(students2.get(1), group1);
+            addToGroup(students2.get(2), group1);
+            addToGroup(students2.get(3), group1);
+            addToGroup(students2.get(4), group1);
+            addToGroup(students2.get(5), group1);
+            addToGroup(students2.get(6), group1);
+            addToGroup(students2.get(7), group1);
 
             professor1.getCourses().add(course1);
             course1.setOwner(professor1);
@@ -445,6 +456,16 @@ public class DatabaseConfig {
             initAllRanks(course2);
             initBadges(course1);
         };
+    }
+
+    private void addToGroup(User user, Group group) {
+        user.setLevel(1);
+        CourseMember cm = new CourseMember(user, group);
+        courseMemberRepository.save(cm);
+        user.getCourseMemberships().add(cm);
+        group.getMembers().add(cm);
+        group.getUsers().add(user);
+        userRepository.save(user);
     }
 
     private List<Requirement> createDefaultRequirements() {
@@ -842,7 +863,7 @@ public class DatabaseConfig {
                 AccountType.STUDENT);
         student.setPassword("12345");
         student.setIndexNumber(indexNumber);
-        //student.setUserHero(new UserHero(hero, 0, 0L, course));
+        student.setUserHero(new UserHero(hero, 0, 0L, course));
         student.setPoints(0D);
         return student;
     }

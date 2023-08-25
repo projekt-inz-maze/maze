@@ -4,6 +4,7 @@ import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.dto.request.rank.AddRankForm;
 import com.example.api.user.dto.request.rank.EditRankForm;
 import com.example.api.user.dto.response.rank.CurrentRankResponse;
@@ -42,6 +43,7 @@ public class RankService {
     private final CourseService courseService;
     private final UserService userService;
     private final CourseValidator courseValidator;
+    private final AuthenticationService authService;
 
     public List<RanksForHeroTypeResponse> getAllRanks(Long courseId) throws EntityNotFoundException {
         Course course = courseService.getCourse(courseId);
@@ -89,7 +91,7 @@ public class RankService {
     }
 
     public void updateRank(EditRankForm form) throws RequestValidationException, IOException {
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
         Long id = form.getRankId();
         Rank rank = rankRepository.findRankById(id);
         courseValidator.validateCourseOwner(rank.getCourse(), user);
@@ -173,7 +175,7 @@ public class RankService {
     }
 
     public void deleteRank(Long id) throws RequestValidationException {
-        User owner = userService.getCurrentUser();
+        User owner = authService.getCurrentUser();
         log.info("Deleting rank with id {}", id);
         Rank rank = rankRepository.findRankById(id);
         rankValidator.validateRankIsNotNull(rank, id);

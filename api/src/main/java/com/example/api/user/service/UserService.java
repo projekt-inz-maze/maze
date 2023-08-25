@@ -22,7 +22,6 @@ import com.example.api.activity.task.repository.FileTaskRepository;
 import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.activity.task.repository.InfoRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
-import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.validator.PasswordValidator;
@@ -48,7 +47,6 @@ import java.util.stream.Stream;
 @Transactional
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final GroupRepository groupRepository;
     private final GraphTaskRepository graphTaskRepository;
     private final FileTaskRepository fileTaskRepository;
     private final SurveyRepository surveyRepository;
@@ -60,7 +58,6 @@ public class UserService implements UserDetailsService {
     private final ProfessorRegisterToken professorRegisterToken;
     private final PasswordValidator passwordValidator;
     private final GroupService groupService;
-    private final UserService userService;
     private final CourseMemberService courseMemberService;
     private final HeroRepository heroRepository;
 
@@ -147,20 +144,13 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public User getCurrentUser() throws UsernameNotFoundException {
-        String email = authService.getAuthentication().getName();
-        User user = getUser(email);
-        userValidator.validateUserIsNotNull(user, email);
-        return user;
-    }
-
     public List<User> getUsers() {
         log.info("Fetching all users");
         return userRepository.findAll();
     }
 
     public Group getUserGroup(Long courseId) throws StudentNotEnrolledException {
-        User user = getCurrentUser();
+        User user = authService.getCurrentUser();
         log.info("Fetching group for user {}", user.getEmail());
         return user.getCourseMember(courseId).orElseThrow(() -> new StudentNotEnrolledException(user, courseId)).getGroup();
     }
@@ -180,7 +170,7 @@ public class UserService implements UserDetailsService {
         Long groupId = setStudentGroupForm.getNewGroupId();
 
         log.info("Adding student {} to group {}", studentId, groupId);
-        User user = userService.getUser(studentId);
+        User user = getUser(studentId);
         userValidator.validateStudentAccount(user, studentId);
 
         Group newGroup = groupService.getGroupById(groupId);
@@ -221,7 +211,7 @@ public class UserService implements UserDetailsService {
     }
 
     public String getProfessorRegisterToken() throws WrongUserTypeException {
-        User user = getCurrentUser();
+        User user = authService.getCurrentUser();
         userValidator.validateProfessorAccount(user);
 
         log.info("Professor {} fetch ProfessorRegisterToken", user.getEmail());
@@ -229,7 +219,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteProfessorAccount(String professorEmail) throws WrongUserTypeException {
-        User professor = getCurrentUser();
+        User professor = authService.getCurrentUser();
         User newProfessor = userRepository.findUserByEmail(professorEmail);
         userValidator.validateProfessorAccount(professor);
         userValidator.validateProfessorAccount(newProfessor);
@@ -239,7 +229,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteStudentAccount() throws WrongUserTypeException {
-        User user = getCurrentUser();
+        User user = authService.getCurrentUser();
         userValidator.validateStudentAccount(user);
         userRepository.delete(user);
     }
@@ -259,7 +249,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<String> getAllProfessorEmails() {
-        User user = getCurrentUser();
+        User user = authService.getCurrentUser();
         String professorEmail = user.getEmail();
         return userRepository.findAllByAccountTypeEquals(AccountType.PROFESSOR)
                 .stream()
@@ -269,12 +259,12 @@ public class UserService implements UserDetailsService {
     }
 
     public User getCurrentUserAndValidateStudentAccount() throws WrongUserTypeException {
-        User user = getCurrentUser();
+        User user = authService.getCurrentUser();
         userValidator.validateStudentAccount(user);
         return user;
     }
     public User getCurrentUserAndValidateProfessorAccount() throws WrongUserTypeException {
-        User user = getCurrentUser();
+        User user = authService.getCurrentUser();
         userValidator.validateProfessorAccount(user);
         return user;
     }

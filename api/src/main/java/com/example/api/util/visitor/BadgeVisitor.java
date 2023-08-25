@@ -7,6 +7,7 @@ import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.TaskResult;
 import com.example.api.activity.task.model.Activity;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.service.FileTaskResultService;
@@ -31,9 +32,10 @@ public class BadgeVisitor {
     private final FileTaskResultService fileTaskResultService;
     private final UserService userService;
     private final RankingService rankingService;
+    private final AuthenticationService authService;
 
     public boolean visitActivityNumberBadge(ActivityNumberBadge badge) {
-        User student = userService.getCurrentUser();
+        User student = authService.getCurrentUser();
         List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student)
                 .stream()
                 .filter(TaskResult::isEvaluated)
@@ -43,7 +45,7 @@ public class BadgeVisitor {
     }
 
     public boolean visitActivityScoreBadge(ActivityScoreBadge badge) {
-        User student = userService.getCurrentUser();
+        User student = authService.getCurrentUser();
         List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student)
                 .stream()
                 .filter(TaskResult::isEvaluated)
@@ -83,7 +85,7 @@ public class BadgeVisitor {
     }
 
     public boolean visitConsistencyBadge(ConsistencyBadge badge) {
-        User student = userService.getCurrentUser();
+        User student = authService.getCurrentUser();
         List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student);
         Long[] datesInMillis = results.stream()
                 .filter(TaskResult::isEvaluated)
@@ -111,7 +113,7 @@ public class BadgeVisitor {
     }
 
     public boolean visitFileTaskNumberBadge(FileTaskNumberBadge badge) {
-        User student = userService.getCurrentUser();
+        User student = authService.getCurrentUser();
         List<FileTaskResult> results = fileTaskResultService.getAllFileTaskResultsForStudent(student)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
@@ -121,7 +123,7 @@ public class BadgeVisitor {
     }
 
     public boolean visitGraphTaskNumberBadge(GraphTaskNumberBadge badge) {
-        User student = userService.getCurrentUser();
+        User student = authService.getCurrentUser();
         List<GraphTaskResult> results = graphTaskResultService.getAllGraphTaskResultsForStudent(student)
                 .stream()
                 .filter(GraphTaskResult::isEvaluated)
@@ -131,7 +133,7 @@ public class BadgeVisitor {
     }
 
     public boolean visitTopScoreBadge(TopScoreBadge badge) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        User student = userService.getCurrentUser();
+        User student = authService.getCurrentUser();
         List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student)
                 .stream()
                 .filter(TaskResult::isEvaluated)
