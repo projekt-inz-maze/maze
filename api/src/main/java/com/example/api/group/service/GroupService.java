@@ -36,11 +36,9 @@ public class GroupService {
     private final AuthenticationService authService;
     private final GroupRepository groupRepository;
     private final GroupValidator groupValidator;
-    private final UserRepository userRepository;
     private final UserValidator userValidator;
     private final CourseService courseService;
     private final CourseValidator courseValidator;
-    private final UserService userService;
 
     public Group saveGroup(Group group) {
         log.info("Saving group to database with name {}", group.getName());

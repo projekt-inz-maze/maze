@@ -58,7 +58,6 @@ public class UserService implements UserDetailsService {
     private final ProfessorRegisterToken professorRegisterToken;
     private final PasswordValidator passwordValidator;
     private final GroupService groupService;
-    private final UserService userService;
     private final CourseMemberService courseMemberService;
     private final HeroRepository heroRepository;
 
@@ -145,7 +144,7 @@ public class UserService implements UserDetailsService {
         userValidator.validateUserIsNotNull(user, email);
         return user;
     }
-    
+
     public List<User> getUsers() {
         log.info("Fetching all users");
         return userRepository.findAll();
@@ -172,7 +171,7 @@ public class UserService implements UserDetailsService {
         Long groupId = setStudentGroupForm.getNewGroupId();
 
         log.info("Adding student {} to group {}", studentId, groupId);
-        User user = userService.getUser(studentId);
+        User user = getUser(studentId);
         userValidator.validateStudentAccount(user, studentId);
         Group newGroup = groupService.getGroupById(groupId);
         return setStudentGroup(user, newGroup);

@@ -9,7 +9,6 @@ import com.example.api.error.exception.RequestValidationException;
 import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Component;
 public class CourseValidator {
 
     UserValidator userValidator;
-    UserService userService;
     CourseRepository courseRepository;
     AuthenticationService authService;
 

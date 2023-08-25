@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -27,11 +28,11 @@ public class Group {
 
     @OneToMany
     @JsonBackReference
-    private List<User> users;
+    private List<User> users = Collections.synchronizedList(new ArrayList<>());
 
     @OneToMany(mappedBy = "group")
     @JsonBackReference
-    private List<CourseMember> members;
+    private List<CourseMember> members = Collections.synchronizedList(new ArrayList<>());
 
     private String invitationCode;
 
@@ -44,7 +45,5 @@ public class Group {
         this.name = name;
         this.invitationCode = invitationCode;
         this.course = course;
-        this.users = new ArrayList<>();
-        this.members = new ArrayList<>();
     }
 }

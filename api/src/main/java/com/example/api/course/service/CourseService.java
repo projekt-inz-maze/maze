@@ -28,7 +28,6 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final CourseValidator courseValidator;
     private final UserValidator userValidator;
-    private final UserService userService;
     private final AuthenticationService authService;
 
     public Long saveCourse(SaveCourseForm form) throws RequestValidationException {
