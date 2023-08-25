@@ -12,5 +12,4 @@ import java.util.Set;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     boolean existsCourseByName(String name);
     boolean existsCourseByIdIsAndOwnerIs(Long courseId, User user);
-    List<Course> getAllById(Set<Long> ids);
 }
