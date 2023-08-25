@@ -27,6 +27,6 @@ public class SurveyResultController {
 
     @GetMapping
     public ResponseEntity<SurveyResultInfoResponse> getSurveyResult(@RequestParam Long surveyId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        return ResponseEntity.ok().body(surveyResultService.getSurveyResult(surveyId));
+        return ResponseEntity.ok().body(surveyResultService.getOrCreateSurveyResult(surveyId));
     }
 }

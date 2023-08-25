@@ -1,6 +1,7 @@
 package com.example.api.user.service;
 
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.security.AuthenticationService;
@@ -59,17 +60,18 @@ public class BadgeService {
 
     public List<UnlockedBadgeResponse> getAllUnlockedBadges(Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
-        checkAllBadges(student);
-        return student.getUnlockedBadges()
+        CourseMember member = student.getCourseMember(courseId).orElseThrow();
+        checkAllBadges(member);
+        return member.getUnlockedBadges()
                 .stream()
                 .filter(badge -> badge.getBadge().getCourse().getId().equals(courseId))
                 .map(UnlockedBadgeResponse::new)
                 .toList();
     }
 
-    public void checkAllBadges(User student) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+    public void checkAllBadges(CourseMember member) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         System.out.println("checkAllBadges");
-        List<Badge> studentBadges = student.getUnlockedBadges()
+        List<Badge> studentBadges = member.getUnlockedBadges()
                 .stream()
                 .map(UnlockedBadge::getBadge)
                 .toList();
@@ -79,9 +81,9 @@ public class BadgeService {
                 .toList();
         for (Badge badge: badges) {
             if (badge.isGranted(badgeVisitor)) {
-                UnlockedBadge unlockedBadge = new UnlockedBadge(badge, System.currentTimeMillis(), student);
+                UnlockedBadge unlockedBadge = new UnlockedBadge(badge, System.currentTimeMillis(), member);
                 unlockedBadgeRepository.save(unlockedBadge);
-                student.getUnlockedBadges().add(unlockedBadge);
+                member.getUnlockedBadges().add(unlockedBadge);
             }
         }
     }
@@ -95,9 +97,10 @@ public class BadgeService {
         Badge badge = badgeRepository.findBadgeById(id);
         badgeValidator.validateBadgeIsNotNull(badge, id);
         User student = userService.getCurrentUserAndValidateStudentAccount();
+        CourseMember member = student.getCourseMember(badge.getCourse()).orElseThrow();
 
         badge.update(form, badgeValidator);
-        checkAllBadges(student);
+        checkAllBadges(member);
         badgeRepository.save(badge);
     }
 

@@ -2,9 +2,7 @@ package com.example.api.user.model;
 
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
-import com.example.api.user.model.badge.UnlockedBadge;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,10 +46,6 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<CourseMember> courseMemberships = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
-    private List<UnlockedBadge> unlockedBadges = new LinkedList<>();
 
     @OneToMany(mappedBy = "owner")
     @JsonBackReference

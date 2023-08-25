@@ -57,7 +57,6 @@ import com.example.api.user.service.BadgeService;
 import com.example.api.user.service.UserService;
 import com.example.api.util.message.MessageManager;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -167,23 +166,23 @@ public class DatabaseConfig {
             group1.setCourse(course1);
             groupService.saveGroup(group1);
 
-            addToGroup(students1.get(0), group);
-            addToGroup(students1.get(1), group);
-            addToGroup(students1.get(2), group);
-            addToGroup(students1.get(3), group);
-            addToGroup(students1.get(4), group);
-            addToGroup(students1.get(5), group);
-            addToGroup(students1.get(6), group);
-            addToGroup(students1.get(7), group);
+            addToGroup(students1.get(0), group, priest);
+            addToGroup(students1.get(1), group, rogue);
+            addToGroup(students1.get(2), group, wizard);
+            addToGroup(students1.get(3), group, warrior);
+            addToGroup(students1.get(4), group, priest);
+            addToGroup(students1.get(5), group, rogue);
+            addToGroup(students1.get(6), group, wizard);
+            addToGroup(students1.get(7), group, warrior);
 
-            addToGroup(students2.get(0), group1);
-            addToGroup(students2.get(1), group1);
-            addToGroup(students2.get(2), group1);
-            addToGroup(students2.get(3), group1);
-            addToGroup(students2.get(4), group1);
-            addToGroup(students2.get(5), group1);
-            addToGroup(students2.get(6), group1);
-            addToGroup(students2.get(7), group1);
+            addToGroup(students2.get(0), group1, priest);
+            addToGroup(students2.get(1), group1, rogue);
+            addToGroup(students2.get(2), group1, wizard);
+            addToGroup(students2.get(3), group1, warrior);
+            addToGroup(students2.get(4), group1, priest);
+            addToGroup(students2.get(5), group1, rogue);
+            addToGroup(students2.get(6), group1, wizard);
+            addToGroup(students2.get(7), group1, warrior);
 
             professor1.getCourses().add(course1);
             course1.setOwner(professor1);
@@ -458,9 +457,10 @@ public class DatabaseConfig {
         };
     }
 
-    private void addToGroup(User user, Group group) {
+    private void addToGroup(User user, Group group, Hero hero) {
+        UserHero userHero = userHero(hero, group.getCourse());
         user.setLevel(1);
-        CourseMember cm = new CourseMember(user, group);
+        CourseMember cm = new CourseMember(user, group, userHero);
         courseMemberRepository.save(cm);
         user.getCourseMemberships().add(cm);
         group.getMembers().add(cm);
@@ -863,9 +863,12 @@ public class DatabaseConfig {
                 AccountType.STUDENT);
         student.setPassword("12345");
         student.setIndexNumber(indexNumber);
-        student.setUserHero(new UserHero(hero, 0, 0L, course));
         student.setPoints(0D);
         return student;
+    }
+
+    private UserHero userHero(Hero hero, Course course) {
+        return new UserHero(hero, 0, 0L, course);
     }
 
     private List<Question> addQuestionSet(Course course, QuestionService questionService, OptionService optionService) {

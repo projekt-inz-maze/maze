@@ -28,13 +28,9 @@ import java.util.List;
 @Transactional
 public class SurveyResultService {
     private final SurveyResultRepository surveyResultRepository;
-    private final UserRepository userRepository;
     private final SurveyRepository surveyRepository;
-    private final UserValidator userValidator;
-    private final AuthenticationService authService;
     private final ActivityValidator activityValidator;
     private final BadgeService badgeService;
-    private final FeedbackValidator feedbackValidator;
     private final UserService userService;
 
     public SurveyResult saveSurveyResult(SurveyResult surveyResult) {
@@ -43,7 +39,7 @@ public class SurveyResultService {
 
     public SurveyResultInfoResponse saveSurveyResult(SurveyResultForm form) throws RequestValidationException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
-        log.info("Saving user {} feedback for survey with id {}", student.getEmail(), form.getSurveyId());
+        log.info("Saving user {} feedback for survey with id {}", student.getId(), form.getSurveyId());
         Long id = form.getSurveyId();
         Survey survey = surveyRepository.findSurveyById(id);
         activityValidator.validateActivityIsNotNull(survey, id);
@@ -54,7 +50,7 @@ public class SurveyResultService {
             surveyResult.setSurvey(survey);
             surveyResult.setUser(student);
             surveyResult.setPointsReceived(survey.getMaxPoints());
-            badgeService.checkAllBadges(student);
+            badgeService.checkAllBadges(student.getCourseMember(survey.getCourse()).orElseThrow());
         }
         else if (!surveyResult.isEvaluated()) {
             surveyResult.setPointsReceived(survey.getMaxPoints());
@@ -72,7 +68,7 @@ public class SurveyResultService {
         return new SurveyResultInfoResponse(surveyResult);
     }
 
-    public SurveyResultInfoResponse getSurveyResult(Long surveyId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+    public SurveyResultInfoResponse getOrCreateSurveyResult(Long surveyId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
         log.info("Getting user {} feedback for survey with id {}", student.getEmail(), surveyId);
 
@@ -81,18 +77,14 @@ public class SurveyResultService {
 
         SurveyResult surveyResult = surveyResultRepository.findSurveyResultBySurveyAndUser(survey, student);
 
-        try {
-            feedbackValidator.validateFeedbackIsNotNull(surveyResult, surveyId, student.getEmail());
-        }
-        catch (EntityNotFoundException ex) {
+        if (surveyResult == null) {
             surveyResult = new SurveyResult(survey, null, null);
             surveyResult.setUser(student);
             surveyResultRepository.save(surveyResult);
-            badgeService.checkAllBadges(student);
+            badgeService.checkAllBadges(student.getCourseMember(survey.getCourse()).orElseThrow());
         }
 
         return new SurveyResultInfoResponse(surveyResult);
-
     }
 
     public List<SurveyResult> getAllSurveyResultsForStudent(User student) {

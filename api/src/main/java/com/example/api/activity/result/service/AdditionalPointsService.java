@@ -34,7 +34,6 @@ public class AdditionalPointsService {
     private final UserValidator userValidator;
     private final CourseService courseService;
     private final CourseValidator courseValidator;
-    private final UserService userService;
 
     public void saveAdditionalPoints(AddAdditionalPointsForm form)
             throws RequestValidationException {
@@ -56,7 +55,7 @@ public class AdditionalPointsService {
             additionalPoints.setDescription(form.getDescription());
         }
         additionalPointsRepository.save(additionalPoints);
-        badgeService.checkAllBadges(user);
+        badgeService.checkAllBadges(user.getCourseMember(course).orElseThrow());
     }
 
     public List<AdditionalPointsResponse> getAdditionalPoints(Long courseId) throws EntityNotFoundException {

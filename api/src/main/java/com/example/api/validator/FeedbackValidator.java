@@ -34,9 +34,6 @@ public class FeedbackValidator {
     private final FileTaskResultRepository fileTaskResultRepository;
     private final AuthenticationService authService;
     private final FileRepository fileRepository;
-    private final UserRepository userRepository;
-    private final BadgeService badgeService;
-    private final UserService userService;
     private final UserValidator userValidator;
 
     /**
@@ -45,7 +42,8 @@ public class FeedbackValidator {
      * but files are added to list
     */
     public ProfessorFeedback validateAndSetProfessorFeedbackTaskForm(SaveProfessorFeedbackForm form)
-            throws WrongUserTypeException, EntityNotFoundException, WrongPointsNumberException, IOException, MissingAttributeException {
+            throws WrongUserTypeException, EntityNotFoundException, WrongPointsNumberException, IOException {
+
         User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
@@ -74,8 +72,7 @@ public class FeedbackValidator {
             feedback.setPoints(form.getPoints());
             fileTaskResult.setPointsReceived(form.getPoints());
             fileTaskResultRepository.save(fileTaskResult);
-            //TODO figure out if its needed here
-            badgeService.checkAllBadges(professor);
+            //badgeService.checkAllBadges(professor);
         }
 
         // Feedback file can be set only once

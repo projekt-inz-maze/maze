@@ -41,7 +41,6 @@ import java.util.List;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
-    private final UserRepository userRepository;
     private final QuestionValidator questionValidator;
     private final ResultValidator resultValidator;
     private final AuthenticationService authService;
@@ -62,8 +61,6 @@ public class QuestionService {
     }
 
     public Long performQuestionAction(QuestionActionForm form) throws RequestValidationException, TimeLimitExceededException {
-        User user = authService.getCurrentUser();
-
         ResultStatus status = form.getStatus();
         Long graphTaskId = form.getGraphTaskId();
         User user = userService.getCurrentUserAndValidateStudentAccount();
@@ -103,11 +100,11 @@ public class QuestionService {
                 // if it's the last question, set finished
                 List<Question> nextQuestions = question.getNext();
 
-                if(nextQuestions.size() == 0){
+                if (nextQuestions.isEmpty()){
                     result.setFinished(true);
                     result.getMember().getUserHero().setTimesSuperPowerUsedInResult(0);
                     log.info("Expedition finished");
-                    badgeService.checkAllBadges(user);
+                    badgeService.checkAllBadges(result.getMember());
                 }
 
                 return timeRemaining;
@@ -118,7 +115,7 @@ public class QuestionService {
     }
 
     public QuestionInfoResponse getQuestionInfo(Long graphTaskId) throws RequestValidationException {
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
         GraphTaskResult result = graphTaskResultService.getGraphTaskResultWithGraphTaskAndUser(graphTaskId, user);
         ResultStatus status = result.getStatus();
 

@@ -1,5 +1,7 @@
 package com.example.api.user.service;
 
+import com.example.api.course.service.CourseService;
+import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.user.dto.request.UpdateHeroForm;
 import com.example.api.user.model.hero.Hero;
@@ -17,10 +19,11 @@ import javax.transaction.Transactional;
 public class HeroService {
     private final HeroRepository heroRepository;
     private final UserService userService;
+    private final CourseService courseService;
 
-    public void updateHero(UpdateHeroForm form) throws WrongUserTypeException {
+    public void updateHero(UpdateHeroForm form) throws WrongUserTypeException, EntityNotFoundException {
         userService.getCurrentUserAndValidateProfessorAccount();
-        Hero hero = heroRepository.findHeroByTypeAndCourseId(form.getType(), form.getCourseId());
+        Hero hero = heroRepository.findHeroByTypeAndCourse(form.getType(), courseService.getCourse(form.getCourseId()));
         Long coolDown = form.getCoolDownMillis();
         if (coolDown != null) {
             hero.setCoolDownTimeMillis(coolDown);

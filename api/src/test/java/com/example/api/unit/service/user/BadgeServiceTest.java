@@ -1,5 +1,6 @@
 package com.example.api.unit.service.user;
 
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -76,6 +77,7 @@ public class BadgeServiceTest {
     @Test
     public void checkAllBadgesWhenNoUnlockedBadges() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
+        CourseMember member = new CourseMember();
         when(authService.getCurrentUser()).thenReturn(user);
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(false);
@@ -83,10 +85,10 @@ public class BadgeServiceTest {
         doReturn(badges).when(badgeRepository).findAll();
 
         //when
-        badgeService.checkAllBadges(user);
+        badgeService.checkAllBadges(member);
 
         //then
-        List<UnlockedBadge> unlockedBadges = user.getUnlockedBadges();
+        List<UnlockedBadge> unlockedBadges = member.getUnlockedBadges();
         List<Badge> badgesInUnlockedBadges = unlockedBadges.stream()
                 .map(UnlockedBadge::getBadge)
                 .toList();
@@ -97,9 +99,10 @@ public class BadgeServiceTest {
     @Test
     public void checkAllBadgesWhenHasUnlockedBadges() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
+        CourseMember member = new CourseMember();
         UnlockedBadge unlockedBadge = new UnlockedBadge();
         unlockedBadge.setBadge(topScoreBadge);
-        user.getUnlockedBadges().add(unlockedBadge);
+        member.getUnlockedBadges().add(unlockedBadge);
         when(authService.getCurrentUser()).thenReturn(user);
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(true);
@@ -107,10 +110,10 @@ public class BadgeServiceTest {
         doReturn(badges).when(badgeRepository).findAll();
 
         //when
-        badgeService.checkAllBadges(user);
+        badgeService.checkAllBadges(member);
 
         //then
-        List<UnlockedBadge> unlockedBadges = user.getUnlockedBadges();
+        List<UnlockedBadge> unlockedBadges = member.getUnlockedBadges();
         List<Badge> badgesInUnlockedBadges = unlockedBadges.stream()
                 .map(UnlockedBadge::getBadge)
                 .toList();

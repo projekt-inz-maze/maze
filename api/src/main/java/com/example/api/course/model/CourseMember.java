@@ -48,7 +48,7 @@ public class CourseMember {
     private Course course;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "courseMember")
     private List<UnlockedBadge> unlockedBadges = new LinkedList<>();
 
     public CourseMember(User user, Group group, UserHero userHero) {

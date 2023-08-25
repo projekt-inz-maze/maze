@@ -1,5 +1,6 @@
 package com.example.api.user.controller;
 
+import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.user.dto.request.UpdateHeroForm;
 import com.example.api.user.service.HeroService;
@@ -20,7 +21,7 @@ public class HeroController {
     private final HeroService heroService;
 
     @PutMapping
-    public ResponseEntity<?> updateHero(@RequestBody UpdateHeroForm form) throws WrongUserTypeException {
+    public ResponseEntity<?> updateHero(@RequestBody UpdateHeroForm form) throws WrongUserTypeException, EntityNotFoundException {
         heroService.updateHero(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }

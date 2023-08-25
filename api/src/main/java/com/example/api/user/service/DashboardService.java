@@ -70,8 +70,8 @@ public class DashboardService {
         User student = userService.getCurrentUserAndValidateStudentAccount();
         CourseMember member = student.getCourseMember(courseId).orElseThrow();
         Course course = courseService.getCourse(courseId);
-        courseValidator.validateUserCanAccess(student, courseId);
-        badgeService.checkAllBadges(student);
+
+        badgeService.checkAllBadges(member);
 
         return new DashboardResponse(
                 getHeroTypeStats(member),
