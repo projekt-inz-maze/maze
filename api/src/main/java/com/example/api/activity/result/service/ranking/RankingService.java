@@ -18,6 +18,7 @@ import com.example.api.activity.task.model.FileTask;
 import com.example.api.activity.task.model.GraphTask;
 import com.example.api.activity.task.model.Survey;
 import com.example.api.group.model.Group;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
@@ -57,6 +58,7 @@ public class RankingService {
     private final CourseService courseService;
     private final ActivityService activityService;
     private final CourseValidator courseValidator;
+    private final AuthenticationService authService;
 
     public List<RankingResponse> getRanking(Long courseId) throws EntityNotFoundException {
         return getRanking(courseService.getCourse(courseId));
@@ -124,7 +126,7 @@ public class RankingService {
     }
 
     public List<RankingResponse> getActivityRanking(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
         Activity activity = activityService.getActivity(activityID);
 

@@ -6,6 +6,7 @@ import com.example.api.activity.task.model.FileTask;
 import com.example.api.activity.task.model.GraphTask;
 import com.example.api.course.model.Course;
 import com.example.api.map.model.requirement.*;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
@@ -23,6 +24,7 @@ public class RequirementFulfilledVisitor {
     private final UserService userService;
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
+    private final AuthenticationService authService;
 
     public boolean visitDateFromRequirement(DateFromRequirement requirement) {
         if (!requirement.getSelected()) {
@@ -44,7 +46,7 @@ public class RequirementFulfilledVisitor {
         if (!requirement.getSelected()) {
             return true;
         }
-        User student = userService.getCurrentUser();
+        User student = authService.getCurrentUser();
         List<FileTask> fileTasks = fileTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .map(FileTaskResult::getFileTask)
@@ -56,7 +58,7 @@ public class RequirementFulfilledVisitor {
         if (!requirement.getSelected()) {
             return true;
         }
-        User student = userService.getCurrentUser();
+        User student = authService.getCurrentUser();
         List<GraphTask> graphTasks = graphTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .map(GraphTaskResult::getGraphTask)
@@ -68,7 +70,7 @@ public class RequirementFulfilledVisitor {
         if (!requirement.getSelected()) {
             return true;
         }
-        User student = userService.getCurrentUser();
+        User student = authService.getCurrentUser();
         return student.getCourseMember(course.getId()).map(cm -> requirement.getAllowedGroups().contains(cm.getGroup())).orElse(false);
 
     }
@@ -77,7 +79,7 @@ public class RequirementFulfilledVisitor {
         if (!requirement.getSelected()) {
             return true;
         }
-        User student = userService.getCurrentUser();
+        User student = authService.getCurrentUser();
         return student.getPoints() >= requirement.getMinPoints();
     }
 
@@ -85,7 +87,7 @@ public class RequirementFulfilledVisitor {
         if (!requirement.getSelected()) {
             return true;
         }
-        User student = userService.getCurrentUser();
+        User student = authService.getCurrentUser();
         return requirement.getAllowedStudents().contains(student);
     }
 }

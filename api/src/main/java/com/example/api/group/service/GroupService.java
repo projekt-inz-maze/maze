@@ -52,7 +52,7 @@ public class GroupService {
         List<Group> groups = groupRepository.findAll();
         groupValidator.validateGroup(groups, form);
         Course course = courseService.getCourse(form.getCourseId());
-        courseValidator.validateCourseOwner(course, userService.getCurrentUser());
+        courseValidator.validateCourseOwner(course, authService.getCurrentUser());
         Group group = new Group(null, form.getName(), form.getInvitationCode(), course);
         groupRepository.save(group);
         return group.getId();
@@ -74,7 +74,7 @@ public class GroupService {
 
     public List<GroupCode> getInvitationCodeList(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
         log.info("Fetching group code list");
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
         Course course = courseService.getCourse(courseId);
 

@@ -6,6 +6,7 @@ import com.example.api.course.repository.CourseRepository;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.user.service.UserService;
@@ -22,6 +23,7 @@ public class CourseValidator {
     UserValidator userValidator;
     UserService userService;
     CourseRepository courseRepository;
+    AuthenticationService authService;
 
     public void validatePotentialCourse(boolean courseExists, SaveCourseForm form) throws RequestValidationException {
         if (courseExists) {
@@ -61,7 +63,7 @@ public class CourseValidator {
     }
 
     public void validateCurrentUserCanAccess(Long courseId) throws EntityNotFoundException {
-        validateUserCanAccess(userService.getCurrentUser(), courseId);
+        validateUserCanAccess(authService.getCurrentUser(), courseId);
     }
 
     public void validateUserCanAccess(User user, Long courseId) throws EntityNotFoundException {

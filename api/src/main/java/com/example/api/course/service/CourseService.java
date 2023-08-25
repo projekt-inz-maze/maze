@@ -7,6 +7,7 @@ import com.example.api.course.repository.CourseRepository;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.user.service.UserService;
@@ -28,10 +29,11 @@ public class CourseService {
     private final CourseValidator courseValidator;
     private final UserValidator userValidator;
     private final UserService userService;
+    private final AuthenticationService authService;
 
     public Long saveCourse(SaveCourseForm form) throws RequestValidationException {
 
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
         log.info("Saving course to database with name {}", form.getName());
@@ -44,7 +46,7 @@ public class CourseService {
     }
 
     public List<CourseDTO> getCoursesForUser() {
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
 
         if (user.getAccountType().equals(AccountType.PROFESSOR)) {
             return user.getCourses()
@@ -61,14 +63,14 @@ public class CourseService {
     }
 
     public void deleteCourse(Long courseId) throws RequestValidationException {
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         Course course = courseRepository.getById(courseId);
         courseValidator.validateCourseOwner(course, professor);
         courseRepository.delete(course);
     }
 
     public CourseDTO editCourse(CourseDTO dto) throws RequestValidationException {
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         Course course = courseRepository.getById(dto.getId());
         courseValidator.validateCourseOwner(course, professor);
 

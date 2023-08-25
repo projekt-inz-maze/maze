@@ -17,6 +17,7 @@ import com.example.api.activity.task.model.Survey;
 import com.example.api.group.model.Group;
 import com.example.api.map.model.Chapter;
 import com.example.api.map.service.ChapterService;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
@@ -57,9 +58,10 @@ public class SummaryService {
     private final CourseService courseService;
     private final CourseValidator courseValidator;
     private final ChapterService chapterService;
+    private final AuthenticationService authService;
 
     public SummaryResponse getSummary(Long courseId) throws RequestValidationException {
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         Course course = courseService.getCourse(courseId);
         courseValidator.validateCourseOwner(course, professor);
 

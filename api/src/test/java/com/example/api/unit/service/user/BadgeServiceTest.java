@@ -3,6 +3,7 @@ package com.example.api.unit.service.user;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.user.model.badge.ActivityNumberBadge;
@@ -36,11 +37,13 @@ public class BadgeServiceTest {
     @Mock private BadgeVisitor badgeVisitor;
     @Mock private FileRepository fileRepository;
     @Mock private BadgeValidator badgeValidator;
+    @Mock private AuthenticationService authService;
 
     private User user;
     List<Badge> badges = new LinkedList<>();
     TopScoreBadge topScoreBadge;
     ActivityNumberBadge activityNumberBadge;
+
 
     @BeforeEach
     public void init() {
@@ -53,7 +56,8 @@ public class BadgeServiceTest {
                 badgeValidator,
                 badgeVisitor,
                 null,
-                null
+                null,
+                authService
         );
 
         user = new User();
@@ -72,10 +76,10 @@ public class BadgeServiceTest {
     @Test
     public void checkAllBadgesWhenNoUnlockedBadges() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(false);
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         doReturn(badges).when(badgeRepository).findAll();
 
         //when
@@ -96,10 +100,10 @@ public class BadgeServiceTest {
         UnlockedBadge unlockedBadge = new UnlockedBadge();
         unlockedBadge.setBadge(topScoreBadge);
         user.getUnlockedBadges().add(unlockedBadge);
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(true);
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         doReturn(badges).when(badgeRepository).findAll();
 
         //when

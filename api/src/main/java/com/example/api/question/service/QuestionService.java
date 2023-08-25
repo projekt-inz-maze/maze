@@ -62,7 +62,7 @@ public class QuestionService {
     }
 
     public Long performQuestionAction(QuestionActionForm form) throws RequestValidationException, TimeLimitExceededException {
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
 
         ResultStatus status = form.getStatus();
         Long graphTaskId = form.getGraphTaskId();

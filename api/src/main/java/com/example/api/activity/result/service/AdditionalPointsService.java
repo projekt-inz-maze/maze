@@ -41,7 +41,7 @@ public class AdditionalPointsService {
         log.info("Saving additional points for student with id {}", form.getStudentId());
         User user = userRepository.findUserById(form.getStudentId());
         userValidator.validateStudentAccount(user, form.getStudentId());
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         Course course = courseService.getCourse(form.getCourseId());
         courseValidator.validateCourseOwner(course, professor);
 
@@ -60,7 +60,7 @@ public class AdditionalPointsService {
     }
 
     public List<AdditionalPointsResponse> getAdditionalPoints(Long courseId) throws EntityNotFoundException {
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
         return getAdditionalPoints(user, courseId);
     }
 
