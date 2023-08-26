@@ -139,7 +139,6 @@ function BadgesPage(props) {
         <p>{ERROR_OCCURRED}</p>
       ) : (
         <>
-          <Slide delay={LATER_ITEM_DELAY} direction="down">
             <Row className="m-0 text-center py-3">
               <Col md={4}>
                 <strong>Twoja ranga: </strong>
@@ -154,7 +153,6 @@ function BadgesPage(props) {
                 <span>{calculateMissingPoints()}</span>
               </Col>
             </Row>
-          </Slide>
           <Row className="m-0">
             <Col md={12}>
               <HorizontalPointsLine $pointsColor={props.theme.success} $background={props.theme.secondary}>
