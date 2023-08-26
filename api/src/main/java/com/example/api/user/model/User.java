@@ -38,7 +38,6 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
-    private Integer level;
     private Double points = 0D;
 
     @OneToOne

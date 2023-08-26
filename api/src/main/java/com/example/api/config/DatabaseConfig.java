@@ -459,7 +459,6 @@ public class DatabaseConfig {
 
     private void addToGroup(User user, Group group, Hero hero) {
         UserHero userHero = userHero(hero, group.getCourse());
-        user.setLevel(1);
         CourseMember cm = new CourseMember(user, group, userHero);
         courseMemberRepository.save(cm);
         user.getCourseMemberships().add(cm);

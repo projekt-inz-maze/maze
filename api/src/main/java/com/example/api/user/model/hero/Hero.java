@@ -80,9 +80,9 @@ public abstract class Hero {
         return !isResultStatusCorrect(result);
     }
 
-    protected Boolean isCoolDownActive(CourseMember user) {
+    protected Boolean isCoolDownActive(CourseMember member) {
         Long currentTimeMillis = System.currentTimeMillis();
-        Long lastPowerUsageDateMillis = user.getUserHero().getLastSuperPowerUsageTimeMillis();
+        Long lastPowerUsageDateMillis = member.getUserHero().getLastSuperPowerUsageTimeMillis();
         return currentTimeMillis - lastPowerUsageDateMillis < coolDownTimeMillis;
     }
 

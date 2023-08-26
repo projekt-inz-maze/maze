@@ -56,6 +56,7 @@ public class CourseMember {
         this.group = group;
         this.course = group.getCourse();
         this.userHero = userHero;
+        this.level = 1;
     }
 
     public synchronized void changePoints(Double diff) {

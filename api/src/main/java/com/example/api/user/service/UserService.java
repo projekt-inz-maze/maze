@@ -112,19 +112,18 @@ public class UserService implements UserDetailsService {
         User user = new User(form.getEmail(), form.getFirstName(), form.getLastName(), form.getAccountType());
         userValidator.validateStudentRegistrationForm(form);
 
-        Hero hero = heroRepository.findHeroByType(form.getHeroType());
-
         Integer indexNumber = form.getIndexNumber();
         userValidator.validateStudentWithIndexNumberDoesNotExist(indexNumber);
         user.setIndexNumber(indexNumber);
 
         passwordValidator.validatePassword(form.getPassword());
         user.setPassword(passwordEncoder.encode(form.getPassword()));
+
         user.setPoints(0D);
-        user.setLevel(1);
         userRepository.save(user);
 
         Group group = groupService.getGroupByInvitationCode(form.getInvitationCode());
+        Hero hero = heroRepository.findHeroByType(form.getHeroType());
         UserHero userHero = new UserHero(hero, 0, 0L, group.getCourse());
         addUserToGroup(user, group, userHero);
 

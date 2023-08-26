@@ -1,6 +1,7 @@
 package com.example.api.unit.util.visitor;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
+import com.example.api.course.model.CourseMember;
 import com.example.api.map.dto.response.task.ActivityType;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.GraphTaskResult;
@@ -33,6 +34,8 @@ public class HeroVisitorTest {
     @Mock private TimeCalculator timeCalculator;
     private User user;
     private GraphTaskResult result;
+
+    private CourseMember courseMember;
     private Long currTime;
     private Question firstQuestion;
 
@@ -41,7 +44,6 @@ public class HeroVisitorTest {
         MockitoAnnotations.openMocks(this);
         heroVisitor = new HeroVisitor(timeCalculator);
         user = new User("email", "Name", "LastName", AccountType.STUDENT);
-        user.setLevel(1);
 
         firstQuestion = new Question();
         Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "", "", Difficulty.EASY, List.of(), 10.0, new LinkedList<>(), null, null);
@@ -58,17 +60,20 @@ public class HeroVisitorTest {
                 TimeUnit.MINUTES.toMillis(10)
         );
         currTime = System.currentTimeMillis();
-        result = new GraphTaskResult(graphTask, user, currTime, ResultStatus.CHOOSE, firstQuestion, null);
+        courseMember = new CourseMember();
+        courseMember.setLevel(1);
+        result = new GraphTaskResult(graphTask, user, currTime, ResultStatus.CHOOSE, firstQuestion, courseMember);
         result.setFinished(false);
     }
 
     @Test
     public void shouldUsePriestSuperPowerNormally() throws RequestValidationException {
         //given
+        courseMember.setLevel(1);
         Priest priest = new Priest(HeroType.PRIEST, TimeUnit.DAYS.toMillis(10), null);
-        //user.setUserHero(new UserHero(priest, 0, 0L, null));
+        courseMember.setUserHero(new UserHero(priest, 0, 0L, null));
         long startDateMillis = result.getStartDateMillis();
-        long healValue = priest.getHealValueForLevel(user.getLevel());
+        long healValue = priest.getHealValueForLevel(courseMember.getLevel());
         long timeToSolve = result.getGraphTask().getTimeToSolveMillis();
         long newTimeRemaining = TimeUnit.MINUTES.toMillis(10) + healValue;
         when(timeCalculator.getTimeRemaining(startDateMillis+healValue, timeToSolve)).thenReturn(newTimeRemaining);
@@ -86,10 +91,10 @@ public class HeroVisitorTest {
     public void shouldUsePriestSuperPowerNormallyWithHigherUserLevel() throws RequestValidationException {
         //given
         Priest priest = new Priest(HeroType.PRIEST, TimeUnit.DAYS.toMillis(10), null);
-        //user.setUserHero(new UserHero(priest, 0, 0L, null));
-        user.setLevel(3);
+        courseMember.setUserHero(new UserHero(priest, 0, 0L, null));
+        courseMember.setLevel(3);
         long startDateMillis = result.getStartDateMillis();
-        long healValue = priest.getHealValueForLevel(user.getLevel());
+        long healValue = priest.getHealValueForLevel(courseMember.getLevel());
         long timeToSolve = result.getGraphTask().getTimeToSolveMillis();
         long newTimeRemaining = TimeUnit.MINUTES.toMillis(10) + healValue;
         when(timeCalculator.getTimeRemaining(startDateMillis + healValue, timeToSolve)).thenReturn(newTimeRemaining);
@@ -121,9 +126,8 @@ public class HeroVisitorTest {
     public void shouldThrowRequestValidationExceptionBecauseCoolDownIsActive() {
         //given
         Priest priest = new Priest(HeroType.PRIEST, TimeUnit.DAYS.toMillis(10), null);
-        //user.setUserHero(new UserHero(priest, 0, currTime - TimeUnit.DAYS.toMillis(9), null));
+        courseMember.setUserHero(new UserHero(priest, 0, currTime - TimeUnit.DAYS.toMillis(9), null));
 
-        //when
         //then
         assertThatThrownBy(() -> heroVisitor.visitPriest(priest, result))
                 .isInstanceOf(RequestValidationException.class)
@@ -134,8 +138,8 @@ public class HeroVisitorTest {
     public void shouldUseRogueSuperPowerNormally() throws RequestValidationException {
         //given
         Rogue rogue = new Rogue(HeroType.ROGUE, TimeUnit.DAYS.toMillis(10), null);
-        //user.setUserHero(new UserHero(rogue, 0, 0L, null));
-        user.setLevel(11);
+        courseMember.setUserHero(new UserHero(rogue, 0, 0L, null));
+        courseMember.setLevel(11);
         result.setCurrQuestion(firstQuestion.getNext().get(0));
         result.setStatus(ResultStatus.ANSWER);
 
@@ -168,9 +172,9 @@ public class HeroVisitorTest {
     public void shouldThrowRequestValidationExceptionBecauseStatusIsIncorrect() {
         //given
         Rogue rogue = new Rogue(HeroType.ROGUE, TimeUnit.DAYS.toMillis(10), null);
-        //user.setUserHero(new UserHero(rogue, 0, 0L, null));
+        courseMember.setUserHero(new UserHero(rogue, 0, 0L, null));
         Question question = firstQuestion.getNext().get(0);
-        user.setLevel((int) Math.round(rogue.getMultiplier() * question.getPoints()) + 1);
+        courseMember.setLevel((int) Math.round(rogue.getMultiplier() * question.getPoints()) + 1);
         result.setCurrQuestion(firstQuestion.getNext().get(0));
         result.setStatus(ResultStatus.CHOOSE);
 
