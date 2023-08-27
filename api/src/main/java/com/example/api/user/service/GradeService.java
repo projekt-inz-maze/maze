@@ -1,6 +1,7 @@
 package com.example.api.user.service;
 
 import com.example.api.activity.result.model.*;
+import com.example.api.course.model.Course;
 import com.example.api.course.service.CourseService;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.user.dto.response.BasicUser;
@@ -43,37 +44,34 @@ public class GradeService {
     public List<GradeResponse> getAllGrades(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
         User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
+        Course course = courseService.getCourse(courseId);
 
-        return courseService.getCourse(courseId)
+        return course
                 .getAllStudents2()
                 .stream()
-                .map(this::getStudentFinalGrade)
+                .map(student -> getStudentFinalGrade(student, course))
                 .sorted(Comparator.comparing(entry -> entry.getStudent().getLastName().toLowerCase() + entry.getStudent().getFirstName().toLowerCase()))
                 .toList();
     }
 
-    public GradeResponse getStudentFinalGrade(User student) {
-        List<GraphTaskResult> graphTaskResults = graphTaskResultRepository.findAllByUser(student);
-        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByUser(student);
-        List<SurveyResult> surveyResults = surveyResultRepository.findAllByUser(student)
-                .stream()
-                .filter(SurveyResult::isEvaluated)
-                .toList();
-        List<AdditionalPoints> additionalPointsList = additionalPointsRepository.findAllByUser(student);
-
-        Double pointsReceived = Stream.of(graphTaskResults, fileTaskResults, surveyResults)
+    public GradeResponse getStudentFinalGrade(User student, Course course) {
+        List<GraphTaskResult> graphTaskResults = graphTaskResultRepository.findAllByUserAndCourse(student, course);
+        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByUserAndCourse(student, course);
+        List<SurveyResult> surveyResults = surveyResultRepository.findAllByUserAndCourse(student, course);
+        List<? extends TaskResult> results = Stream.of(graphTaskResults, fileTaskResults, surveyResults)
                 .flatMap(Collection::stream)
                 .filter(TaskResult::isEvaluated)
+                .toList();
+
+        Double pointsReceived = results.stream()
                 .mapToDouble(TaskResult::getPointsReceived)
                 .sum();
 
-        Double additionalPoints = additionalPointsList.stream()
+        Double additionalPoints = additionalPointsRepository.findAllByUserAndCourse(student, course).stream()
                 .mapToDouble(AdditionalPoints::getPointsReceived)
                 .sum();
 
-        Double pointsPossibleToGet = Stream.of(graphTaskResults, fileTaskResults, surveyResults)
-                .flatMap(Collection::stream)
-                .filter(TaskResult::isEvaluated)
+        Double pointsPossibleToGet = results.stream()
                 .mapToDouble(this::getMaxPointsFromTaskResult)
                 .sum();
 

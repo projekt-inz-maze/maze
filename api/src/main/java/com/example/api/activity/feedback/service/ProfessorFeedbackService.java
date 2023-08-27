@@ -4,6 +4,7 @@ package com.example.api.activity.feedback.service;
 import com.example.api.activity.feedback.dto.request.SaveProfessorFeedbackForm;
 import com.example.api.activity.feedback.dto.response.ProfessorFeedbackInfoResponse;
 import com.example.api.activity.task.dto.response.util.FileResponse;
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongPointsNumberException;
@@ -90,14 +91,14 @@ public class ProfessorFeedbackService {
     private ProfessorFeedbackInfoResponse createInfoResponseFromProfessorFeedback(
             ProfessorFeedback professorFeedback) throws MissingAttributeException, EntityNotFoundException {
         FileTaskResult fileTaskResult = professorFeedback.getFileTaskResult();
-        User student = professorFeedback.getFileTaskResult().getUser();
+        CourseMember courseMember = professorFeedback.getFileTaskResult().getMember();
         FileTask fileTask = professorFeedback.getFileTaskResult().getFileTask();
-        feedbackValidator.validateFeedbackForInfoResponse(professorFeedback, fileTaskResult, student, fileTask);
+        feedbackValidator.validateFeedbackForInfoResponse(professorFeedback, fileTaskResult, courseMember, fileTask);
 
         ProfessorFeedbackInfoResponse infoResponse = new ProfessorFeedbackInfoResponse();
         infoResponse.setFeedbackId(professorFeedback.getId());
         infoResponse.setFileTaskResultId(fileTaskResult.getId());
-        infoResponse.setStudentEmail(student.getEmail());
+        infoResponse.setStudentEmail(courseMember.getUser().getEmail());
         infoResponse.setFileTaskId(fileTask.getId());
         infoResponse.setTaskName(fileTask.getTitle());
         infoResponse.setDescription(fileTask.getDescription());

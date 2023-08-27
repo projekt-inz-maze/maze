@@ -1,6 +1,7 @@
 package com.example.api.validator;
 
 import com.example.api.activity.feedback.dto.request.SaveProfessorFeedbackForm;
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongPointsNumberException;
@@ -96,7 +97,7 @@ public class FeedbackValidator {
 
     public void validateFeedbackForInfoResponse(ProfessorFeedback professorFeedback,
                                                 FileTaskResult fileTaskResult,
-                                                User student,
+                                                CourseMember member,
                                                 FileTask fileTask)
             throws EntityNotFoundException, MissingAttributeException {
         if (professorFeedback == null) {
@@ -107,10 +108,11 @@ public class FeedbackValidator {
             String msg = "Professor feedback with id " + professorFeedback.getId() + " is missing fileTaskResult attribute";
             throw new MissingAttributeException(msg);
         }
-        if (student == null) {
-            String msg = "Professor feedback with id " + professorFeedback.getId() + " is missing student attribute";
+        if (member == null) {
+            String msg = "Professor feedback with id " + professorFeedback.getId() + " is missing member attribute";
             throw new MissingAttributeException(msg);
         }
+
         if (fileTask == null) {
             String msg = "Professor feedback with id " + professorFeedback.getId() + " is missing fileTask attribute";
             throw new MissingAttributeException(msg);

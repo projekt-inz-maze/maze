@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface GraphTaskRepository extends JpaRepository<GraphTask, Long> {
     GraphTask findGraphTaskById(Long id);
+    List<GraphTask> findGraphTaskByIdIn(List<Long> id);
     GraphTask findGraphTaskByTitle(String title);
     List<GraphTask> findAllByCourse(Course course);
     List<GraphTask> findAllByCourseAndProfessor(Course course, User user);

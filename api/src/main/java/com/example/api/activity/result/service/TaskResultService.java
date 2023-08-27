@@ -18,7 +18,6 @@ import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.model.TaskResult;
 import com.example.api.group.model.Group;
-import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
@@ -31,6 +30,7 @@ import com.example.api.user.repository.UserRepository;
 import com.example.api.user.service.UserService;
 import com.example.api.util.csv.CSVConverter;
 import com.example.api.util.csv.CSVTaskResult;
+import com.sun.jdi.request.InvalidRequestStateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -64,53 +64,67 @@ public class TaskResultService {
         log.info("Fetching csv files for students");
         List<Long> studentIds = csvForm.getStudentIds();
         List<Long> activityIds = csvForm.getActivityIds();
-        List<User> students = userRepository.findAll()
-                .stream()
-                .filter(user -> studentIds.contains(user.getId()))
-                .filter(user -> user.getAccountType() == AccountType.STUDENT)
-                .toList();
+        List<User> students = userRepository.findAllByIdIsInAAndAccountType_Student(studentIds);
+
+
+
         Map<User, List<CSVTaskResult>> userToResultMap = new HashMap<>();
+
         List<String> firstRow = new LinkedList<>(
                 List.of("Imię", "Nazwisko", "NumerId", "Instytucja", "Wydział", "E-mail"));
         Map<Long, GraphTask> formToGraphTaskMap = new HashMap<>();
         Map<Long, FileTask> formToFileTaskMap = new HashMap<>();
         Map<Long, Survey> formToSurveyMap = new HashMap<>();
         fillFirstRowAndAddTasksToMap(activityIds, formToGraphTaskMap, formToFileTaskMap, formToSurveyMap, firstRow);
-        students.forEach(student -> {
-            List<CSVTaskResult> csvTaskResults = new LinkedList<>();
-            activityIds.forEach(activityId -> {
-                Activity activity = getActivity(activityId);
-                if (activity != null) {
-                    ActivityType type = activity.getActivityType();
-                    switch (type) {
-                        case EXPEDITION -> {
-                            GraphTask graphTask = formToGraphTaskMap.get(activityId);
-                            GraphTaskResult graphTaskResult = graphTaskResultRepository
-                                    .findGraphTaskResultByGraphTaskAndUser(graphTask, student);
-                            csvTaskResults.add(new CSVTaskResult(graphTaskResult));
-                        }
-                        case TASK -> {
-                            FileTask fileTask = formToFileTaskMap.get(activityId);
-                            FileTaskResult fileTaskResult = fileTaskResultRepository.findFileTaskResultByFileTaskAndUser(
-                                    fileTask,
-                                    student);
-                            Feedback feedback = professorFeedbackRepository
-                                    .findProfessorFeedbackByFileTaskResult(fileTaskResult);
-                            csvTaskResults.add(new CSVTaskResult(fileTaskResult, feedback));
-                        }
-                        case SURVEY -> {
-                            Survey survey = formToSurveyMap.get(activityId);
-                            SurveyResult surveyResult = surveyResultRepository.findSurveyResultBySurveyAndUser(survey,
-                                    student);
-                            csvTaskResults.add(new CSVTaskResult(surveyResult));
-                        }
-                    }
-                }
 
-            });
+        List<Activity> activities = getActivities(activityIds);
+        validateSameCourse(activities);
+
+        students.forEach(student -> {
+            List<CSVTaskResult> csvTaskResults = activities.stream()
+                    .map(activity -> getCSVTaskResultForActivity(student, activity, formToGraphTaskMap, formToFileTaskMap, formToSurveyMap))
+                    .toList();
+
             userToResultMap.put(student, csvTaskResults);
         });
-        return new ByteArrayResource(csvConverter.convertToByteArray(userToResultMap, firstRow));
+        return new ByteArrayResource(csvConverter.convertToByteArray(userToResultMap, firstRow, activities.get(0).getCourse()));
+    }
+
+    private void validateSameCourse(List<Activity> activities) {
+        if (!activities.stream().allMatch(activity -> activity.getCourse().equals(activities.get(0)))) {
+            String msg = "Cannot get csv for activities from different courses";
+            log.error(msg);
+            throw new InvalidRequestStateException(msg);
+        }
+    }
+
+    private CSVTaskResult getCSVTaskResultForActivity(User student, Activity activity, Map<Long, GraphTask> formToGraphTaskMap, Map<Long, FileTask> formToFileTaskMap, Map<Long, Survey> formToSurveyMap) {
+        ActivityType type = activity.getActivityType();
+        switch (type) {
+            case EXPEDITION -> {
+                GraphTask graphTask = formToGraphTaskMap.get(activity.getId());
+                GraphTaskResult graphTaskResult = graphTaskResultRepository
+                        .findGraphTaskResultByGraphTaskAndUser(graphTask, student);
+                return new CSVTaskResult(graphTaskResult);
+            }
+            case TASK -> {
+                FileTask fileTask = formToFileTaskMap.get(activity.getId());
+                FileTaskResult fileTaskResult = fileTaskResultRepository
+                        .findFileTaskResultByFileTaskAndUser(fileTask, student);
+                Feedback feedback = professorFeedbackRepository
+                        .findProfessorFeedbackByFileTaskResult(fileTaskResult);
+                return new CSVTaskResult(fileTaskResult, feedback);
+            }
+            case SURVEY -> {
+                Survey survey = formToSurveyMap.get(activity.getId());
+                SurveyResult surveyResult = surveyResultRepository.findSurveyResultBySurveyAndUser(survey,
+                        student);
+                return new CSVTaskResult(surveyResult);
+            }
+            default -> {
+                throw new IllegalStateException();
+            }
+        }
     }
 
     public List<? extends TaskResult> getAllResultsForStudent(User student, Course course) {
@@ -209,6 +223,15 @@ public class TaskResultService {
         return surveyRepository.findSurveyById(activityID);
     }
 
+    private List<Activity> getActivities(List<Long> activityIds) {
+        return (List<Activity>) List.of(graphTaskRepository.findGraphTaskByIdIn(activityIds),
+                fileTaskRepository.findFileTaskByIdIn(activityIds),
+                surveyRepository.findSurveyByIdIn(activityIds)
+        ).stream()
+                .flatMap(Collection::stream)
+                .toList();
+    }
+
     private List<? extends TaskResult> getResultsForTask(Task task) {
         if (task.getActivityType().equals(ActivityType.EXPEDITION)) {
             return graphTaskResultRepository.findAllByGraphTask((GraphTask) task)
@@ -295,4 +318,6 @@ public class TaskResultService {
         }
         return getResultsForTask((Task) activity);
     }
+
+
 }

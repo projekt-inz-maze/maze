@@ -94,13 +94,6 @@ public class BadgeVisitorTest {
         surveyResult = new SurveyResult();
         additionalPoints = new AdditionalPoints();
 
-        graphTaskResult1.setUser(user);
-        graphTaskResult2.setUser(user);
-        fileTaskResult1.setUser(user);
-        fileTaskResult2.setUser(user);
-        surveyResult.setUser(user);
-        additionalPoints.setUser(user);
-
         graphTaskResult1.setMember(member);
         graphTaskResult2.setMember(member);
         fileTaskResult1.setMember(member);
@@ -281,7 +274,7 @@ public class BadgeVisitorTest {
 
         results = List.of(graphTaskResult1, graphTaskResult2);
 
-        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudent(user);
+        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudentAndCourse(user, );
         GraphTaskNumberBadge graphTaskNumberBadge = new GraphTaskNumberBadge(2);
 
         //when
@@ -298,7 +291,7 @@ public class BadgeVisitorTest {
 
         results = List.of(graphTaskResult1, graphTaskResult2);
 
-        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudent(user);
+        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudentAndCourse(user, );
         GraphTaskNumberBadge graphTaskNumberBadge = new GraphTaskNumberBadge(3);
 
         //when
@@ -315,7 +308,7 @@ public class BadgeVisitorTest {
 
         results = List.of(fileTaskResult1, fileTaskResult2);
 
-        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user);
+        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user, null);
         FileTaskNumberBadge fileTaskNumberBadge = new FileTaskNumberBadge(2);
 
         //when
@@ -332,7 +325,7 @@ public class BadgeVisitorTest {
 
         results = List.of(fileTaskResult1, fileTaskResult2);
 
-        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user);
+        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user, null);
         FileTaskNumberBadge fileTaskNumberBadge = new FileTaskNumberBadge(4);
 
         //when
@@ -368,7 +361,6 @@ public class BadgeVisitorTest {
         results.remove(surveyResult);
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
-        graphTaskResult.setUser(user);
         graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
         results.add(graphTaskResult);
@@ -399,7 +391,6 @@ public class BadgeVisitorTest {
         results.remove(surveyResult);
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
-        graphTaskResult.setUser(user);
         graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
         results.add(graphTaskResult);
@@ -430,7 +421,6 @@ public class BadgeVisitorTest {
         results.remove(surveyResult);
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
-        graphTaskResult.setUser(user);
         graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
         results.add(graphTaskResult);
@@ -459,7 +449,6 @@ public class BadgeVisitorTest {
         results.remove(surveyResult);
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
-        graphTaskResult.setUser(user);
         graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
         results.add(graphTaskResult);

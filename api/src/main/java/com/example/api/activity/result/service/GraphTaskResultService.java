@@ -2,6 +2,7 @@ package com.example.api.activity.result.service;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
+import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.*;
 import com.example.api.activity.result.model.GraphTaskResult;
@@ -13,7 +14,6 @@ import com.example.api.user.model.hero.Hero;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.question.repository.QuestionRepository;
-import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.user.service.UserService;
 import com.example.api.validator.ResultValidator;
@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.api.error.exception.ExceptionMessage.*;
 
@@ -39,7 +38,6 @@ import static com.example.api.error.exception.ExceptionMessage.*;
 public class GraphTaskResultService {
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final GraphTaskRepository graphTaskRepository;
-    private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
     private final PointsCalculator pointsCalculator;
     private final ResultValidator resultValidator;
@@ -52,8 +50,7 @@ public class GraphTaskResultService {
 
     public Long getGraphTaskResultId(Long graphTaskId)
             throws WrongUserTypeException, EntityNotFoundException {
-        String email = authService.getAuthentication().getName();
-        User student = userRepository.findUserByEmail(email);
+        User student = authService.getCurrentUser();
         userValidator.validateStudentAccount(student);
         GraphTask graphTask = graphTaskRepository.findGraphTaskById(graphTaskId);
         activityValidator.validateActivityIsNotNull(graphTask, graphTaskId);
@@ -80,7 +77,6 @@ public class GraphTaskResultService {
 
         GraphTaskResult graphTaskResult = new GraphTaskResult(
                 graphTask,
-                member.getUser(),
                 System.currentTimeMillis(),
                 ResultStatus.CHOOSE,
                 graphTask.getQuestions().get(0),
@@ -153,8 +149,8 @@ public class GraphTaskResultService {
         return timeCalculator.getTimeRemaining(result.getStartDateMillis(), graphTask.getTimeToSolveMillis());
     }
 
-    public List<GraphTaskResult> getAllGraphTaskResultsForStudent(User student){
-        return graphTaskResultRepository.findAllByUser(student);
+    public List<GraphTaskResult> getAllGraphTaskResultsForStudentAndCourse(User student, Course course){
+        return graphTaskResultRepository.findAllByUserAndCourse(student, course);
     }
 
     public SuperPowerResponse<?> useSuperPower(Long graphTaskId, Long questionId) throws RequestValidationException {

@@ -6,7 +6,6 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.task.model.Activity;
-import com.example.api.user.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,11 +25,6 @@ public abstract class TaskResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //TODO remove
-    @OneToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
-
     @OneToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CourseMember member;
@@ -44,13 +38,13 @@ public abstract class TaskResult {
     public abstract boolean isEvaluated();
     public abstract Activity getActivity();
 
-    public TaskResult(Long id, User user, Double pointsReceived, Long sendDateMillis, Course course)
+    public TaskResult(Long id, Double pointsReceived, Long sendDateMillis, Course course, CourseMember courseMember)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         this.id = id;
-        this.user = user;
         this.setPointsReceived(pointsReceived);
         this.sendDateMillis = sendDateMillis;
         this.course= course;
+        this.member = courseMember;
     }
 
     public void setPointsReceived(Double newPoints) {

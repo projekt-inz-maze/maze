@@ -104,9 +104,17 @@ public class TaskService {
 
         List<FileResponse> filesResponse = result.getFiles().stream().map(FileResponse::new).toList();
 
-        return new TaskToEvaluateResponse(result.getUser().getEmail(), result.getId(), result.getUser().getFirstName(),
-                result.getUser().getLastName(), task.getTitle(), isLate, task.getDescription(),
-                result.getAnswer(), filesResponse, task.getMaxPoints(), id, num-1);
+        return new TaskToEvaluateResponse(result.getMember().getUser(),
+                result.getId(),
+                task.getTitle(),
+                isLate,
+                task.getDescription(),
+                result.getAnswer(),
+                filesResponse,
+                task.getMaxPoints(),
+                id,
+                num-1
+        );
     }
 
     public List<ActivitiesResponse> getAllActivities(Long courseId) throws EntityNotFoundException {

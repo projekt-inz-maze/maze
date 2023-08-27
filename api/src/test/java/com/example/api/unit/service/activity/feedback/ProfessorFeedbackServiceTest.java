@@ -69,7 +69,6 @@ public class ProfessorFeedbackServiceTest {
         FileTask fileTask = new FileTask();
         fileTask.setId(1L);
         FileTaskResult fileTaskResult = new FileTaskResult();
-        fileTaskResult.setUser(user);
         fileTaskResult.setFileTask(fileTask);
         feedback.setFileTaskResult(fileTaskResult);
 
@@ -97,7 +96,6 @@ public class ProfessorFeedbackServiceTest {
         FileTask fileTask = new FileTask();
         fileTask.setId(1L);
         FileTaskResult fileTaskResult = new FileTaskResult();
-        fileTaskResult.setUser(user);
         fileTaskResult.setFileTask(fileTask);
         feedback.setFileTaskResult(fileTaskResult);
         given(feedbackValidator.validateAndSetProfessorFeedbackTaskForm(form)).willReturn(feedback);

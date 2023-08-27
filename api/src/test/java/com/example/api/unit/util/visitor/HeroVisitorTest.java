@@ -62,7 +62,7 @@ public class HeroVisitorTest {
         currTime = System.currentTimeMillis();
         courseMember = new CourseMember();
         courseMember.setLevel(1);
-        result = new GraphTaskResult(graphTask, user, currTime, ResultStatus.CHOOSE, firstQuestion, courseMember);
+        result = new GraphTaskResult(graphTask, currTime, ResultStatus.CHOOSE, firstQuestion, courseMember);
         result.setFinished(false);
     }
 

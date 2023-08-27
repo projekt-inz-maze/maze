@@ -48,7 +48,6 @@ public class SurveyResultService {
         if (surveyResult == null) {
             surveyResult = new SurveyResult();
             surveyResult.setSurvey(survey);
-            surveyResult.setUser(student);
             surveyResult.setPointsReceived(survey.getMaxPoints());
             badgeService.checkAllBadges(student.getCourseMember(survey.getCourse()).orElseThrow());
         }
@@ -79,18 +78,10 @@ public class SurveyResultService {
 
         if (surveyResult == null) {
             surveyResult = new SurveyResult(survey, null, null);
-            surveyResult.setUser(student);
             surveyResultRepository.save(surveyResult);
             badgeService.checkAllBadges(student.getCourseMember(survey.getCourse()).orElseThrow());
         }
 
         return new SurveyResultInfoResponse(surveyResult);
-    }
-
-    public List<SurveyResult> getAllSurveyResultsForStudent(User student) {
-        return surveyResultRepository.findAllByUser(student)
-                .stream()
-                .filter(SurveyResult::isEvaluated)
-                .toList();
     }
 }

@@ -113,7 +113,7 @@ public class BadgeVisitor {
 
     public boolean visitFileTaskNumberBadge(FileTaskNumberBadge badge) {
         User student = authService.getCurrentUser();
-        List<FileTaskResult> results = fileTaskResultService.getAllFileTaskResultsForStudent(student)
+        List<FileTaskResult> results = fileTaskResultService.getAllFileTaskResultsForStudent(student, badge.getCourse())
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .toList();
@@ -123,7 +123,7 @@ public class BadgeVisitor {
 
     public boolean visitGraphTaskNumberBadge(GraphTaskNumberBadge badge) {
         User student = authService.getCurrentUser();
-        List<GraphTaskResult> results = graphTaskResultService.getAllGraphTaskResultsForStudent(student)
+        List<GraphTaskResult> results = graphTaskResultService.getAllGraphTaskResultsForStudentAndCourse(student, badge.getCourse())
                 .stream()
                 .filter(GraphTaskResult::isEvaluated)
                 .toList();

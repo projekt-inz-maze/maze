@@ -318,7 +318,6 @@ public class DatabaseConfig {
             CourseMember result1Member = (students1.get(0).getCourseMember(course1).orElseThrow());
 
             result1.setGraphTask(graphTask);
-            result1.setUser(students1.get(0));
             result1.setMember(result1Member);
             result1.setPointsReceived(12.0);
             addReceivedPointsForUser(result1Member, result1.getPointsReceived());
@@ -331,7 +330,6 @@ public class DatabaseConfig {
 
             GraphTaskResult result2 = new GraphTaskResult();
             result2.setGraphTask(graphTaskTwo);
-            result2.setUser(students1.get(1));
             CourseMember result2Member = students1.get(1).getCourseMember(course1).orElseThrow();
             result2.setMember(result2Member);
             result2.setPointsReceived(10.0);
@@ -345,7 +343,6 @@ public class DatabaseConfig {
 
             GraphTaskResult result3 = new GraphTaskResult();
             result3.setGraphTask(graphTaskTwo);
-            result3.setUser(students2.get(0));
             CourseMember result3Member = students2.get(0).getCourseMember(course1).orElseThrow();
             result3.setMember(result3Member);
             result3.setPointsReceived(11.0);
@@ -359,7 +356,6 @@ public class DatabaseConfig {
 
             GraphTaskResult result4 = new GraphTaskResult();
             result4.setGraphTask(graphTaskTwo);
-            result4.setUser(students2.get(1));
             CourseMember result4Member = students2.get(1).getCourseMember(course1).orElseThrow();
             result4.setMember(result4Member);
             result4.setPointsReceived(30.5);
@@ -374,7 +370,6 @@ public class DatabaseConfig {
             FileTaskResult fileResult = new FileTaskResult();
             fileResult.setId(1L);
             fileResult.setFileTask(fileTask);
-            fileResult.setUser(students1.get(0));
             CourseMember fileResultMember = students1.get(0).getCourseMember(course1).orElseThrow();
             fileResult.setMember(fileResultMember);
             fileResult.setEvaluated(false);
@@ -397,7 +392,6 @@ public class DatabaseConfig {
             calendar.set(2022, Calendar.JUNE, 15);
             AdditionalPoints additionalPoints = new AdditionalPoints();
             additionalPoints.setId(1L);
-            additionalPoints.setUser(students1.get(0));
             CourseMember additionalPointsMember = students1.get(0).getCourseMember(course1).orElseThrow();
             additionalPoints.setMember(additionalPointsMember);
             additionalPoints.setPointsReceived(100D);
@@ -411,7 +405,6 @@ public class DatabaseConfig {
             SurveyResult surveyResult1 = new SurveyResult();
             surveyResult1.setSurvey(survey);
             surveyResult1.setId(1L);
-            surveyResult1.setUser(students1.get(0));
             CourseMember surveyResult1Member = students1.get(0).getCourseMember(course1).orElseThrow();
             surveyResult1.setMember(surveyResult1Member);
             surveyResult1.setPointsReceived(survey.getMaxPoints());
@@ -424,7 +417,6 @@ public class DatabaseConfig {
             SurveyResult surveyResult2 = new SurveyResult();
             surveyResult2.setSurvey(survey);
             surveyResult2.setId(2L);
-            surveyResult2.setUser(students1.get(1));
             CourseMember surveyResult2Member = students1.get(1).getCourseMember(course1).orElseThrow();
             surveyResult2.setMember(surveyResult2Member);
             surveyResult2.setPointsReceived(survey.getMaxPoints());
@@ -437,7 +429,6 @@ public class DatabaseConfig {
             SurveyResult surveyResult3 = new SurveyResult();
             surveyResult3.setSurvey(survey);
             surveyResult3.setId(3L);
-            surveyResult3.setUser(students2.get(2));
             CourseMember surveyResult3Member = students2.get(2).getCourseMember(course1).orElseThrow();
             surveyResult3.setMember(surveyResult3Member);
             surveyResult3.setPointsReceived(survey.getMaxPoints());

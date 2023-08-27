@@ -13,7 +13,6 @@ import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.AuthenticationService;
 import com.example.api.user.service.BadgeService;
-import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,12 +44,12 @@ public class AdditionalPointsService {
         courseValidator.validateCourseOwner(course, professor);
 
         AdditionalPoints additionalPoints = new AdditionalPoints(null,
-                user,
                 form.getPoints(),
                 form.getDateInMillis(),
                 professor.getEmail(),
                 "",
-                course);
+                course,
+                user.getCourseMember(course).orElseThrow());
         if (form.getDescription() != null) {
             additionalPoints.setDescription(form.getDescription());
         }

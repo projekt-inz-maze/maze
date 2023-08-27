@@ -191,15 +191,11 @@ public class SummaryService {
         List<Double> grades = getAllProfessorChapterActivitiesResult(chapter, professor)
                 .stream()
                 .filter(TaskResult::isEvaluated)
-                .filter(taskResult ->
-                    taskResult.getUser()
-                            .getCourseMember(chapter.getCourse().getId()).map(cm -> cm.getGroup().equals(group))
-                            .orElse(false)
-                )
+                .filter(taskResult -> taskResult.getMember().getGroup().equals(group))
                 .map(pointsToGradeMapper::getGrade)
                 .toList();
 
-        return new AverageGradeForChapterCreator(group.getName(), grades).create(); // it will return entities with no results from group
+        return new AverageGradeForChapterCreator(group.getName(), grades).create();
     }
 
     private List<AverageActivityScore> getAvgActivitiesScore(User professor, Course course) {

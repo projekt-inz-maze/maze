@@ -44,8 +44,4 @@ public class SurveyResult extends TaskResult{
     public Activity getActivity() {
         return survey;
     }
-
-    public SurveyAnswerResponse getSurveyAnswerResponse() {
-        return new SurveyAnswerResponse(feedback, rate);
-    }
 }

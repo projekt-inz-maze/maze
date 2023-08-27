@@ -5,7 +5,6 @@ import com.example.api.activity.task.model.GraphTask;
 import com.example.api.course.model.CourseMember;
 import com.example.api.question.model.Answer;
 import com.example.api.question.model.Question;
-import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,13 +49,11 @@ public class GraphTaskResult extends TaskResult {
     }
 
     public GraphTaskResult(GraphTask graphTask,
-                           User user,
                            Long startDateMillis,
                            ResultStatus status,
                            Question currQuestion,
                            CourseMember member) {
         this.graphTask = graphTask;
-        this.setUser(user);
         this.startDateMillis = startDateMillis;
         this.setSendDateMillis(startDateMillis);
         this.status = status;

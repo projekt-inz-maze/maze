@@ -13,9 +13,11 @@ import java.util.List;
 
 @Repository
 public interface SurveyResultRepository extends JpaRepository<SurveyResult, Long> {
-    List<SurveyResult> findAllByUser(User user);
     List<SurveyResult> findAllByMember(CourseMember member);
+
+    @Query("SELECT sr FROM SurveyResult sr WHERE sr.member.user = ?1 AND sr.course = ?2")
     List<SurveyResult> findAllByUserAndCourse(User user, Course course);
+    @Query("SELECT sr FROM SurveyResult sr WHERE sr.survey = ?1 AND sr.member.user = ?2")
     SurveyResult findSurveyResultBySurveyAndUser(Survey survey, User user);
     List<SurveyResult> findAllBySurvey(Survey survey);
 

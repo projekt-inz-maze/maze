@@ -1,6 +1,7 @@
 package com.example.api.activity.result.service;
 
 import com.example.api.activity.task.dto.request.SaveFileToFileTaskResultForm;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
@@ -44,13 +45,12 @@ public class FileTaskResultService {
         log.info("Saving file to file task result with id {}", form.getFileTaskId());
         String email = authService.getAuthentication().getName();
         FileTaskResult result = getFileTaskResultByFileTaskAndUser(form.getFileTaskId(), email);
-        if (result == null){
+        if (result == null) {
             result = new FileTaskResult();
             result.setAnswer("");
             result.setFileTask(fileTaskRepository.findFileTaskById(form.getFileTaskId()));
             result.setSendDateMillis(System.currentTimeMillis());
             result.setEvaluated(false);
-            result.setUser(userRepository.findUserByEmail(email));
         }
         if (form.getFile() != null) {
             File file = new File(null, form.getFileName(), result.getCourse(), form.getFile().getBytes());
@@ -87,7 +87,7 @@ public class FileTaskResultService {
         return new ByteArrayResource(file.getFile());
     }
 
-    public List<FileTaskResult> getAllFileTaskResultsForStudent(User student) {
-        return fileTaskResultRepository.findAllByUser(student);
+    public List<FileTaskResult> getAllFileTaskResultsForStudent(User student, Course course) {
+        return fileTaskResultRepository.findAllByUserAndCourse(student, course);
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface SurveyRepository extends JpaRepository<Survey, Long> {
     Survey findSurveyById(Long id);
+    List<Survey> findSurveyByIdIn(List<Long> id);
     List<Survey> findAllByCourse(Course course);
     List<Survey> findAllByCourseAndProfessor(Course course, User user);
     List<Survey> findAllByCourseAndIsBlockedFalse(Course course);
