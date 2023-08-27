@@ -315,10 +315,13 @@ public class DatabaseConfig {
             Calendar calendar = Calendar.getInstance();
 
             GraphTaskResult result1 = new GraphTaskResult();
+            CourseMember result1Member = (students1.get(0).getCourseMember(course1).orElseThrow());
+
             result1.setGraphTask(graphTask);
             result1.setUser(students1.get(0));
+            result1.setMember(result1Member);
             result1.setPointsReceived(12.0);
-            addReceivedPointsForUser(students1.get(0), result1.getPointsReceived());
+            addReceivedPointsForUser(result1Member, result1.getPointsReceived());
             result1.setTimeSpentSec(60 * 10);
             calendar.set(2022, Calendar.APRIL, 28);
             result1.setCourse(course1);
@@ -329,8 +332,10 @@ public class DatabaseConfig {
             GraphTaskResult result2 = new GraphTaskResult();
             result2.setGraphTask(graphTaskTwo);
             result2.setUser(students1.get(1));
+            CourseMember result2Member = students1.get(1).getCourseMember(course1).orElseThrow();
+            result2.setMember(result2Member);
             result2.setPointsReceived(10.0);
-            addReceivedPointsForUser(students1.get(1), result2.getPointsReceived());
+            addReceivedPointsForUser(result2Member, result2.getPointsReceived());
             result2.setCourse(course1);
             result2.setTimeSpentSec(60 * 10);
             calendar.set(2022, Calendar.APRIL, 13);
@@ -341,8 +346,10 @@ public class DatabaseConfig {
             GraphTaskResult result3 = new GraphTaskResult();
             result3.setGraphTask(graphTaskTwo);
             result3.setUser(students2.get(0));
+            CourseMember result3Member = students2.get(0).getCourseMember(course1).orElseThrow();
+            result3.setMember(result3Member);
             result3.setPointsReceived(11.0);
-            addReceivedPointsForUser(students2.get(0), result3.getPointsReceived());
+            addReceivedPointsForUser(result3Member, result3.getPointsReceived());
             result3.setTimeSpentSec(60 * 10);
             result3.setCourse(course1);
             calendar.set(2022, Calendar.APRIL, 14);
@@ -353,8 +360,10 @@ public class DatabaseConfig {
             GraphTaskResult result4 = new GraphTaskResult();
             result4.setGraphTask(graphTaskTwo);
             result4.setUser(students2.get(1));
+            CourseMember result4Member = students2.get(1).getCourseMember(course1).orElseThrow();
+            result4.setMember(result4Member);
             result4.setPointsReceived(30.5);
-            addReceivedPointsForUser(students2.get(1), result4.getPointsReceived());
+            addReceivedPointsForUser(result4Member, result4.getPointsReceived());
             result4.setTimeSpentSec(60 * 10);
             calendar.set(2022, Calendar.APRIL, 14);
             result4.setStartDateMillis(calendar.getTimeInMillis());
@@ -366,6 +375,8 @@ public class DatabaseConfig {
             fileResult.setId(1L);
             fileResult.setFileTask(fileTask);
             fileResult.setUser(students1.get(0));
+            CourseMember fileResultMember = students1.get(0).getCourseMember(course1).orElseThrow();
+            fileResult.setMember(fileResultMember);
             fileResult.setEvaluated(false);
             fileResult.setAnswer("Lorem ipsum");
             calendar.set(2022, Calendar.JUNE, 11);
@@ -387,11 +398,13 @@ public class DatabaseConfig {
             AdditionalPoints additionalPoints = new AdditionalPoints();
             additionalPoints.setId(1L);
             additionalPoints.setUser(students1.get(0));
+            CourseMember additionalPointsMember = students1.get(0).getCourseMember(course1).orElseThrow();
+            additionalPoints.setMember(additionalPointsMember);
             additionalPoints.setPointsReceived(100D);
             additionalPoints.setSendDateMillis(calendar.getTimeInMillis());
             additionalPoints.setProfessorEmail(professor1.getEmail());
             additionalPoints.setDescription("Good job");
-            addReceivedPointsForUser(students1.get(0), additionalPoints.getPointsReceived());
+            addReceivedPointsForUser(additionalPointsMember, additionalPoints.getPointsReceived());
             additionalPoints.setCourse(course1);
             additionalPointsRepository.save(additionalPoints);
 
@@ -399,8 +412,10 @@ public class DatabaseConfig {
             surveyResult1.setSurvey(survey);
             surveyResult1.setId(1L);
             surveyResult1.setUser(students1.get(0));
+            CourseMember surveyResult1Member = students1.get(0).getCourseMember(course1).orElseThrow();
+            surveyResult1.setMember(surveyResult1Member);
             surveyResult1.setPointsReceived(survey.getMaxPoints());
-            addReceivedPointsForUser(students1.get(0), surveyResult1.getPointsReceived());
+            addReceivedPointsForUser(surveyResult1Member, surveyResult1.getPointsReceived());
             calendar.set(2022, Calendar.JUNE, 16);
             surveyResult1.setSendDateMillis(calendar.getTimeInMillis());
             surveyResult1.setCourse(course1);
@@ -410,8 +425,10 @@ public class DatabaseConfig {
             surveyResult2.setSurvey(survey);
             surveyResult2.setId(2L);
             surveyResult2.setUser(students1.get(1));
+            CourseMember surveyResult2Member = students1.get(1).getCourseMember(course1).orElseThrow();
+            surveyResult2.setMember(surveyResult2Member);
             surveyResult2.setPointsReceived(survey.getMaxPoints());
-            addReceivedPointsForUser(students1.get(1), surveyResult2.getPointsReceived());
+            addReceivedPointsForUser(surveyResult2Member, surveyResult2.getPointsReceived());
             calendar.set(2022, Calendar.JUNE, 18);
             surveyResult2.setSendDateMillis(calendar.getTimeInMillis());
             surveyResult2.setCourse(course1);
@@ -421,8 +438,10 @@ public class DatabaseConfig {
             surveyResult3.setSurvey(survey);
             surveyResult3.setId(3L);
             surveyResult3.setUser(students2.get(2));
+            CourseMember surveyResult3Member = students2.get(2).getCourseMember(course1).orElseThrow();
+            surveyResult3.setMember(surveyResult3Member);
             surveyResult3.setPointsReceived(survey.getMaxPoints());
-            addReceivedPointsForUser(students2.get(2), surveyResult3.getPointsReceived());
+            addReceivedPointsForUser(surveyResult3Member, surveyResult3.getPointsReceived());
             calendar.set(2022, Calendar.JUNE, 19);
             surveyResult3.setSendDateMillis(calendar.getTimeInMillis());
             surveyResult3.setCourse(course1);
@@ -846,7 +865,7 @@ public class DatabaseConfig {
                 badge11, badge12, badge13, badge14, badge15, badge16, badge17, badge18, badge19));
     }
 
-    private void addReceivedPointsForUser(User student, Double points){
+    private void addReceivedPointsForUser(CourseMember student, Double points){
         student.setPoints(student.getPoints() + points);
     }
 
@@ -862,7 +881,6 @@ public class DatabaseConfig {
                 AccountType.STUDENT);
         student.setPassword("12345");
         student.setIndexNumber(indexNumber);
-        student.setPoints(0D);
         return student;
     }
 

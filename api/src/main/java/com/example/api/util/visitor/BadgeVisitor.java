@@ -35,7 +35,7 @@ public class BadgeVisitor {
 
     public boolean visitActivityNumberBadge(ActivityNumberBadge badge) {
         User student = authService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student)
+        List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse())
                 .stream()
                 .filter(TaskResult::isEvaluated)
                 .toList();
@@ -45,7 +45,7 @@ public class BadgeVisitor {
 
     public boolean visitActivityScoreBadge(ActivityScoreBadge badge) {
         User student = authService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student)
+        List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
                 .stream()
                 .filter(TaskResult::isEvaluated)
                 .toList();
@@ -85,7 +85,7 @@ public class BadgeVisitor {
 
     public boolean visitConsistencyBadge(ConsistencyBadge badge) {
         User student = authService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student);
+        List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse());
         Long[] datesInMillis = results.stream()
                 .filter(TaskResult::isEvaluated)
                 .map(TaskResult::getSendDateMillis)
@@ -133,13 +133,12 @@ public class BadgeVisitor {
 
     public boolean visitTopScoreBadge(TopScoreBadge badge) throws WrongUserTypeException, EntityNotFoundException {
         User student = authService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student)
+        List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
                 .stream()
                 .filter(TaskResult::isEvaluated)
                 .toList();
 
         if (results.size() < 5) {
-            System.out.println("XXXXXXXXXXXX");
             return false;
         }
 

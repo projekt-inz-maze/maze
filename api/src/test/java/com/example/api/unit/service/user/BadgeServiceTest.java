@@ -66,7 +66,6 @@ public class BadgeServiceTest {
         user.setEmail("user@gmail.com");
         user.setPassword("password");
         user.setAccountType(AccountType.STUDENT);
-        user.setPoints(10d);
 
         topScoreBadge = new TopScoreBadge();
         activityNumberBadge = new ActivityNumberBadge();

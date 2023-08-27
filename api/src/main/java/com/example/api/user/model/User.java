@@ -38,7 +38,6 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
-    private Double points;
 
     @OneToOne
     PasswordResetToken passwordResetToken;

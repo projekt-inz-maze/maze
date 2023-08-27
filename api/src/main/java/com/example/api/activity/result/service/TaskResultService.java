@@ -29,7 +29,6 @@ import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.user.service.UserService;
-import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.util.csv.CSVConverter;
 import com.example.api.util.csv.CSVTaskResult;
 import lombok.RequiredArgsConstructor;
@@ -114,16 +113,16 @@ public class TaskResultService {
         return new ByteArrayResource(csvConverter.convertToByteArray(userToResultMap, firstRow));
     }
 
-    public List<? extends TaskResult> getAllResultsForStudent(User student) {
-        List<SurveyResult> surveyResults = surveyResultRepository.findAllByUser(student);
-        return Stream.of(getGraphAndFileResultsForStudent(student), surveyResults)
+    public List<? extends TaskResult> getAllResultsForStudent(User student, Course course) {
+        List<SurveyResult> surveyResults = surveyResultRepository.findAllByUserAndCourse(student, course);
+        return Stream.of(getGraphAndFileResultsForStudent(student, course), surveyResults)
                 .flatMap(Collection::stream)
                 .toList();
     }
 
-    public List<? extends TaskResult> getGraphAndFileResultsForStudent(User student) {
-        List<GraphTaskResult> graphTaskResults = graphTaskResultRepository.findAllByUser(student);
-        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByUser(student);
+    public List<? extends TaskResult> getGraphAndFileResultsForStudent(User student, Course course) {
+        List<GraphTaskResult> graphTaskResults = graphTaskResultRepository.findAllByUserAndCourse(student, course);
+        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByUserAndCourse(student, course);
         return Stream.of(graphTaskResults, fileTaskResults)
                 .flatMap(Collection::stream)
                 .toList();
