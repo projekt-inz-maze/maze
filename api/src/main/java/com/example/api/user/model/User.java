@@ -38,7 +38,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
-    private Double points = 0D;
+    private Double points;
 
     @OneToOne
     PasswordResetToken passwordResetToken;
@@ -49,11 +49,6 @@ public class User {
     @OneToMany(mappedBy = "owner")
     @JsonBackReference
     private List<Course> courses = new LinkedList<>();
-
-    public synchronized void changePoints(Double diff) {
-        if (points + diff < 0) return;
-        points = points + diff;
-    }
 
     public Optional<CourseMember> getCourseMember(Long courseId) {
         return courseMemberships.stream()

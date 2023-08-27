@@ -119,7 +119,6 @@ public class UserService implements UserDetailsService {
         passwordValidator.validatePassword(form.getPassword());
         user.setPassword(passwordEncoder.encode(form.getPassword()));
 
-        user.setPoints(0D);
         userRepository.save(user);
 
         Group group = groupService.getGroupByInvitationCode(form.getInvitationCode());
@@ -148,7 +147,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public Group getUserGroup(Long courseId) throws StudentNotEnrolledException {
+    public Group getCurrentUserGroup(Long courseId) throws StudentNotEnrolledException {
         User user = authService.getCurrentUser();
         log.info("Fetching group for user {}", user.getEmail());
         return user.getCourseMember(courseId).orElseThrow(() -> new StudentNotEnrolledException(user, courseId)).getGroup();

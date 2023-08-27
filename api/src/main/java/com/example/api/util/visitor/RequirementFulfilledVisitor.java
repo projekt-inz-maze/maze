@@ -5,6 +5,7 @@ import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.task.model.FileTask;
 import com.example.api.activity.task.model.GraphTask;
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.map.model.requirement.*;
 import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.User;
@@ -75,12 +76,12 @@ public class RequirementFulfilledVisitor {
 
     }
 
-    public boolean visitMinPointsRequirement(MinPointsRequirement requirement) {
+    public boolean visitMinPointsRequirement(MinPointsRequirement requirement, Course course) {
         if (!requirement.getSelected()) {
             return true;
         }
-        User student = authService.getCurrentUser();
-        return student.getPoints() >= requirement.getMinPoints();
+        CourseMember member = authService.getCurrentUser().getCourseMember(course).orElseThrow();
+        return member.getPoints() >= requirement.getMinPoints();
     }
 
     public boolean visitStudentsRequirements(StudentsRequirements requirement) {

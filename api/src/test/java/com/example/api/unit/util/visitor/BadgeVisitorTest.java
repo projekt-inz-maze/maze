@@ -1,6 +1,8 @@
 package com.example.api.unit.util.visitor;
 
 import com.example.api.activity.result.model.*;
+import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -49,6 +51,11 @@ public class BadgeVisitorTest {
     private SurveyResult surveyResult;
     private AdditionalPoints additionalPoints;
 
+    private CourseMember member;
+    private Course course;
+
+    private Group group;
+
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
@@ -68,6 +75,19 @@ public class BadgeVisitorTest {
         user.setAccountType(AccountType.STUDENT);
         user.setPoints(10d);
 
+        member = new CourseMember();
+        member.setPoints(0D);
+        member.setLevel(1);
+
+        group = new Group();
+        group.setId(2L);
+        group.getUsers().add(user);
+        group.getMembers().add(member);
+
+        course = new Course();
+        course.setId(3L);
+        course.getGroups().add(group);
+
         graphTaskResult1 = new GraphTaskResult();
         graphTaskResult2 = new GraphTaskResult();
         fileTaskResult1 = new FileTaskResult();
@@ -81,6 +101,14 @@ public class BadgeVisitorTest {
         fileTaskResult2.setUser(user);
         surveyResult.setUser(user);
         additionalPoints.setUser(user);
+
+        graphTaskResult1.setMember(member);
+        graphTaskResult2.setMember(member);
+        fileTaskResult1.setMember(member);
+        fileTaskResult2.setMember(member);
+        surveyResult.setMember(member);
+        additionalPoints.setMember(member);
+
         graphTaskResult1.setPointsReceived(100d);
         graphTaskResult2.setPointsReceived(20d);
         fileTaskResult1.setPointsReceived(80d);
@@ -342,6 +370,7 @@ public class BadgeVisitorTest {
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
         graphTaskResult.setUser(user);
+        graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
         results.add(graphTaskResult);
 
@@ -351,7 +380,7 @@ public class BadgeVisitorTest {
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
         //TODO add courseId
-        when(userService.getUserGroup(0L)).thenReturn(group);
+        when(userService.getCurrentUserGroup(0L)).thenReturn(group);
         when(rankingService.getGroupRankingPosition(0l)).thenReturn(2);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.5, true);
@@ -372,6 +401,7 @@ public class BadgeVisitorTest {
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
         graphTaskResult.setUser(user);
+        graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
         results.add(graphTaskResult);
 
@@ -381,7 +411,7 @@ public class BadgeVisitorTest {
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
         //TODO add courseId
-        when(userService.getUserGroup(0L)).thenReturn(group);
+        when(userService.getCurrentUserGroup(0L)).thenReturn(group);
         when(rankingService.getGroupRankingPosition(0L)).thenReturn(1);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.0, true);
@@ -402,6 +432,7 @@ public class BadgeVisitorTest {
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
         graphTaskResult.setUser(user);
+        graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
         results.add(graphTaskResult);
 
@@ -430,17 +461,30 @@ public class BadgeVisitorTest {
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
         graphTaskResult.setUser(user);
+        graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
         results.add(graphTaskResult);
+
+        Group group = new Group();
+        group.setId(2L);
+        group.getUsers().add(user);
+        group.getMembers().add(member);
+
+        Course course = new Course();
+        course.setId(3L);
+        course.getGroups().add(group);
 
         List<User> users = List.of(new User(), new User(), new User(), new User(), new User());
         users.forEach(user1 -> user1.setAccountType(AccountType.STUDENT));
 
+        group.getUsers().addAll(users);
+
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
-        when(userService.getUsers()).thenReturn(users);
+        when(userService.getCurrentUserGroup(course.getId())).thenReturn(group);
         when(rankingService.getRankingPosition(0L)).thenReturn(1);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.0, false);
+        topScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitTopScoreBadge(topScoreBadge);

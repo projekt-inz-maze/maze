@@ -27,7 +27,7 @@ public class MinPointsRequirement extends Requirement {
 
     @Override
     public boolean isFulfilled(RequirementFulfilledVisitor visitor, Course course) {
-        return visitor.visitMinPointsRequirement(this);
+        return visitor.visitMinPointsRequirement(this, course);
     }
 
     @Override

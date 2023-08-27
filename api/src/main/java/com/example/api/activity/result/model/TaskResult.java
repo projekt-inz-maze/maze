@@ -14,6 +14,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -53,8 +54,7 @@ public abstract class TaskResult {
     }
 
     public void setPointsReceived(Double newPoints) {
-        if (pointsReceived == null) user.changePoints(newPoints);
-        else user.changePoints(newPoints - pointsReceived);
+        member.changePoints(newPoints - Optional.ofNullable(pointsReceived).orElse(0D));
         pointsReceived = newPoints;
     }
 }

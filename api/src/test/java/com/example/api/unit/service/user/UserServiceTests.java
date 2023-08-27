@@ -230,7 +230,7 @@ public class UserServiceTests {
         given(authentication.getName()).willReturn(user.getEmail());
 
         // when
-        Group userGroup = userService.getUserGroup(0L);
+        Group userGroup = userService.getCurrentUserGroup(0L);
 
         // then
         verify(userRepository).findUserByEmail(stringArgumentCaptor.capture());

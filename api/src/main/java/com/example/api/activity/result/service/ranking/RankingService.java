@@ -4,7 +4,6 @@ import com.example.api.activity.ActivityService;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.dto.response.SurveyAnswerResponse;
 import com.example.api.activity.result.service.ActivityResultService;
-import com.example.api.activity.task.model.Activity;
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseMemberService;
@@ -12,18 +11,10 @@ import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.course.validator.exception.StudentNotEnrolledException;
 import com.example.api.error.exception.EntityNotFoundException;
-import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.activity.task.model.GraphTask;
-import com.example.api.activity.task.model.Survey;
 import com.example.api.group.model.Group;
-import com.example.api.question.model.Option;
 import com.example.api.security.AuthenticationService;
-import com.example.api.user.model.AccountType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
@@ -33,7 +24,6 @@ import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.user.service.RankService;
 import com.example.api.user.service.UserService;
-import com.example.api.group.validator.GroupValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +31,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.lang.reflect.Member;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -87,7 +76,7 @@ public class RankingService {
 
     public List<RankingResponse> getRankingForLoggedStudentGroup(Long courseId) throws StudentNotEnrolledException {
         CourseMember member = authService.getCurrentUser().getCourseMember(courseId).orElseThrow();
-        Group group = userService.getUserGroup(courseId);
+        Group group = userService.getCurrentUserGroup(courseId);
         List<RankingResponse> rankingList = group.getMembers()
                 .stream()
                 .map(student -> {

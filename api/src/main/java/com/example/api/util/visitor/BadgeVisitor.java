@@ -1,7 +1,6 @@
 package com.example.api.util.visitor;
 
 import com.example.api.error.exception.EntityNotFoundException;
-import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
@@ -132,7 +131,7 @@ public class BadgeVisitor {
         return graphTaskNumber >= badge.getGraphTaskNumber();
     }
 
-    public boolean visitTopScoreBadge(TopScoreBadge badge) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+    public boolean visitTopScoreBadge(TopScoreBadge badge) throws WrongUserTypeException, EntityNotFoundException {
         User student = authService.getCurrentUser();
         List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student)
                 .stream()
@@ -140,8 +139,10 @@ public class BadgeVisitor {
                 .toList();
 
         if (results.size() < 5) {
+            System.out.println("XXXXXXXXXXXX");
             return false;
         }
+
         Boolean forGroup = badge.getForGroup();
         Long courseId = badge.getCourse().getId();
 
@@ -151,7 +152,7 @@ public class BadgeVisitor {
             if (badge.getTopScore() == 0) {
                 return rankingInGroupPosition.equals(BigDecimal.ONE);
             }
-            BigDecimal numStudentsInGroup = BigDecimal.valueOf(userService.getUserGroup(courseId)
+            BigDecimal numStudentsInGroup = BigDecimal.valueOf(userService.getCurrentUserGroup(courseId)
                     .getUsers()
                     .stream()
                     .filter(user -> user.getAccountType() == AccountType.STUDENT)

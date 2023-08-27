@@ -33,7 +33,7 @@ public class CourseMember {
     private User user;
 
     private Integer level;
-    private Double points = 0D;
+    private Double points;
 
     @Embedded
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -57,6 +57,7 @@ public class CourseMember {
         this.course = group.getCourse();
         this.userHero = userHero;
         this.level = 1;
+        this.points = 0D;
     }
 
     public synchronized void changePoints(Double diff) {
