@@ -39,7 +39,6 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationService authService;
 
-
     @PostMapping("/register")
     public ResponseEntity<Long> saveUser(@RequestBody RegisterUserForm form)
             throws RequestValidationException {
