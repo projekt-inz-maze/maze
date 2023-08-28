@@ -15,6 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByAccountTypeEquals(AccountType accountType);
 
-    List<User> findAllByIdIsInAndAccountType_Student(List<Long> userId);
+    List<User> findAllByIdIsInAndAccountTypeIs(List<Long> userId, AccountType type);
     Boolean existsByEmail(String email);
 }

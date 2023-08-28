@@ -18,6 +18,7 @@ import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.model.TaskResult;
 import com.example.api.group.model.Group;
+import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
@@ -64,7 +65,7 @@ public class TaskResultService {
         log.info("Fetching csv files for students");
         List<Long> studentIds = csvForm.getStudentIds();
         List<Long> activityIds = csvForm.getActivityIds();
-        List<User> students = userRepository.findAllByIdIsInAAndAccountType_Student(studentIds);
+        List<User> students = userRepository.findAllByIdIsInAndAccountTypeIs(studentIds, AccountType.STUDENT);
 
 
 
