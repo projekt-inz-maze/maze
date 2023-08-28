@@ -91,6 +91,6 @@ public class FileTaskResultService {
     }
 
     public List<FileTaskResult> getAllFileTaskResultsForStudent(User student, Course course) {
-        return fileTaskResultRepository.findAllByUserAndCourse(student, course);
+        return fileTaskResultRepository.findAllByMember_UserAndCourse(student, course);
     }
 }

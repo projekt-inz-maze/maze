@@ -48,7 +48,7 @@ public class RequirementFulfilledVisitor {
             return true;
         }
         User student = authService.getCurrentUser();
-        List<FileTask> fileTasks = fileTaskResultRepository.findAllByUserAndCourse(student, course)
+        List<FileTask> fileTasks = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
                 .stream()
                 .map(FileTaskResult::getFileTask)
                 .toList();

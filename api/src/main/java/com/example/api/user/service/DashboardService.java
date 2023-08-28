@@ -142,7 +142,7 @@ public class DashboardService {
     }
 
     private Double getAvgFileTask(User student, Course course) {
-        OptionalDouble avg = fileTaskResultRepository.findAllByUserAndCourse(student, course)
+        OptionalDouble avg = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .mapToDouble(result -> 100 * result.getPointsReceived() / result.getFileTask().getMaxPoints())
@@ -151,7 +151,7 @@ public class DashboardService {
     }
 
     private Long getSurveysNumber(User student, Course course) {
-        return surveyResultRepository.countAllByUserAndCourse(student, course);
+        return surveyResultRepository.countAllByMember_UserAndCourse(student, course);
     }
 
     private Double getGraphTaskPoints(User student, Course course) {
@@ -159,7 +159,7 @@ public class DashboardService {
     }
 
     private Double getFileTaskPoints(User student, Course course) {
-        return getTaskPoints(fileTaskResultRepository.findAllByUserAndCourse(student, course));
+        return getTaskPoints(fileTaskResultRepository.findAllByMember_UserAndCourse(student, course));
     }
 
     private Double getAdditionalPoints(User student, Course course) {
@@ -184,7 +184,7 @@ public class DashboardService {
                 .filter(GraphTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getGraphTask().getMaxPoints())
                 .sum();
-        Double maxPointsFileTask = fileTaskResultRepository.findAllByUserAndCourse(student, course)
+        Double maxPointsFileTask = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getFileTask().getMaxPoints())

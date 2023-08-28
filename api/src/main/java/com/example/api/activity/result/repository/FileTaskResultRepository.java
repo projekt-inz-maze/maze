@@ -14,10 +14,11 @@ import java.util.List;
 @Repository
 public interface FileTaskResultRepository extends JpaRepository<FileTaskResult, Long> {
     FileTaskResult findFileTaskResultById(Long id);
+
+    @Query("SELECT ftr FROM FileTaskResult ftr WHERE ftr.fileTask = ?1 AND ftr.member.user = ?2")
     FileTaskResult findFileTaskResultByFileTaskAndUser(FileTask fileTask, User user);
-    List<FileTaskResult> findAllByUser(User user);
     List<FileTaskResult> findAllByMember(CourseMember member);
-    List<FileTaskResult> findAllByUserAndCourse(User user, Course course);
+    List<FileTaskResult> findAllByMember_UserAndCourse(User user, Course course);
     List<FileTaskResult> findAllByFileTask(FileTask fileTask);
     @Query("SELECT ftr FROM FileTaskResult ftr WHERE ftr.fileTask.id = ?1")
     List<FileTaskResult> findAllByFileTaskId(Long fileTaskId);

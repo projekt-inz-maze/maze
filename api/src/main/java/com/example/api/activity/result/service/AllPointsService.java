@@ -71,7 +71,7 @@ public class AllPointsService {
                     totalPointsReceived.updateAndGet(v -> v + graphTaskResult.getPointsReceived());
                     totalPointsToReceive.updateAndGet(v -> v + graphTaskResult.getGraphTask().getMaxPoints());
                 });
-        fileTaskResultRepository.findAllByUserAndCourse(student, course)
+        fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .forEach(fileTaskResult -> {

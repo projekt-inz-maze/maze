@@ -137,7 +137,7 @@ public class TaskResultService {
 
     public List<? extends TaskResult> getGraphAndFileResultsForStudent(User student, Course course) {
         List<GraphTaskResult> graphTaskResults = graphTaskResultRepository.findAllByUserAndCourse(student, course);
-        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByUserAndCourse(student, course);
+        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course);
         return Stream.of(graphTaskResults, fileTaskResults)
                 .flatMap(Collection::stream)
                 .toList();
@@ -156,7 +156,7 @@ public class TaskResultService {
                 .filter(graphTaskResult -> graphTaskResult.getSendDateMillis() != null)
                 .map(TaskPointsStatisticsResponse::new)
                 .toList();
-        List<TaskPointsStatisticsResponse> fileTaskResults = fileTaskResultRepository.findAllByUserAndCourse(student, course)
+        List<TaskPointsStatisticsResponse> fileTaskResults = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .map(TaskPointsStatisticsResponse::new)

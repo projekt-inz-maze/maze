@@ -24,7 +24,7 @@ public interface SurveyResultRepository extends JpaRepository<SurveyResult, Long
     @Query("SELECT sr FROM SurveyResult sr WHERE sr.survey.id = ?1")
     List<SurveyResult> findAllBySurveyId(Long surveyId);
 
-    long countAllByUserAndCourse(User user, Course course);
+    long countAllByMember_UserAndCourse(User user, Course course);
 
     long countAllByMember(CourseMember member);
 }

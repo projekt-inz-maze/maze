@@ -56,7 +56,7 @@ public class GradeService {
 
     public GradeResponse getStudentFinalGrade(User student, Course course) {
         List<GraphTaskResult> graphTaskResults = graphTaskResultRepository.findAllByUserAndCourse(student, course);
-        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByUserAndCourse(student, course);
+        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course);
         List<SurveyResult> surveyResults = surveyResultRepository.findAllByUserAndCourse(student, course);
         List<? extends TaskResult> results = Stream.of(graphTaskResults, fileTaskResults, surveyResults)
                 .flatMap(Collection::stream)
