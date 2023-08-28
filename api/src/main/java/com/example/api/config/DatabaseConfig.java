@@ -112,28 +112,28 @@ public class DatabaseConfig {
 
             // USERS & GROUPS
             List<User> students1 = Collections.synchronizedList(new ArrayList<>());
-            students1.add(createStudent("jgorski@student.agh.edu.pl", "Jerzy", "Górski", 123456, priest, course1));
-            students1.add(createStudent("smazur@student.agh.edu.pl", "Szymon", "Mazur", 123457, rogue, course1));
-            students1.add(createStudent("murbanska@student.agh.edu.pl", "Matylda", "Urbańska",123458, wizard, course1));
-            students1.add(createStudent("pwasilewski@student.agh.edu.pl", "Patryk", "Wasilewski",123459, warrior, course1));
-            students1.add(createStudent("awojcik@student.agh.edu.pl", "Amelia", "Wójcik",223456, priest, course1));
-            students1.add(createStudent("kkruk@student.agh.edu.pl", "Kornel", "Kruk",323456, rogue, course1));
-            students1.add(createStudent("mdabrowska@student.agh.edu.pl", "Maria", "Dąbrowska",423456, wizard, course1));
-            students1.add(createStudent("aczajkowski@student.agh.edu.pl", "Antoni", "Czajkowski",523456, warrior, course1));
+            students1.add(createStudent("jgorski@student.agh.edu.pl", "Jerzy", "Górski", 123456));
+            students1.add(createStudent("smazur@student.agh.edu.pl", "Szymon", "Mazur", 123457));
+            students1.add(createStudent("murbanska@student.agh.edu.pl", "Matylda", "Urbańska",123458));
+            students1.add(createStudent("pwasilewski@student.agh.edu.pl", "Patryk", "Wasilewski",123459));
+            students1.add(createStudent("awojcik@student.agh.edu.pl", "Amelia", "Wójcik",223456));
+            students1.add(createStudent("kkruk@student.agh.edu.pl", "Kornel", "Kruk",323456));
+            students1.add(createStudent("mdabrowska@student.agh.edu.pl", "Maria", "Dąbrowska",423456));
+            students1.add(createStudent("aczajkowski@student.agh.edu.pl", "Antoni", "Czajkowski",523456));
 
             userRepository.saveAll(students1);
 
             List<User> students2 = Collections.synchronizedList(new ArrayList<>());
 
-            students2.add(createStudent("mnowak@student.agh.edu.pl", "Magdalena", "Nowak", 623456, priest, course2));
-            students2.add(createStudent("jlewandowska@student.agh.edu.pl", "Julia", "Lewandowska", 723456, rogue, course2));
-            students2.add(createStudent("mwojcik@student.agh.edu.pl", "Milena", "Wójcik", 823456, wizard, course2));
-            students2.add(createStudent("kpaluch@student.agh.edu.pl", "Kacper", "Paluch", 923456, warrior, course2));
-            students2.add(createStudent("fzalewski@student.agh.edu.pl", "Filip", "Zalewski", 133456, priest, course2));
-            students2.add(createStudent("jmichalak@student.agh.edu.pl", "Jan", "Michalak", 143456, rogue, course2));
-            students2.add(createStudent("kostrowska@student.agh.edu.pl", "Karina", "Ostrowska", 153456, wizard, course2));
-            students2.add(createStudent("dkowalska@student.agh.edu.pl", "Dominika", "Kowalska", 163456, warrior, course2));
-            students2.add(createStudent("manowak@student.agh.edu.pl", "Małgorzata Anna", "Kowalska", 163457, priest, course2));
+            students2.add(createStudent("mnowak@student.agh.edu.pl", "Magdalena", "Nowak", 623456));
+            students2.add(createStudent("jlewandowska@student.agh.edu.pl", "Julia", "Lewandowska", 723456));
+            students2.add(createStudent("mwojcik@student.agh.edu.pl", "Milena", "Wójcik", 823456));
+            students2.add(createStudent("kpaluch@student.agh.edu.pl", "Kacper", "Paluch", 923456));
+            students2.add(createStudent("fzalewski@student.agh.edu.pl", "Filip", "Zalewski", 133456));
+            students2.add(createStudent("jmichalak@student.agh.edu.pl", "Jan", "Michalak", 143456));
+            students2.add(createStudent("kostrowska@student.agh.edu.pl", "Karina", "Ostrowska", 153456));
+            students2.add(createStudent("dkowalska@student.agh.edu.pl", "Dominika", "Kowalska", 163456));
+            students2.add(createStudent("manowak@student.agh.edu.pl", "Małgorzata Anna", "Kowalska", 163457));
 
             userRepository.saveAll(students2);
 
@@ -863,9 +863,7 @@ public class DatabaseConfig {
     private User createStudent(String email,
                                String name,
                                String lastName,
-                               Integer indexNumber,
-                               Hero hero,
-                               Course course) {
+                               Integer indexNumber) {
         User student = new User(email,
                 name,
                 lastName,
