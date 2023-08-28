@@ -10,7 +10,7 @@ import AuthVerify from '../../common/auth-verify'
 import AppRoutes from '../../routes/AppRoutes'
 import { professorSubtitles, sidebarTitles, studentSubtitles } from '../../utils/sidebarTitles'
 import { isProfessor, isStudent } from '../../utils/storageManager'
-import Sidebar from '../general/Sidebar/Sidebar'
+import TopNavbar from '../general/Navbar/TopNavbar'
 
 function App(props) {
     const [showNavbar, setShowNavbar] = useState(false)
@@ -23,8 +23,8 @@ function App(props) {
                 <BrowserRouter>
                     <div className='d-flex flex-column' style={{ minHeight: '100vh', margin: 0 }}>
                         {showNavbar && (
-                            <Sidebar sidebarTitles={sidebarTitles}
-                                     userSubtitles={student ? studentSubtitles : professorSubtitles} />
+                            <TopNavbar sidebarTitles={sidebarTitles}
+                                    userSubtitles={student ? studentSubtitles : professorSubtitles} />
                         )}
                         <div className='p-0 w-100'>
                             <AppRoutes showNavbar={setShowNavbar} isStudent={student} isProfessor={professor} />
