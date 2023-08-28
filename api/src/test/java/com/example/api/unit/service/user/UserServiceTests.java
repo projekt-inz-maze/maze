@@ -192,36 +192,6 @@ public class UserServiceTests {
     }
 
     @Test
-    public void getUsers() {
-        // given
-        User secondUser = new User();
-        secondUser.setId(2L);
-        given(userRepository.findAll()).willReturn(List.of(user, secondUser));
-
-        // when
-        List<User> returnedUsers = userService.getUsers();
-
-        // then
-        verify(userRepository).findAll();
-        assertThat(returnedUsers.size()).isEqualTo(2);
-        assertThat(returnedUsers.contains(user)).isTrue();
-        assertThat(returnedUsers.contains(secondUser)).isTrue();
-    }
-
-    @Test
-    public void getUsersWhenIsEmpty() {
-        // given
-        given(userRepository.findAll()).willReturn(List.of());
-
-        // when
-        List<User> returnedUsers = userService.getUsers();
-
-        // then
-        verify(userRepository).findAll();
-        assertThat(returnedUsers.size()).isEqualTo(0);
-    }
-
-    @Test
     public void getUserGroup() throws EntityNotFoundException {
         // given
         userService.updateStudentGroup(user, group);

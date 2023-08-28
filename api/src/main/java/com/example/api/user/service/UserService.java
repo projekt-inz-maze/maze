@@ -142,11 +142,6 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public List<User> getUsers() {
-        log.info("Fetching all users");
-        return userRepository.findAll();
-    }
-
     public Group getCurrentUserGroup(Long courseId) throws StudentNotEnrolledException {
         User user = authService.getCurrentUser();
         log.info("Fetching group for user {}", user.getEmail());

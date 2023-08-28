@@ -166,10 +166,7 @@ public class BadgeVisitor {
                 return rankingPosition.equals(BigDecimal.ONE);
             }
 
-            BigDecimal numOfStudents = BigDecimal.valueOf(userService.getUsers()
-                    .stream()
-                    .filter(user -> user.getAccountType() == AccountType.STUDENT)
-                    .count());
+            BigDecimal numOfStudents = BigDecimal.valueOf(badge.getCourse().getCourseMembers().size());
 
             BigDecimal topScore = rankingPosition.divide(numOfStudents, 2, RoundingMode.HALF_UP);
             return topScore.compareTo(BigDecimal.valueOf(badge.getTopScore())) <= 0;

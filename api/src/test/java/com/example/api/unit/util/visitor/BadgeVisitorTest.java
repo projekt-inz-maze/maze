@@ -101,6 +101,13 @@ public class BadgeVisitorTest {
         surveyResult.setMember(member);
         additionalPoints.setMember(member);
 
+        graphTaskResult1.setCourse(course);
+        graphTaskResult2.setCourse(course);
+        fileTaskResult1.setCourse(course);
+        fileTaskResult2.setCourse(course);
+        surveyResult.setCourse(course);
+        additionalPoints.setCourse(course);
+
         graphTaskResult1.setPointsReceived(100d);
         graphTaskResult2.setPointsReceived(20d);
         fileTaskResult1.setPointsReceived(80d);
@@ -125,6 +132,7 @@ public class BadgeVisitorTest {
         when(authService.getCurrentUser()).thenReturn(user);
         doReturn(results).when(taskResultService).getAllResultsForStudent(user, course);
         ActivityNumberBadge activityNumberBadge = new ActivityNumberBadge(6);
+        activityNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitActivityNumberBadge(activityNumberBadge);
@@ -139,6 +147,7 @@ public class BadgeVisitorTest {
         when(authService.getCurrentUser()).thenReturn(user);
         doReturn(results).when(taskResultService).getAllResultsForStudent(user, course);
         ActivityNumberBadge activityNumberBadge = new ActivityNumberBadge(7);
+        activityNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitActivityNumberBadge(activityNumberBadge);
@@ -170,6 +179,7 @@ public class BadgeVisitorTest {
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
         ActivityScoreBadge activityScoreBadge = new ActivityScoreBadge(0.8, false);
+        activityScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitActivityScoreBadge(activityScoreBadge);
@@ -201,6 +211,7 @@ public class BadgeVisitorTest {
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
         ActivityScoreBadge activityScoreBadge = new ActivityScoreBadge(0.8, false);
+        activityScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitActivityScoreBadge(activityScoreBadge);
@@ -230,6 +241,7 @@ public class BadgeVisitorTest {
 
         doReturn(results).when(taskResultService).getAllResultsForStudent(user, course);
         ConsistencyBadge consistencyBadge = new ConsistencyBadge(6);
+        consistencyBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitConsistencyBadge(consistencyBadge);
@@ -259,6 +271,7 @@ public class BadgeVisitorTest {
 
         doReturn(results).when(taskResultService).getAllResultsForStudent(user, course);
         ConsistencyBadge consistencyBadge = new ConsistencyBadge(6);
+        consistencyBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitConsistencyBadge(consistencyBadge);
@@ -274,8 +287,9 @@ public class BadgeVisitorTest {
 
         results = List.of(graphTaskResult1, graphTaskResult2);
 
-        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudentAndCourse(user, );
+        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudentAndCourse(user, course);
         GraphTaskNumberBadge graphTaskNumberBadge = new GraphTaskNumberBadge(2);
+        graphTaskNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitGraphTaskNumberBadge(graphTaskNumberBadge);
@@ -291,8 +305,9 @@ public class BadgeVisitorTest {
 
         results = List.of(graphTaskResult1, graphTaskResult2);
 
-        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudentAndCourse(user, );
+        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudentAndCourse(user, course);
         GraphTaskNumberBadge graphTaskNumberBadge = new GraphTaskNumberBadge(3);
+        graphTaskNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitGraphTaskNumberBadge(graphTaskNumberBadge);
@@ -308,8 +323,9 @@ public class BadgeVisitorTest {
 
         results = List.of(fileTaskResult1, fileTaskResult2);
 
-        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user, null);
+        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user, course);
         FileTaskNumberBadge fileTaskNumberBadge = new FileTaskNumberBadge(2);
+        fileTaskNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitFileTaskNumberBadge(fileTaskNumberBadge);
@@ -325,8 +341,9 @@ public class BadgeVisitorTest {
 
         results = List.of(fileTaskResult1, fileTaskResult2);
 
-        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user, null);
+        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user, course);
         FileTaskNumberBadge fileTaskNumberBadge = new FileTaskNumberBadge(4);
+        fileTaskNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitFileTaskNumberBadge(fileTaskNumberBadge);
@@ -345,6 +362,7 @@ public class BadgeVisitorTest {
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.2, false);
+        topScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitTopScoreBadge(topScoreBadge);
@@ -370,11 +388,11 @@ public class BadgeVisitorTest {
         group.getUsers().forEach(user1 -> user1.setAccountType(AccountType.STUDENT));
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
-        //TODO add courseId
         when(userService.getCurrentUserGroup(0L)).thenReturn(group);
         when(rankingService.getGroupRankingPosition(0l)).thenReturn(2);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.5, true);
+        topScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitTopScoreBadge(topScoreBadge);
@@ -400,11 +418,11 @@ public class BadgeVisitorTest {
         group.getUsers().forEach(user1 -> user1.setAccountType(AccountType.STUDENT));
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
-        //TODO add courseId
         when(userService.getCurrentUserGroup(0L)).thenReturn(group);
         when(rankingService.getGroupRankingPosition(0L)).thenReturn(1);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.0, true);
+        topScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitTopScoreBadge(topScoreBadge);
@@ -423,16 +441,18 @@ public class BadgeVisitorTest {
         GraphTaskResult graphTaskResult = new GraphTaskResult();
         graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
+        graphTaskResult.setCourse(course);
         results.add(graphTaskResult);
 
         List<User> users = List.of(new User(), new User(), new User(), new User(), new User());
         users.forEach(user1 -> user1.setAccountType(AccountType.STUDENT));
 
         doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
-        when(userService.getUsers()).thenReturn(users);
+        when(course.getCourseMembers().size()).thenReturn(users.size());
         when(rankingService.getRankingPosition(0L)).thenReturn(2);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.5, false);
+        topScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitTopScoreBadge(topScoreBadge);

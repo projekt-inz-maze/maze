@@ -45,6 +45,7 @@ public class FileTaskResultService {
         log.info("Saving file to file task result with id {}", form.getFileTaskId());
         String email = authService.getAuthentication().getName();
         FileTaskResult result = getFileTaskResultByFileTaskAndUser(form.getFileTaskId(), email);
+
         if (result == null) {
             result = new FileTaskResult();
             result.setAnswer("");
@@ -52,13 +53,15 @@ public class FileTaskResultService {
             result.setSendDateMillis(System.currentTimeMillis());
             result.setEvaluated(false);
         }
+
         if (form.getFile() != null) {
             File file = new File(null, form.getFileName(), result.getCourse(), form.getFile().getBytes());
             fileRepository.save(file);
             result.getFiles().add(file);
             fileTaskResultRepository.save(result);
         }
-        if(form.getOpenAnswer() != null) {
+
+        if (form.getOpenAnswer() != null) {
             result.setAnswer(form.getOpenAnswer());
             fileTaskResultRepository.save(result);
         }

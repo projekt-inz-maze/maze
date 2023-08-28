@@ -1,6 +1,8 @@
 package com.example.api.unit.service.activity.feedback;
 
 import com.example.api.activity.feedback.dto.request.SaveProfessorFeedbackForm;
+import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongPointsNumberException;
@@ -46,6 +48,10 @@ public class ProfessorFeedbackServiceTest {
     @Captor private ArgumentCaptor<Long> idArgumentCaptor;
     @Captor private ArgumentCaptor<FileTaskResult> fileTaskResultArgumentCaptor;
 
+    User user;
+    Course course;
+    CourseMember courseMember;
+
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
@@ -58,18 +64,25 @@ public class ProfessorFeedbackServiceTest {
                 userRepository,
                 activityValidator,
                 userValidator);
+        user = new User();
+        user.setEmail("email");
+
+        course = new Course();
+
+        courseMember = new CourseMember();
+        courseMember.setUser(user);
+        courseMember.setCourse(course);
     }
 
     @Test
     public void saveProfessorFeedback() throws MissingAttributeException, EntityNotFoundException {
         //given
         ProfessorFeedback feedback = new ProfessorFeedback();
-        User user = new User();
-        user.setEmail("email");
         FileTask fileTask = new FileTask();
         fileTask.setId(1L);
         FileTaskResult fileTaskResult = new FileTaskResult();
         fileTaskResult.setFileTask(fileTask);
+        fileTaskResult.setMember(courseMember);
         feedback.setFileTaskResult(fileTaskResult);
 
         given(professorFeedbackRepository.save(feedback)).willReturn(feedback);
@@ -91,13 +104,12 @@ public class ProfessorFeedbackServiceTest {
         form.setPoints(10.0);
         form.setFileTaskResultId(2L);
         ProfessorFeedback feedback = new ProfessorFeedback();
-        User user = new User();
-        user.setEmail("email");
         FileTask fileTask = new FileTask();
         fileTask.setId(1L);
         FileTaskResult fileTaskResult = new FileTaskResult();
         fileTaskResult.setFileTask(fileTask);
         feedback.setFileTaskResult(fileTaskResult);
+        fileTaskResult.setMember(courseMember);
         given(feedbackValidator.validateAndSetProfessorFeedbackTaskForm(form)).willReturn(feedback);
         given(professorFeedbackRepository.save(feedback)).willReturn(feedback);
 

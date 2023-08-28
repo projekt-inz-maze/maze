@@ -67,7 +67,6 @@ public class GraphTaskResultServiceTest {
         graphTaskResultService = new GraphTaskResultService(
                 graphTaskResultRepository,
                 graphTaskRepository,
-                userRepository,
                 questionRepository,
                 pointsCalculator,
                 answerFormValidator,

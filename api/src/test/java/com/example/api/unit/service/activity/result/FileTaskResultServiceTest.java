@@ -138,7 +138,7 @@ public class FileTaskResultServiceTest {
 
         //then
         verify(fileTaskRepository, times(2)).findFileTaskById(idArgumentCaptor.capture());
-        verify(userRepository, times(2)).findUserByEmail(stringArgumentCaptor.capture());
+        verify(authService, times(1)).getAuthentication();
         Long capturedId = idArgumentCaptor.getValue();
         String capturedEmail = stringArgumentCaptor.getValue();
         assertThat(capturedId).isEqualTo(fileTask.getId());
