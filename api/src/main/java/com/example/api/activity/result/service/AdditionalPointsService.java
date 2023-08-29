@@ -11,7 +11,7 @@ import com.example.api.activity.result.model.AdditionalPoints;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.service.BadgeService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import java.util.List;
 public class AdditionalPointsService {
     private final AdditionalPointsRepository additionalPointsRepository;
     private final UserRepository userRepository;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final BadgeService badgeService;
     private final UserValidator userValidator;
     private final CourseService courseService;

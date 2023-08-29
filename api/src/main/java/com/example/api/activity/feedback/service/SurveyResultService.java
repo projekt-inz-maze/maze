@@ -8,19 +8,14 @@ import com.example.api.activity.task.model.Survey;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
-import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
 import com.example.api.user.service.BadgeService;
 import com.example.api.user.service.UserService;
-import com.example.api.validator.FeedbackValidator;
-import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

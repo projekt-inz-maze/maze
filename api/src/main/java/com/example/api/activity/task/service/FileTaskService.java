@@ -19,7 +19,7 @@ import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.task.repository.FileTaskRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.map.service.RequirementService;
 import com.example.api.validator.ChapterValidator;
 import com.example.api.validator.UserValidator;
@@ -44,7 +44,7 @@ public class FileTaskService {
     private final UserRepository userRepository;
     private final ChapterRepository chapterRepository;
     private final UserValidator userValidator;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final ActivityValidator activityValidator;
     private final TimeParser timeParser;
     private final RequirementService requirementService;
@@ -55,7 +55,6 @@ public class FileTaskService {
     }
 
     public FileTaskInfoResponse getFileTaskInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
-        String email = authService.getAuthentication().getName();
         FileTaskInfoResponse result = new FileTaskInfoResponse();
         FileTask fileTask = fileTaskRepository.findFileTaskById(id);
         activityValidator.validateActivityIsNotNull(fileTask, id);
@@ -63,12 +62,12 @@ public class FileTaskService {
         result.setName(fileTask.getTitle());
         result.setDescription(fileTask.getDescription());
 
-        User student = userRepository.findUserByEmail(email);
+        User student = authService.getCurrentUser();
         userValidator.validateStudentAccount(student);
         FileTaskResult fileTaskResult = fileTaskResultRepository.findFileTaskResultByFileTaskAndUser(fileTask, student);
 
         if (fileTaskResult == null){
-            log.debug("File task result for {} and file task with id {} does not exist", email, fileTask.getId());
+            log.debug("File task result for {} and file task with id {} does not exist", student.getEmail(), fileTask.getId());
             return result;
         }
         result.setAnswer(fileTaskResult.getAnswer());
@@ -105,8 +104,7 @@ public class FileTaskService {
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
         FileTask fileTask = new FileTask(form, professor, null);

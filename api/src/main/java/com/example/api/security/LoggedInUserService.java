@@ -14,8 +14,13 @@ import java.util.Optional;
 @AllArgsConstructor
 @Slf4j
 
-public class AuthenticationService {
-    public Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
+public class LoggedInUserService {
+    UserRepository userRepository;
+    AuthenticationService authenticationService;
+
+    public User getCurrentUser() {
+        String email = authenticationService.getAuthentication().getName();
+        log.info("Fetching logged in user {}", email);
+        return Optional.ofNullable(userRepository.findUserByEmail(email)).orElseThrow();
     }
 }

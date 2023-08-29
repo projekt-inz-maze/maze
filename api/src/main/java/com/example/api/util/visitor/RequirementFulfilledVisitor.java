@@ -7,7 +7,7 @@ import com.example.api.activity.task.model.GraphTask;
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.map.model.requirement.*;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
@@ -25,7 +25,7 @@ public class RequirementFulfilledVisitor {
     private final UserService userService;
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
 
     public boolean visitDateFromRequirement(DateFromRequirement requirement) {
         if (!requirement.getSelected()) {

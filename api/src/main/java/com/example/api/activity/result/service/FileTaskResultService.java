@@ -12,7 +12,7 @@ import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.task.repository.FileTaskRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.util.repository.FileRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class FileTaskResultService {
     private final UserRepository userRepository;
     private final FileRepository fileRepository;
     private final UserValidator userValidator;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final ActivityValidator activityValidator;
 
     public FileTaskResult saveFileTaskResult(FileTaskResult result) {
@@ -43,8 +43,8 @@ public class FileTaskResultService {
 
     public Long saveFileToFileTaskResult(SaveFileToFileTaskResultForm form) throws EntityNotFoundException, WrongUserTypeException, IOException {
         log.info("Saving file to file task result with id {}", form.getFileTaskId());
-        String email = authService.getAuthentication().getName();
-        FileTaskResult result = getFileTaskResultByFileTaskAndUser(form.getFileTaskId(), email);
+        User user = authService.getCurrentUser();
+        FileTaskResult result = getFileTaskResultByFileTaskAndUser(form.getFileTaskId(), user.getEmail());
 
         if (result == null) {
             result = new FileTaskResult();
@@ -70,7 +70,7 @@ public class FileTaskResultService {
 
     public Long deleteFileFromFileTask(Long fileTaskId, int index) throws EntityNotFoundException, WrongUserTypeException {
         log.info("Deleting file from file task result with id {}", fileTaskId);
-        String email = authService.getAuthentication().getName();
+        String email = authService.getCurrentUser().getEmail();
         FileTaskResult result = getFileTaskResultByFileTaskAndUser(fileTaskId, email);
         result.getFiles().remove(index);
         return result.getId();

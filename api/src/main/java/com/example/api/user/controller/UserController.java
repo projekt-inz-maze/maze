@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.dto.request.EditPasswordForm;
 import com.example.api.user.dto.request.RegisterUserForm;
 import com.example.api.user.dto.request.SetStudentGroupForm;
@@ -37,7 +37,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @SecurityRequirement(name = "JWT_AUTH")
 public class UserController {
     private final UserService userService;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
 
     @PostMapping("/register")
     public ResponseEntity<Long> saveUser(@RequestBody RegisterUserForm form)

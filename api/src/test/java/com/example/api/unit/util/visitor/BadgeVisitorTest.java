@@ -9,7 +9,7 @@ import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.task.model.FileTask;
 import com.example.api.activity.task.model.GraphTask;
 import com.example.api.group.model.Group;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.service.FileTaskResultService;
@@ -40,7 +40,7 @@ public class BadgeVisitorTest {
     @Mock private FileTaskResultService fileTaskResultService;
     @Mock private  UserService userService;
     @Mock private RankingService rankingService;
-    @Mock private AuthenticationService authService;
+    @Mock private LoggedInUserService authService;
 
     private User user;
     private List<TaskResult> results;

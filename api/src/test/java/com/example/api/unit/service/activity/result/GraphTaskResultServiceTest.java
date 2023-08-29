@@ -5,13 +5,14 @@ import com.example.api.error.exception.*;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.task.model.GraphTask;
 import com.example.api.question.model.Question;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.question.repository.QuestionRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.activity.result.service.GraphTaskResultService;
 import com.example.api.user.service.UserService;
 import com.example.api.validator.ResultValidator;
@@ -72,7 +73,7 @@ public class GraphTaskResultServiceTest {
                 answerFormValidator,
                 userValidator,
                 timeCalculator,
-                authService,
+                null,
                 userService,
                 activityValidator,
                 heroVisitor

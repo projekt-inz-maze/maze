@@ -14,7 +14,7 @@ import com.example.api.user.model.hero.Hero;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.question.repository.QuestionRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.service.UserService;
 import com.example.api.validator.ResultValidator;
 import com.example.api.validator.UserValidator;
@@ -43,7 +43,7 @@ public class GraphTaskResultService {
     private final ResultValidator resultValidator;
     private final UserValidator userValidator;
     private final TimeCalculator timeCalculator;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final UserService userService;
     private final ActivityValidator activityValidator;
     private final HeroVisitor heroVisitor;

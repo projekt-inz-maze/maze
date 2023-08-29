@@ -14,7 +14,7 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.group.model.Group;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
@@ -55,7 +55,7 @@ public class RankingService {
     private final CourseValidator courseValidator;
     private final ActivityResultService activityResultService;
     private final CourseMemberService courseMemberService;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
 
     public List<RankingResponse> getRanking(Long courseId) {
         List<RankingResponse> rankingList = courseMemberService.getAll(courseId)

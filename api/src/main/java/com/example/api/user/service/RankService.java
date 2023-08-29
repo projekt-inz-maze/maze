@@ -4,7 +4,7 @@ import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.dto.request.rank.AddRankForm;
 import com.example.api.user.dto.request.rank.EditRankForm;
 import com.example.api.user.dto.response.rank.CurrentRankResponse;
@@ -21,7 +21,6 @@ import com.example.api.util.model.ImageType;
 import com.example.api.user.repository.RankRepository;
 import com.example.api.util.repository.ImageRepository;
 import com.example.api.validator.RankValidator;
-import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,7 @@ public class RankService {
     private final CourseService courseService;
     private final UserService userService;
     private final CourseValidator courseValidator;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
 
     public List<RanksForHeroTypeResponse> getAllRanks(Long courseId) throws EntityNotFoundException {
         Course course = courseService.getCourse(courseId);

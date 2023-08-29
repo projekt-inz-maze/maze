@@ -11,14 +11,11 @@ import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.task.model.FileTask;
 import com.example.api.user.model.User;
-import com.example.api.user.service.UserService;
 import com.example.api.util.model.File;
 import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.user.repository.UserRepository;
 import com.example.api.util.repository.FileRepository;
-import com.example.api.security.AuthenticationService;
-import com.example.api.user.service.BadgeService;
+import com.example.api.security.LoggedInUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -33,7 +30,7 @@ import java.io.IOException;
 public class FeedbackValidator {
     private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final FileRepository fileRepository;
     private final UserValidator userValidator;
 

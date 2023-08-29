@@ -21,7 +21,7 @@ import com.example.api.activity.task.model.FileTask;
 import com.example.api.map.model.ActivityMap;
 import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.task.repository.FileTaskRepository;
@@ -30,7 +30,6 @@ import com.example.api.activity.task.repository.InfoRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.map.service.RequirementService;
-import com.example.api.user.service.UserService;
 import com.example.api.activity.validator.ActivityValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +55,7 @@ public class TaskService {
     private final RequirementService requirementService;
     private final CourseValidator courseValidator;
     private final CourseService courseService;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
 
     public List<ActivityToEvaluateResponse> getAllActivitiesToEvaluate(Long courseId)
             throws RequestValidationException, UsernameNotFoundException {

@@ -15,7 +15,7 @@ import com.example.api.activity.task.repository.InfoRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.service.UserService;
 import com.example.api.user.service.util.ProfessorRegisterToken;
 import com.example.api.validator.PasswordValidator;
@@ -42,7 +42,7 @@ public class UserServiceTests {
     @Mock private UserRepository userRepository;
     @Mock private GroupRepository groupRepository;
     @Mock private PasswordEncoder passwordEncoder;
-    @Mock private AuthenticationService authService;
+    @Mock private LoggedInUserService authService;
     @Mock private Authentication authentication;
     @Mock private UserValidator userValidator;
     @Mock private GraphTaskRepository graphTaskRepository;
@@ -196,7 +196,7 @@ public class UserServiceTests {
         // given
         userService.updateStudentGroup(user, group);
         given(userRepository.findUserByEmail(user.getEmail())).willReturn(user);
-        given(authService.getAuthentication()).willReturn(authentication);
+        given(authService.getCurrentUser()).willReturn(user);
         given(authentication.getName()).willReturn(user.getEmail());
 
         // when

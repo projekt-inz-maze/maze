@@ -7,10 +7,9 @@ import com.example.api.course.repository.CourseRepository;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,7 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final CourseValidator courseValidator;
     private final UserValidator userValidator;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
 
     public Long saveCourse(SaveCourseForm form) throws RequestValidationException {
 

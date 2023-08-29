@@ -5,6 +5,7 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.user.model.badge.ActivityNumberBadge;
@@ -38,7 +39,7 @@ public class BadgeServiceTest {
     @Mock private BadgeVisitor badgeVisitor;
     @Mock private FileRepository fileRepository;
     @Mock private BadgeValidator badgeValidator;
-    @Mock private AuthenticationService authService;
+    @Mock private LoggedInUserService authService;
 
     private User user;
     List<Badge> badges = new LinkedList<>();
@@ -58,7 +59,7 @@ public class BadgeServiceTest {
                 badgeVisitor,
                 null,
                 null,
-                authService
+                null
         );
 
         user = new User();

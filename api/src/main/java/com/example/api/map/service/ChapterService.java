@@ -20,7 +20,7 @@ import com.example.api.activity.task.model.Activity;
 import com.example.api.map.model.ActivityMap;
 import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.user.service.UserService;
@@ -54,7 +54,7 @@ public class ChapterService {
     private final RequirementService requirementService;
     private final CourseValidator courseValidator;
     private final CourseService courseService;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
 
     public List<? extends ChapterResponse> getAllChapters(Long courseId) throws EntityNotFoundException {
         User user = authService.getCurrentUser();

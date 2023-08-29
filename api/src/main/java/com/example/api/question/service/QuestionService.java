@@ -15,8 +15,7 @@ import com.example.api.question.model.Question;
 import com.example.api.user.model.User;
 import com.example.api.question.repository.AnswerRepository;
 import com.example.api.question.repository.QuestionRepository;
-import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.activity.result.service.GraphTaskResultService;
 import com.example.api.user.service.BadgeService;
 import com.example.api.user.service.UserService;
@@ -43,7 +42,7 @@ public class QuestionService {
     private final AnswerRepository answerRepository;
     private final QuestionValidator questionValidator;
     private final ResultValidator resultValidator;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final GraphTaskResultService graphTaskResultService;
     private final BadgeService badgeService;
     private final PointsCalculator pointsCalculator;

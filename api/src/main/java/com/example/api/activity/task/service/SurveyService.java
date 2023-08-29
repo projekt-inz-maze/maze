@@ -17,7 +17,7 @@ import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.map.service.RequirementService;
 import com.example.api.validator.ChapterValidator;
 import com.example.api.validator.UserValidator;
@@ -39,7 +39,7 @@ public class SurveyService {
     private final ChapterRepository chapterRepository;
     private final ActivityValidator activityValidator;
     private final UserValidator userValidator;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final RequirementService requirementService;
     private final ChapterValidator chapterValidator;
     private final SurveyResultRepository surveyResultRepository;
@@ -49,8 +49,7 @@ public class SurveyService {
     }
 
     public SurveyInfoResponse getSurveyInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
-        String email = authService.getAuthentication().getName();
-        User student = userRepository.findUserByEmail(email);
+        User student = authService.getCurrentUser();
         userValidator.validateStudentAccount(student);
         Survey survey = surveyRepository.findSurveyById(id);
         activityValidator.validateActivityIsNotNull(survey, id);
@@ -74,8 +73,7 @@ public class SurveyService {
         activityValidator.validateCreateSurveyForm(form);
         activityValidator.validateActivityPosition(form, chapter);
 
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
         Survey survey = new Survey(

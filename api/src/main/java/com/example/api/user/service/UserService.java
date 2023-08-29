@@ -23,7 +23,7 @@ import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.activity.task.repository.InfoRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.PasswordValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,7 @@ public class UserService implements UserDetailsService {
     private final SurveyRepository surveyRepository;
     private final InfoRepository infoRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final PasswordEncoder passwordEncoder;
     private final UserValidator userValidator;
     private final ProfessorRegisterToken professorRegisterToken;
@@ -130,8 +130,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void editPassword(EditPasswordForm form){
-        String email = authService.getAuthentication().getName();
-        User user = getUser(email);
+        User user = authService.getCurrentUser();
         user.setPassword(passwordEncoder.encode(form.getNewPassword()));
     }
 
@@ -184,9 +183,9 @@ public class UserService implements UserDetailsService {
     }
 
     public Integer setIndexNumber(SetStudentIndexForm setStudentIndexForm) throws WrongUserTypeException, EntityAlreadyInDatabaseException {
-        String email = authService.getAuthentication().getName();
+        User student = authService.getCurrentUser();
+        String email = student.getEmail();
         log.info("Setting index number {} for user with email {}", setStudentIndexForm.getNewIndexNumber(), email);
-        User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student);
 
         if (student.getIndexNumber().equals(setStudentIndexForm.getNewIndexNumber())) {

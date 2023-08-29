@@ -9,6 +9,5 @@ import java.util.List;
 
 @Repository
 public interface CourseMemberRepository extends JpaRepository<CourseMember, Long> {
-    @Query("SELECT cm FROM CourseMember cm WHERE cm.course.id = ?1")
-    List<CourseMember> findAllByCourseId(Long courseId);
+    List<CourseMember> findAllByCourse_Id(Long courseId);
 }

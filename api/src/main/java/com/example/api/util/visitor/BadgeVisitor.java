@@ -6,7 +6,7 @@ import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.TaskResult;
 import com.example.api.activity.task.model.Activity;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.service.FileTaskResultService;
@@ -31,7 +31,7 @@ public class BadgeVisitor {
     private final FileTaskResultService fileTaskResultService;
     private final UserService userService;
     private final RankingService rankingService;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
 
     public boolean visitActivityNumberBadge(ActivityNumberBadge badge) {
         User student = authService.getCurrentUser();

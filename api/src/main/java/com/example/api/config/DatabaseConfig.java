@@ -60,6 +60,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
@@ -137,20 +139,24 @@ public class DatabaseConfig {
 
             userRepository.saveAll(students2);
 
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 
             User professor1 = new User("bmaj@agh.edu.pl",
                     "Bernard",
                     "Maj",
                     AccountType.PROFESSOR);
-            professor1.setPassword("12345");
-            userRepository.save(professor1);
+            professor1.setPassword(passwordEncoder.encode("12345"));
 
             User professor2 = new User("szielinski@agh.edu.pl",
                     "Sławomir",
                     "Zieliński",
                     AccountType.PROFESSOR);
-            professor2.setPassword("12345");
+            professor2.setPassword(passwordEncoder.encode("12345"));
             userRepository.save(professor2);
+
+            userRepository.saveAll(List.of(professor1, professor2));
+
 
             Group group = new Group();
             group.setInvitationCode("1111");
@@ -864,11 +870,12 @@ public class DatabaseConfig {
                                String name,
                                String lastName,
                                Integer indexNumber) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User student = new User(email,
                 name,
                 lastName,
                 AccountType.STUDENT);
-        student.setPassword("12345");
+        student.setPassword(passwordEncoder.encode("12345"));
         student.setIndexNumber(indexNumber);
         return student;
     }

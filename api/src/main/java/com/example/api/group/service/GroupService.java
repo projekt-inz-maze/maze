@@ -14,17 +14,14 @@ import com.example.api.group.model.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.group.repository.GroupRepository;
-import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.group.validator.GroupValidator;
-import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,7 +30,7 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class GroupService {
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final GroupRepository groupRepository;
     private final GroupValidator groupValidator;
     private final UserValidator userValidator;

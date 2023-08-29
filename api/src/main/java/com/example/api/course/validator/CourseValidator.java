@@ -6,7 +6,7 @@ import com.example.api.course.repository.CourseRepository;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.validator.UserValidator;
@@ -21,7 +21,7 @@ public class CourseValidator {
 
     UserValidator userValidator;
     CourseRepository courseRepository;
-    AuthenticationService authService;
+    LoggedInUserService authService;
 
     public void validatePotentialCourse(boolean courseExists, SaveCourseForm form) throws RequestValidationException {
         if (courseExists) {
