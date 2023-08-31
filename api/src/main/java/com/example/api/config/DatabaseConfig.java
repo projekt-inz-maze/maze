@@ -107,10 +107,11 @@ public class DatabaseConfig {
             // HEROES
             long week = TimeUnit.DAYS.toMillis(7);
             Hero priest = new Priest(HeroType.PRIEST, week, course1);
+            Hero priest2 = new Priest(HeroType.PRIEST, week, course2);
             Hero rogue = new Rogue(HeroType.ROGUE, week, course1);
             Hero warrior = new Warrior(HeroType.WARRIOR, week, course1);
             Hero wizard = new Wizard(HeroType.WIZARD, week, course1);
-            heroRepository.saveAll(List.of(priest, rogue, wizard, warrior));
+            heroRepository.saveAll(List.of(priest, rogue, wizard, warrior, priest2));
 
             // USERS & GROUPS
             List<User> students1 = Collections.synchronizedList(new ArrayList<>());
@@ -172,6 +173,14 @@ public class DatabaseConfig {
             group1.setCourse(course1);
             groupService.saveGroup(group1);
 
+            Group group1course2 = new Group();
+            group1course2.setInvitationCode("3333");
+            group1course2.setName("xd");
+            group1course2.setCourse(course2);
+            groupService.saveGroup(group1course2);
+
+            addToGroup(students1.get(0), group1course2, priest2);
+
             addToGroup(students1.get(0), group, priest);
             addToGroup(students1.get(1), group, rogue);
             addToGroup(students1.get(2), group, wizard);
@@ -207,6 +216,9 @@ public class DatabaseConfig {
             groups.add(group1);
             course1.setGroups(groups);
             courseRepository.save(course1);
+
+            course2.setGroups(List.of(group1course2));
+            courseRepository.save(course2);
 
             // TASKS
             List<Question> questions = addQuestionSet(course1, questionService, optionService);

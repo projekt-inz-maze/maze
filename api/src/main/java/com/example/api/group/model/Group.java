@@ -26,7 +26,12 @@ public class Group {
     private Long id;
     private String name;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "group_user",
+            joinColumns = { @JoinColumn(name = "group_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") }
+    )
     @JsonBackReference
     private List<User> users = Collections.synchronizedList(new ArrayList<>());
 
