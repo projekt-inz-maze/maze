@@ -1,16 +1,19 @@
 package com.example.api.user.service;
 
+import com.example.api.course.model.Course;
 import com.example.api.course.service.CourseService;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.user.dto.request.UpdateHeroForm;
-import com.example.api.user.model.hero.Hero;
+import com.example.api.user.model.HeroType;
+import com.example.api.user.model.hero.*;
 import com.example.api.user.repository.HeroRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +35,21 @@ public class HeroService {
         if (value != null) {
             hero.changeValue(value);
         }
+    }
+
+    public Hero createHero(HeroType type, Double value, Long coolDownMillis, Course course) {
+        Hero hero = switch (type) {
+            case WARRIOR -> new Warrior(type, coolDownMillis, course);
+            case WIZARD ->  new Wizard(type, coolDownMillis, course);
+            case PRIEST -> new Priest(type, coolDownMillis, course);
+            case ROGUE ->  new Rogue(type, coolDownMillis, course);
+        };
+
+        if (value != null) {hero.changeValue(value);}
+        return hero;
+    }
+
+    public void addHeroes(List<Hero> heroes) {
+        heroRepository.saveAll(heroes);
     }
 }

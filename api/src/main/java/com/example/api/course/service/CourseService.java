@@ -3,6 +3,7 @@ package com.example.api.course.service;
 import com.example.api.course.dto.request.SaveCourseForm;
 import com.example.api.course.dto.response.CourseDTO;
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.course.repository.CourseRepository;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -10,6 +11,8 @@ import com.example.api.error.exception.RequestValidationException;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
+import com.example.api.user.model.hero.Hero;
+import com.example.api.user.service.HeroService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +31,7 @@ public class CourseService {
     private final CourseValidator courseValidator;
     private final UserValidator userValidator;
     private final LoggedInUserService authService;
+    private final HeroService heroService;
 
     public Long saveCourse(SaveCourseForm form) throws RequestValidationException {
 
@@ -40,6 +44,13 @@ public class CourseService {
 
         Course course = new Course(null, form.getName(), form.getDescription(), false, professor);
         courseRepository.save(course);
+
+        List<Hero> heroes = form.getHeroes()
+                .stream()
+                .map(hero -> heroService.createHero(hero.getType(), hero.getValue(), hero.getCoolDownMillis(), course))
+                .toList();
+        heroService.addHeroes(heroes);
+
         return course.getId();
     }
 
@@ -54,7 +65,7 @@ public class CourseService {
         } else {
             return user.getCourseMemberships()
                     .stream()
-                    .map(member -> member.getCourse())
+                    .map(CourseMember::getCourse)
                     .map(CourseDTO::new)
                     .toList();
         }

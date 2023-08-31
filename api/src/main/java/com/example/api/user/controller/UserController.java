@@ -5,10 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.api.security.LoggedInUserService;
-import com.example.api.user.dto.request.EditPasswordForm;
-import com.example.api.user.dto.request.RegisterUserForm;
-import com.example.api.user.dto.request.SetStudentGroupForm;
-import com.example.api.user.dto.request.SetStudentIndexForm;
+import com.example.api.user.dto.request.*;
 import com.example.api.user.dto.response.BasicStudent;
 import com.example.api.error.exception.*;
 import com.example.api.group.model.Group;
@@ -96,6 +93,13 @@ public class UserController {
     public ResponseEntity<Group> setUserGroup(@RequestBody SetStudentGroupForm setStudentGroupForm)
             throws WrongUserTypeException, EntityNotFoundException {
         return ResponseEntity.ok().body(userService.updateStudentGroup(setStudentGroupForm));
+    }
+
+    @PostMapping("/user/group/join")
+    public ResponseEntity<Group> joinGroup(@RequestBody JoinGroupDTO dto)
+            throws WrongUserTypeException, EntityNotFoundException {
+        userService.addUserToGroup(dto.getInvitationCode(), dto.getHeroType());
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/user/index/set")

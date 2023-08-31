@@ -1,14 +1,10 @@
 package com.example.api.validator;
 
-import com.example.api.user.dto.request.RegisterUserForm;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.*;
-import com.example.api.group.model.Group;
+import com.example.api.user.dto.request.RegisterUserForm;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.user.model.hero.Hero;
-import com.example.api.user.model.hero.UserHero;
-import com.example.api.group.repository.GroupRepository;
-import com.example.api.user.repository.HeroRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.user.service.util.ProfessorRegisterToken;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +20,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class UserValidator {
-    private final GroupRepository groupRepository;
     private final UserRepository userRepository;
-    private final HeroRepository heroRepository;
     private final ProfessorRegisterToken professorRegisterToken;
     private final String STUDENT_DOMAIN = "@student.agh.edu.pl";
     private final String PROFESSOR_DOMAIN = "@agh.edu.pl";
+
+    public void validateUserNotInCourse(User user, Course course) {
+        if (user.inCourse(course.getId())) {
+            log.error("User {} cannot enroll in same course twice.", user.getId());
+            throw new IllegalArgumentException("User " + user.getId() + " cannot enroll in same course twice.");
+        }
+    }
 
     public void validateUserIsNotNull(User user, String identifier) throws UsernameNotFoundException {
         if(user == null) {

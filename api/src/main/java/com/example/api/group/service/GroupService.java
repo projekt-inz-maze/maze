@@ -35,19 +35,17 @@ public class GroupService {
     private final GroupValidator groupValidator;
     private final UserValidator userValidator;
     private final CourseService courseService;
-    private final CourseValidator courseValidator;
 
     public Group saveGroup(Group group) {
         log.info("Saving group to database with name {}", group.getName());
         return groupRepository.save(group);
     }
 
-    public Long saveGroup(SaveGroupForm form) throws RequestValidationException {
+    public Long createGroup(SaveGroupForm form) throws RequestValidationException {
         log.info("Saving group to database with name {}", form.getName());
         List<Group> groups = groupRepository.findAll();
         groupValidator.validateGroup(groups, form);
         Course course = courseService.getCourse(form.getCourseId());
-        courseValidator.validateCourseOwner(course, authService.getCurrentUser());
         Group group = new Group(null, form.getName(), form.getInvitationCode(), course);
         groupRepository.save(group);
         return group.getId();

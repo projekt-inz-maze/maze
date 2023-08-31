@@ -20,7 +20,7 @@ public class CourseController {
     private final CourseService courseService;
 
     @PostMapping
-    public ResponseEntity<Long> saveCourse(@RequestBody SaveCourseForm form) throws RequestValidationException {
+    public ResponseEntity<Long> createCourse(@RequestBody SaveCourseForm form) throws RequestValidationException {
         return ResponseEntity.ok().body(courseService.saveCourse(form));
     }
 
