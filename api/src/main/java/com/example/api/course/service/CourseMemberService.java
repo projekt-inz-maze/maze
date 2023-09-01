@@ -5,9 +5,8 @@ import com.example.api.course.repository.CourseMemberRepository;
 import com.example.api.group.model.Group;
 import com.example.api.group.service.GroupService;
 import com.example.api.user.model.User;
-import com.example.api.user.model.hero.UserHero;
+import com.example.api.user.hero.model.UserHero;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

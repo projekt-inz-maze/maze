@@ -28,6 +28,8 @@ import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;
 import com.example.api.map.service.ChapterService;
 import com.example.api.user.dto.response.dashboard.*;
+import com.example.api.user.hero.HeroStatsDTO;
+import com.example.api.user.hero.HeroTypeStatsDTO;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.util.calculator.PointsCalculator;
@@ -81,7 +83,7 @@ public class DashboardService {
         );
     }
 
-    private HeroTypeStats getHeroTypeStats(CourseMember member) throws EntityNotFoundException {
+    private HeroTypeStatsDTO getHeroTypeStats(CourseMember member) throws EntityNotFoundException {
         String heroType = String.valueOf(member.getHeroType());
 
         List<RankingResponse> ranking = rankingService.getRanking(member.getCourse().getId());
@@ -97,7 +99,7 @@ public class DashboardService {
         Double betterPlayerPoints = rankPosition > 1 ? ranking.get(rankPosition - 2).getPoints() : null;
         Double worsePlayerPoints = rankPosition < rankLength ? ranking.get(rankPosition).getPoints() : null;
 
-        return new HeroTypeStats(heroType, rankPosition, rankLength, betterPlayerPoints, worsePlayerPoints);
+        return new HeroTypeStatsDTO(heroType, rankPosition, rankLength, betterPlayerPoints, worsePlayerPoints);
     }
 
     private RankingResponse getRank(User student, List<RankingResponse> ranking) {
@@ -231,7 +233,7 @@ public class DashboardService {
 
     }
 
-    private HeroStats getHeroStats(CourseMember member) {
+    private HeroStatsDTO getHeroStats(CourseMember member) {
         log.info("getHeroStats");
         Double experiencePoints = member.getPoints();
         Double nextLvlPoints = getNexLvlPoints(member);
@@ -241,7 +243,7 @@ public class DashboardService {
         Long badgesNumber = (long) member.getUnlockedBadges().size();
         Long completedActivities = activityResultService.countCompletedActivities(member);
 
-        return new HeroStats(
+        return new HeroStatsDTO(
                 experiencePoints,
                 nextLvlPoints,
                 rankName,

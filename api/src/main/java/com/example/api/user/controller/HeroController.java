@@ -2,8 +2,8 @@ package com.example.api.user.controller;
 
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.user.dto.request.UpdateHeroForm;
-import com.example.api.user.service.HeroService;
+import com.example.api.user.hero.UpdateHeroForm;
+import com.example.api.user.hero.HeroService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

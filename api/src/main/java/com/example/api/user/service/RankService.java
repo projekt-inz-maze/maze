@@ -13,7 +13,7 @@ import com.example.api.user.dto.response.rank.RanksForHeroTypeResponse;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.user.model.HeroType;
+import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.util.model.Image;

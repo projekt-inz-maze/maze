@@ -9,11 +9,14 @@ import com.example.api.course.validator.CourseValidator;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.security.LoggedInUserService;
+import com.example.api.user.hero.HeroFactory;
+import com.example.api.user.hero.HeroRepository;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.user.model.hero.Hero;
-import com.example.api.user.service.HeroService;
+import com.example.api.user.hero.model.Hero;
+import com.example.api.user.hero.HeroService;
 import com.example.api.validator.UserValidator;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,7 @@ import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Slf4j
 @Transactional
 public class CourseService {
@@ -31,7 +34,8 @@ public class CourseService {
     private final CourseValidator courseValidator;
     private final UserValidator userValidator;
     private final LoggedInUserService authService;
-    private final HeroService heroService;
+    private final HeroRepository heroRepository;
+    private final HeroFactory heroFactory;
 
     public Long saveCourse(SaveCourseForm form) throws RequestValidationException {
 
@@ -47,9 +51,10 @@ public class CourseService {
 
         List<Hero> heroes = form.getHeroes()
                 .stream()
-                .map(hero -> heroService.createHero(hero.getType(), hero.getValue(), hero.getCoolDownMillis(), course))
+                .map(hero -> heroFactory.getHero(hero.getType(), hero.getValue(), hero.getCoolDownMillis(), course))
                 .toList();
-        heroService.addHeroes(heroes);
+
+        heroRepository.saveAll(heroes);
 
         return course.getId();
     }
