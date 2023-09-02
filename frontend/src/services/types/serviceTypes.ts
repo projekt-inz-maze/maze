@@ -15,6 +15,7 @@ export type newChapterData = {
 export type addGroupRequest = {
   groupName: string
   groupKey: string
+  courseId: number
 }
 
 export type professorFeedback = {
