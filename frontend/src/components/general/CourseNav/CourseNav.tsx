@@ -9,13 +9,16 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from './CourseNav.module.scss'
 import { logout } from '../../../actions/auth'
+import { AddCourseRequest } from '../../../api/types'
 import CustomModal from '../../../common/components/CustomModal/CustomModal'
+import { joinGroupRequest } from '../../../services/types/serviceTypes'
 import { Role } from '../../../utils/userRole'
 
 type CourseNavProps = {
   dispatch: any
   userRole: number
-  onAddCourse: (name: string, description: string) => void
+  onAddCourse: (props: AddCourseRequest) => void
+  onJoinCourse: (props: joinGroupRequest) => void
 }
 
 const CourseNav = (props: CourseNavProps): JSX.Element => {
@@ -49,6 +52,7 @@ const CourseNav = (props: CourseNavProps): JSX.Element => {
         isModalVisible={showModal}
         onCloseModal={handleModalDisplay}
         onAddCourse={props.onAddCourse}
+        onJoinCourse={props.onJoinCourse}
       />
     </Row>
   )

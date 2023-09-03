@@ -20,7 +20,7 @@ public class SaveCourseForm {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class CourseHeroDTO {
+    public static class CourseHeroDTO {
         @Schema(required = true) HeroType type;
         @Schema(required = true) private Double value;
         @Schema(required = true) private Long coolDownMillis;

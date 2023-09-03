@@ -1,5 +1,6 @@
 import { api } from './api'
 import { AddCourseRequest, AddCourseResponse, Course } from './types'
+import { joinGroupRequest } from '../services/types/serviceTypes'
 
 const apiCourses = api.injectEndpoints({
   endpoints: (build) => ({
@@ -32,10 +33,18 @@ const apiCourses = api.injectEndpoints({
         body: args
       }),
       invalidatesTags: ['Courses']
+    }),
+    joinCourseGroup: build.mutation<void, joinGroupRequest>({
+      query: (args) => ({
+        url: '/user/group/join',
+        method: 'POST',
+        body: args
+      }),
+      invalidatesTags: ['Courses']
     })
   }),
   overrideExisting: false
 })
 
-export const { useGetAllCoursesQuery, useAddNewCourseMutation, useDeleteCourseMutation, useUpdateCourseMutation } =
+export const { useGetAllCoursesQuery, useAddNewCourseMutation, useDeleteCourseMutation, useUpdateCourseMutation, useJoinCourseGroupMutation } =
   apiCourses

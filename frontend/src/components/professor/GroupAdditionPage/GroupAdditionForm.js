@@ -4,12 +4,15 @@ import { Formik } from 'formik'
 import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
+import { useAppSelector } from '../../../hooks/hooks'
 import GroupService from '../../../services/group.service'
 import { FIELD_REQUIRED } from '../../../utils/constants'
 import { FormCol } from '../../general/LoginAndRegistrationPage/FormCol'
 
 
 function GroupAdditionForm(props) {
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   return (
     // todo: think about general Form component that can be extended
     <Formik
@@ -24,7 +27,7 @@ function GroupAdditionForm(props) {
         return errors
       }}
       onSubmit={(values, { setSubmitting }) => {
-        GroupService.addGroup({ groupName: values.name, groupKey: values.code }).then(() => {
+        GroupService.addGroup({ groupName: values.name, groupKey: values.code, courseId }).then(() => {
           props.refreshFunction()
           props.setModalOpen(false)
         })
