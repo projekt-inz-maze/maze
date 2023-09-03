@@ -1,5 +1,7 @@
 package com.example.api.user.dto.response.dashboard;
 
+import com.example.api.user.hero.HeroStatsDTO;
+import com.example.api.user.hero.HeroTypeStatsDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -12,9 +14,9 @@ import java.util.List;
 @Getter
 @Setter
 public class DashboardResponse {
-    private HeroTypeStats heroTypeStats;
+    private HeroTypeStatsDTO heroTypeStatsDTO;
     private GeneralStats generalStats;
     private List<LastAddedActivity> lastAddedActivities;
-    private HeroStats heroStats;
+    private HeroStatsDTO heroStatsDTO;
 
 }

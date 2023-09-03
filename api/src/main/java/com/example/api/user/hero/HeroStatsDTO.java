@@ -1,4 +1,4 @@
-package com.example.api.user.dto.response.dashboard;
+package com.example.api.user.hero;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class HeroStats {
+public class HeroStatsDTO {
     private Double experiencePoints;
     private Double nextLvlPoints;
     private String rankName;

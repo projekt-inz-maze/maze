@@ -18,10 +18,7 @@ export type addGroupRequest = {
   courseId: number
 }
 
-export type professorFeedback = {
-  taskId: number
-  remarks: string
-  points: number
-  file: any
-  fileName: string
+export type joinGroupRequest = {
+  invitationCode: string
+  heroType: string
 }

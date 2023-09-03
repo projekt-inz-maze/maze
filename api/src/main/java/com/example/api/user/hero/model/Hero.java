@@ -1,4 +1,4 @@
-package com.example.api.user.model.hero;
+package com.example.api.user.hero.model;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.model.GraphTaskResult;
@@ -6,10 +6,10 @@ import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.question.model.Question;
-import com.example.api.user.model.HeroType;
+import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
 import com.example.api.util.message.HeroMessage;
-import com.example.api.util.visitor.HeroVisitor;
+import com.example.api.user.hero.HeroVisitor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

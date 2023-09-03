@@ -3,14 +3,20 @@ package com.example.api.course.service;
 import com.example.api.course.dto.request.SaveCourseForm;
 import com.example.api.course.dto.response.CourseDTO;
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.course.repository.CourseRepository;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.security.LoggedInUserService;
+import com.example.api.user.hero.HeroFactory;
+import com.example.api.user.hero.HeroRepository;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
+import com.example.api.user.hero.model.Hero;
+import com.example.api.user.hero.HeroService;
 import com.example.api.validator.UserValidator;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +26,7 @@ import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Slf4j
 @Transactional
 public class CourseService {
@@ -28,6 +34,8 @@ public class CourseService {
     private final CourseValidator courseValidator;
     private final UserValidator userValidator;
     private final LoggedInUserService authService;
+    private final HeroRepository heroRepository;
+    private final HeroFactory heroFactory;
 
     public Long saveCourse(SaveCourseForm form) throws RequestValidationException {
 
@@ -40,6 +48,14 @@ public class CourseService {
 
         Course course = new Course(null, form.getName(), form.getDescription(), false, professor);
         courseRepository.save(course);
+
+        List<Hero> heroes = form.getHeroes()
+                .stream()
+                .map(hero -> heroFactory.getHero(hero.getType(), hero.getValue(), hero.getCoolDownMillis(), course))
+                .toList();
+
+        heroRepository.saveAll(heroes);
+
         return course.getId();
     }
 
@@ -54,7 +70,7 @@ public class CourseService {
         } else {
             return user.getCourseMemberships()
                     .stream()
-                    .map(member -> member.getCourse())
+                    .map(CourseMember::getCourse)
                     .map(CourseDTO::new)
                     .toList();
         }

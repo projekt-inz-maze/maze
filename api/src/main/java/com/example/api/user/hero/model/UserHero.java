@@ -1,4 +1,4 @@
-package com.example.api.user.model.hero;
+package com.example.api.user.hero.model;
 
 import com.example.api.course.model.Course;
 import lombok.AllArgsConstructor;

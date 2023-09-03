@@ -1,7 +1,7 @@
 package com.example.api.user.dto.request;
 
 import com.example.api.user.model.AccountType;
-import com.example.api.user.model.HeroType;
+import com.example.api.user.hero.HeroType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,10 +1,10 @@
 package com.example.api.course.model;
 
 import com.example.api.group.model.Group;
-import com.example.api.user.model.HeroType;
+import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
 import com.example.api.user.model.badge.UnlockedBadge;
-import com.example.api.user.model.hero.UserHero;
+import com.example.api.user.hero.model.UserHero;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

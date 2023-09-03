@@ -4,9 +4,10 @@ import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseMemberService;
 import com.example.api.course.validator.exception.StudentNotEnrolledException;
 import com.example.api.group.service.GroupService;
-import com.example.api.user.model.hero.Hero;
-import com.example.api.user.model.hero.UserHero;
-import com.example.api.user.repository.HeroRepository;
+import com.example.api.user.hero.HeroType;
+import com.example.api.user.hero.model.Hero;
+import com.example.api.user.hero.model.UserHero;
+import com.example.api.user.hero.HeroRepository;
 import com.example.api.user.service.util.ProfessorRegisterToken;
 import com.example.api.user.dto.request.EditPasswordForm;
 import com.example.api.user.dto.request.RegisterUserForm;
@@ -121,10 +122,7 @@ public class UserService implements UserDetailsService {
 
         userRepository.save(user);
 
-        Group group = groupService.getGroupByInvitationCode(form.getInvitationCode());
-        Hero hero = heroRepository.findHeroByType(form.getHeroType());
-        UserHero userHero = new UserHero(hero, 0, 0L, group.getCourse());
-        addUserToGroup(user, group, userHero);
+        addUserToGroup(user, form.getInvitationCode(), form.getHeroType());
 
         return user.getId();
     }
@@ -175,8 +173,19 @@ public class UserService implements UserDetailsService {
         return newGroup;
     }
 
-    private void addUserToGroup(User user, Group group, UserHero hero) {
-        CourseMember courseMember = courseMemberService.create(user, group, hero);
+    public void addUserToGroup(String invitationCode, HeroType heroType) throws WrongUserTypeException, EntityNotFoundException {
+        User student = authService.getCurrentUser();
+        userValidator.validateStudentAccount(student);
+        addUserToGroup(student, invitationCode, heroType);
+    }
+
+    private void addUserToGroup(User user, String invitationCode, HeroType heroType) throws EntityNotFoundException {
+        Group group = groupService.getGroupByInvitationCode(invitationCode);
+        userValidator.validateUserNotInCourse(user, group.getCourse());
+
+        Hero hero = heroRepository.findHeroByTypeAndCourse(heroType, group.getCourse());
+        UserHero userHero = new UserHero(hero, 0, 0L, group.getCourse());
+        CourseMember courseMember = courseMemberService.create(user, group, userHero);
         user.getCourseMemberships().add(courseMember);
         groupService.addUser(courseMember, group);
         userRepository.save(user);

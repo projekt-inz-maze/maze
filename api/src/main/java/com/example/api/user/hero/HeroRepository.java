@@ -1,8 +1,7 @@
-package com.example.api.user.repository;
+package com.example.api.user.hero;
 
 import com.example.api.course.model.Course;
-import com.example.api.user.model.HeroType;
-import com.example.api.user.model.hero.Hero;
+import com.example.api.user.hero.model.Hero;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

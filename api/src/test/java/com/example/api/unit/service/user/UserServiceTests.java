@@ -6,7 +6,7 @@ import com.example.api.user.dto.response.BasicStudent;
 import com.example.api.error.exception.*;
 import com.example.api.group.model.Group;
 import com.example.api.user.model.AccountType;
-import com.example.api.user.model.HeroType;
+import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.task.repository.FileTaskRepository;
