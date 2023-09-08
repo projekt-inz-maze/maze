@@ -21,7 +21,7 @@ import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.map.repository.MapRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.MapValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class ActivityMapService {
     private final MapRepository mapRepository;
     private final RequirementService requirementService;
     private final MapValidator mapValidator;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final UserRepository userRepository;
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
@@ -52,8 +52,7 @@ public class ActivityMapService {
 
     public ActivityMapResponse getActivityMap(Long id) throws EntityNotFoundException, WrongUserTypeException {
         log.info("Fetching activity map with id {} as ActivityMapResponse", id);
-        String studentEmail = authService.getAuthentication().getName();
-        User user = userRepository.findUserByEmail(studentEmail);
+        User user = authService.getCurrentUser();
 
         ActivityMap activityMap = mapRepository.findActivityMapById(id);
         mapValidator.validateActivityMapIsNotNull(activityMap, id);
@@ -114,7 +113,7 @@ public class ActivityMapService {
     }
 
     private Boolean areRequirementsFulfilled(Activity activity) {
-        return requirementService.areRequirementsFulfilled(activity.getRequirements());
+        return requirementService.areRequirementsFulfilled(activity.getRequirements(), activity.getCourse());
     }
 
     private Boolean isGraphTaskCompleted(GraphTask graphTask, User user) {

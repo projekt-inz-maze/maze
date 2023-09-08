@@ -36,15 +36,13 @@ public class TopScoreBadge extends Badge{
     }
 
     @Override
-    public boolean isGranted(BadgeVisitor visitor) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+    public boolean isGranted(BadgeVisitor visitor) throws WrongUserTypeException, EntityNotFoundException {
         return visitor.visitTopScoreBadge(this);
     }
 
     @Override
     public BadgeResponse<?> getResponse() {
-        BadgeResponse<Double> response = new BadgeResponseTopScore(this);
-        response.setValue(topScore);
-        return response;
+        return new BadgeResponseTopScore(this);
     }
 
     public void update(BadgeUpdateForm form, BadgeValidator validator) throws IOException, RequestValidationException {

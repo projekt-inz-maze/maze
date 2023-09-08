@@ -88,8 +88,7 @@ public class ChapterValidator {
     public void validateUserCanAccess(User user, Chapter chapter) throws EntityNotFoundException {
         if ((user.getAccountType().equals(AccountType.PROFESSOR) &&
                 user.getCourses().stream().map(Course::getId).noneMatch(id -> id.equals(chapter.getCourse().getId())))
-                || (user.getAccountType().equals(AccountType.STUDENT)
-                && !user.getGroup().getCourse().getId().equals(chapter.getCourse().getId()))) {
+                || (user.getAccountType().equals(AccountType.STUDENT) && !user.inCourse(chapter.getCourse().getId()))) {
             log.error("User {} does not have access to chapter {}", user.getId(), chapter.getId());
             throw new EntityNotFoundException("User " + user.getId() +" does not have access to chapter " + chapter.getId());
         }

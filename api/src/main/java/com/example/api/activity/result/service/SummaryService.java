@@ -15,6 +15,8 @@ import com.example.api.activity.task.model.GraphTask;
 import com.example.api.activity.task.model.Survey;
 import com.example.api.group.model.Group;
 import com.example.api.map.model.Chapter;
+import com.example.api.map.service.ChapterService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
@@ -54,9 +56,11 @@ public class SummaryService {
     private final UserService userService;
     private final CourseService courseService;
     private final CourseValidator courseValidator;
+    private final ChapterService chapterService;
+    private final LoggedInUserService authService;
 
     public SummaryResponse getSummary(Long courseId) throws RequestValidationException {
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         Course course = courseService.getCourse(courseId);
         courseValidator.validateCourseOwner(course, professor);
 
@@ -186,11 +190,11 @@ public class SummaryService {
         List<Double> grades = getAllProfessorChapterActivitiesResult(chapter, professor)
                 .stream()
                 .filter(TaskResult::isEvaluated)
-                .filter(taskResult -> taskResult.getUser().getGroup().equals(group))
+                .filter(taskResult -> taskResult.getMember().getGroup().equals(group))
                 .map(pointsToGradeMapper::getGrade)
                 .toList();
 
-        return new AverageGradeForChapterCreator(group.getName(), grades).create(); // it will return entities with no results from group
+        return new AverageGradeForChapterCreator(group.getName(), grades).create();
     }
 
     private List<AverageActivityScore> getAvgActivitiesScore(User professor, Course course) {
@@ -233,22 +237,21 @@ public class SummaryService {
     }
 
     private List<Score> getScores(Activity activity) {
-        return groupRepository.findAll()
+        return groupRepository.findAllByCourse(activity.getCourse())
                 .stream()
-                .map(group -> toScore(activity, group))
-                .filter(Objects::nonNull)
+                .flatMap(group -> toScore(activity, group).stream())
                 .toList();
     }
 
-    private Score toScore(Activity activity, Group group) {
+    private Optional<Score> toScore(Activity activity, Group group) {
         ScoreCreator scoreCreator = new ScoreCreator(group.getName(), activity.getMaxPoints());
         AtomicReference<ScoreCreator> scoreRef = new AtomicReference<>(scoreCreator);
         getAllResultsForActivity(activity)
                 .stream()
                 .filter(TaskResult::isEvaluated)
-                .filter(taskResult -> taskResult.getUser().getGroup().equals(group))
+                .filter(taskResult -> taskResult.getMember().getGroup().equals(group))
                 .forEach(taskResult -> scoreRef.get().add(taskResult));
-        return scoreRef.get().getNumberOfScores() > 0 ? scoreRef.get().create() : null;
+        return scoreRef.get().create();
     }
 
     private List<NotAssessedActivity> getNotAssessedActivitiesTable(User professor, Course course) {
@@ -282,9 +285,12 @@ public class SummaryService {
     }
 
     private List<? extends Activity> getAllProfessorActivities(User professor, Course course) {
-        return getAllActivities(course)
-                .stream()
-                .filter(activity -> isProfessorActivity(activity, professor))
+        List<GraphTask> graphTasks = graphTaskRepository.findAllByCourseAndProfessor(course, professor);
+        List<FileTask> fileTasks = fileTaskRepository.findAllByCourseAndProfessor(course, professor);
+        List<Survey> surveys = surveyRepository.findAllByCourseAndProfessor(course, professor);
+
+        return Stream.of(graphTasks, fileTasks, surveys)
+                .flatMap(Collection::stream)
                 .toList();
     }
 
@@ -294,9 +300,8 @@ public class SummaryService {
 
 
     private List<? extends Activity> getAllProfessorChapterActivities(Chapter chapter, User professor) { // without Info
-        return getAllActivities(chapter.getCourse())
+        return chapterService.getAllActivitiesForChapter(chapter)
                 .stream()
-                .filter(activity -> chapter.getActivityMap().hasActivity(activity))
                 .filter(activity -> isProfessorActivity(activity, professor))
                 .toList();
     }

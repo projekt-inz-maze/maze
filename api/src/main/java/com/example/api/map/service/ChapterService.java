@@ -20,6 +20,7 @@ import com.example.api.activity.task.model.Activity;
 import com.example.api.map.model.ActivityMap;
 import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.user.service.UserService;
@@ -33,9 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -51,9 +54,10 @@ public class ChapterService {
     private final RequirementService requirementService;
     private final CourseValidator courseValidator;
     private final CourseService courseService;
+    private final LoggedInUserService authService;
 
     public List<? extends ChapterResponse> getAllChapters(Long courseId) throws EntityNotFoundException {
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
         courseValidator.validateUserCanAccess(user, courseId);
         log.info("Fetching all chapters for course {}, for user {}", courseId, user.getId());
 
@@ -67,7 +71,7 @@ public class ChapterService {
                     .map(chapter ->
                             new ChapterResponseStudent(
                                     chapter,
-                                    requirementService.areRequirementsFulfilled(chapter.getRequirements())
+                                    requirementService.areRequirementsFulfilled(chapter.getRequirements(), chapter.getCourse())
                             )
                     )
                     .sorted(Comparator.comparingLong(ChapterResponse::getId))
@@ -86,7 +90,7 @@ public class ChapterService {
         Chapter chapter = chapterRepository.findChapterById(id);
         chapterValidator.validateChapterIsNotNull(chapter, id);
 
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
         chapterValidator.validateUserCanAccess(user, chapter);
 
         List<? extends MapTask> allTasks;
@@ -100,7 +104,7 @@ public class ChapterService {
     }
 
     public void createChapter(ChapterForm form) throws RequestValidationException {
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
         Course course = courseService.getCourse(form.getCourseId());
         courseValidator.validateCourseOwner(course, user);
         log.info("Creating new chapter");
@@ -128,7 +132,7 @@ public class ChapterService {
     }
 
     public void deleteChapter(Long chapterID) throws RequestValidationException {
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         Chapter chapter = chapterRepository.findChapterById(chapterID);
         chapterValidator.validateChapterIsNotNull(chapter, chapterID);
         courseValidator.validateCourseOwner(chapter.getCourse(), professor);
@@ -146,7 +150,7 @@ public class ChapterService {
         ChapterForm chapterForm = editChapterForm.getEditionForm();
 
         // chapter validation for given editChapterForm
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         Chapter chapter = chapterRepository.findChapterById(editChapterForm.getChapterId());
         chapterValidator.validateChapterIsNotNull(chapter, editChapterForm.getChapterId());
         courseValidator.validateCourseOwner(chapter.getCourse(), professor);
@@ -174,7 +178,7 @@ public class ChapterService {
         Chapter chapter = chapterRepository.findChapterById(chapterId);
         chapterValidator.validateChapterIsNotNull(chapter, chapterId);
 
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
         chapterValidator.validateUserCanAccess(user, chapter);
 
         List<? extends RequirementDTO<?>> requirements = chapter.getRequirements()
@@ -189,7 +193,7 @@ public class ChapterService {
         Chapter chapter = chapterRepository.findChapterById(form.getChapterId());
         chapterValidator.validateChapterIsNotNull(chapter, form.getChapterId());
 
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
         chapterValidator.validateUserCanAccess(user, chapter);
 
         Boolean isBlocked = form.getIsBlocked();
@@ -199,5 +203,15 @@ public class ChapterService {
         }
         List<RequirementForm> requirementForms = form.getRequirements();
         requirementService.updateRequirements(requirementForms);
+    }
+
+    public List<? extends Activity> getAllActivitiesForChapter(Chapter chapter) {
+        return Stream.of(chapter.getActivityMap().getGraphTasks(),
+                    chapter.getActivityMap().getFileTasks(),
+                    chapter.getActivityMap().getInfos(),
+                    chapter.getActivityMap().getSurveys()
+                )
+                .flatMap(Collection::stream)
+                .toList();
     }
 }

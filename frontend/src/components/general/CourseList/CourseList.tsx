@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react'
 
-import { Button, Col, Container, Stack } from 'react-bootstrap'
+import { Col, Container, Stack } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './CourseList.module.scss'
-import { useAddNewCourseMutation, useDeleteCourseMutation, useGetAllCoursesQuery } from '../../../api/apiCourses'
-import { Course } from '../../../api/types'
+import {
+  useAddNewCourseMutation,
+  useDeleteCourseMutation,
+  useGetAllCoursesQuery,
+  useJoinCourseGroupMutation
+} from '../../../api/apiCourses'
+import { AddCourseRequest, Course } from '../../../api/types'
 import CourseCard from '../../../common/components/CourseCard/CourseCard'
 import { useAppDispatch } from '../../../hooks/hooks'
 import { setCourseId } from '../../../reducers/userSlice'
+import { joinGroupRequest } from '../../../services/types/serviceTypes'
 import { Role } from '../../../utils/userRole'
 import CourseNav from '../CourseNav/CourseNav'
 
@@ -23,6 +29,7 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
   const { data: courses, isSuccess: coursesSuccess } = useGetAllCoursesQuery()
   const [addNewCourse] = useAddNewCourseMutation()
   const [deleteCourse] = useDeleteCourseMutation()
+  const [joinCourseGroup] = useJoinCourseGroupMutation()
 
   useEffect(() => {
     showNavbar(false)
@@ -47,17 +54,21 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
     }
   }
 
-  const handleAddNewCourse = async (name: string, description: string) => {
-    await addNewCourse({ name, description }).unwrap()
+  const handleAddNewCourse = async (props: AddCourseRequest) => {
+    await addNewCourse(props).unwrap()
   }
 
   const handleDeleteCourse = async (courseId: number) => {
     await deleteCourse(courseId).unwrap()
   }
 
+  const handleJoinCourseGroup = async (props: joinGroupRequest) => {
+    await joinCourseGroup(props).unwrap()
+  }
+
   return (
     <div className={styles.color}>
-      <CourseNav userRole={role} onAddCourse={handleAddNewCourse} />
+      <CourseNav userRole={role} onAddCourse={handleAddNewCourse} onJoinCourse={handleJoinCourseGroup} />
       <Container className={styles.mainContainer}>
         <Col>
           <Row className={styles.headerRow}>

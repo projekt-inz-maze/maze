@@ -1,20 +1,15 @@
 package com.example.api.user.model;
 
 import com.example.api.course.model.Course;
-import com.example.api.group.model.Group;
-import com.example.api.user.model.badge.UnlockedBadge;
-import com.example.api.user.model.hero.UserHero;
+import com.example.api.course.model.CourseMember;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -43,36 +38,29 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
-    private Integer level;
-    //TODO kluczowe - dodac punkty <-> grupa i sprawdzic czy nie ma tego typ innych syfow [*]
-    private Double points = 0D;
-
-    @Embedded
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private UserHero userHero;
 
     @OneToOne
     PasswordResetToken passwordResetToken;
 
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
-    private List<UnlockedBadge> unlockedBadges = new LinkedList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<CourseMember> courseMemberships = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner")
     @JsonBackReference
     private List<Course> courses = new LinkedList<>();
 
-    public synchronized void changePoints(Double diff) {
-        if (points + diff < 0) return;
-        points = points + diff;
+    public Optional<CourseMember> getCourseMember(Long courseId) {
+        return courseMemberships.stream()
+                .filter(member -> member.getCourse().getId().equals(courseId))
+                .findAny();
+    }
+    public Optional<CourseMember> getCourseMember(Course course) {
+        return courseMemberships.stream()
+                .filter(member -> member.getCourse().equals(course))
+                .findAny();
     }
 
-    public HeroType getHeroType() {
-        if (accountType.equals(AccountType.STUDENT)) return userHero.getHero().getType();
-        return null;
+    public boolean inCourse(Long courseId) {
+        return courseMemberships.stream().anyMatch(member -> member.getCourse().getId().equals(courseId));
     }
 }

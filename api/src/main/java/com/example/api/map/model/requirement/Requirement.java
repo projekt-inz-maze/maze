@@ -1,5 +1,6 @@
 package com.example.api.map.model.requirement;
 
+import com.example.api.course.model.Course;
 import com.example.api.map.dto.response.RequirementDTO;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.util.visitor.RequirementFulfilledVisitor;
@@ -31,7 +32,7 @@ public abstract class Requirement {
         this.selected = selected;
     }
 
-    public abstract boolean isFulfilled(RequirementFulfilledVisitor visitor);
+    public abstract boolean isFulfilled(RequirementFulfilledVisitor visitor, Course course);
     public abstract void setValue(RequirementValueVisitor visitor, String value) throws RequestValidationException;
     public abstract RequirementDTO<?> getResponse();
     public Long getDateToMillis() {

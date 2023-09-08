@@ -11,9 +11,8 @@ import com.example.api.activity.result.model.AdditionalPoints;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.service.BadgeService;
-import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,38 +28,37 @@ import java.util.List;
 public class AdditionalPointsService {
     private final AdditionalPointsRepository additionalPointsRepository;
     private final UserRepository userRepository;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final BadgeService badgeService;
     private final UserValidator userValidator;
     private final CourseService courseService;
     private final CourseValidator courseValidator;
-    private final UserService userService;
 
     public void saveAdditionalPoints(AddAdditionalPointsForm form)
             throws RequestValidationException {
         log.info("Saving additional points for student with id {}", form.getStudentId());
         User user = userRepository.findUserById(form.getStudentId());
         userValidator.validateStudentAccount(user, form.getStudentId());
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         Course course = courseService.getCourse(form.getCourseId());
         courseValidator.validateCourseOwner(course, professor);
 
         AdditionalPoints additionalPoints = new AdditionalPoints(null,
-                user,
                 form.getPoints(),
                 form.getDateInMillis(),
                 professor.getEmail(),
                 "",
-                course);
+                course,
+                user.getCourseMember(course).orElseThrow());
         if (form.getDescription() != null) {
             additionalPoints.setDescription(form.getDescription());
         }
         additionalPointsRepository.save(additionalPoints);
-        badgeService.checkAllBadges(user);
+        badgeService.checkAllBadges(user.getCourseMember(course).orElseThrow());
     }
 
     public List<AdditionalPointsResponse> getAdditionalPoints(Long courseId) throws EntityNotFoundException {
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
         return getAdditionalPoints(user, courseId);
     }
 

@@ -6,9 +6,9 @@ import com.example.api.course.repository.CourseRepository;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
 public class CourseValidator {
 
     UserValidator userValidator;
-    UserService userService;
     CourseRepository courseRepository;
+    LoggedInUserService authService;
 
     public void validatePotentialCourse(boolean courseExists, SaveCourseForm form) throws RequestValidationException {
         if (courseExists) {
@@ -61,15 +61,31 @@ public class CourseValidator {
     }
 
     public void validateCurrentUserCanAccess(Long courseId) throws EntityNotFoundException {
-        validateUserCanAccess(userService.getCurrentUser(), courseId);
+        validateUserCanAccess(authService.getCurrentUser(), courseId);
     }
 
     public void validateUserCanAccess(User user, Long courseId) throws EntityNotFoundException {
-        if ((user.getAccountType().equals(AccountType.PROFESSOR) &&
-                user.getCourses().stream().map(Course::getId).noneMatch(id -> id.equals(courseId)))
-            || (user.getAccountType().equals(AccountType.STUDENT) && !user.getGroup().getCourse().getId().equals(courseId))) {
+        if (user.getAccountType().equals(AccountType.PROFESSOR)) {
+            validateProfessorCanAccess(user, courseId);
+        }
+        if (user.getAccountType().equals(AccountType.STUDENT)) {
+            validateStudentCanAccess(user, courseId);
+        }
+    }
+
+    public void validateStudentCanAccess(User user, Long courseId) throws EntityNotFoundException {
+        if (!user.inCourse(courseId)) {
             log.error("User {} does not have access to course {}", user.getId(), courseId);
             throw new EntityNotFoundException("User " + user.getId() +" does not have access to course " + courseId);
         }
     }
+
+    public void validateProfessorCanAccess(User user, Long courseId) throws EntityNotFoundException {
+        if (user.getCourses().stream().map(Course::getId).noneMatch(id -> id.equals(courseId))) {
+            log.error("User {} does not have access to course {}", user.getId(), courseId);
+            throw new EntityNotFoundException("User " + user.getId() +" does not have access to course " + courseId);
+        }
+    }
+
+
 }

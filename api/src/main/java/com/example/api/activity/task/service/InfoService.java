@@ -15,7 +15,7 @@ import com.example.api.activity.task.repository.InfoRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.util.repository.UrlRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.map.service.RequirementService;
 import com.example.api.validator.ChapterValidator;
 import com.example.api.validator.UserValidator;
@@ -36,7 +36,7 @@ public class InfoService {
     private final InfoRepository infoRepository;
     private final ChapterRepository chapterRepository;
     private final ActivityValidator activityValidator;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final UserRepository userRepository;
     private final UserValidator userValidator;
     private final UrlRepository urlRepository;
@@ -67,8 +67,7 @@ public class InfoService {
         activityValidator.validateCreateInfoForm(form);
         activityValidator.validateActivityPosition(form, chapter);
 
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
         List<Url> imageUrls = form.getImageUrls()

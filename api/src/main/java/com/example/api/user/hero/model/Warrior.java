@@ -1,13 +1,14 @@
-package com.example.api.user.model.hero;
+package com.example.api.user.hero.model;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.question.model.Question;
-import com.example.api.user.model.HeroType;
+import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
-import com.example.api.util.visitor.HeroVisitor;
+import com.example.api.user.hero.HeroVisitor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +21,11 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Wizard extends Hero{
+public class Warrior extends Hero{
     private Double multiplier = 0.5;
 
-    public Wizard(HeroType type, Long coolDownTimeMillis) {
-        super(type, coolDownTimeMillis);
+    public Warrior(HeroType type, Long coolDownTimeMillis, Course course) {
+        super(type, coolDownTimeMillis, course);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class Wizard extends Hero{
                                                User user,
                                                GraphTaskResult result,
                                                Question question) throws RequestValidationException {
-        return visitor.visitWizard(this, user, result, question);
+        return visitor.visitWarrior(this, result, question);
     }
 
     @Override
@@ -45,11 +46,11 @@ public class Wizard extends Hero{
         return result.getStatus() == ResultStatus.CHOOSE;
     }
 
-    public Boolean canPowerBeUsed(User user, GraphTaskResult result) {
-        return super.canPowerBeUsed(user, result, multiplier);
+    public Boolean canPowerBeUsed(GraphTaskResult result) {
+        return super.canPowerBeUsed(result, multiplier);
     }
 
-    public String getCanBeUsedMessage(User user, GraphTaskResult result) {
-        return super.getCanBeUsedMessage(user, result, multiplier);
+    public String getCanBeUsedMessage(GraphTaskResult result) {
+        return super.getCanBeUsedMessage(result);
     }
 }

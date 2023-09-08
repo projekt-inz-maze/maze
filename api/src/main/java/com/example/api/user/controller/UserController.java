@@ -4,10 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.api.user.dto.request.EditPasswordForm;
-import com.example.api.user.dto.request.RegisterUserForm;
-import com.example.api.user.dto.request.SetStudentGroupForm;
-import com.example.api.user.dto.request.SetStudentIndexForm;
+import com.example.api.security.LoggedInUserService;
+import com.example.api.user.dto.request.*;
 import com.example.api.user.dto.response.BasicStudent;
 import com.example.api.error.exception.*;
 import com.example.api.group.model.Group;
@@ -36,6 +34,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @SecurityRequirement(name = "JWT_AUTH")
 public class UserController {
     private final UserService userService;
+    private final LoggedInUserService authService;
 
     @PostMapping("/register")
     public ResponseEntity<Long> saveUser(@RequestBody RegisterUserForm form)
@@ -50,12 +49,12 @@ public class UserController {
     }
     @GetMapping("/user/current")
     public ResponseEntity<User> getCurrentUser() {
-        return ResponseEntity.ok().body(userService.getCurrentUser());
+        return ResponseEntity.ok().body(authService.getCurrentUser());
     }
 
     @GetMapping("/user/group")
     public ResponseEntity<Group> getUserGroup(@RequestParam Long courseId) throws EntityNotFoundException {
-        return ResponseEntity.ok().body(userService.getUserGroup(courseId));
+        return ResponseEntity.ok().body(userService.getCurrentUserGroup(courseId));
     }
 
     @GetMapping("/token/refresh")
@@ -86,15 +85,21 @@ public class UserController {
     }
 
     @GetMapping("/students-with-group/all")
-    public ResponseEntity<List<BasicStudent>> getAllStudentsWithGroup() {
-        return ResponseEntity.ok().body(userService.getAllStudentsWithGroup());
+    public ResponseEntity<List<BasicStudent>> getAllStudentsWithGroup(@RequestParam Long courseId) {
+        return ResponseEntity.ok().body(userService.getAllStudentsWithGroup(courseId));
     }
 
     @PostMapping("/user/group/set")
-    public ResponseEntity<Group> setUserGroup(
-            @RequestBody SetStudentGroupForm setStudentGroupForm)
-            throws EntityNotFoundException, WrongUserTypeException, StudentAlreadyAssignedToGroupException {
-        return ResponseEntity.ok().body(userService.setStudentGroup(setStudentGroupForm));
+    public ResponseEntity<Group> setUserGroup(@RequestBody SetStudentGroupForm setStudentGroupForm)
+            throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(userService.updateStudentGroup(setStudentGroupForm));
+    }
+
+    @PostMapping("/user/group/join")
+    public ResponseEntity<Group> joinGroup(@RequestBody JoinGroupDTO dto)
+            throws WrongUserTypeException, EntityNotFoundException {
+        userService.addUserToGroup(dto.getInvitationCode(), dto.getHeroType());
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/user/index/set")

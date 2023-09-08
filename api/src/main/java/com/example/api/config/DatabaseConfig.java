@@ -11,7 +11,10 @@ import com.example.api.activity.task.model.GraphTask;
 import com.example.api.activity.task.model.Info;
 import com.example.api.activity.task.model.Survey;
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
+import com.example.api.course.repository.CourseMemberRepository;
 import com.example.api.course.repository.CourseRepository;
+import com.example.api.course.service.CourseMemberService;
 import com.example.api.group.model.AccessDate;
 import com.example.api.group.model.Group;
 import com.example.api.map.model.ActivityMap;
@@ -21,12 +24,13 @@ import com.example.api.question.model.Difficulty;
 import com.example.api.question.model.Option;
 import com.example.api.question.model.Question;
 import com.example.api.question.model.QuestionType;
+import com.example.api.user.hero.HeroRepository;
+import com.example.api.user.hero.model.*;
 import com.example.api.user.model.AccountType;
-import com.example.api.user.model.HeroType;
+import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.user.model.badge.*;
-import com.example.api.user.model.hero.*;
 import com.example.api.util.model.File;
 import com.example.api.util.model.Image;
 import com.example.api.util.model.ImageType;
@@ -53,24 +57,23 @@ import com.example.api.question.service.QuestionService;
 import com.example.api.user.service.BadgeService;
 import com.example.api.user.service.UserService;
 import com.example.api.util.message.MessageManager;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Transactional
 public class DatabaseConfig {
     private final UrlRepository urlRepository;
@@ -84,9 +87,10 @@ public class DatabaseConfig {
     private final RequirementRepository requirementRepository;
     private final HeroRepository heroRepository;
     private final CourseRepository courseRepository;
+    private final CourseMemberRepository courseMemberRepository;
 
     @Bean
-    public CommandLineRunner commandLineRunner(UserService userService, ProfessorFeedbackService professorFeedbackService,
+    public CommandLineRunner commandLineRunner(UserService userService, CourseMemberService courseMemberService, ProfessorFeedbackService professorFeedbackService,
                                                SurveyResultService surveyResultService, GraphTaskService graphTaskService,
                                                GraphTaskResultService graphTaskResultService, GroupService groupService,
                                                ActivityMapService activityMapService, QuestionService questionService,
@@ -96,55 +100,65 @@ public class DatabaseConfig {
                                                SurveyService surveyService, BadgeService badgeService){
         return args -> {
 
-            // HEROES
-            long week = TimeUnit.DAYS.toMillis(7);
-            Hero priest = new Priest(HeroType.PRIEST, week);
-            Hero rogue = new Rogue(HeroType.ROGUE, week);
-            Hero warrior = new Warrior(HeroType.WARRIOR, week);
-            Hero wizard = new Wizard(HeroType.WIZARD, week);
-            heroRepository.saveAll(List.of(priest, rogue, wizard, warrior));
-
             Course course1 = new Course(null, "course1", "description for course1", false, null);
             Course course2 = new Course(null, "course2", "description for course1", false, null);
-
             courseRepository.save(course1);
             courseRepository.save(course2);
 
+            // HEROES
+            long week = TimeUnit.DAYS.toMillis(7);
+            Hero priest = new Priest(HeroType.PRIEST, week, course1);
+            Hero priest2 = new Priest(HeroType.PRIEST, week, course2);
+            Hero rogue = new Rogue(HeroType.ROGUE, week, course1);
+            Hero warrior = new Warrior(HeroType.WARRIOR, week, course1);
+            Hero wizard = new Wizard(HeroType.WIZARD, week, course1);
+            heroRepository.saveAll(List.of(priest, rogue, wizard, warrior, priest2));
+
             // USERS & GROUPS
-            List<User> students1 = new ArrayList<>();
-            students1.add(createStudent("jgorski@student.agh.edu.pl", "Jerzy", "Górski", 123456, priest, course1));
-            students1.add(createStudent("smazur@student.agh.edu.pl", "Szymon", "Mazur", 123457, rogue, course1));
-            students1.add(createStudent("murbanska@student.agh.edu.pl", "Matylda", "Urbańska",123458, wizard, course1));
-            students1.add(createStudent("pwasilewski@student.agh.edu.pl", "Patryk", "Wasilewski",123459, warrior, course1));
-            students1.add(createStudent("awojcik@student.agh.edu.pl", "Amelia", "Wójcik",223456, priest, course1));
-            students1.add(createStudent("kkruk@student.agh.edu.pl", "Kornel", "Kruk",323456, rogue, course1));
-            students1.add(createStudent("mdabrowska@student.agh.edu.pl", "Maria", "Dąbrowska",423456, wizard, course1));
-            students1.add(createStudent("aczajkowski@student.agh.edu.pl", "Antoni", "Czajkowski",523456, warrior, course1));
+            List<User> students1 = Collections.synchronizedList(new ArrayList<>());
+            students1.add(createStudent("jgorski@student.agh.edu.pl", "Jerzy", "Górski", 123456));
+            students1.add(createStudent("smazur@student.agh.edu.pl", "Szymon", "Mazur", 123457));
+            students1.add(createStudent("murbanska@student.agh.edu.pl", "Matylda", "Urbańska",123458));
+            students1.add(createStudent("pwasilewski@student.agh.edu.pl", "Patryk", "Wasilewski",123459));
+            students1.add(createStudent("awojcik@student.agh.edu.pl", "Amelia", "Wójcik",223456));
+            students1.add(createStudent("kkruk@student.agh.edu.pl", "Kornel", "Kruk",323456));
+            students1.add(createStudent("mdabrowska@student.agh.edu.pl", "Maria", "Dąbrowska",423456));
+            students1.add(createStudent("aczajkowski@student.agh.edu.pl", "Antoni", "Czajkowski",523456));
 
-            List<User> students2 = new ArrayList<>();
+            userRepository.saveAll(students1);
 
-            students2.add(createStudent("mnowak@student.agh.edu.pl", "Magdalena", "Nowak", 623456, priest, course2));
-            students2.add(createStudent("jlewandowska@student.agh.edu.pl", "Julia", "Lewandowska", 723456, rogue, course2));
-            students2.add(createStudent("mwojcik@student.agh.edu.pl", "Milena", "Wójcik", 823456, wizard, course2));
-            students2.add(createStudent("kpaluch@student.agh.edu.pl", "Kacper", "Paluch", 923456, warrior, course2));
-            students2.add(createStudent("fzalewski@student.agh.edu.pl", "Filip", "Zalewski", 133456, priest, course2));
-            students2.add(createStudent("jmichalak@student.agh.edu.pl", "Jan", "Michalak", 143456, rogue, course2));
-            students2.add(createStudent("kostrowska@student.agh.edu.pl", "Karina", "Ostrowska", 153456, wizard, course2));
-            students2.add(createStudent("dkowalska@student.agh.edu.pl", "Dominika", "Kowalska", 163456, warrior, course2));
-            students2.add(createStudent("manowak@student.agh.edu.pl", "Małgorzata Anna", "Kowalska", 163457, priest, course2));
+            List<User> students2 = Collections.synchronizedList(new ArrayList<>());
+
+            students2.add(createStudent("mnowak@student.agh.edu.pl", "Magdalena", "Nowak", 623456));
+            students2.add(createStudent("jlewandowska@student.agh.edu.pl", "Julia", "Lewandowska", 723456));
+            students2.add(createStudent("mwojcik@student.agh.edu.pl", "Milena", "Wójcik", 823456));
+            students2.add(createStudent("kpaluch@student.agh.edu.pl", "Kacper", "Paluch", 923456));
+            students2.add(createStudent("fzalewski@student.agh.edu.pl", "Filip", "Zalewski", 133456));
+            students2.add(createStudent("jmichalak@student.agh.edu.pl", "Jan", "Michalak", 143456));
+            students2.add(createStudent("kostrowska@student.agh.edu.pl", "Karina", "Ostrowska", 153456));
+            students2.add(createStudent("dkowalska@student.agh.edu.pl", "Dominika", "Kowalska", 163456));
+            students2.add(createStudent("manowak@student.agh.edu.pl", "Małgorzata Anna", "Kowalska", 163457));
+
+            userRepository.saveAll(students2);
+
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
             User professor1 = new User("bmaj@agh.edu.pl",
                     "Bernard",
                     "Maj",
                     AccountType.PROFESSOR);
-            professor1.setPassword("12345");
+            professor1.setPassword(passwordEncoder.encode("12345"));
 
             User professor2 = new User("szielinski@agh.edu.pl",
                     "Sławomir",
                     "Zieliński",
                     AccountType.PROFESSOR);
-            professor2.setPassword("12345");
+            professor2.setPassword(passwordEncoder.encode("12345"));
+            userRepository.save(professor2);
+
+            userRepository.saveAll(List.of(professor1, professor2));
+
 
             Group group = new Group();
             group.setInvitationCode("1111");
@@ -160,22 +174,31 @@ public class DatabaseConfig {
             group1.setCourse(course1);
             groupService.saveGroup(group1);
 
-            for (User user: students1) {
-                user.setLevel(1);
-                user.setGroup(group);
-                userService.saveUser(user);
-            }
+            Group group1course2 = new Group();
+            group1course2.setInvitationCode("3333");
+            group1course2.setName("xd");
+            group1course2.setCourse(course2);
+            groupService.saveGroup(group1course2);
 
-            for (User user: students2) {
-                user.setLevel(1);
-                user.setGroup(group1);
-                userService.saveUser(user);
-            }
+            addToGroup(students1.get(0), group1course2, priest2);
 
-            professor1.setGroup(group);
-            professor2.setGroup(group1);
-            userService.saveUser(professor1);
-            userService.saveUser(professor2);
+            addToGroup(students1.get(0), group, priest);
+            addToGroup(students1.get(1), group, rogue);
+            addToGroup(students1.get(2), group, wizard);
+            addToGroup(students1.get(3), group, warrior);
+            addToGroup(students1.get(4), group, priest);
+            addToGroup(students1.get(5), group, rogue);
+            addToGroup(students1.get(6), group, wizard);
+            addToGroup(students1.get(7), group, warrior);
+
+            addToGroup(students2.get(0), group1, priest);
+            addToGroup(students2.get(1), group1, rogue);
+            addToGroup(students2.get(2), group1, wizard);
+            addToGroup(students2.get(3), group1, warrior);
+            addToGroup(students2.get(4), group1, priest);
+            addToGroup(students2.get(5), group1, rogue);
+            addToGroup(students2.get(6), group1, wizard);
+            addToGroup(students2.get(7), group1, warrior);
 
             professor1.getCourses().add(course1);
             course1.setOwner(professor1);
@@ -194,6 +217,9 @@ public class DatabaseConfig {
             groups.add(group1);
             course1.setGroups(groups);
             courseRepository.save(course1);
+
+            course2.setGroups(List.of(group1course2));
+            courseRepository.save(course2);
 
             // TASKS
             List<Question> questions = addQuestionSet(course1, questionService, optionService);
@@ -308,10 +334,12 @@ public class DatabaseConfig {
             Calendar calendar = Calendar.getInstance();
 
             GraphTaskResult result1 = new GraphTaskResult();
+            CourseMember result1Member = (students1.get(0).getCourseMember(course1).orElseThrow());
+
             result1.setGraphTask(graphTask);
-            result1.setUser(students1.get(0));
+            result1.setMember(result1Member);
             result1.setPointsReceived(12.0);
-            addReceivedPointsForUser(students1.get(0), result1.getPointsReceived());
+            addReceivedPointsForUser(result1Member, result1.getPointsReceived());
             result1.setTimeSpentSec(60 * 10);
             calendar.set(2022, Calendar.APRIL, 28);
             result1.setCourse(course1);
@@ -321,9 +349,10 @@ public class DatabaseConfig {
 
             GraphTaskResult result2 = new GraphTaskResult();
             result2.setGraphTask(graphTaskTwo);
-            result2.setUser(students1.get(1));
+            CourseMember result2Member = students1.get(1).getCourseMember(course1).orElseThrow();
+            result2.setMember(result2Member);
             result2.setPointsReceived(10.0);
-            addReceivedPointsForUser(students1.get(1), result2.getPointsReceived());
+            addReceivedPointsForUser(result2Member, result2.getPointsReceived());
             result2.setCourse(course1);
             result2.setTimeSpentSec(60 * 10);
             calendar.set(2022, Calendar.APRIL, 13);
@@ -333,9 +362,10 @@ public class DatabaseConfig {
 
             GraphTaskResult result3 = new GraphTaskResult();
             result3.setGraphTask(graphTaskTwo);
-            result3.setUser(students2.get(0));
+            CourseMember result3Member = students2.get(0).getCourseMember(course1).orElseThrow();
+            result3.setMember(result3Member);
             result3.setPointsReceived(11.0);
-            addReceivedPointsForUser(students2.get(0), result3.getPointsReceived());
+            addReceivedPointsForUser(result3Member, result3.getPointsReceived());
             result3.setTimeSpentSec(60 * 10);
             result3.setCourse(course1);
             calendar.set(2022, Calendar.APRIL, 14);
@@ -345,9 +375,10 @@ public class DatabaseConfig {
 
             GraphTaskResult result4 = new GraphTaskResult();
             result4.setGraphTask(graphTaskTwo);
-            result4.setUser(students2.get(1));
+            CourseMember result4Member = students2.get(1).getCourseMember(course1).orElseThrow();
+            result4.setMember(result4Member);
             result4.setPointsReceived(30.5);
-            addReceivedPointsForUser(students2.get(1), result4.getPointsReceived());
+            addReceivedPointsForUser(result4Member, result4.getPointsReceived());
             result4.setTimeSpentSec(60 * 10);
             calendar.set(2022, Calendar.APRIL, 14);
             result4.setStartDateMillis(calendar.getTimeInMillis());
@@ -358,7 +389,8 @@ public class DatabaseConfig {
             FileTaskResult fileResult = new FileTaskResult();
             fileResult.setId(1L);
             fileResult.setFileTask(fileTask);
-            fileResult.setUser(students1.get(0));
+            CourseMember fileResultMember = students1.get(0).getCourseMember(course1).orElseThrow();
+            fileResult.setMember(fileResultMember);
             fileResult.setEvaluated(false);
             fileResult.setAnswer("Lorem ipsum");
             calendar.set(2022, Calendar.JUNE, 11);
@@ -379,21 +411,23 @@ public class DatabaseConfig {
             calendar.set(2022, Calendar.JUNE, 15);
             AdditionalPoints additionalPoints = new AdditionalPoints();
             additionalPoints.setId(1L);
-            additionalPoints.setUser(students1.get(0));
+            CourseMember additionalPointsMember = students1.get(0).getCourseMember(course1).orElseThrow();
+            additionalPoints.setMember(additionalPointsMember);
             additionalPoints.setPointsReceived(100D);
             additionalPoints.setSendDateMillis(calendar.getTimeInMillis());
             additionalPoints.setProfessorEmail(professor1.getEmail());
             additionalPoints.setDescription("Good job");
-            addReceivedPointsForUser(students1.get(0), additionalPoints.getPointsReceived());
+            addReceivedPointsForUser(additionalPointsMember, additionalPoints.getPointsReceived());
             additionalPoints.setCourse(course1);
             additionalPointsRepository.save(additionalPoints);
 
             SurveyResult surveyResult1 = new SurveyResult();
             surveyResult1.setSurvey(survey);
             surveyResult1.setId(1L);
-            surveyResult1.setUser(students1.get(0));
+            CourseMember surveyResult1Member = students1.get(0).getCourseMember(course1).orElseThrow();
+            surveyResult1.setMember(surveyResult1Member);
             surveyResult1.setPointsReceived(survey.getMaxPoints());
-            addReceivedPointsForUser(students1.get(0), surveyResult1.getPointsReceived());
+            addReceivedPointsForUser(surveyResult1Member, surveyResult1.getPointsReceived());
             calendar.set(2022, Calendar.JUNE, 16);
             surveyResult1.setSendDateMillis(calendar.getTimeInMillis());
             surveyResult1.setCourse(course1);
@@ -402,9 +436,10 @@ public class DatabaseConfig {
             SurveyResult surveyResult2 = new SurveyResult();
             surveyResult2.setSurvey(survey);
             surveyResult2.setId(2L);
-            surveyResult2.setUser(students1.get(1));
+            CourseMember surveyResult2Member = students1.get(1).getCourseMember(course1).orElseThrow();
+            surveyResult2.setMember(surveyResult2Member);
             surveyResult2.setPointsReceived(survey.getMaxPoints());
-            addReceivedPointsForUser(students1.get(1), surveyResult2.getPointsReceived());
+            addReceivedPointsForUser(surveyResult2Member, surveyResult2.getPointsReceived());
             calendar.set(2022, Calendar.JUNE, 18);
             surveyResult2.setSendDateMillis(calendar.getTimeInMillis());
             surveyResult2.setCourse(course1);
@@ -413,9 +448,10 @@ public class DatabaseConfig {
             SurveyResult surveyResult3 = new SurveyResult();
             surveyResult3.setSurvey(survey);
             surveyResult3.setId(3L);
-            surveyResult3.setUser(students2.get(2));
+            CourseMember surveyResult3Member = students2.get(2).getCourseMember(course1).orElseThrow();
+            surveyResult3.setMember(surveyResult3Member);
             surveyResult3.setPointsReceived(survey.getMaxPoints());
-            addReceivedPointsForUser(students2.get(2), surveyResult3.getPointsReceived());
+            addReceivedPointsForUser(surveyResult3Member, surveyResult3.getPointsReceived());
             calendar.set(2022, Calendar.JUNE, 19);
             surveyResult3.setSendDateMillis(calendar.getTimeInMillis());
             surveyResult3.setCourse(course1);
@@ -448,6 +484,16 @@ public class DatabaseConfig {
             initAllRanks(course2);
             initBadges(course1);
         };
+    }
+
+    private void addToGroup(User user, Group group, Hero hero) {
+        UserHero userHero = userHero(hero, group.getCourse());
+        CourseMember cm = new CourseMember(user, group, userHero);
+        courseMemberRepository.save(cm);
+        user.getCourseMemberships().add(cm);
+        group.getMembers().add(cm);
+        group.getUsers().add(user);
+        userRepository.save(user);
     }
 
     private List<Requirement> createDefaultRequirements() {
@@ -829,25 +875,26 @@ public class DatabaseConfig {
                 badge11, badge12, badge13, badge14, badge15, badge16, badge17, badge18, badge19));
     }
 
-    private void addReceivedPointsForUser(User student, Double points){
+    private void addReceivedPointsForUser(CourseMember student, Double points){
         student.setPoints(student.getPoints() + points);
     }
 
     private User createStudent(String email,
                                String name,
                                String lastName,
-                               Integer indexNumber,
-                               Hero hero,
-                               Course course) {
+                               Integer indexNumber) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User student = new User(email,
                 name,
                 lastName,
                 AccountType.STUDENT);
-        student.setPassword("12345");
+        student.setPassword(passwordEncoder.encode("12345"));
         student.setIndexNumber(indexNumber);
-        student.setUserHero(new UserHero(hero, 0, 0L, course));
-        student.setPoints(0D);
         return student;
+    }
+
+    private UserHero userHero(Hero hero, Course course) {
+        return new UserHero(hero, 0, 0L, course);
     }
 
     private List<Question> addQuestionSet(Course course, QuestionService questionService, OptionService optionService) {

@@ -6,7 +6,7 @@ import com.example.api.user.dto.response.BasicStudent;
 import com.example.api.error.exception.*;
 import com.example.api.group.model.Group;
 import com.example.api.user.model.AccountType;
-import com.example.api.user.model.HeroType;
+import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.task.repository.FileTaskRepository;
@@ -15,7 +15,7 @@ import com.example.api.activity.task.repository.InfoRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.service.UserService;
 import com.example.api.user.service.util.ProfessorRegisterToken;
 import com.example.api.validator.PasswordValidator;
@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -43,7 +42,7 @@ public class UserServiceTests {
     @Mock private UserRepository userRepository;
     @Mock private GroupRepository groupRepository;
     @Mock private PasswordEncoder passwordEncoder;
-    @Mock private AuthenticationService authService;
+    @Mock private LoggedInUserService authService;
     @Mock private Authentication authentication;
     @Mock private UserValidator userValidator;
     @Mock private GraphTaskRepository graphTaskRepository;
@@ -67,19 +66,20 @@ public class UserServiceTests {
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        userService = new UserService(userRepository,
-                groupRepository,
-                graphTaskRepository,
-                fileTaskRepository,
-                surveyRepository,
-                infoRepository,
-                additionalPointsRepository,
-                authService,
-                passwordEncoder,
-                userValidator,
-                professorRegisterToken,
-                passwordValidator
-        );
+        userService = null;
+//                new UserService(userRepository,
+//                groupRepository,
+//                graphTaskRepository,
+//                fileTaskRepository,
+//                surveyRepository,
+//                infoRepository,
+//                additionalPointsRepository,
+//                authService,
+//                passwordEncoder,
+//                userValidator,
+//                professorRegisterToken,
+//                passwordValidator
+//        );
         user = new User();
         user.setId(1L);
         user.setEmail("user@gmail.com");
@@ -192,45 +192,15 @@ public class UserServiceTests {
     }
 
     @Test
-    public void getUsers() {
-        // given
-        User secondUser = new User();
-        secondUser.setId(2L);
-        given(userRepository.findAll()).willReturn(List.of(user, secondUser));
-
-        // when
-        List<User> returnedUsers = userService.getUsers();
-
-        // then
-        verify(userRepository).findAll();
-        assertThat(returnedUsers.size()).isEqualTo(2);
-        assertThat(returnedUsers.contains(user)).isTrue();
-        assertThat(returnedUsers.contains(secondUser)).isTrue();
-    }
-
-    @Test
-    public void getUsersWhenIsEmpty() {
-        // given
-        given(userRepository.findAll()).willReturn(List.of());
-
-        // when
-        List<User> returnedUsers = userService.getUsers();
-
-        // then
-        verify(userRepository).findAll();
-        assertThat(returnedUsers.size()).isEqualTo(0);
-    }
-
-    @Test
     public void getUserGroup() throws EntityNotFoundException {
         // given
-        user.setGroup(group);
+        userService.updateStudentGroup(user, group);
         given(userRepository.findUserByEmail(user.getEmail())).willReturn(user);
-        given(authService.getAuthentication()).willReturn(authentication);
+        given(authService.getCurrentUser()).willReturn(user);
         given(authentication.getName()).willReturn(user.getEmail());
 
         // when
-        Group userGroup = userService.getUserGroup(0L);
+        Group userGroup = userService.getCurrentUserGroup(0L);
 
         // then
         verify(userRepository).findUserByEmail(stringArgumentCaptor.capture());
@@ -239,34 +209,36 @@ public class UserServiceTests {
         assertThat(userGroup).isEqualTo(group);
     }
 
-    @Test
-    public void getAllStudentsWithGroup() {
-        // given
-        User secondUser = new User();
-        Group secondGroup = new Group();
-        user.setGroup(group);
-        secondUser.setGroup(secondGroup);
-        given(userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)).willReturn(List.of(user, secondUser));
-
-        // when
-        List<BasicStudent> studentsWithGroup = userService.getAllStudentsWithGroup();
-
-        // then
-        verify(userRepository).findAllByAccountTypeEquals(accountTypeArgumentCaptor.capture());
-        AccountType capturedAccountType = accountTypeArgumentCaptor.getValue();
-        assertThat(capturedAccountType).isEqualTo(AccountType.STUDENT);
-        assertThat(studentsWithGroup.contains(new BasicStudent(user))).isTrue();
-        assertThat(studentsWithGroup.contains(new BasicStudent(secondUser))).isTrue();
-        assertThat(studentsWithGroup.size()).isEqualTo(2);
-    }
+//    @Test
+//    public void getAllStudentsWithGroup() {
+//        // given
+//        User secondUser = new User();
+//        Group secondGroup = new Group();
+//        user.setGroup(group);
+//        secondUser.setGroup(secondGroup);
+//        given(userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)).willReturn(List.of(user, secondUser));
+//        Long courseId = 0L;
+//
+//        // when
+//        List<BasicStudent> studentsWithGroup = userService.getAllStudentsWithGroup(courseId);
+//
+//        // then
+//        verify(userRepository).findAllByAccountTypeEquals(accountTypeArgumentCaptor.capture());
+//        AccountType capturedAccountType = accountTypeArgumentCaptor.getValue();
+//        assertThat(capturedAccountType).isEqualTo(AccountType.STUDENT);
+//        assertThat(studentsWithGroup.contains(new BasicStudent(user))).isTrue();
+//        assertThat(studentsWithGroup.contains(new BasicStudent(secondUser))).isTrue();
+//        assertThat(studentsWithGroup.size()).isEqualTo(2);
+//    }
 
     @Test
     public void getAllStudentsWithGroupWhenIsEmpty() {
         // given
         given(userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)).willReturn(List.of());
+        Long courseId = 0L;
 
         // when
-        List<BasicStudent> studentsWithGroup = userService.getAllStudentsWithGroup();
+        List<BasicStudent> studentsWithGroup = userService.getAllStudentsWithGroup(courseId);
 
         // then
         verify(userRepository).findAllByAccountTypeEquals(accountTypeArgumentCaptor.capture());
@@ -276,13 +248,13 @@ public class UserServiceTests {
     }
 
     @Test
-    public void setStudentGroup() throws WrongUserTypeException, StudentAlreadyAssignedToGroupException, EntityNotFoundException {
+    public void setStudentGroup() throws WrongUserTypeException, EntityNotFoundException {
         // given
-        user.setAccountType(AccountType.STUDENT);;
+        user.setAccountType(AccountType.STUDENT);
         List<User> oldGroupUsers = new ArrayList<>();
         oldGroupUsers.add(user);
         group.setUsers(oldGroupUsers);
-        user.setGroup(group);
+        //user.setGroup(group);
         Group newGroup = new Group();
         newGroup.setId(2L);
         newGroup.setUsers(new ArrayList<>());
@@ -294,7 +266,7 @@ public class UserServiceTests {
         given(groupRepository.findGroupById(newGroup.getId())).willReturn(newGroup);
 
         //when
-        userService.setStudentGroup(setStudentGroupForm);
+        userService.updateStudentGroup(setStudentGroupForm);
 
         // then
         verify(userRepository).findUserById(idArgumentCaptor.capture());

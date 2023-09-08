@@ -1,5 +1,6 @@
 package com.example.api.map.model.requirement;
 
+import com.example.api.course.model.Course;
 import com.example.api.map.dto.response.RequirementDTO;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.util.visitor.RequirementFulfilledVisitor;
@@ -30,7 +31,7 @@ public class DateToRequirement extends Requirement {
     }
 
     @Override
-    public boolean isFulfilled(RequirementFulfilledVisitor visitor) {
+    public boolean isFulfilled(RequirementFulfilledVisitor visitor, Course course) {
         return visitor.visitDateToRequirement(this);
     }
 

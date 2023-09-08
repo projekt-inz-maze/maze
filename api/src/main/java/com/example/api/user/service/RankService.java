@@ -1,8 +1,10 @@
 package com.example.api.user.service;
 
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.dto.request.rank.AddRankForm;
 import com.example.api.user.dto.request.rank.EditRankForm;
 import com.example.api.user.dto.response.rank.CurrentRankResponse;
@@ -11,7 +13,7 @@ import com.example.api.user.dto.response.rank.RanksForHeroTypeResponse;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.user.model.HeroType;
+import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.util.model.Image;
@@ -19,7 +21,6 @@ import com.example.api.util.model.ImageType;
 import com.example.api.user.repository.RankRepository;
 import com.example.api.util.repository.ImageRepository;
 import com.example.api.validator.RankValidator;
-import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class RankService {
     private final CourseService courseService;
     private final UserService userService;
     private final CourseValidator courseValidator;
+    private final LoggedInUserService authService;
 
     public List<RanksForHeroTypeResponse> getAllRanks(Long courseId) throws EntityNotFoundException {
         Course course = courseService.getCourse(courseId);
@@ -65,8 +67,8 @@ public class RankService {
     public Map<HeroType, List<Rank>> getHeroTypeToRanks(Course course) {
         return rankRepository.findAllByCourseIs(course).stream().collect(Collectors.groupingBy(Rank::getHeroType));
     }
-    public List<Rank> getAllForHeroType(Course course, HeroType heroType) {
-        return rankRepository.findAllByCourseIsAndHeroTypeIs(course, heroType);
+    public List<Rank> getAllForHeroType(CourseMember member) {
+        return rankRepository.findAllByCourseIsAndHeroTypeIs(member.getCourse(), member.getHeroType());
     }
 
     public void addRank(AddRankForm form) throws RequestValidationException, IOException {
@@ -88,7 +90,7 @@ public class RankService {
     }
 
     public void updateRank(EditRankForm form) throws RequestValidationException, IOException {
-        User user = userService.getCurrentUser();
+        User user = authService.getCurrentUser();
         Long id = form.getRankId();
         Rank rank = rankRepository.findRankById(id);
         courseValidator.validateCourseOwner(rank.getCourse(), user);
@@ -115,12 +117,10 @@ public class RankService {
     }
 
     public CurrentRankResponse getCurrentRankResponse(User user, Long courseId) throws EntityNotFoundException {
-        courseValidator.validateUserCanAccess(user, courseId);
-        Course course = courseService.getCourse(courseId);
+        CourseMember member = user.getCourseMember(courseId).orElseThrow();
 
-        double points = user.getPoints();
-        HeroType heroType = user.getHeroType();
-        List<Rank> ranks = getSortedRanksForHeroType(heroType, course);
+        double points = member.getPoints();
+        List<Rank> ranks = getSortedRanksForHeroType(member);
         Rank currentRank = getCurrentRankResponse(ranks, points);
         if (currentRank == null) {
             if (ranks.size() == 0) {
@@ -161,20 +161,20 @@ public class RankService {
         return currRank;
     }
 
-    public List<Rank> getSortedRanksForHeroType(HeroType heroType, Course course) {
-        return getAllForHeroType(course, heroType)
+    public List<Rank> getSortedRanksForHeroType(CourseMember courseMember) {
+        return getAllForHeroType(courseMember)
                 .stream()
                 .sorted(Comparator.comparingDouble(Rank::getMinPoints))
                 .toList();
     }
 
-    public Rank getCurrentRank(User user, Course course) {
-        List<Rank> ranks = getSortedRanksForHeroType(user.getHeroType(), course);
-        return getCurrentRankResponse(ranks, user.getPoints());
+    public Rank getCurrentRank(CourseMember member) {
+        List<Rank> ranks = getSortedRanksForHeroType(member);
+        return getCurrentRankResponse(ranks, member.getPoints());
     }
 
     public void deleteRank(Long id) throws RequestValidationException {
-        User owner = userService.getCurrentUser();
+        User owner = authService.getCurrentUser();
         log.info("Deleting rank with id {}", id);
         Rank rank = rankRepository.findRankById(id);
         rankValidator.validateRankIsNotNull(rank, id);

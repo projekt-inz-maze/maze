@@ -1,6 +1,7 @@
 package com.example.api.activity.validator;
 
 import com.example.api.activity.task.dto.request.create.*;
+import com.example.api.activity.task.model.Info;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.EntityRequiredAttributeNullException;
 import com.example.api.error.exception.ExceptionMessage;

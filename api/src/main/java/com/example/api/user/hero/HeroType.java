@@ -1,4 +1,4 @@
-package com.example.api.user.model;
+package com.example.api.user.hero;
 
 public enum HeroType {
     WARRIOR("WARRIOR"),

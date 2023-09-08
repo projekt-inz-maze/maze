@@ -3,20 +3,18 @@ package com.example.api.activity.result.service.ranking;
 import com.example.api.activity.ActivityService;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.dto.response.SurveyAnswerResponse;
-import com.example.api.activity.task.model.Activity;
+import com.example.api.activity.result.service.ActivityResultService;
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
+import com.example.api.course.service.CourseMemberService;
 import com.example.api.course.service.CourseService;
+import com.example.api.course.validator.CourseValidator;
+import com.example.api.course.validator.exception.StudentNotEnrolledException;
 import com.example.api.error.exception.EntityNotFoundException;
-import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.activity.task.model.GraphTask;
-import com.example.api.activity.task.model.Survey;
 import com.example.api.group.model.Group;
-import com.example.api.user.model.AccountType;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
@@ -26,7 +24,6 @@ import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.user.service.RankService;
 import com.example.api.user.service.UserService;
-import com.example.api.group.validator.GroupValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +33,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.DoubleStream;
 
@@ -50,24 +48,21 @@ public class RankingService {
     private final SurveyResultRepository surveyResultRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
     private final UserValidator userValidator;
-    private final GroupValidator groupValidator;
     private final UserService userService;
     private final RankService rankService;
     private final CourseService courseService;
     private final ActivityService activityService;
+    private final CourseValidator courseValidator;
+    private final ActivityResultService activityResultService;
+    private final CourseMemberService courseMemberService;
+    private final LoggedInUserService authService;
 
-
-    public List<RankingResponse> getRanking(Long courseId) throws EntityNotFoundException {
-        return getRanking(courseService.getCourse(courseId));
-    }
-
-    public List<RankingResponse> getRanking(Course course) {
-        List<RankingResponse> rankingList = course
-                .getAllStudents()
+    public List<RankingResponse> getRanking(Long courseId) {
+        List<RankingResponse> rankingList = courseMemberService.getAll(courseId)
                 .stream()
-                .map(student -> {
+                .map(member -> {
                     try {
-                        return studentToRankingEntry(student, course);
+                        return studentToRankingEntry(member);
                     } catch (EntityNotFoundException e) {
                         throw new RuntimeException(e);
                     }
@@ -79,13 +74,14 @@ public class RankingService {
         return rankingList;
     }
 
-    public List<RankingResponse> getRankingForLoggedStudentGroup(Long courseId) {
-        Group group = userService.getUserGroup(courseId);
-        List<RankingResponse> rankingList = group.getUsers()
+    public List<RankingResponse> getRankingForLoggedStudentGroup(Long courseId) throws StudentNotEnrolledException {
+        CourseMember member = authService.getCurrentUser().getCourseMember(courseId).orElseThrow();
+        Group group = userService.getCurrentUserGroup(courseId);
+        List<RankingResponse> rankingList = group.getMembers()
                 .stream()
                 .map(student -> {
                     try {
-                        return studentToRankingEntry(student, group.getCourse());
+                        return studentToRankingEntry(student);
                     } catch (EntityNotFoundException e) {
                         throw new RuntimeException(e);
                     }
@@ -102,16 +98,15 @@ public class RankingService {
 
         Course course = courseService.getCourse(courseId);
         List<RankingResponse> rankingList = course
-                .getAllStudents()
+                .getAllMembers()
                 .stream()
-                .filter(student ->
-                                student.getFirstName().concat(student.getLastName()).toLowerCase().replaceAll("\\s","").contains(searchLower) ||
-                                student.getLastName().concat(student.getFirstName()).toLowerCase().replaceAll("\\s","").contains(searchLower) ||
-                                student.getHeroType().getPolishTypeName().toLowerCase().contains(searchLower) ||
-                                student.getGroup().getName().toLowerCase().contains(searchLower))
-                .map(student -> {
+                .filter(member -> member.getUser().getFirstName().concat(member.getUser().getLastName()).toLowerCase().replaceAll("\\s","").contains(searchLower)
+                        || member.getUser().getLastName().concat(member.getUser().getFirstName()).toLowerCase().replaceAll("\\s","").contains(searchLower)
+                        || member.getHeroType().getPolishTypeName().toLowerCase().contains(searchLower)
+                        || member.getGroup().getName().toLowerCase().contains(searchLower))
+                .map(member -> {
                     try {
-                        return studentToRankingEntry(student, course);
+                        return studentToRankingEntry(member);
                     } catch (EntityNotFoundException e) {
                         throw new RuntimeException(e);
                     }
@@ -124,22 +119,24 @@ public class RankingService {
     }
 
     public List<RankingResponse> getActivityRanking(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
-        User professor = userService.getCurrentUser();
-        userValidator.validateProfessorAccount(professor);
-        Activity activity = activityService.getActivity(activityID);
+        userService.getCurrentUserAndValidateProfessorAccount();
 
-        List<RankingResponse> rankingList =  userRepository.findAllByAccountTypeEquals(AccountType.STUDENT)
-                        .stream()
-                        .map(user -> {
-                            SurveyAnswerResponse holder = new SurveyAnswerResponse();
-                            Double points = getStudentPointsForActivity(activity, user, holder);
-                            try {
-                                return studentAndPointsToRankingEntry(user, points, holder, activity.getCourse());
-                            } catch (EntityNotFoundException e) {
-                                throw new RuntimeException(e);
-                            }
-                        })
-                        .toList();
+        List<RankingResponse> rankingList = activityResultService.getResultsForActivity(activityID)
+                .stream()
+                .map(result -> new RankingResponse(
+                        result.getMember().getUser().getEmail(),
+                        result.getMember().getUser().getFirstName(),
+                        result.getMember().getUser().getLastName(),
+                        result.getMember().getGroup().getName(),
+                        result.getMember().getHeroType(),
+                        result.getPointsReceived(),
+                        null,
+                        rankService.getCurrentRank(result.getMember()).getName(),
+                        result.getMember().getUnlockedBadges().size(),
+                        (result instanceof SurveyResult) ? new SurveyAnswerResponse((SurveyResult) result) : null))
+                .sorted(Comparator.comparing(RankingResponse::getPoints).reversed())
+                .toList();
+
         addPositionToRankingList(rankingList);
         return rankingList;
     }
@@ -165,33 +162,13 @@ public class RankingService {
                 .toList();
         addPositionToRankingList(rankingList);
         return rankingList;
-
-    }
-
-    private Double getStudentPointsForActivity(Activity activity, User user, SurveyAnswerResponse surveyAnswerHolder) {
-        if (activity instanceof GraphTask) {
-            GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskAndUser((GraphTask) activity, user);
-            return result != null ? result.getPointsReceived() : null;
-        }
-
-        if (activity instanceof FileTask) {
-            FileTaskResult result = fileTaskResultRepository.findFileTaskResultByFileTaskAndUser((FileTask) activity, user);
-            return result != null ? (result.isEvaluated() ? result.getPointsReceived() : null) : null;
-        }
-        if (activity instanceof Survey) {
-            SurveyResult result = surveyResultRepository.findSurveyResultBySurveyAndUser((Survey) activity, user);
-            if (result == null) return null;
-            surveyAnswerHolder.setAnswer(result.getFeedback());
-            surveyAnswerHolder.setStudentPoints(result.getRate());
-            return result.getPointsReceived();
-        }
-
-        return null;
     }
 
     private void addPositionToRankingList(List<RankingResponse> rankingResponses){
         AtomicInteger position = new AtomicInteger(1);
-        rankingResponses.forEach(item -> item.setPosition(position.getAndIncrement()));
+        for (RankingResponse item : rankingResponses) {
+            item.setPosition(position.getAndIncrement());
+        }
     }
 
     public Integer getRankingPosition(Long courseId) throws WrongUserTypeException, UsernameNotFoundException, EntityNotFoundException {
@@ -199,9 +176,9 @@ public class RankingService {
         return getPositionFromRanking(getRanking(courseId), student.getEmail());
     }
 
-    public Integer getGroupRankingPosition(Long courseId) throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException {
+    public Integer getGroupRankingPosition(Long courseId) throws WrongUserTypeException, UsernameNotFoundException, EntityNotFoundException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
-        groupValidator.validateUserGroupIsNotNull(student);
+        courseValidator.validateStudentCanAccess(student, courseId);
 
         return getPositionFromRanking(getRankingForLoggedStudentGroup(courseId), student.getEmail());
     }
@@ -215,76 +192,45 @@ public class RankingService {
                 .orElseThrow(() -> new UsernameNotFoundException("User" + email + " not found in database"));
     }
 
-    private RankingResponse studentToRankingEntry(User student, Course course) throws EntityNotFoundException {
-        Rank rank = rankService.getCurrentRank(student, course);
-        RankingResponse rankingResponse = new RankingResponse(student, rank == null? null : rank.getName());
-        rankingResponse.setPoints(getStudentPoints(student));
+    private RankingResponse studentToRankingEntry(CourseMember member) throws EntityNotFoundException {
+        String rankName = Optional.ofNullable(rankService.getCurrentRank(member)).map(Rank::getName).orElse(null);
+        RankingResponse rankingResponse = new RankingResponse(rankName, member, getStudentPoints(member));
         return rankingResponse;
     }
 
-    private RankingResponse studentAndPointsToRankingEntry(User student, Double points, SurveyAnswerResponse studentAnswer, Course course) throws EntityNotFoundException {
-        RankingResponse rankingResponse = new RankingResponse(student, rankService, course);
-        rankingResponse.setPoints(points);
-        if (studentAnswer.getStudentPoints() != null) {
-            rankingResponse.setStudentAnswer(studentAnswer);
-        }
-        return rankingResponse;
-    }
-
-    private Double getGraphTaskPoints(User student) {
-        return graphTaskResultRepository.findAllByUser(student)
+    private Double getGraphTaskPoints(CourseMember member) {
+        return graphTaskResultRepository.findAllByMember(member)
                 .stream()
-                .mapToDouble(task -> {
-                    try {
-                        return task.getPointsReceived();
-                    } catch (Exception e) {
-                        log.info("GraphTaskResult with id {} not checked yet", task.getId());
-                    }
-                    return 0.0;
-                })
+                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .mapToDouble(d -> d)
                 .sum();
     }
 
-    private Double getFileTaskPoints(User student) {
-        return fileTaskResultRepository.findAllByUser(student)
+    private Double getFileTaskPoints(CourseMember member) {
+        return fileTaskResultRepository.findAllByMember(member)
                 .stream()
-                .mapToDouble(task -> {
-                    try {
-                        return task.getPointsReceived();
-                    } catch (Exception e) {
-                        log.info("FileTaskResult with id {} not checked yet", task.getId());
-                    }
-                    return 0.0;
-                }).sum();
+                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .mapToDouble(d -> d)
+                .sum();
     }
 
-    private Double getAdditionalPoints(User student) {
-        return additionalPointsRepository.findAllByUser(student)
+    private Double getAdditionalPoints(CourseMember member) {
+        return additionalPointsRepository.findAllByMember(member)
                 .stream()
-                .mapToDouble(points -> {
-                    try {
-                        return points.getPointsReceived();
-                    } catch (Exception e) {
-                        log.info("AdditionalPoints with id {} has no points assigned", points.getId());
-                    }
-                    return 0.0;
-                }).sum();
+                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .mapToDouble(d -> d)
+                .sum();
     }
 
-    private Double getSurveyPoints(User student) {
-        return surveyResultRepository.findAllByUser(student)
+    private Double getSurveyPoints(CourseMember member) {
+        return surveyResultRepository.findAllByMember(member)
                 .stream()
-                .mapToDouble(survey -> {
-                    try {
-                        return survey.getPointsReceived();
-                    } catch (Exception e) {
-                        log.info("SurveyResult with id {} has no points assigned", survey.getId());
-                    }
-                    return 0.0;
-                }).sum();
+                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .mapToDouble(d -> d)
+                .sum();
     }
 
-    private Double getStudentPoints(User student) {
+    private Double getStudentPoints(CourseMember student) {
         Double graphTaskPoints = getGraphTaskPoints(student);
         Double fileTaskPoints = getFileTaskPoints(student);
         Double additionalPoints = getAdditionalPoints(student);

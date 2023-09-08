@@ -20,7 +20,7 @@ public class SurveyResultInfoResponse {
     public SurveyResultInfoResponse(SurveyResult surveyResult) {
         this.surveyResultId = surveyResult.getId();
         this.surveyId = surveyResult.getSurvey().getId();
-        this.from = surveyResult.getUser().getEmail();
+        this.from = surveyResult.getMember().getUser().getEmail();
         this.feedback = surveyResult.getFeedback();
         this.rate = surveyResult.getRate();
     }

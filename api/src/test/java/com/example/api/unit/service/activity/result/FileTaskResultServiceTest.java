@@ -5,6 +5,7 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.task.model.FileTask;
+import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.util.model.File;
@@ -12,7 +13,7 @@ import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.task.repository.FileTaskRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.util.repository.FileRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.activity.result.service.FileTaskResultService;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
@@ -60,7 +61,7 @@ public class FileTaskResultServiceTest {
                 userRepository,
                 fileRepository,
                 userValidator,
-                authService,
+                null,
                 activityValidator
         );
         fileTask = new FileTask();
@@ -138,7 +139,7 @@ public class FileTaskResultServiceTest {
 
         //then
         verify(fileTaskRepository, times(2)).findFileTaskById(idArgumentCaptor.capture());
-        verify(userRepository, times(2)).findUserByEmail(stringArgumentCaptor.capture());
+        verify(authService, times(1)).getAuthentication();
         Long capturedId = idArgumentCaptor.getValue();
         String capturedEmail = stringArgumentCaptor.getValue();
         assertThat(capturedId).isEqualTo(fileTask.getId());

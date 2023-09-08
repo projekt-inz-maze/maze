@@ -44,6 +44,11 @@ public class Course {
     @OneToMany(mappedBy = "course")
     @JsonBackReference
     @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<CourseMember> courseMembers = new LinkedList<>();
+
+    @OneToMany(mappedBy = "course")
+    @JsonBackReference
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Chapter> chapters = new LinkedList<>();
 
     public Course(Long id, String name, String description, Boolean isArchived, User owner) {
@@ -54,10 +59,15 @@ public class Course {
         this.owner = owner;
     }
 
-    public List<User> getAllStudents() {
+    public List<User> getAllStudents2() {
         return groups.stream()
                 .flatMap(group -> group.getUsers().stream())
                 .filter(user -> user.getAccountType().equals(AccountType.STUDENT))
+                .toList();
+    }
+    public List<CourseMember> getAllMembers() {
+        return groups.stream()
+                .flatMap(group -> group.getMembers().stream())
                 .toList();
     }
 }

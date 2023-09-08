@@ -21,6 +21,7 @@ import com.example.api.activity.task.model.FileTask;
 import com.example.api.map.model.ActivityMap;
 import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.task.repository.FileTaskRepository;
@@ -29,7 +30,6 @@ import com.example.api.activity.task.repository.InfoRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.map.service.RequirementService;
-import com.example.api.user.service.UserService;
 import com.example.api.activity.validator.ActivityValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,13 +53,13 @@ public class TaskService {
     private final ChapterRepository chapterRepository;
     private final ActivityValidator activityValidator;
     private final RequirementService requirementService;
-    private final UserService userService;
     private final CourseValidator courseValidator;
     private final CourseService courseService;
+    private final LoggedInUserService authService;
 
     public List<ActivityToEvaluateResponse> getAllActivitiesToEvaluate(Long courseId)
             throws RequestValidationException, UsernameNotFoundException {
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         Course course = courseService.getCourse(courseId);
         courseValidator.validateCourseOwner(course, professor);
         log.info("Fetching all activities that are needed to be evaluated for professor {}", professor.getEmail());
@@ -103,9 +103,17 @@ public class TaskService {
 
         List<FileResponse> filesResponse = result.getFiles().stream().map(FileResponse::new).toList();
 
-        return new TaskToEvaluateResponse(result.getUser().getEmail(), result.getId(), result.getUser().getFirstName(),
-                result.getUser().getLastName(), task.getTitle(), isLate, task.getDescription(),
-                result.getAnswer(), filesResponse, task.getMaxPoints(), id, num-1);
+        return new TaskToEvaluateResponse(result.getMember().getUser(),
+                result.getId(),
+                task.getTitle(),
+                isLate,
+                task.getDescription(),
+                result.getAnswer(),
+                filesResponse,
+                task.getMaxPoints(),
+                id,
+                num-1
+        );
     }
 
     public List<ActivitiesResponse> getAllActivities(Long courseId) throws EntityNotFoundException {
