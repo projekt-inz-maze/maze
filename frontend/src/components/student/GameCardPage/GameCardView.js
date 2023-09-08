@@ -26,7 +26,7 @@ function GameCardView(props) {
     StudentService.getDashboardStats(courseId)
       .then((response) => {
         setDashboardStats(response)
-        localStorage.setItem('heroType', response.heroTypeStats.heroType)
+        localStorage.setItem('heroType', response.heroTypeStatsDTO.heroType)
       })
       .catch(() => setDashboardStats(null))
   }, [])
@@ -45,7 +45,7 @@ function GameCardView(props) {
                 headerText="Statystyki bohatera"
                 content={
                   <HeroStatsContent
-                    stats={{ ...dashboardStats.heroStats, heroType: dashboardStats.heroTypeStats.heroType }}
+                    stats={{ ...dashboardStats.heroStats, heroType: dashboardStats.heroTypeStatsDTO.heroType }}
                   />
                 }
               />
@@ -63,7 +63,7 @@ function GameCardView(props) {
                 headerText="Miejsce w rankingu"
                 content={
                   <PersonalRankingInfoContent
-                    stats={{ ...dashboardStats.heroTypeStats, userPoints: dashboardStats.generalStats.allPoints }}
+                    stats={{ ...dashboardStats.heroTypeStatsDTO, userPoints: dashboardStats.generalStats.allPoints }}
                   />
                 }
               />
