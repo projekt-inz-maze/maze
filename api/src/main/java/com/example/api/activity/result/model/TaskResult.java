@@ -1,11 +1,11 @@
 package com.example.api.activity.result.model;
 
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.task.model.Activity;
-import com.example.api.user.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +13,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -26,7 +27,7 @@ public abstract class TaskResult {
 
     @OneToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+    private CourseMember member;
 
     @ManyToOne
     private Course course;
@@ -37,18 +38,17 @@ public abstract class TaskResult {
     public abstract boolean isEvaluated();
     public abstract Activity getActivity();
 
-    public TaskResult(Long id, User user, Double pointsReceived, Long sendDateMillis, Course course)
+    public TaskResult(Long id, Double pointsReceived, Long sendDateMillis, Course course, CourseMember courseMember)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         this.id = id;
-        this.user = user;
         this.setPointsReceived(pointsReceived);
         this.sendDateMillis = sendDateMillis;
         this.course= course;
+        this.member = courseMember;
     }
 
     public void setPointsReceived(Double newPoints) {
-        if (pointsReceived == null) user.changePoints(newPoints);
-        else user.changePoints(newPoints - pointsReceived);
+        member.changePoints(newPoints - Optional.ofNullable(pointsReceived).orElse(0D));
         pointsReceived = newPoints;
     }
 }

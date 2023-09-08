@@ -1,12 +1,13 @@
-package com.example.api.user.model.hero;
+package com.example.api.user.hero.model;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.course.model.Course;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.question.model.Question;
-import com.example.api.user.model.HeroType;
+import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
-import com.example.api.util.visitor.HeroVisitor;
+import com.example.api.user.hero.HeroVisitor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,15 +24,15 @@ import java.util.concurrent.TimeUnit;
 public class Priest extends Hero{
     private int healValue = 20;
 
-    public Priest(HeroType type, Long coolDownTimeMillis) {
-        super(type, coolDownTimeMillis);
+    public Priest(HeroType type, Long coolDownTimeMillis, Course course) {
+        super(type, coolDownTimeMillis, course);
     }
 
     @Override
     public SuperPowerResponse<?> useSuperPower(HeroVisitor visitor,
                                                User user, GraphTaskResult result,
                                                Question question) throws RequestValidationException {
-        return visitor.visitPriest(this, user, result);
+        return visitor.visitPriest(this, result);
     }
 
     @Override

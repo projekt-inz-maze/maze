@@ -1,6 +1,7 @@
 package com.example.api.group.service;
 
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.group.dto.request.SaveGroupForm;
@@ -13,17 +14,14 @@ import com.example.api.group.model.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.group.repository.GroupRepository;
-import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.group.validator.GroupValidator;
-import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,27 +30,23 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class GroupService {
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final GroupRepository groupRepository;
     private final GroupValidator groupValidator;
-    private final UserRepository userRepository;
     private final UserValidator userValidator;
     private final CourseService courseService;
-    private final CourseValidator courseValidator;
-    private final UserService userService;
 
     public Group saveGroup(Group group) {
         log.info("Saving group to database with name {}", group.getName());
         return groupRepository.save(group);
     }
 
-    public Long saveGroup(SaveGroupForm form) throws RequestValidationException {
+    public Long createGroup(SaveGroupForm form) throws RequestValidationException {
         log.info("Saving group to database with name {}", form.getName());
         List<Group> groups = groupRepository.findAll();
         groupValidator.validateGroup(groups, form);
         Course course = courseService.getCourse(form.getCourseId());
-        courseValidator.validateCourseOwner(course, userService.getCurrentUser());
-        Group group = new Group(null, form.getName(), new ArrayList<>(), form.getInvitationCode(), course);
+        Group group = new Group(null, form.getName(), form.getInvitationCode(), course);
         groupRepository.save(group);
         return group.getId();
     }
@@ -73,7 +67,7 @@ public class GroupService {
 
     public List<GroupCode> getInvitationCodeList(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
         log.info("Fetching group code list");
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
         Course course = courseService.getCourse(courseId);
 
@@ -127,4 +121,15 @@ public class GroupService {
                 .toList();
     }
 
+    public void removeUser(CourseMember courseMember, Group group) {
+        group.getUsers().remove(courseMember.getUser());
+        group.getMembers().remove(courseMember);
+        groupRepository.save(group);
+    }
+
+    public void addUser(CourseMember courseMember, Group group) {
+        group.getMembers().add(courseMember);
+        group.getUsers().add(courseMember.getUser());
+        groupRepository.save(group);
+    }
 }

@@ -12,5 +12,6 @@ public class BadgeResponseTopScore extends BadgeResponse<Double>{
     public BadgeResponseTopScore(TopScoreBadge badge) {
         super(badge);
         this.forGroup = badge.getForGroup();
+        this.setValue(badge.getTopScore());
     }
 }

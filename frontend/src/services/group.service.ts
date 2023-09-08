@@ -9,10 +9,11 @@ import {
 import { axiosApiGet, axiosApiPost } from '../utils/axios'
 
 class GroupService {
-  addGroup({ groupName, groupKey }: addGroupRequest) {
+  addGroup({ groupName, groupKey, courseId }: addGroupRequest) {
     return axiosApiPost(POST_GROUP, {
       name: groupName,
-      invitationCode: groupKey
+      invitationCode: groupKey,
+      courseId
     }).catch((error) => {
       throw error
     })

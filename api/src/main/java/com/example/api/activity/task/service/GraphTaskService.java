@@ -22,7 +22,7 @@ import com.example.api.map.repository.ChapterRepository;
 import com.example.api.question.repository.OptionRepository;
 import com.example.api.question.repository.QuestionRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.map.service.RequirementService;
 import com.example.api.validator.ChapterValidator;
 import com.example.api.validator.UserValidator;
@@ -48,8 +48,7 @@ import java.util.Map;
 public class GraphTaskService {
     private final GraphTaskRepository graphTaskRepository;
     private final ActivityValidator activityValidator;
-    private final AuthenticationService authService;
-    private final UserRepository userRepository;
+    private final LoggedInUserService authService;
     private final OptionRepository optionRepository;
     private final QuestionRepository questionRepository;
     private final ChapterRepository chapterRepository;
@@ -85,8 +84,7 @@ public class GraphTaskService {
         SimpleDateFormat timeToSolveFormat = new SimpleDateFormat("HH:mm:ss");
         long timeToSolveMillis = timeParser.parseAndGetTimeMillisFromHour(timeToSolveFormat, form.getTimeToSolve());
 
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
         List<Question> questions = questionFormsToQuestions(form.getQuestions());
         questionRepository.saveAll(questions);

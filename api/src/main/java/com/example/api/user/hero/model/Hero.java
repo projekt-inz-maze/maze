@@ -1,13 +1,15 @@
-package com.example.api.user.model.hero;
+package com.example.api.user.hero.model;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.question.model.Question;
-import com.example.api.user.model.HeroType;
+import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
 import com.example.api.util.message.HeroMessage;
-import com.example.api.util.visitor.HeroVisitor;
+import com.example.api.user.hero.HeroVisitor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,9 +32,14 @@ public abstract class Hero {
     private HeroType type;
     private Long coolDownTimeMillis;
 
-    public Hero(HeroType type, Long coolDownTimeMillis) {
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
+    public Hero(HeroType type, Long coolDownTimeMillis, Course course) {
         this.type = type;
         this.coolDownTimeMillis = coolDownTimeMillis;
+        this.course = course;
     }
 
     public abstract SuperPowerResponse<?> useSuperPower(HeroVisitor visitor,
@@ -43,24 +50,25 @@ public abstract class Hero {
     public abstract Boolean isResultStatusCorrect(GraphTaskResult result);
     public abstract void changeValue(Double value);
 
-    public Boolean canPowerBeUsed(User user, GraphTaskResult result) {
+    public Boolean canPowerBeUsed(GraphTaskResult result) {
         if (isResultFinishedOrStatusIncorrect(result)) {
             return false;
         }
-        return !isCoolDownActive(user);
+        return !isCoolDownActive(result.getMember());
     }
 
-    public Boolean canPowerBeUsed(User user, GraphTaskResult result, double multiplier) {
+    public Boolean canPowerBeUsed(GraphTaskResult result, double multiplier) {
         if (isResultFinishedOrStatusIncorrect(result)) {
             return false;
         }
-        int timesSuperPowerUsedInResult = user.getUserHero().getTimesSuperPowerUsedInResult();
+        CourseMember member =  result.getMember();
+        int timesSuperPowerUsedInResult = member.getUserHero().getTimesSuperPowerUsedInResult();
         if (timesSuperPowerUsedInResult != 0) {
-            int level = user.getLevel();
+            int level = member.getLevel();
             long timesSuperPowerCanBeUsed = Math.round(multiplier * level);
             return timesSuperPowerUsedInResult < timesSuperPowerCanBeUsed;
         } else {
-            return !isCoolDownActive(user);
+            return !isCoolDownActive(member);
         }
     }
 
@@ -72,45 +80,22 @@ public abstract class Hero {
         return !isResultStatusCorrect(result);
     }
 
-    protected Boolean isCoolDownActive(User user) {
+    protected Boolean isCoolDownActive(CourseMember member) {
         Long currentTimeMillis = System.currentTimeMillis();
-        Long lastPowerUsageDateMillis = user.getUserHero().getLastSuperPowerUsageTimeMillis();
+        Long lastPowerUsageDateMillis = member.getUserHero().getLastSuperPowerUsageTimeMillis();
         return currentTimeMillis - lastPowerUsageDateMillis < coolDownTimeMillis;
     }
 
-    public String getCanBeUsedMessage(User user, GraphTaskResult result) {
+    public String getCanBeUsedMessage(GraphTaskResult result) {
         if (result.isFinished()) {
             return HeroMessage.RESULT_FINISHED;
         }
         if (!isResultStatusCorrect(result)) {
             return HeroMessage.INCORRECT_STATUS;
         }
-        if (isCoolDownActive(user)) {
+        if (isCoolDownActive(result.getMember())) {
             return HeroMessage.COOL_DOWN_ACTIVE;
         }
         return HeroMessage.POWER_READY_TO_BE_USED;
-    }
-
-    public String getCanBeUsedMessage(User user, GraphTaskResult result, double multiplier) {
-        if (result.isFinished()) {
-            return HeroMessage.RESULT_FINISHED;
-        }
-        if (!isResultStatusCorrect(result)) {
-            return HeroMessage.INCORRECT_STATUS;
-        }
-        int timesSuperPowerUsedInResult = user.getUserHero().getTimesSuperPowerUsedInResult();
-        int level = user.getLevel();
-        long timesSuperPowerCanBeUsed = Math.round(multiplier * level);
-        if (timesSuperPowerUsedInResult != 0) {
-            if (timesSuperPowerUsedInResult <= timesSuperPowerCanBeUsed) {
-                return HeroMessage.CANNOT_USE_MORE;
-            }
-        } else {
-            if (isCoolDownActive(user)) {
-                return HeroMessage.COOL_DOWN_ACTIVE;
-            }
-        }
-        String message = HeroMessage.POWER_READY_TO_BE_USED_WITH_NUMBER;
-        return message.replace("{}", String.valueOf(timesSuperPowerCanBeUsed - timesSuperPowerUsedInResult));
     }
 }

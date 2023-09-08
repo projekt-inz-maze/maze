@@ -47,8 +47,8 @@ class ChapterService {
     })
   }
 
-  getChapterImagesList() {
-    return axiosApiGet(GET_FILE_CHAPTER_IMAGES, {}).catch((error) => {
+  getChapterImagesList(courseId: number) {
+    return axiosApiGet(GET_FILE_CHAPTER_IMAGES, {courseId}).catch((error) => {
       throw error
     })
   }

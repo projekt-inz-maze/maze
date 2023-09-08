@@ -1,5 +1,6 @@
 package com.example.api.map.model.requirement;
 
+import com.example.api.course.model.Course;
 import com.example.api.group.model.Group;
 import com.example.api.map.dto.response.RequirementDTO;
 import com.example.api.error.exception.RequestValidationException;
@@ -30,8 +31,8 @@ public class GroupsRequirement extends Requirement {
     }
 
     @Override
-    public boolean isFulfilled(RequirementFulfilledVisitor visitor) {
-        return visitor.visitGroupsRequirement(this);
+    public boolean isFulfilled(RequirementFulfilledVisitor visitor, Course course) {
+        return visitor.visitGroupsRequirement(this, course);
     }
 
     @Override
@@ -44,6 +45,7 @@ public class GroupsRequirement extends Requirement {
         List<String> groupNames = allowedGroups.stream()
                 .map(Group::getName)
                 .toList();
+
         return new RequirementDTO<>(
                 getId(),
                 getName(),

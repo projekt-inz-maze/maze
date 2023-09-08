@@ -3,7 +3,6 @@ package com.example.api.group.validator;
 import com.example.api.group.dto.request.SaveGroupForm;
 import com.example.api.error.exception.*;
 import com.example.api.group.model.Group;
-import com.example.api.user.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +36,7 @@ public class GroupValidator {
     public void validateGroup(List<Group> groups, SaveGroupForm form) throws RequestValidationException {
         int idx = form.getName().indexOf(";");
         if (idx != -1) {
-            log.error("Group name cannot have a semicolon!");
+            log.error("Group name cannot contain a semicolon!");
             throw new RequestValidationException(ExceptionMessage.GROUP_NAME_CONTAINS_SEMICOLON);
         }
         boolean groupNameExists = groups.stream()
@@ -51,13 +50,6 @@ public class GroupValidator {
         if(groupCodeExists) {
             log.error("Group with given code {} already exists", form.getInvitationCode());
             throw new EntityAlreadyInDatabaseException(ExceptionMessage.GROUP_CODE_TAKEN);
-        }
-    }
-    
-    public void validateUserGroupIsNotNull(User user) throws MissingAttributeException {
-        if (user.getGroup() == null) {
-            log.error("User with email {} does not have a group", user.getEmail());
-            throw new MissingAttributeException("Usere with email " + user.getEmail() + " does not have a group");
         }
     }
 }

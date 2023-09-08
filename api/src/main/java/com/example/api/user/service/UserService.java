@@ -1,5 +1,13 @@
 package com.example.api.user.service;
 
+import com.example.api.course.model.CourseMember;
+import com.example.api.course.service.CourseMemberService;
+import com.example.api.course.validator.exception.StudentNotEnrolledException;
+import com.example.api.group.service.GroupService;
+import com.example.api.user.hero.HeroType;
+import com.example.api.user.hero.model.Hero;
+import com.example.api.user.hero.model.UserHero;
+import com.example.api.user.hero.HeroRepository;
 import com.example.api.user.service.util.ProfessorRegisterToken;
 import com.example.api.user.dto.request.EditPasswordForm;
 import com.example.api.user.dto.request.RegisterUserForm;
@@ -15,9 +23,8 @@ import com.example.api.activity.task.repository.FileTaskRepository;
 import com.example.api.activity.task.repository.GraphTaskRepository;
 import com.example.api.activity.task.repository.InfoRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
-import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.PasswordValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +39,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -41,17 +48,20 @@ import java.util.stream.Stream;
 @Transactional
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final GroupRepository groupRepository;
     private final GraphTaskRepository graphTaskRepository;
     private final FileTaskRepository fileTaskRepository;
     private final SurveyRepository surveyRepository;
     private final InfoRepository infoRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final PasswordEncoder passwordEncoder;
     private final UserValidator userValidator;
     private final ProfessorRegisterToken professorRegisterToken;
     private final PasswordValidator passwordValidator;
+    private final GroupService groupService;
+    private final CourseMemberService courseMemberService;
+    private final HeroRepository heroRepository;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findUserByEmail(email);
@@ -59,6 +69,12 @@ public class UserService implements UserDetailsService {
         log.info("User {} found in database", email);
         Collection<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getAccountType().getName()));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    }
+
+    public User getUser(Long userId) {
+        User user = userRepository.findUserById(userId);
+        userValidator.validateUserIsNotNull(user, userId.toString());
+        return user;
     }
 
     public User saveUser(User user) {
@@ -70,20 +86,49 @@ public class UserService implements UserDetailsService {
     public Long registerUser(RegisterUserForm form) throws RequestValidationException {
         String email = form.getEmail();
         log.info("Registering user {}", email);
-        User dbUser = userRepository.findUserByEmail(email);
+        userValidator.validateUserDoesNotExist(email);
+
+        if (form.getAccountType().equals(AccountType.STUDENT)) {
+            return registerStudent(form);
+        } else if (form.getAccountType().equals(AccountType.PROFESSOR)) {
+            return registerProfessor(form);
+        } else {
+            throw new RequestValidationException(ExceptionMessage.ROLE_NOT_ALLOWED);
+        }
+    }
+
+    private Long registerProfessor(RegisterUserForm form) throws RequestValidationException {
+        userValidator.validateProfessorEmail(form.getEmail());
+
         User user = new User(form.getEmail(), form.getFirstName(), form.getLastName(), form.getAccountType());
-        userValidator.validateUserRegistration(dbUser, user, form, email);
+        userValidator.validateProfessorValidationForm(form);
         passwordValidator.validatePassword(form.getPassword());
         user.setPassword(passwordEncoder.encode(form.getPassword()));
-        user.setPoints(0D);
-        user.setLevel(1);
         userRepository.save(user);
         return user.getId();
     }
 
+    private Long registerStudent(RegisterUserForm form) throws RequestValidationException {
+        userValidator.validateStudentEmail(form.getEmail());
+        User user = new User(form.getEmail(), form.getFirstName(), form.getLastName(), form.getAccountType());
+        userValidator.validateStudentRegistrationForm(form);
+
+        Integer indexNumber = form.getIndexNumber();
+        userValidator.validateStudentWithIndexNumberDoesNotExist(indexNumber);
+        user.setIndexNumber(indexNumber);
+
+        passwordValidator.validatePassword(form.getPassword());
+        user.setPassword(passwordEncoder.encode(form.getPassword()));
+
+        userRepository.save(user);
+
+        addUserToGroup(user, form.getInvitationCode(), form.getHeroType());
+
+        return user.getId();
+    }
+
     public void editPassword(EditPasswordForm form){
-        String email = authService.getAuthentication().getName();
-        User user = getUser(email);
+        User user = authService.getCurrentUser();
         user.setPassword(passwordEncoder.encode(form.getNewPassword()));
     }
 
@@ -94,49 +139,62 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public User getCurrentUser() throws UsernameNotFoundException {
-        String email = authService.getAuthentication().getName();
-        User user = getUser(email);
-        userValidator.validateUserIsNotNull(user, email);
-        return user;
-    }
-
-    public List<User> getUsers() {
-        log.info("Fetching all users");
-        return userRepository.findAll();
-    }
-
-    public Group getUserGroup(Long courseId) {
-        User user = getCurrentUser();
+    public Group getCurrentUserGroup(Long courseId) throws StudentNotEnrolledException {
+        User user = authService.getCurrentUser();
         log.info("Fetching group for user {}", user.getEmail());
-        return user.getGroup();
+        return user.getCourseMember(courseId).orElseThrow(() -> new StudentNotEnrolledException(user, courseId)).getGroup();
     }
 
-    public List<BasicStudent> getAllStudentsWithGroup() {
-        log.info("Fetching all students with group");
-        List<User> students = userRepository.findAllByAccountTypeEquals(AccountType.STUDENT);
-        return students.stream()
+    public List<BasicStudent> getAllStudentsWithGroup(Long courseId) {
+        log.info("Fetching all students with group for course {}", courseId);
+
+        return courseMemberService.getAll(courseId)
+                .stream()
                 .map(BasicStudent::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public Group setStudentGroup(SetStudentGroupForm setStudentGroupForm)
-            throws EntityNotFoundException, WrongUserTypeException, StudentAlreadyAssignedToGroupException {
+    public Group updateStudentGroup(SetStudentGroupForm setStudentGroupForm)
+            throws EntityNotFoundException, WrongUserTypeException {
         Long studentId = setStudentGroupForm.getStudentId();
-        Long newGroupId = setStudentGroupForm.getNewGroupId();
-        log.info("Setting group for student with id {}", studentId);
-        User user = userRepository.findUserById(studentId);
+        Long groupId = setStudentGroupForm.getNewGroupId();
+
+        log.info("Adding student {} to group {}", studentId, groupId);
+        User user = getUser(studentId);
         userValidator.validateStudentAccount(user, studentId);
-        Group newGroup = groupRepository.findGroupById(newGroupId);
-        Group previousGroup = user.getGroup();
-        userValidator.validateAndSetUserGroup(newGroup, previousGroup, newGroupId, user);
+
+        Group newGroup = groupService.getGroupById(groupId);
+        return updateStudentGroup(user, newGroup);
+    }
+
+    public Group updateStudentGroup(User user, Group newGroup) {
+        Optional<CourseMember> courseMember = user.getCourseMember(newGroup.getCourse().getId());
+            courseMemberService.updateGroup(courseMember.orElseThrow(), newGroup);
         return newGroup;
     }
 
+    public void addUserToGroup(String invitationCode, HeroType heroType) throws WrongUserTypeException, EntityNotFoundException {
+        User student = authService.getCurrentUser();
+        userValidator.validateStudentAccount(student);
+        addUserToGroup(student, invitationCode, heroType);
+    }
+
+    private void addUserToGroup(User user, String invitationCode, HeroType heroType) throws EntityNotFoundException {
+        Group group = groupService.getGroupByInvitationCode(invitationCode);
+        userValidator.validateUserNotInCourse(user, group.getCourse());
+
+        Hero hero = heroRepository.findHeroByTypeAndCourse(heroType, group.getCourse());
+        UserHero userHero = new UserHero(hero, 0, 0L, group.getCourse());
+        CourseMember courseMember = courseMemberService.create(user, group, userHero);
+        user.getCourseMemberships().add(courseMember);
+        groupService.addUser(courseMember, group);
+        userRepository.save(user);
+    }
+
     public Integer setIndexNumber(SetStudentIndexForm setStudentIndexForm) throws WrongUserTypeException, EntityAlreadyInDatabaseException {
-        String email = authService.getAuthentication().getName();
+        User student = authService.getCurrentUser();
+        String email = student.getEmail();
         log.info("Setting index number {} for user with email {}", setStudentIndexForm.getNewIndexNumber(), email);
-        User student = userRepository.findUserByEmail(email);
         userValidator.validateStudentAccount(student);
 
         if (student.getIndexNumber().equals(setStudentIndexForm.getNewIndexNumber())) {
@@ -154,7 +212,7 @@ public class UserService implements UserDetailsService {
     }
 
     public String getProfessorRegisterToken() throws WrongUserTypeException {
-        User user = getCurrentUser();
+        User user = authService.getCurrentUser();
         userValidator.validateProfessorAccount(user);
 
         log.info("Professor {} fetch ProfessorRegisterToken", user.getEmail());
@@ -162,7 +220,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteProfessorAccount(String professorEmail) throws WrongUserTypeException {
-        User professor = getCurrentUser();
+        User professor = authService.getCurrentUser();
         User newProfessor = userRepository.findUserByEmail(professorEmail);
         userValidator.validateProfessorAccount(professor);
         userValidator.validateProfessorAccount(newProfessor);
@@ -172,7 +230,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteStudentAccount() throws WrongUserTypeException {
-        User user = getCurrentUser();
+        User user = authService.getCurrentUser();
         userValidator.validateStudentAccount(user);
         userRepository.delete(user);
     }
@@ -192,7 +250,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<String> getAllProfessorEmails() {
-        User user = getCurrentUser();
+        User user = authService.getCurrentUser();
         String professorEmail = user.getEmail();
         return userRepository.findAllByAccountTypeEquals(AccountType.PROFESSOR)
                 .stream()
@@ -202,8 +260,13 @@ public class UserService implements UserDetailsService {
     }
 
     public User getCurrentUserAndValidateStudentAccount() throws WrongUserTypeException {
-        User user = getCurrentUser();
+        User user = authService.getCurrentUser();
         userValidator.validateStudentAccount(user);
+        return user;
+    }
+    public User getCurrentUserAndValidateProfessorAccount() throws WrongUserTypeException {
+        User user = authService.getCurrentUser();
+        userValidator.validateProfessorAccount(user);
         return user;
     }
 }

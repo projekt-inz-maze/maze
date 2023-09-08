@@ -15,8 +15,7 @@ import com.example.api.question.model.Question;
 import com.example.api.user.model.User;
 import com.example.api.question.repository.AnswerRepository;
 import com.example.api.question.repository.QuestionRepository;
-import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.activity.result.service.GraphTaskResultService;
 import com.example.api.user.service.BadgeService;
 import com.example.api.user.service.UserService;
@@ -41,10 +40,9 @@ import java.util.List;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
-    private final UserRepository userRepository;
     private final QuestionValidator questionValidator;
     private final ResultValidator resultValidator;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final GraphTaskResultService graphTaskResultService;
     private final BadgeService badgeService;
     private final PointsCalculator pointsCalculator;
@@ -62,12 +60,11 @@ public class QuestionService {
     }
 
     public Long performQuestionAction(QuestionActionForm form) throws RequestValidationException, TimeLimitExceededException {
-        User user = userService.getCurrentUser();
-
         ResultStatus status = form.getStatus();
         Long graphTaskId = form.getGraphTaskId();
+        User user = userService.getCurrentUserAndValidateStudentAccount();
 
-        GraphTaskResult result = graphTaskResultService.getGraphTaskResult(graphTaskId, user.getEmail());
+        GraphTaskResult result = graphTaskResultService.getGraphTaskResultWithGraphTaskAndUser(graphTaskId, user);
 
         Long timeRemaining = graphTaskResultService.getTimeRemaining(result);
         if (timeRemaining < 0) {
@@ -101,11 +98,12 @@ public class QuestionService {
                 
                 // if it's the last question, set finished
                 List<Question> nextQuestions = question.getNext();
-                if(nextQuestions.size() == 0){
+
+                if (nextQuestions.isEmpty()){
                     result.setFinished(true);
-                    user.getUserHero().setTimesSuperPowerUsedInResult(0);
+                    result.getMember().getUserHero().setTimesSuperPowerUsedInResult(0);
                     log.info("Expedition finished");
-                    badgeService.checkAllBadges(user);
+                    badgeService.checkAllBadges(result.getMember());
                 }
 
                 return timeRemaining;
@@ -116,16 +114,15 @@ public class QuestionService {
     }
 
     public QuestionInfoResponse getQuestionInfo(Long graphTaskId) throws RequestValidationException {
-        String email = authService.getAuthentication().getName();
-        GraphTaskResult result = graphTaskResultService.getGraphTaskResult(graphTaskId, email);
+        User user = authService.getCurrentUser();
+        GraphTaskResult result = graphTaskResultService.getGraphTaskResultWithGraphTaskAndUser(graphTaskId, user);
         ResultStatus status = result.getStatus();
 
         switch (status) {
             case CHOOSE -> {
                 List<QuestionList> questionList = getNextQuestions(
                         graphTaskId,
-                        result,
-                        email
+                        result
                 );
                 return new QuestionInfoResponse(
                         status,
@@ -155,9 +152,8 @@ public class QuestionService {
     }
 
     private List<QuestionList> getNextQuestions(Long graphTaskId,
-                                                GraphTaskResult result,
-                                                String email) {
-        log.info("Fetching next questions for graph task with id {} and user {}", graphTaskId, email);
+                                                GraphTaskResult result) {
+        log.info("Fetching next questions for graph task with id {} and user {}", graphTaskId, result.getMember().getUser().getId());
 
         Question currQuestion = result.getCurrQuestion();
         List<Question> nextQuestions = currQuestion.getNext();

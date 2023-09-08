@@ -18,7 +18,7 @@ import com.example.api.activity.task.repository.InfoRepository;
 import com.example.api.activity.task.repository.SurveyRepository;
 import com.example.api.map.repository.ChapterRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.ChapterValidator;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
@@ -30,15 +30,17 @@ import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
+
+import static java.util.Optional.ofNullable;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
 public class ActivityService {
-    private final AuthenticationService authService;
-    private final UserRepository userRepository;
+    private final LoggedInUserService authService;
     private final UserValidator userValidator;
     private final GraphTaskRepository graphTaskRepository;
     private final FileTaskRepository fileTaskRepository;
@@ -53,8 +55,7 @@ public class ActivityService {
     private final ChapterValidator chapterValidator;
 
     public EditActivityForm getActivityEditInfo(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
         Activity activity = getActivity(activityID);
@@ -64,15 +65,14 @@ public class ActivityService {
     }
 
     public void editActivity(EditActivityForm form) throws RequestValidationException, ParseException {
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
         Activity activity = getActivity(form.getActivityID());
         activityValidator.validateActivityIsNotNull(activity, form.getActivityID());
 
         log.info("Professor {} try to edit activity {} with id {}",
-                email, activity.getActivityType().getActivityType(), activity.getId());
+                professor.getEmail(), activity.getActivityType().getActivityType(), activity.getId());
 
         editActivity(activity, form);
         switch (activity.getActivityType()) {
@@ -133,8 +133,7 @@ public class ActivityService {
     }
 
     public void deleteActivity(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
-        String email = authService.getAuthentication().getName();
-        User professor = userRepository.findUserByEmail(email);
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
         Activity activity = getActivity(activityID);
@@ -147,21 +146,26 @@ public class ActivityService {
         }
     }
 
-    public Activity getActivity(Long activityId) throws EntityNotFoundException {
+    public Optional<Activity> getGradedActivity(Long activityId) {
 
-        GraphTask graphTask = graphTaskRepository.findGraphTaskById(activityId);
-        if (graphTask != null) {
+        Optional<Activity> graphTask = ofNullable(graphTaskRepository.findGraphTaskById(activityId));
+        if (graphTask.isPresent()) {
             return graphTask;
         }
 
-        FileTask fileTask = fileTaskRepository.findFileTaskById(activityId);
-        if (fileTask != null) {
+        Optional<Activity> fileTask = ofNullable(fileTaskRepository.findFileTaskById(activityId));
+        if (fileTask.isPresent()) {
             return fileTask;
         }
 
-        Survey survey = surveyRepository.findSurveyById(activityId);
-        if (survey != null) {
-            return survey;
+         return ofNullable(surveyRepository.findSurveyById(activityId));
+    }
+    public Activity getActivity(Long activityId) throws EntityNotFoundException {
+
+        Optional<Activity> gradedActivity = getGradedActivity(activityId);
+
+        if (gradedActivity.isPresent()) {
+            return gradedActivity.get();
         }
 
         Info info = infoRepository.findInfoById(activityId);

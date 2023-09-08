@@ -1,8 +1,11 @@
 package com.example.api.unit.service.user;
 
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
+import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.user.model.badge.ActivityNumberBadge;
@@ -36,11 +39,13 @@ public class BadgeServiceTest {
     @Mock private BadgeVisitor badgeVisitor;
     @Mock private FileRepository fileRepository;
     @Mock private BadgeValidator badgeValidator;
+    @Mock private LoggedInUserService authService;
 
     private User user;
     List<Badge> badges = new LinkedList<>();
     TopScoreBadge topScoreBadge;
     ActivityNumberBadge activityNumberBadge;
+
 
     @BeforeEach
     public void init() {
@@ -51,7 +56,10 @@ public class BadgeServiceTest {
                 fileRepository,
                 userService,
                 badgeValidator,
-                badgeVisitor
+                badgeVisitor,
+                null,
+                null,
+                null
         );
 
         user = new User();
@@ -59,7 +67,6 @@ public class BadgeServiceTest {
         user.setEmail("user@gmail.com");
         user.setPassword("password");
         user.setAccountType(AccountType.STUDENT);
-        user.setPoints(10d);
 
         topScoreBadge = new TopScoreBadge();
         activityNumberBadge = new ActivityNumberBadge();
@@ -70,17 +77,18 @@ public class BadgeServiceTest {
     @Test
     public void checkAllBadgesWhenNoUnlockedBadges() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        CourseMember member = new CourseMember();
+        when(authService.getCurrentUser()).thenReturn(user);
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(false);
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         doReturn(badges).when(badgeRepository).findAll();
 
         //when
-        badgeService.checkAllBadges(user);
+        badgeService.checkAllBadges(member);
 
         //then
-        List<UnlockedBadge> unlockedBadges = user.getUnlockedBadges();
+        List<UnlockedBadge> unlockedBadges = member.getUnlockedBadges();
         List<Badge> badgesInUnlockedBadges = unlockedBadges.stream()
                 .map(UnlockedBadge::getBadge)
                 .toList();
@@ -91,20 +99,21 @@ public class BadgeServiceTest {
     @Test
     public void checkAllBadgesWhenHasUnlockedBadges() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
+        CourseMember member = new CourseMember();
         UnlockedBadge unlockedBadge = new UnlockedBadge();
         unlockedBadge.setBadge(topScoreBadge);
-        user.getUnlockedBadges().add(unlockedBadge);
-        when(userService.getCurrentUser()).thenReturn(user);
+        member.getUnlockedBadges().add(unlockedBadge);
+        when(authService.getCurrentUser()).thenReturn(user);
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(true);
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         doReturn(badges).when(badgeRepository).findAll();
 
         //when
-        badgeService.checkAllBadges(user);
+        badgeService.checkAllBadges(member);
 
         //then
-        List<UnlockedBadge> unlockedBadges = user.getUnlockedBadges();
+        List<UnlockedBadge> unlockedBadges = member.getUnlockedBadges();
         List<Badge> badgesInUnlockedBadges = unlockedBadges.stream()
                 .map(UnlockedBadge::getBadge)
                 .toList();

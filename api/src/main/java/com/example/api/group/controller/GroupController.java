@@ -22,8 +22,8 @@ public class GroupController {
     private final GroupService groupService;
 
     @PostMapping
-    public ResponseEntity<Long> saveGroup(@RequestBody SaveGroupForm form) throws RequestValidationException {
-        return ResponseEntity.ok().body(groupService.saveGroup(form));
+    public ResponseEntity<Long> createGroup(@RequestBody SaveGroupForm form) throws RequestValidationException {
+        return ResponseEntity.ok().body(groupService.createGroup(form));
     }
 
     @GetMapping("/invitation-code/list")

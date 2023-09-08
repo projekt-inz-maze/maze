@@ -1,6 +1,6 @@
 package com.example.api.user.model.badge;
 
-import com.example.api.user.model.User;
+import com.example.api.course.model.CourseMember;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,12 +24,12 @@ public class UnlockedBadge {
     private Long unlockedDateMillis;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "coursemember_id", nullable = false)
+    private CourseMember courseMember;
 
-    public UnlockedBadge(Badge badge, long unlockedDateMillis, User user) {
+    public UnlockedBadge(Badge badge, long unlockedDateMillis, CourseMember member) {
         this.badge = badge;
         this.unlockedDateMillis = unlockedDateMillis;
-        this.user = user;
+        this.courseMember = member;
     }
 }

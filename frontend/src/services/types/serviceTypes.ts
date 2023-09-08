@@ -15,12 +15,10 @@ export type newChapterData = {
 export type addGroupRequest = {
   groupName: string
   groupKey: string
+  courseId: number
 }
 
-export type professorFeedback = {
-  taskId: number
-  remarks: string
-  points: number
-  file: any
-  fileName: string
+export type joinGroupRequest = {
+  invitationCode: string
+  heroType: string
 }

@@ -14,7 +14,7 @@ import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
 import com.example.api.user.service.UserService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 @Transactional
 public class AllPointsService {
     private final UserRepository userRepository;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final UserValidator userValidator;
     private final TaskResultService taskResultService;
     private final AdditionalPointsService additionalPointsService;
@@ -45,14 +45,14 @@ public class AllPointsService {
     private final CourseService courseService;
 
     public List<?> getAllPointsListForProfessor(Long courseId, String studentEmail) throws WrongUserTypeException, EntityNotFoundException {
-        User professor = userService.getCurrentUser();
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
         log.info("Fetching student all points {} for professor {}", studentEmail, professor.getEmail());
         return getAllPointsList(courseId, studentEmail);
     }
 
     public List<?> getAllPointsListForStudent(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
-        String studentEmail = authService.getAuthentication().getName();
+        String studentEmail = authService.getCurrentUser().getEmail();
         log.info("Fetching all points for student {}", studentEmail);
         return getAllPointsList(courseId, studentEmail);
     }
@@ -71,7 +71,7 @@ public class AllPointsService {
                     totalPointsReceived.updateAndGet(v -> v + graphTaskResult.getPointsReceived());
                     totalPointsToReceive.updateAndGet(v -> v + graphTaskResult.getGraphTask().getMaxPoints());
                 });
-        fileTaskResultRepository.findAllByUserAndCourse(student, course)
+        fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .forEach(fileTaskResult -> {

@@ -9,6 +9,7 @@ import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
+import com.example.api.activity.result.service.ActivityResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
 import com.example.api.activity.task.model.*;
 import com.example.api.activity.task.service.FileTaskService;
@@ -16,6 +17,7 @@ import com.example.api.activity.task.service.GraphTaskService;
 import com.example.api.activity.task.service.InfoService;
 import com.example.api.activity.task.service.SurveyService;
 import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -26,6 +28,8 @@ import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;
 import com.example.api.map.service.ChapterService;
 import com.example.api.user.dto.response.dashboard.*;
+import com.example.api.user.hero.HeroStatsDTO;
+import com.example.api.user.hero.HeroTypeStatsDTO;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.util.calculator.PointsCalculator;
@@ -60,32 +64,34 @@ public class DashboardService {
     private final UserService userService;
     private final CourseService courseService;
     private final CourseValidator courseValidator;
+    private final ActivityResultService activityResultService;
 
     private final long MAX_LAST_ACTIVITIES_IN_DASHBOARD = 8;
 
     public DashboardResponse getStudentDashboard(Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
+        CourseMember member = student.getCourseMember(courseId).orElseThrow();
         Course course = courseService.getCourse(courseId);
-        courseValidator.validateUserCanAccess(student, courseId);
-        badgeService.checkAllBadges(student);
+
+        badgeService.checkAllBadges(member);
 
         return new DashboardResponse(
-                getHeroTypeStats(student, course),
+                getHeroTypeStats(member),
                 getGeneralStats(student, course),
                 getLastAddedActivities(course),
-                getHeroStats(student, course)
+                getHeroStats(member)
         );
     }
 
-    private HeroTypeStats getHeroTypeStats(User student, Course course) throws EntityNotFoundException {
-        String heroType = String.valueOf(student.getHeroType());
+    private HeroTypeStatsDTO getHeroTypeStats(CourseMember member) throws EntityNotFoundException {
+        String heroType = String.valueOf(member.getHeroType());
 
-        List<RankingResponse> ranking = rankingService.getRanking(course);
-        RankingResponse rank = getRank(student, ranking);
+        List<RankingResponse> ranking = rankingService.getRanking(member.getCourse().getId());
+        RankingResponse rank = getRank(member.getUser(), ranking);
 
         if (rank == null) {
-            log.error("Student {} not found in ranking", student.getEmail());
-            throw new EntityNotFoundException("Student " + student.getEmail() + " not found in ranking");
+            log.error("Student {} not found in ranking", member.getUser().getId());
+            throw new EntityNotFoundException("Student " + member.getUser().getId() + " not found in ranking");
         }
 
         Integer rankPosition = rank.getPosition();
@@ -93,7 +99,7 @@ public class DashboardService {
         Double betterPlayerPoints = rankPosition > 1 ? ranking.get(rankPosition - 2).getPoints() : null;
         Double worsePlayerPoints = rankPosition < rankLength ? ranking.get(rankPosition).getPoints() : null;
 
-        return new HeroTypeStats(heroType, rankPosition, rankLength, betterPlayerPoints, worsePlayerPoints);
+        return new HeroTypeStatsDTO(heroType, rankPosition, rankLength, betterPlayerPoints, worsePlayerPoints);
     }
 
     private RankingResponse getRank(User student, List<RankingResponse> ranking) {
@@ -138,7 +144,7 @@ public class DashboardService {
     }
 
     private Double getAvgFileTask(User student, Course course) {
-        OptionalDouble avg = fileTaskResultRepository.findAllByUserAndCourse(student, course)
+        OptionalDouble avg = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .mapToDouble(result -> 100 * result.getPointsReceived() / result.getFileTask().getMaxPoints())
@@ -147,7 +153,7 @@ public class DashboardService {
     }
 
     private Long getSurveysNumber(User student, Course course) {
-        return surveyResultRepository.countAllByUserAndCourse(student, course);
+        return surveyResultRepository.countAllByMember_UserAndCourse(student, course);
     }
 
     private Double getGraphTaskPoints(User student, Course course) {
@@ -155,7 +161,7 @@ public class DashboardService {
     }
 
     private Double getFileTaskPoints(User student, Course course) {
-        return getTaskPoints(fileTaskResultRepository.findAllByUserAndCourse(student, course));
+        return getTaskPoints(fileTaskResultRepository.findAllByMember_UserAndCourse(student, course));
     }
 
     private Double getAdditionalPoints(User student, Course course) {
@@ -180,7 +186,7 @@ public class DashboardService {
                 .filter(GraphTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getGraphTask().getMaxPoints())
                 .sum();
-        Double maxPointsFileTask = fileTaskResultRepository.findAllByUserAndCourse(student, course)
+        Double maxPointsFileTask = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getFileTask().getMaxPoints())
@@ -227,17 +233,17 @@ public class DashboardService {
 
     }
 
-    private HeroStats getHeroStats(User student, Course course) throws EntityNotFoundException {
+    private HeroStatsDTO getHeroStats(CourseMember member) {
         log.info("getHeroStats");
-        Double experiencePoints = student.getPoints();
-        Double nextLvlPoints = getNexLvlPoints(student, course);
+        Double experiencePoints = member.getPoints();
+        Double nextLvlPoints = getNexLvlPoints(member);
 
-        Rank rank = rankService.getCurrentRank(student, course);
+        Rank rank = rankService.getCurrentRank(member);
         String rankName = rank != null ? rank.getName() : null;
-        Long badgesNumber = (long) student.getUnlockedBadges().size();
-        Long completedActivities = getCompletedActivities(student);
+        Long badgesNumber = (long) member.getUnlockedBadges().size();
+        Long completedActivities = activityResultService.countCompletedActivities(member);
 
-        return new HeroStats(
+        return new HeroStatsDTO(
                 experiencePoints,
                 nextLvlPoints,
                 rankName,
@@ -246,26 +252,14 @@ public class DashboardService {
         );
     }
 
-    private Double getNexLvlPoints(User student, Course course) throws EntityNotFoundException {
-        List<Rank> sortedRanks = rankService.getSortedRanksForHeroType(student.getHeroType(), course);
+    private Double getNexLvlPoints(CourseMember member) {
+        List<Rank> sortedRanks = rankService.getSortedRanksForHeroType(member);
         for (int i=sortedRanks.size()-1; i >= 0; i--) {
-            if (student.getPoints() >= sortedRanks.get(i).getMinPoints()) {
+            if (member.getPoints() >= sortedRanks.get(i).getMinPoints()) {
                 if (i == sortedRanks.size() - 1) return null;
                 else return sortedRanks.get(i+1).getMinPoints();
             }
         }
         return null;
-    }
-
-    // Completed means answer was sent (not necessarily rated)
-    private Long getCompletedActivities(User student) {
-        Long graphTasksCompleted = graphTaskResultRepository.findAllByUser(student)
-                .stream()
-                .filter(result -> Objects.nonNull(result.getSendDateMillis()))
-                .count();
-        Long fileTasksCompleted = (long) fileTaskResultRepository.findAllByUser(student)
-                .size();
-        Long surveysCompleted = (long) surveyResultRepository.findAllByUser(student).size();
-        return graphTasksCompleted + fileTasksCompleted + surveysCompleted;
     }
 }

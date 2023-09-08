@@ -1,6 +1,7 @@
 package com.example.api.validator;
 
 import com.example.api.activity.feedback.dto.request.SaveProfessorFeedbackForm;
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongPointsNumberException;
@@ -10,14 +11,11 @@ import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.task.model.FileTask;
 import com.example.api.user.model.User;
-import com.example.api.user.service.UserService;
 import com.example.api.util.model.File;
 import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.user.repository.UserRepository;
 import com.example.api.util.repository.FileRepository;
-import com.example.api.security.AuthenticationService;
-import com.example.api.user.service.BadgeService;
+import com.example.api.security.LoggedInUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -32,11 +30,8 @@ import java.io.IOException;
 public class FeedbackValidator {
     private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
-    private final AuthenticationService authService;
+    private final LoggedInUserService authService;
     private final FileRepository fileRepository;
-    private final UserRepository userRepository;
-    private final BadgeService badgeService;
-    private final UserService userService;
     private final UserValidator userValidator;
 
     /**
@@ -45,8 +40,9 @@ public class FeedbackValidator {
      * but files are added to list
     */
     public ProfessorFeedback validateAndSetProfessorFeedbackTaskForm(SaveProfessorFeedbackForm form)
-            throws WrongUserTypeException, EntityNotFoundException, WrongPointsNumberException, IOException, MissingAttributeException {
-        User professor = userService.getCurrentUser();
+            throws WrongUserTypeException, EntityNotFoundException, WrongPointsNumberException, IOException {
+
+        User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
         Long id = form.getFileTaskResultId();
@@ -74,8 +70,7 @@ public class FeedbackValidator {
             feedback.setPoints(form.getPoints());
             fileTaskResult.setPointsReceived(form.getPoints());
             fileTaskResultRepository.save(fileTaskResult);
-            //TODO figure out if its needed here
-            badgeService.checkAllBadges(professor);
+            //badgeService.checkAllBadges(professor);
         }
 
         // Feedback file can be set only once
@@ -99,7 +94,7 @@ public class FeedbackValidator {
 
     public void validateFeedbackForInfoResponse(ProfessorFeedback professorFeedback,
                                                 FileTaskResult fileTaskResult,
-                                                User student,
+                                                CourseMember member,
                                                 FileTask fileTask)
             throws EntityNotFoundException, MissingAttributeException {
         if (professorFeedback == null) {
@@ -110,10 +105,11 @@ public class FeedbackValidator {
             String msg = "Professor feedback with id " + professorFeedback.getId() + " is missing fileTaskResult attribute";
             throw new MissingAttributeException(msg);
         }
-        if (student == null) {
-            String msg = "Professor feedback with id " + professorFeedback.getId() + " is missing student attribute";
+        if (member == null) {
+            String msg = "Professor feedback with id " + professorFeedback.getId() + " is missing member attribute";
             throw new MissingAttributeException(msg);
         }
+
         if (fileTask == null) {
             String msg = "Professor feedback with id " + professorFeedback.getId() + " is missing fileTask attribute";
             throw new MissingAttributeException(msg);
