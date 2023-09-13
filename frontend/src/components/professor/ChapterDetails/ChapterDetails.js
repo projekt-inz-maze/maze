@@ -6,7 +6,7 @@ import {
   Button,
   Card,
   Col,
-  Collapse,
+  Collapse, Container,
   ListGroup,
   ListGroupItem,
   OverlayTrigger,
@@ -27,7 +27,6 @@ import ChapterService from '../../../services/chapter.service'
 import { ERROR_OCCURRED, getActivityImg, getActivityTypeName } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
 import { successToast } from '../../../utils/toasts'
-import { Content } from '../../App/AppGeneralStyles'
 import Loader from '../../general/Loader/Loader'
 import GameCard from '../../student/GameCardPage/GameCard'
 import ChapterMap from '../../student/GameMapPage/Map/ChapterMap'
@@ -168,10 +167,10 @@ function ChapterDetails(props) {
   }
 
   return (
-    <Content style={{ overflowX: 'hidden', marginBottom: isMobileView() ? 60 : 0 }}>
-      <Row className="px-0 m-0" style={{ height: '100vh' }}>
+    <Container fluid style={{ overflowX: 'hidden', marginBottom: isMobileView() ? 60 : 0 }}>
+      <Row className="px-0 m-0">
         <Col className="m-0 h-100" md={6}>
-          <Col md={12} className="h-50">
+          <Col md={12}>
             <MapCard
               $bodyColor={props.theme.secondary}
               $headerColor={props.theme.primary}
@@ -242,8 +241,8 @@ function ChapterDetails(props) {
             />
           </Col>
         </Col>
-        <Col className="m-0 h-100" md={6}>
-          <Col md={12} style={{ height: '85vh' }}>
+        <Col className="m-0" md={6}>
+          <Col md={12}>
             <ActivitiesCard
               $bodyColor={props.theme.secondary}
               $headerColor={props.theme.primary}
@@ -324,7 +323,7 @@ function ChapterDetails(props) {
               </Card.Body>
             </ActivitiesCard>
           </Col>
-          <ButtonsCol md={12} style={{ height: '10vh' }}>
+          <ButtonsCol md={12}>
             <Link to={TeacherRoutes.GAME_MANAGEMENT.MAIN}>
               <Button style={{ backgroundColor: props.theme.warning, borderColor: props.theme.warning }}>Wyjdź</Button>
             </Link>
@@ -420,7 +419,7 @@ function ChapterDetails(props) {
         chapterId={chapterId}
         onSuccess={getChapterDetails}
       />
-    </Content>
+    </Container>
   )
 }
 

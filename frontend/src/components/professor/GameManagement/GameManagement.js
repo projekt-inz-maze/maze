@@ -14,8 +14,6 @@ import { useAppSelector } from '../../../hooks/hooks'
 import { TeacherRoutes } from '../../../routes/PageRoutes'
 import ChapterService from '../../../services/chapter.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
-import { isMobileView } from '../../../utils/mobileHelper'
-import { Content } from '../../App/AppGeneralStyles'
 import { GameCardOptionPick } from '../../general/GameCardStyles'
 import { CustomTooltip } from '../ChapterDetails/ChapterDetailsStyles'
 
@@ -55,14 +53,14 @@ function GameManagement(props) {
   }
 
   return (
-    <Content>
+    <Container fluid>
       <h4 className='text-center pt-3'>Witaj w panelu zarządzania grą!</h4>
       <p className='text-center'>
         Tutaj możesz dostosować wygląd, fabułę i sposób działania rozgrywki zgodnie ze swoimi potrzebami.
       </p>
-      <Container style={{ marginBottom: isMobileView() ? 85 : 0 }}>
-        <Row style={{ height: '50vh' }}>
-          <Col style={{ maxHeight: '50vh' }}>
+      <Container>
+        <Row>
+          <Col>
             <GameCardOptionPick
               className="d-flex flex-column justify-content-between"
               $background={props.theme.secondary}
@@ -194,7 +192,7 @@ function GameManagement(props) {
         isLoaded={shouldLoadAddChapterModal}
       />
       <SuperPowerEditionModal isModalVisible={isSuperpowerModalVisible} setModalVisible={setIsSuperpowerModalVisible} />
-    </Content>
+    </Container>
   )
 }
 

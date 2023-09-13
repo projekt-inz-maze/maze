@@ -14,7 +14,7 @@ import {
   Title,
   Tooltip
 } from 'chart.js'
-import {Card, Carousel, CarouselItem, Col, Row} from 'react-bootstrap'
+import {Card, Carousel, CarouselItem, Col, Container, Row} from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/CardHeader'
 import { Bar, Line } from 'react-chartjs-2'
 import { connect } from 'react-redux'
@@ -25,7 +25,6 @@ import { useAppSelector } from '../../../hooks/hooks'
 import ProfessorService from '../../../services/professor.service'
 import { ERROR_OCCURRED, getActivityTypeName } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
-import {Content} from '../../App/AppGeneralStyles'
 import { getChartConfig } from '../../general/chartHelper'
 import Loader from '../../general/Loader/Loader'
 import { ChartCol, CustomTable } from '../../student/GameCardPage/gameCardContentsStyle'
@@ -120,7 +119,7 @@ function GameSummary(props) {
   )
 
   return (
-    <Content>
+    <Container fluid>
       {summaryDetails === undefined ? (
         <Loader />
       ) : summaryDetails == null ? (
@@ -228,7 +227,7 @@ function GameSummary(props) {
           </Row>
         </>
       )}
-    </Content>
+    </Container>
   )
 }
 
