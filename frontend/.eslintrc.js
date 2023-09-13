@@ -99,6 +99,7 @@ module.exports = {
     'jsx-a11y/no-noninteractive-element-interactions': 'warn',
     'jsx-a11y/label-has-associated-control': 'warn',
     'jsx-a11y/control-has-associated-label': 'warn',
+    'jsx-a11y/img-redundant-alt': 'off',
     'react/no-children-prop': 'warn',
     'react/no-unstable-nested-components': 'warn',
     'no-restricted-globals': 'warn'

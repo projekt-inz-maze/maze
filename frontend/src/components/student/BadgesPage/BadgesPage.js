@@ -4,7 +4,7 @@ import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import moment from 'moment'
 import { Bounce, Slide } from 'react-awesome-reveal'
-import { Col, Row } from 'react-bootstrap'
+import {Col, Container, Row} from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import { HorizontalPointsLine, PercentageBar } from './BadgesStyle'
@@ -14,7 +14,6 @@ import RankService from '../../../services/rank.service'
 import UserService from '../../../services/user.service'
 import { base64Header, ERROR_OCCURRED } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
-import { Content } from '../../App/AppGeneralStyles'
 import Loader from '../../general/Loader/Loader'
 import { sortArray } from '../../general/Ranking/sortHelper'
 import Tooltip from '../../general/Tooltip/Tooltip'
@@ -132,7 +131,7 @@ function BadgesPage(props) {
   )
 
   return (
-    <Content>
+    <Container fluid>
       {rankInfo === undefined ? (
         <Loader />
       ) : rankInfo == null || rankInfo.currentRank == null ? (
@@ -264,7 +263,7 @@ function BadgesPage(props) {
           </Row>
         </Col>
       </Row>
-    </Content>
+    </Container>
   )
 }
 

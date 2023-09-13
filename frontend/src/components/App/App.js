@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-import { Container } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import './App.css'
@@ -19,9 +18,9 @@ function App(props) {
 
     return (
         <>
-            <Container fluid className='p-0'>
+            <div className='p-0' style={{ margin: 0, height: '100vh' }}>
                 <BrowserRouter>
-                    <div className='d-flex flex-column' style={{ minHeight: '100vh', margin: 0 }}>
+                    <div className='d-flex flex-column' style={{ margin: 0 }}>
                         {showNavbar && (
                             <TopNavbar sidebarTitles={sidebarTitles}
                                     userSubtitles={student ? studentSubtitles : professorSubtitles} />
@@ -32,7 +31,7 @@ function App(props) {
                         <AuthVerify />
                     </div>
                 </BrowserRouter>
-            </Container>
+            </div>
             <ToastContainer
                 position='top-right'
                 autoClose={4000}

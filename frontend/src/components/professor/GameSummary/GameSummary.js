@@ -14,7 +14,7 @@ import {
   Title,
   Tooltip
 } from 'chart.js'
-import { Card, Carousel, CarouselItem, Col, Row } from 'react-bootstrap'
+import {Card, Carousel, CarouselItem, Col, Row} from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/CardHeader'
 import { Bar, Line } from 'react-chartjs-2'
 import { connect } from 'react-redux'
@@ -25,7 +25,7 @@ import { useAppSelector } from '../../../hooks/hooks'
 import ProfessorService from '../../../services/professor.service'
 import { ERROR_OCCURRED, getActivityTypeName } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
-import { Content } from '../../App/AppGeneralStyles'
+import {Content} from '../../App/AppGeneralStyles'
 import { getChartConfig } from '../../general/chartHelper'
 import Loader from '../../general/Loader/Loader'
 import { ChartCol, CustomTable } from '../../student/GameCardPage/gameCardContentsStyle'
@@ -127,15 +127,15 @@ function GameSummary(props) {
         <p className='text-center h3'>{ERROR_OCCURRED}</p>
       ) : (
         <>
-          <Row className='m-0' style={{ height: isMobileDisplay ? 'auto' : '50vh' }}>
+          <Row className='m-0' style={{ height: isMobileDisplay ? 'auto' : 'auto' }}>
             <Col md={6}>
-              <Row className={`${isMobileDisplay ? 'h-auto' : 'h-50'} py-2`}>
+              <Row className={`${isMobileDisplay ? 'h-auto' : 'h-auto'} py-2`}>
                 <GameSummaryCard
                   header={<h5>Statystyki ocen studentów</h5>}
                   body={statsCardBody(gradesStatsCardTitles)}
                 />
               </Row>
-              <Row className={`${isMobileDisplay ? 'h-auto' : 'h-50'} py-2`}>
+              <Row className={`${isMobileDisplay ? 'h-auto' : 'h-auto'} py-2`}>
                 <GameSummaryCard
                   header={<h5>Statystyki aktywności</h5>}
                   body={statsCardBody(activityStatsCardTitles)}
@@ -160,7 +160,7 @@ function GameSummary(props) {
               </CustomCard>
             </Col>
           </Row>
-          <Row style={{ height: isMobileDisplay ? 'auto' : '50vh', margin: isMobileDisplay ? '0 0 85px 0' : 0 }}>
+          <Row style={{ height: isMobileDisplay ? 'auto' : 'auto', margin: isMobileDisplay ? '0 0 85px 0' : 0 }}>
             <Col md={6} className='py-2'>
               <CustomCard
                 $fontColor={props.theme.font}

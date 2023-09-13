@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 
+import {Container} from 'react-bootstrap'
+
 import { GameMap } from './canvasCreator'
-import { Content } from '../../App/AppGeneralStyles'
 
 export default function CanvasMap() {
   const canvas = useRef(null)
@@ -12,8 +13,8 @@ export default function CanvasMap() {
   }, [canvas])
 
   return (
-    <Content className='d-flex justify-content-center align-items-center px-2'>
+    <Container>
       <canvas ref={canvas} style={{ border: '1px solid black' }} />
-    </Content>
+    </Container>
   )
 }
