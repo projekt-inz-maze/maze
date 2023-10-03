@@ -29,7 +29,7 @@ function ChapterMapModal(props) {
   }, [])
 
   return (
-    <Modal show={props.show} onHide={() => props.setModalOpen(false)} size="xl">
+    <Modal show={props.show} onHide={() => props.setModalOpen(false)} size='xl'>
       <ModalHeader closeButton>
         <h5>Mapa aktywności rozdziału</h5>
       </ModalHeader>
@@ -50,7 +50,7 @@ function ChapterMapModal(props) {
   )
 }
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }

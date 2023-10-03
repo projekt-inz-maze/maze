@@ -9,15 +9,15 @@ const GameMap = () => {
   const navigate = useNavigate()
 
   return (
-    <Container fluid>
-      <Row>
-        <Col xs={12} md={9} className='p-0 w-100'>
-          <div className='image-container' style={{ width: '100%', position: 'relative' }}>
+    <Container fluid style={{ height: '100%' }}>
+      <Row style={{ height: '100%' }}>
+        <Col xs={12} md={9} className='p-0 w-100 h-100'>
+          <div className='image-container' style={{ width: '100%', height: '100%', position: 'relative' }}>
             <img
               src='/map/forest.png'
               alt='Chapter image'
               className='img-fluid'
-              style={{ width: '100%', height: 'auto' }}
+              style={{ width: '100%', height: '100%' }}
             />
             <img src='/map/map-left.png' alt='Course legend' className={`img-fluid ${styles.legend}`} />
             <Button onClick={() => navigate('/map/quests')} className={styles.questBoardButton}>

@@ -12,49 +12,51 @@ import { isProfessor, isStudent } from '../../utils/storageManager'
 import TopNavbar from '../general/Navbar/TopNavbar'
 
 function App(props) {
-    const [showNavbar, setShowNavbar] = useState(false)
-    const student = isStudent(props.user)
-    const professor = isProfessor(props.user)
+  const [showNavbar, setShowNavbar] = useState(false)
+  const student = isStudent(props.user)
+  const professor = isProfessor(props.user)
 
-    return (
-        <>
-            <div className='p-0' style={{ margin: 0, height: '100vh' }}>
-                <BrowserRouter>
-                    <div className='d-flex flex-column' style={{ margin: 0 }}>
-                        {showNavbar && (
-                            <TopNavbar sidebarTitles={sidebarTitles}
-                                    userSubtitles={student ? studentSubtitles : professorSubtitles} />
-                        )}
-                        <div className='p-0 w-100'>
-                            <AppRoutes showNavbar={setShowNavbar} isStudent={student} isProfessor={professor} />
-                        </div>
-                        <AuthVerify />
-                    </div>
-                </BrowserRouter>
+  return (
+    <>
+      <div className='p-0 h-100' style={{ margin: 0 }}>
+        <BrowserRouter>
+          <div className='d-flex flex-column h-100' style={{ margin: 0 }}>
+            {showNavbar && (
+              <TopNavbar
+                sidebarTitles={sidebarTitles}
+                userSubtitles={student ? studentSubtitles : professorSubtitles}
+              />
+            )}
+            <div className='p-0 w-100 h-100'>
+              <AppRoutes showNavbar={setShowNavbar} isStudent={student} isProfessor={professor} />
             </div>
-            <ToastContainer
-                position='top-right'
-                autoClose={4000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme='colored'
-            />
-        </>
-    )
+            <AuthVerify />
+          </div>
+        </BrowserRouter>
+      </div>
+      <ToastContainer
+        position='top-right'
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='colored'
+      />
+    </>
+  )
 }
 
 function mapStateToProps(state) {
-    const { user } = state.auth
-    const { sidebar } = state
-    return {
-        user,
-        sidebar
-    }
+  const { user } = state.auth
+  const { sidebar } = state
+  return {
+    user,
+    sidebar
+  }
 }
 
 export default connect(mapStateToProps)(App)
