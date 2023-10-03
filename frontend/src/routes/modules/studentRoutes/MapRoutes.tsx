@@ -9,6 +9,7 @@ import SurveyTaskRoutes from './SurveyTaskRoutes'
 import NotFound from '../../../components/general/NotFoundPage/NotFound'
 import PageGuard from '../../../components/general/PageGuard/PageGuard'
 import GameMap from '../../../components/student/GameMap/GameMap'
+import QuestBoard from '../../../components/student/GameMap/QuestBoard'
 import {Role} from '../../../utils/userRole'
 
 
@@ -23,6 +24,8 @@ export default function MapRoutes() {
                     </PageGuard>
                 }
             />
+
+            <Route path={'quests/*'} element={<QuestBoard/>}/>
 
             <Route path={'combat-task/*'} element={<CombatTaskRoutes/>}/>
 

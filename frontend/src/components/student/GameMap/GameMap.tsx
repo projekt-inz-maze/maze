@@ -1,32 +1,33 @@
 import React from 'react'
 
-import {Container, Row, Col} from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 
-const GameMap = () => (
+import styles from './GameMap.module.scss'
+
+const GameMap = () => {
+  const navigate = useNavigate()
+
+  return (
     <Container fluid>
-        <Row>
-            <Col xs={12} md={3} className="p-0">
-                <div className="image-container" style={{ paddingBottom: '75%' }}>
-                    <img
-                        src="/map/map-left.png"
-                        alt="Image 1"
-                        className="img-fluid"
-                        style={{ position: 'absolute', width: '100%', height: '100%', backgroundSize: '100%'}}
-                    />
-                </div>
-            </Col>
-            <Col xs={12} md={9} className="p-0">
-                <div className="image-container" style={{ paddingBottom: '25%' }}>
-                    <img
-                        src="/map/forest_background.jpg"
-                        alt="Image 2"
-                        className="img-fluid"
-                        style={{ position: 'absolute', width: '100%', height: '100%' }}
-                    />
-                </div>
-            </Col>
-        </Row>
+      <Row>
+        <Col xs={12} md={9} className='p-0 w-100'>
+          <div className='image-container' style={{ width: '100%', position: 'relative' }}>
+            <img
+              src='/map/forest.png'
+              alt='Chapter image'
+              className='img-fluid'
+              style={{ width: '100%', height: 'auto' }}
+            />
+            <img src='/map/map-left.png' alt='Course legend' className={`img-fluid ${styles.legend}`} />
+            <Button onClick={() => navigate('/map/quests')} className={styles.questBoardButton}>
+              Las Krwiopijcy
+            </Button>
+          </div>
+        </Col>
+      </Row>
     </Container>
-    )
+  )
+}
 
 export default GameMap
