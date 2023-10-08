@@ -36,6 +36,12 @@ span {
   justify-content: space-between;
   padding-bottom: 1em;
   font-size: 0.9rem;
+
+  div {
+    p {
+      padding-bottom: 0.25em;
+    }
+  }
 }
 
 .dateInfo {

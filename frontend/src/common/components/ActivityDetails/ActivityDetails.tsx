@@ -48,7 +48,7 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
               <img
                 src='/map/calendar_icon_activity_details.png'
                 alt='calendar icon'
-                style={{ width: '40px', height: '40px' }}
+                style={{ width: '35px', height: '35px' }}
               />
               <p>
                 <span>Data rozpoczęcia:</span> <br />
