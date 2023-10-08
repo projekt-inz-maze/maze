@@ -1,11 +1,22 @@
 .questBoardButton {
   border: none;
-  background-color: #75220f;
   position: absolute;
   top: 10%;
   left: 75%;
-  width: 200px;
-  height: 75px;
+  background-image: url('../../../../public/map/map-btn.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  text-decoration: none;
+  color: transparent;
+  background-color: transparent;
+  width: 380px;
+  height: 80px;
+}
+
+.questBoardButton:hover {
+  cursor: pointer;
+  background-color: transparent;
+  transform: scale(1.05);
 }
 
 .legend {

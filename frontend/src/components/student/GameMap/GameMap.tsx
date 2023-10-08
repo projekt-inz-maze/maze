@@ -37,10 +37,9 @@ const GameMap = () => {
               className='img-fluid'
               style={{ width: '100%', height: '100%' }}
             />
-            <img src='/map/map-left.png' alt='Course legend' className={`img-fluid ${styles.legend}`} />
-            <Button onClick={() => navigate('/map/quests')} className={styles.questBoardButton}>
-              Las Krwiopijcy
-            </Button>
+            <img src='/map/map-cut.png' alt='Course legend' className={`img-fluid ${styles.legend}`} />
+            <Button onClick={() => navigate('/map/quests')} className={styles.questBoardButton} />
+            {/* <img src='/map/map-btn.png' alt='To quests' className={styles.questBoardButton} /> */}
           </div>
         </Col>
       </Row>
