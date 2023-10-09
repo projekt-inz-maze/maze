@@ -17,21 +17,18 @@ function App(props) {
   const professor = isProfessor(props.user)
 
   return (
-    <>
-      <div className='p-0 h-100' style={{ margin: 0 }}>
+    <div style={{ height: '100vh' }}>
+      <div className='p-0 w-100 h-100' style={{ margin: 0 }}>
         <BrowserRouter>
-          <div className='d-flex flex-column h-100' style={{ margin: 0 }}>
-            {showNavbar && (
-              <TopNavbar
-                sidebarTitles={sidebarTitles}
-                userSubtitles={student ? studentSubtitles : professorSubtitles}
-              />
-            )}
-            <div className='p-0 w-100 h-100'>
-              <AppRoutes showNavbar={setShowNavbar} isStudent={student} isProfessor={professor} />
-            </div>
-            <AuthVerify />
+          {/* <div className='d-flex flex-column' style={{ margin: 0 }}> */}
+          {showNavbar && (
+            <TopNavbar sidebarTitles={sidebarTitles} userSubtitles={student ? studentSubtitles : professorSubtitles} />
+          )}
+          <div className='m-0 p-0' style={{ height: '90vh' }}>
+            <AppRoutes showNavbar={setShowNavbar} isStudent={student} isProfessor={professor} />
           </div>
+          <AuthVerify />
+          {/* </div> */}
         </BrowserRouter>
       </div>
       <ToastContainer
@@ -46,7 +43,7 @@ function App(props) {
         pauseOnHover
         theme='colored'
       />
-    </>
+    </div>
   )
 }
 
