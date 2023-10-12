@@ -38,6 +38,11 @@ const QuestBoard = () => {
           <QuestCard description='Zadanie 2' onShowQuestDetails={() => setShowDetailsModal(true)} />
           <QuestCard description='Zadanie 3' onShowQuestDetails={() => setShowDetailsModal(true)} />
           <QuestCard description='Zadanie 4' onShowQuestDetails={() => setShowDetailsModal(true)} />
+          <QuestCard description='Zadanie 4' onShowQuestDetails={() => setShowDetailsModal(true)} />
+          <QuestCard description='Zadanie 4' onShowQuestDetails={() => setShowDetailsModal(true)} />
+          <QuestCard description='Zadanie 4' onShowQuestDetails={() => setShowDetailsModal(true)} />
+          <QuestCard description='Zadanie 4' onShowQuestDetails={() => setShowDetailsModal(true)} />
+          <QuestCard description='Zadanie 4' onShowQuestDetails={() => setShowDetailsModal(true)} />
         </Stack>
       </Row>
     </div>

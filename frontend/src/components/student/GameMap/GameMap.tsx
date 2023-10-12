@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Row, Col, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './GameMap.module.scss'
-import ActivityDetails from '../../../common/components/ActivityDetails/ActivityDetails'
 
 const GameMap = () => {
   const navigate = useNavigate()

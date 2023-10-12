@@ -22,7 +22,7 @@ type ActivityDetailsProps = {
 
 const ActivityDetails = (props: ActivityDetailsProps) => (
   <>
-    <Modal show={props.showDetails} onHide={props.onCloseDetails} size='lg' className={styles.modalContainer}>
+    <Modal show={props.showDetails} onHide={props.onCloseDetails} size='xl' className={styles.modalContainer} centered>
       <Modal.Header closeButton className={styles.modalHeader}>
         <Modal.Title className={styles.modalTitle}>Szczegóły aktywności</Modal.Title>
       </Modal.Header>
@@ -43,7 +43,7 @@ const ActivityDetails = (props: ActivityDetailsProps) => (
               style={{ width: '35px', height: '35px' }}
             />
             <p>
-              <span>Data rozpoczęcia:</span> <br />
+              <span>Data otwarcia:</span> <br />
               {props.startDate}
             </p>
             <p>
