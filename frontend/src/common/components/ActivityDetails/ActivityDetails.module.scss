@@ -11,6 +11,24 @@ span {
 .modalHeader {
   border-bottom: none !important;
   padding-bottom: 0;
+
+  .customButtonClose {
+    padding: calc(var(--bs-modal-header-padding-y) * .5) calc(var(--bs-modal-header-padding-x) * .5);
+    margin: calc(var(--bs-modal-header-padding-y) * -.5) calc(var(--bs-modal-header-padding-x) * -.5) calc(var(--bs-modal-header-padding-y) * -.5) auto;
+    background-color: transparent;
+    border: 0;
+    width: 50px;
+
+    span {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: black;
+    }
+  }
+
+  .customButtonClose:hover {
+    transform: scale(1.1);
+  }
 }
 
 // Override the default modal styles (border top)

@@ -23,8 +23,12 @@ type ActivityDetailsProps = {
 const ActivityDetails = (props: ActivityDetailsProps) => (
   <>
     <Modal show={props.showDetails} onHide={props.onCloseDetails} size='xl' className={styles.modalContainer} centered>
-      <Modal.Header closeButton className={styles.modalHeader}>
+      <Modal.Header className={styles.modalHeader}>
         <Modal.Title className={styles.modalTitle}>Szczegóły aktywności</Modal.Title>
+        <button type='button' className={styles.customButtonClose} onClick={props.onCloseDetails}>
+          {/* Close button content */}
+          <span>&times;</span>
+        </button>
       </Modal.Header>
       <Modal.Body>
         <div className={styles.modalInfoSection}>
