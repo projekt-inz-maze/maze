@@ -24,7 +24,7 @@ function App(props) {
           {showNavbar && (
             <TopNavbar sidebarTitles={sidebarTitles} userSubtitles={student ? studentSubtitles : professorSubtitles} />
           )}
-          <div className='m-0 p-0' style={{ height: '90vh' }}>
+          <div className='m-0 p-0' style={{ height: '88vh' }}>
             <AppRoutes showNavbar={setShowNavbar} isStudent={student} isProfessor={professor} />
           </div>
           <AuthVerify />
