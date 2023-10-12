@@ -21,3 +21,34 @@ export type AddCourseRequest = {
 export type AddCourseResponse = {
   id: number
 }
+
+export type ChapterResponse = {
+  id: number
+  name: string
+  noActivities: number
+  maxPoints: number
+  mapSize: string
+  posX: number
+  posY: number
+  isFulfilled: boolean
+}
+
+export type ActivityMapResponse = {
+  id: number
+  tasks: ActivityResponse[]
+  mapSizeX: number
+  mapSizeY: number
+  image: any
+}
+
+export type ActivityResponse = {
+  id: number
+  posX: number
+  posY: number
+  type: string
+  title: string
+  points: number
+  creationTime: string
+  isFulfilled: boolean
+  isCompleted: boolean
+}

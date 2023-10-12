@@ -72,8 +72,7 @@ export default function ChapterMap({ chapterId, marginNeeded, parentSize, mapCli
         y: parentSize.y - emptySpaceY
       }
     }
-      return { x: 0, y: 0 }
-
+    return { x: 0, y: 0 }
   }, [marginNeeded, parentSize, rows])
 
   useEffect(() => {
@@ -117,15 +116,15 @@ export default function ChapterMap({ chapterId, marginNeeded, parentSize, mapCli
         <Map
           fluid
           className={`${marginNeeded && 'my-2'} h-100`}
-          $width={`${size * rows[0].length  }px`}
-          $height={`${size * rows.length  }px`}
-          $background={`data:image/png;base64, ${  chapterMap?.image?.file}`}
+          $width={`${size * rows[0].length}px`}
+          $height={`${size * rows.length}px`}
+          $background={`data:image/png;base64, ${chapterMap?.image?.file}`}
         >
           {rows.map((row, idx1) => (
             <Row key={idx1} className='mx-auto'>
               {row.map((activity, idx2) => (
                 <ActivityField
-                  key={`${idx2  } ${  idx1}`}
+                  key={`${idx2} ${idx1}`}
                   activity={activity}
                   posX={idx2}
                   posY={idx1}
