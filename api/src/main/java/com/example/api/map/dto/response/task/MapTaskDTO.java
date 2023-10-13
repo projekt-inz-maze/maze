@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class MapTask {
+public abstract class MapTaskDTO {
     private Long id;
     private Integer posX;
     private Integer posY;

@@ -13,7 +13,7 @@ import com.example.api.map.dto.response.chapter.ChapterInfoResponse;
 import com.example.api.map.dto.response.chapter.ChapterResponse;
 import com.example.api.map.dto.response.chapter.ChapterResponseProfessor;
 import com.example.api.map.dto.response.chapter.ChapterResponseStudent;
-import com.example.api.map.dto.response.task.MapTask;
+import com.example.api.map.dto.response.task.MapTaskDTO;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.task.model.Activity;
@@ -93,7 +93,7 @@ public class ChapterService {
         User user = authService.getCurrentUser();
         chapterValidator.validateUserCanAccess(user, chapter);
 
-        List<? extends MapTask> allTasks;
+        List<? extends MapTaskDTO> allTasks;
         if (user.getAccountType() == AccountType.STUDENT){
             allTasks = activityMapService.getMapTasksForStudent(chapter.getActivityMap(), user);
         } else {

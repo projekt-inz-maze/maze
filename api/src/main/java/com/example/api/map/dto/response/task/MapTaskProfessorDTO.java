@@ -6,13 +6,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MapTaskStudent extends MapTask{
-    private Boolean isFulfilled;
-    private Boolean isCompleted;
+public class MapTaskProfessorDTO extends MapTaskDTO {
+    private Boolean isActivityBlocked;
 
-    public MapTaskStudent(Activity activity, Boolean isFulfilled, Boolean isCompleted) {
+    public MapTaskProfessorDTO(Activity activity, Boolean isActivityBlocked) {
         super(activity.getId(), activity.getPosX(), activity.getPosY(), activity.getActivityType(), activity.getTitle(), activity.getMaxPoints(), activity.getCreationTime());
-        this.isFulfilled = isFulfilled;
-        this.isCompleted = isCompleted;
+        this.isActivityBlocked = isActivityBlocked;
     }
 }
