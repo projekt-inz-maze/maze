@@ -43,7 +43,7 @@ const QuestBoard = () => {
       <Row className='h-100'>
         <Stack direction='horizontal' gap={5} className={style.questStack}>
           {activities.tasks.map((activity) => (
-            <QuestCard key={activity.id} activity={activity} description={activity.type} />
+            <QuestCard key={activity.id} activity={activity} description={activity.title} />
           ))}
         </Stack>
       </Row>
