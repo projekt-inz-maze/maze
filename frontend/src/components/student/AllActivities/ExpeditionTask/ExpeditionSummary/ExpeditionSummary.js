@@ -5,14 +5,13 @@ import { connect } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { SummaryContainer } from './ExpeditionSummaryStyle'
+import ActivityDetails from '../../../../../common/components/ActivityDetails/ActivityDetails'
 import { GeneralRoutes, StudentRoutes } from '../../../../../routes/PageRoutes'
 import ExpeditionService from '../../../../../services/expedition.service'
 import { getTimer } from '../../../../../utils/storageManager'
 import { Content } from '../../../../App/AppGeneralStyles'
 import Loader from '../../../../general/Loader/Loader'
 import { ButtonRow } from '../QuestionAndOptions/QuestionAndOptionsStyle'
-
-
 
 function ExpeditionSummary(props) {
   const navigate = useNavigate()
@@ -25,6 +24,7 @@ function ExpeditionSummary(props) {
   const { expeditionId, isFinished } = location.state
   const [loaded, setLoaded] = useState(false)
   const [activityScore, setActivityScore] = useState(undefined)
+  const [showModal, setShowModal] = useState(true)
 
   useEffect(() => {
     ExpeditionService.getExpeditionScore(expeditionId)
@@ -81,14 +81,14 @@ function ExpeditionSummary(props) {
     const seconds = timer[2]
     const minutes = timer[1]
     const hours = timer[0]
-    let timeString = `${seconds  }s`
+    let timeString = `${seconds}s`
 
     if (minutes !== '00' || (minutes === '00' && hours !== '00')) {
-      timeString = `${minutes  }min, ${  timeString}`
+      timeString = `${minutes}min, ${timeString}`
     }
 
     if (hours !== '00') {
-      timeString = `${hours  }h, ${  timeString}`
+      timeString = `${hours}h, ${timeString}`
     }
 
     return timeString
@@ -99,56 +99,33 @@ function ExpeditionSummary(props) {
       {!loaded ? (
         <Loader />
       ) : (
-        <SummaryContainer $background={props.theme.primary} $fontColor={props.theme.font}>
-          <Row className='m-0'>
-            <h2>Gratulacje, ukończyłeś ekspedycję!</h2>
-          </Row>
-          <Row className='m-0'>
-            <h3>Twój wynik:</h3>
-          </Row>
-          <Row className='mx-0 my-5 d-flex flex-column'>
-            <p style={{ fontSize: 20 }}>
-              Liczba punktów razem na wybranej ścieżce:{' '}
-              <strong>
-                {scoredPoints}/{maxPointsClosed + maxPointsOpen}
-              </strong>
-            </p>
-            <p style={{ fontSize: 20 }}>
-              Punkty z pytań zamkniętych na wybranej ścieżce: {/* there will be a closed all endpoint later */}
-              <strong>
-                {closedQuestionPoints}/{maxPointsClosed}
-              </strong>
-            </p>
-            <p style={{ fontSize: 20 }}>
-              Punkty z pytań otwartych na wybranej ścieżce: {/* there will be a closed all endpoint later */}
-              <strong>
-                {scoredPoints - closedQuestionPoints}/{maxPointsOpen}
-              </strong>
-            </p>
-            {/* if expedition is not finished (the user didn't answer the last possible question) we don't show the time */}
-            {remainingTime > 0 && isFinished ? (
-              <p style={{ fontSize: 20 }}>
-                Ukończono: <strong>{showRemainingTime()}</strong> przed czasem.
-              </p>
-            ) : (
-              <p style={{ fontSize: 20 }}>Aktywność nie została ukończona w całości</p>
-            )}
-          </Row>
-          <Row>
-            <ButtonRow $background={props.theme.success}>
-              <button type="button" className='w-100' onClick={() => finishExpeditionAndGoHome()}>
-                Wróć do strony głównej
-              </button>
-            </ButtonRow>
-          </Row>
-        </SummaryContainer>
+        <ActivityDetails
+          showDetails={showModal}
+          onCloseDetails={() => setShowModal(false)}
+          onStartActivity={() => setShowModal(false)}
+          name='Nazwa aktywności'
+          type='Typ aktywności'
+          startDate='20:00, 10.01.2024'
+          endDate='22:00, 12.01.2024'
+          description='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit anim id est laborum.'
+          isHazard={false}
+          numberOfAttempts={999}
+          maxNumberOfAttempts={1000}
+          timeLimit={999}
+          points={maxPointsClosed + maxPointsOpen}
+          result={activityScore}
+        />
       )}
     </Content>
   )
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }

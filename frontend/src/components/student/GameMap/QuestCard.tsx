@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 
 import { Button } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 
 import styles from './QuestCard.module.scss'
 import { ActivityResponse } from '../../../api/types'
 import ActivityDetails from '../../../common/components/ActivityDetails/ActivityDetails'
+import { StudentRoutes } from '../../../routes/PageRoutes'
+import { getActivityPath } from '../../../utils/constants'
 
 type QuestCardProps = {
   activity: ActivityResponse
@@ -14,11 +17,38 @@ type QuestCardProps = {
 const QuestCard = (props: QuestCardProps) => {
   const [showModal, setShowModal] = useState(false)
 
+  const navigate = useNavigate()
+
+  const handleStartActivity = () => {
+    setShowModal(false)
+    if (props.activity.type === 'EXPEDITION') {
+      navigate(StudentRoutes.GAME_MAP.GRAPH_TASK.EXPEDITION_WRAPPER, {
+        state: {
+          activityId: props.activity.id,
+          maxPoints: props.activity.points
+        }
+      })
+    } else {
+      navigate(`${getActivityPath(props.activity.type)}`, {
+        state: { activityId: props.activity.id }
+      })
+    }
+  }
+
+  // const handleStartActivity = () =>
+  //   navigate(StudentRoutes.GAME_MAP.GRAPH_TASK.EXPEDITION_WRAPPER, {
+  //     state: {
+  //       activityId: props.activity.id,
+  //       maxPoints: props.activity.points
+  //     }
+  //   })
+
   return (
     <>
       <ActivityDetails
         showDetails={showModal}
         onCloseDetails={() => setShowModal(false)}
+        onStartActivity={handleStartActivity}
         name={props.activity.title}
         type={props.activity.type}
         startDate='20:00, 10.01.2024'
@@ -29,9 +59,9 @@ const QuestCard = (props: QuestCardProps) => {
             fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
             mollit anim id est laborum.'
         isHazard={false}
-        numberOfAttempts={0}
-        maxNumberOfAttempts={1}
-        timeLimit={60}
+        numberOfAttempts={999}
+        maxNumberOfAttempts={1000}
+        timeLimit={999}
         points={props.activity.points}
         result={0}
       />
