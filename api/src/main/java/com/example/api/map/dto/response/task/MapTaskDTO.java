@@ -15,4 +15,5 @@ public abstract class MapTaskDTO {
     private String title;
     private Double points;
     private Long creationTime;
+    private String description;
 }

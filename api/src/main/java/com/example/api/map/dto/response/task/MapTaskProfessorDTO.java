@@ -10,7 +10,14 @@ public class MapTaskProfessorDTO extends MapTaskDTO {
     private Boolean isActivityBlocked;
 
     public MapTaskProfessorDTO(Activity activity, Boolean isActivityBlocked) {
-        super(activity.getId(), activity.getPosX(), activity.getPosY(), activity.getActivityType(), activity.getTitle(), activity.getMaxPoints(), activity.getCreationTime());
+        super(activity.getId(),
+                activity.getPosX(),
+                activity.getPosY(),
+                activity.getActivityType(),
+                activity.getTitle(),
+                activity.getMaxPoints(),
+                activity.getCreationTime(),
+                activity.getDescription());
         this.isActivityBlocked = isActivityBlocked;
     }
 }

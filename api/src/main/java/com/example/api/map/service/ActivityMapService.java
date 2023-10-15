@@ -1,5 +1,6 @@
 package com.example.api.map.service;
 
+import com.example.api.activity.task.service.TaskService;
 import com.example.api.map.dto.response.ActivityMapResponse;
 import com.example.api.map.dto.response.task.MapTaskDTO;
 import com.example.api.map.dto.response.task.MapTaskProfessorDTO;
@@ -20,7 +21,6 @@ import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.map.repository.MapRepository;
-import com.example.api.user.repository.UserRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.MapValidator;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +41,10 @@ public class ActivityMapService {
     private final RequirementService requirementService;
     private final MapValidator mapValidator;
     private final LoggedInUserService authService;
-    private final UserRepository userRepository;
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
+    private final TaskService taskService;
 
     public ActivityMap saveActivityMap(ActivityMap activityMap){
         return mapRepository.save(activityMap);
@@ -80,7 +80,9 @@ public class ActivityMapService {
                 .map(graphTask -> new MapTaskStudentDTO(
                         graphTask,
                         areRequirementsFulfilled(graphTask),
-                        isGraphTaskCompleted(graphTask, student)))
+                        isGraphTaskCompleted(graphTask, student),
+                        taskService.getRequirementsForActivity(graphTask),
+                        graphTask.getTimeToSolveMillis()))
                 .toList();
         List<MapTaskStudentDTO> fileTasks = activityMap.getFileTasks()
                 .stream()
@@ -88,7 +90,8 @@ public class ActivityMapService {
                 .map(fileTask -> new MapTaskStudentDTO(
                         fileTask,
                         areRequirementsFulfilled(fileTask),
-                        isFileTaskCompleted(fileTask, student)))
+                        isFileTaskCompleted(fileTask, student),
+                        taskService.getRequirementsForActivity(fileTask)))
                 .toList();
         List<MapTaskStudentDTO> infos = activityMap.getInfos()
                 .stream()
@@ -96,7 +99,8 @@ public class ActivityMapService {
                 .map(info -> new MapTaskStudentDTO(
                         info,
                         areRequirementsFulfilled(info),
-                        true))
+                        true,
+                        taskService.getRequirementsForActivity(info)))
                 .toList();
         List<MapTaskStudentDTO> surveys = activityMap.getSurveys()
                 .stream()
@@ -104,7 +108,8 @@ public class ActivityMapService {
                 .map(survey -> new MapTaskStudentDTO(
                         survey,
                         areRequirementsFulfilled(survey),
-                        isSurveyCompleted(survey, student)))
+                        isSurveyCompleted(survey, student),
+                        taskService.getRequirementsForActivity(survey)))
                 .toList();
         return Stream.of(graphTasks, fileTasks, infos, surveys)
                 .flatMap(List::stream)

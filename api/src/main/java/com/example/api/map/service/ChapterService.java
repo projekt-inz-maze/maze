@@ -8,7 +8,7 @@ import com.example.api.map.dto.request.ChapterForm;
 import com.example.api.map.dto.request.ChapterRequirementForm;
 import com.example.api.map.dto.request.EditChapterForm;
 import com.example.api.map.dto.response.RequirementDTO;
-import com.example.api.map.dto.response.RequirementResponse;
+import com.example.api.map.dto.response.RequirementsDTO;
 import com.example.api.map.dto.response.chapter.ChapterInfoResponse;
 import com.example.api.map.dto.response.chapter.ChapterResponse;
 import com.example.api.map.dto.response.chapter.ChapterResponseProfessor;
@@ -50,7 +50,6 @@ public class ChapterService {
     private final FileRepository fileRepository;
     private final ActivityValidator activityValidator;
     private final ChapterValidator chapterValidator;
-    private final UserService userService;
     private final RequirementService requirementService;
     private final CourseValidator courseValidator;
     private final CourseService courseService;
@@ -173,7 +172,7 @@ public class ChapterService {
         chapter.setActivityMap(chapterMap);
     }
 
-    public RequirementResponse getRequirementsForChapter(Long chapterId) throws EntityNotFoundException {
+    public RequirementsDTO getRequirementsForChapter(Long chapterId) throws EntityNotFoundException {
 
         Chapter chapter = chapterRepository.findChapterById(chapterId);
         chapterValidator.validateChapterIsNotNull(chapter, chapterId);
@@ -186,7 +185,7 @@ public class ChapterService {
                 .map(Requirement::getResponse)
                 .sorted(Comparator.comparingLong(RequirementDTO::getId))
                 .toList();
-        return new RequirementResponse(chapter.getIsBlocked(), requirements);
+        return new RequirementsDTO(chapter.getIsBlocked(), requirements);
     }
 
     public void updateRequirementForChapter(ChapterRequirementForm form) throws RequestValidationException {

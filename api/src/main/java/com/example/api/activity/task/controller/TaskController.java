@@ -4,7 +4,7 @@ import com.example.api.activity.task.dto.request.requirement.ActivityRequirement
 import com.example.api.activity.task.dto.response.ActivitiesResponse;
 import com.example.api.activity.task.dto.response.ActivityToEvaluateResponse;
 import com.example.api.activity.task.dto.response.TaskToEvaluateResponse;
-import com.example.api.map.dto.response.RequirementResponse;
+import com.example.api.map.dto.response.RequirementsDTO;
 import com.example.api.error.exception.*;
 import com.example.api.activity.task.service.TaskService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -40,8 +40,8 @@ public class TaskController {
     }
 
     @GetMapping("/requirements")
-    ResponseEntity<RequirementResponse> getRequirementsForActivity(@RequestParam Long activityId)
-            throws EntityNotFoundException, MissingAttributeException {
+    ResponseEntity<RequirementsDTO> getRequirementsForActivity(@RequestParam Long activityId)
+            throws EntityNotFoundException {
         return ResponseEntity.ok().body(taskService.getRequirementsForActivity(activityId));
     }
 
