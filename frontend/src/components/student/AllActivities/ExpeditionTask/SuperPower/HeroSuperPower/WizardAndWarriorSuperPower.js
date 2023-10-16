@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import SuperPowerTrigger from '../SuperPowerTrigger'
-import { ShootingPanel } from '../SuperPowerStyle'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { faCrosshairs } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button, Col, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
+
 import { useQuestionInfoSuperPowerCheck } from '../../../../../../hooks/useSuperPowerCheck'
+import { ShootingPanel } from '../SuperPowerStyle'
+import SuperPowerTrigger from '../SuperPowerTrigger'
 
 function WizardAndWarriorSuperPower(props) {
-  const isExpanded = props.sidebar.isExpanded
+  const {isExpanded} = props.sidebar
 
   const [isShootingPanelDisplayed, setIsShootingPanelDisplayed] = useState(false)
   const [chosenQuestionId, setChosenQuestionId] = useState(null)
@@ -52,7 +54,7 @@ function WizardAndWarriorSuperPower(props) {
       <ShootingPanel style={{ display: isShootingPanelDisplayed ? 'flex' : 'none' }} $isExpanded={isExpanded}>
         <Row className='m-0 justify-content-between w-100'>
           {props.questions?.map((question) => (
-            <Col className={'text-center'} key={question.id}>
+            <Col className="text-center" key={question.id}>
               <FontAwesomeIcon icon={faCrosshairs} onClick={() => showQuestionPoint(question.id)} />
             </Col>
           ))}
@@ -65,8 +67,8 @@ function WizardAndWarriorSuperPower(props) {
 }
 
 function mapStateToProps(state) {
-  const sidebar = state.sidebar
-  const theme = state.theme
+  const {sidebar} = state
+  const {theme} = state
 
   return {
     sidebar,

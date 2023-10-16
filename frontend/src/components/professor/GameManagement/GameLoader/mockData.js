@@ -26,6 +26,4 @@ const configJsonExample = {
   ]
 }
 
-export const getConfigJson = () => {
-  return configJsonExample
-}
+export const getConfigJson = () => configJsonExample

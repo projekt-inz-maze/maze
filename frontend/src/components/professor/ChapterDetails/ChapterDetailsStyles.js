@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Card, Col, Tooltip } from 'react-bootstrap'
+import styled from 'styled-components'
 
 const ChapterCard = styled(Card)`
   color: ${(props) => props.$fontColor};

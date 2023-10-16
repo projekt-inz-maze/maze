@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
+
 import { Button, FormCheck, FormGroup, Modal, ModalBody, ModalFooter, ModalHeader, Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
+import { logout } from '../../../actions/auth'
 import ProfessorService from '../../../services/professor.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
-import { logout } from '../../../actions/auth'
 import { successToast } from '../../../utils/toasts'
-import { useNavigate } from 'react-router-dom'
+
 
 function DeleteAccountModal(props) {
   const navigate = useNavigate()
@@ -33,7 +36,7 @@ function DeleteAccountModal(props) {
 
   return (
     <>
-      <Modal show={props.show} onHide={() => props.setModalOpen(false)} size={'lg'}>
+      <Modal show={props.show} onHide={() => props.setModalOpen(false)} size="lg">
         <ModalHeader>
           <h5>Usunięcie konta</h5>
         </ModalHeader>
@@ -42,7 +45,7 @@ function DeleteAccountModal(props) {
             Aby usunąć konto, musisz wybrać innego prowadzącego, który przejmie Twoje aktywności (m.in. sprawdzanie).
           </p>
           {professorsList === undefined ? (
-            <Spinner animation={'border'} />
+            <Spinner animation="border" />
           ) : professorsList == null ? (
             <p>{ERROR_OCCURRED}</p>
           ) : (
@@ -50,7 +53,7 @@ function DeleteAccountModal(props) {
               {professorsList.map((professor) => (
                 <FormCheck
                   key={professor}
-                  type={'radio'}
+                  type="radio"
                   value={professor}
                   label={professor}
                   checked={selectedProfessorEmail === professor}
@@ -107,7 +110,7 @@ function DeleteAccountModal(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

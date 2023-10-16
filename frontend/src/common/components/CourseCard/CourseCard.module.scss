@@ -1,0 +1,31 @@
+.mainCard {
+  min-width: 265px;
+  max-width: 265px;
+  transition: all 0.2s ease-in-out;
+  flex-shrink: 0;
+
+  .clickable,
+  .clickableImg {
+    cursor: pointer;
+    max-height: 200px;
+  }
+
+  .clickableImg {
+    min-height: 200px;
+  }
+
+  .menu {
+    background-color: #fff;
+    color: #333;
+    border: 0;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 999;
+  }
+
+  .dropdownMenu {
+    width: 90%;
+    margin-top: 1.25em;
+  }
+}

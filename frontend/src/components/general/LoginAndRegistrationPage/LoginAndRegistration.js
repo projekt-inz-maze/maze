@@ -1,12 +1,13 @@
 import React from 'react'
+
 import { faFire } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Row } from 'react-bootstrap'
-import { AuthFormContainer, LoginContainer, Logo } from './AuthStyle'
-
-import Carousel from './CharactersCarousel/Carousel'
-import AuthTabs from './AuthTabs'
 import { connect } from 'react-redux'
+
+import { AuthFormContainer, LoginContainer, Logo } from './AuthStyle'
+import AuthTabs from './AuthTabs'
+import Carousel from './CharactersCarousel/Carousel'
 
 function LoginAndRegistration(props) {
   return (
@@ -27,7 +28,7 @@ function LoginAndRegistration(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

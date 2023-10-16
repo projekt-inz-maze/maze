@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react'
+
 import JSONInput from 'react-json-editor-ajrm'
 import locale from 'react-json-editor-ajrm/locale/en'
 
@@ -23,9 +24,7 @@ const JSONEditor = forwardRef((props, ref) => {
    * */
   const [cursorPosition, setCursorPosition] = useState({})
 
-  const getJson = () => {
-    return editedJson
-  }
+  const getJson = () => editedJson
 
   useImperativeHandle(ref, () => ({
     getJson
@@ -53,7 +52,7 @@ const JSONEditor = forwardRef((props, ref) => {
       placeholder={props.jsonConfig}
       locale={locale}
       height='100%'
-      width={'100%'}
+      width="100%"
       style={{ body: { fontSize: '15px' }, outerBox: { maxHeight: '60vh', overflowY: 'auto' } }}
       onChange={editJsonObject}
       waitAfterKeyPress={400}

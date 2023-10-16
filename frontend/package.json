@@ -9,10 +9,11 @@
         "@fortawesome/free-solid-svg-icons": "^6.1.1",
         "@fortawesome/react-fontawesome": "^0.1.18",
         "@redux-devtools/extension": "^3.2.2",
-        "@reduxjs/toolkit": "^1.8.2",
+        "@reduxjs/toolkit": "^1.9.5",
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^13.2.0",
         "@testing-library/user-event": "^13.5.0",
+        "@types/css-modules": "^1.0.2",
         "axios": "^0.27.2",
         "chart.js": "^3.9.1",
         "chroma-js": "^2.4.2",
@@ -20,11 +21,14 @@
         "cytoscape-klay": "^3.1.4",
         "date-fns": "^2.29.2",
         "downloadjs": "^1.4.7",
+        "eslint-config-airbnb": "^19.0.4",
         "formik": "^2.2.9",
         "gh-pages": "^4.0.0",
         "hex-to-css-filter": "^5.4.0",
+        "holderjs": "^2.9.9",
         "lodash": "^4.17.21",
         "moment": "^2.29.4",
+        "node-sass": "^9.0.0",
         "qs": "^6.10.5",
         "react": "^18.1.0",
         "react-awesome-reveal": "^4.0.1",
@@ -42,8 +46,9 @@
         "react-select": "^5.4.0",
         "react-toastify": "^9.0.7",
         "react-tooltip": "^4.4.2",
-        "redux": "^4.2.0",
-        "redux-thunk": "^2.4.1",
+        "redux": "^4.2.1",
+        "redux-devtools-extension": "^2.13.9",
+        "redux-thunk": "^2.4.2",
         "remark-gfm": "^3.0.1",
         "styled-components": "^5.3.5",
         "web-vitals": "^2.1.4"
@@ -75,6 +80,22 @@
         ]
     },
     "devDependencies": {
-        "prettier": "2.7.1"
+        "@typescript-eslint/eslint-plugin": "^5.60.0",
+        "eslint": "^8.43.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-config-standard-with-typescript": "^35.0.0",
+        "eslint-import-resolver-typescript": "^3.5.5",
+        "eslint-plugin-import": "^2.27.5",
+        "eslint-plugin-n": "^15.7.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "eslint-plugin-promise": "^6.1.1",
+        "eslint-plugin-react": "^7.32.2",
+        "prettier": "2.7.1",
+        "typescript": "^5.1.6"
+    },
+    "overrides": {
+        "react-scripts": {
+            "typescript": "^5"
+        }
     }
 }

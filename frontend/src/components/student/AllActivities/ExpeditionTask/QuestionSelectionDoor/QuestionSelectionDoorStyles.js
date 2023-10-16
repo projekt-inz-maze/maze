@@ -1,7 +1,8 @@
-import styled from 'styled-components'
-import door from '../../../../../utils/resources/graphTask/door.png'
-import background from '../../../../../utils/resources/graphTask/background5.jpg'
 import { Col } from 'react-bootstrap'
+import styled from 'styled-components'
+
+import background from '../../../../../utils/resources/graphTask/background5.jpg'
+import door from '../../../../../utils/resources/graphTask/door.png'
 
 export const Door = styled.div`
   background: url(${door}) no-repeat center center;

@@ -1,20 +1,23 @@
 package com.example.api.unit.util.visitor;
 
+import com.example.api.activity.result.model.*;
+import com.example.api.course.model.Course;
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.model.activity.result.*;
-import com.example.api.model.activity.task.FileTask;
-import com.example.api.model.activity.task.GraphTask;
-import com.example.api.model.group.Group;
-import com.example.api.model.user.AccountType;
-import com.example.api.model.user.User;
-import com.example.api.model.user.badge.*;
-import com.example.api.service.activity.result.FileTaskResultService;
-import com.example.api.service.activity.result.GraphTaskResultService;
-import com.example.api.service.activity.result.TaskResultService;
-import com.example.api.service.activity.result.ranking.RankingService;
-import com.example.api.service.user.UserService;
+import com.example.api.activity.task.model.FileTask;
+import com.example.api.activity.task.model.GraphTask;
+import com.example.api.group.model.Group;
+import com.example.api.security.LoggedInUserService;
+import com.example.api.user.model.AccountType;
+import com.example.api.user.model.User;
+import com.example.api.activity.result.service.FileTaskResultService;
+import com.example.api.activity.result.service.GraphTaskResultService;
+import com.example.api.activity.result.service.TaskResultService;
+import com.example.api.activity.result.service.ranking.RankingService;
+import com.example.api.user.model.badge.*;
+import com.example.api.user.service.UserService;
 import com.example.api.util.visitor.BadgeVisitor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +40,7 @@ public class BadgeVisitorTest {
     @Mock private FileTaskResultService fileTaskResultService;
     @Mock private  UserService userService;
     @Mock private RankingService rankingService;
+    @Mock private LoggedInUserService authService;
 
     private User user;
     private List<TaskResult> results;
@@ -47,6 +51,11 @@ public class BadgeVisitorTest {
     private SurveyResult surveyResult;
     private AdditionalPoints additionalPoints;
 
+    private CourseMember member;
+    private Course course;
+
+    private Group group;
+
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
@@ -55,7 +64,8 @@ public class BadgeVisitorTest {
                 graphTaskResultService,
                 fileTaskResultService,
                 userService,
-                rankingService
+                rankingService,
+                authService
         );
 
         user = new User();
@@ -63,7 +73,19 @@ public class BadgeVisitorTest {
         user.setEmail("user@gmail.com");
         user.setPassword("password");
         user.setAccountType(AccountType.STUDENT);
-        user.setPoints(10d);
+
+        member = new CourseMember();
+        member.setPoints(0D);
+        member.setLevel(1);
+
+        group = new Group();
+        group.setId(2L);
+        group.getUsers().add(user);
+        group.getMembers().add(member);
+
+        course = new Course();
+        course.setId(3L);
+        course.getGroups().add(group);
 
         graphTaskResult1 = new GraphTaskResult();
         graphTaskResult2 = new GraphTaskResult();
@@ -72,12 +94,20 @@ public class BadgeVisitorTest {
         surveyResult = new SurveyResult();
         additionalPoints = new AdditionalPoints();
 
-        graphTaskResult1.setUser(user);
-        graphTaskResult2.setUser(user);
-        fileTaskResult1.setUser(user);
-        fileTaskResult2.setUser(user);
-        surveyResult.setUser(user);
-        additionalPoints.setUser(user);
+        graphTaskResult1.setMember(member);
+        graphTaskResult2.setMember(member);
+        fileTaskResult1.setMember(member);
+        fileTaskResult2.setMember(member);
+        surveyResult.setMember(member);
+        additionalPoints.setMember(member);
+
+        graphTaskResult1.setCourse(course);
+        graphTaskResult2.setCourse(course);
+        fileTaskResult1.setCourse(course);
+        fileTaskResult2.setCourse(course);
+        surveyResult.setCourse(course);
+        additionalPoints.setCourse(course);
+
         graphTaskResult1.setPointsReceived(100d);
         graphTaskResult2.setPointsReceived(20d);
         fileTaskResult1.setPointsReceived(80d);
@@ -99,9 +129,10 @@ public class BadgeVisitorTest {
     @Test
     public void visitActivityNumberBadgeGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
-        doReturn(results).when(taskResultService).getAllResultsForStudent(user);
+        when(authService.getCurrentUser()).thenReturn(user);
+        doReturn(results).when(taskResultService).getAllResultsForStudent(user, course);
         ActivityNumberBadge activityNumberBadge = new ActivityNumberBadge(6);
+        activityNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitActivityNumberBadge(activityNumberBadge);
@@ -113,9 +144,10 @@ public class BadgeVisitorTest {
     @Test
     public void visitActivityNumberBadgeNotGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
-        doReturn(results).when(taskResultService).getAllResultsForStudent(user);
+        when(authService.getCurrentUser()).thenReturn(user);
+        doReturn(results).when(taskResultService).getAllResultsForStudent(user, course);
         ActivityNumberBadge activityNumberBadge = new ActivityNumberBadge(7);
+        activityNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitActivityNumberBadge(activityNumberBadge);
@@ -127,7 +159,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitActivityScoreBadgeGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
@@ -145,8 +177,9 @@ public class BadgeVisitorTest {
         fileTaskResult1.setFileTask(fileTask1);
         fileTaskResult2.setFileTask(fileTask2);
 
-        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
+        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
         ActivityScoreBadge activityScoreBadge = new ActivityScoreBadge(0.8, false);
+        activityScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitActivityScoreBadge(activityScoreBadge);
@@ -158,7 +191,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitActivityScoreBadgeNotGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
@@ -176,8 +209,9 @@ public class BadgeVisitorTest {
         fileTaskResult1.setFileTask(fileTask1);
         fileTaskResult2.setFileTask(fileTask2);
 
-        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
+        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
         ActivityScoreBadge activityScoreBadge = new ActivityScoreBadge(0.8, false);
+        activityScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitActivityScoreBadge(activityScoreBadge);
@@ -189,7 +223,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitConsistencyBadgeGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2022, Calendar.OCTOBER, 1, 0, 0);
@@ -205,8 +239,9 @@ public class BadgeVisitorTest {
         calendar.set(2022, Calendar.OCTOBER, 31, 0, 0);
         additionalPoints.setSendDateMillis(calendar.getTimeInMillis());
 
-        doReturn(results).when(taskResultService).getAllResultsForStudent(user);
+        doReturn(results).when(taskResultService).getAllResultsForStudent(user, course);
         ConsistencyBadge consistencyBadge = new ConsistencyBadge(6);
+        consistencyBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitConsistencyBadge(consistencyBadge);
@@ -218,7 +253,7 @@ public class BadgeVisitorTest {
     @Test
     public void visitConsistencyBadgeNorGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2022, Calendar.OCTOBER, 1, 0, 0);
@@ -234,8 +269,9 @@ public class BadgeVisitorTest {
         calendar.set(2022, Calendar.OCTOBER, 31, 0, 0);
         additionalPoints.setSendDateMillis(calendar.getTimeInMillis());
 
-        doReturn(results).when(taskResultService).getAllResultsForStudent(user);
+        doReturn(results).when(taskResultService).getAllResultsForStudent(user, course);
         ConsistencyBadge consistencyBadge = new ConsistencyBadge(6);
+        consistencyBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitConsistencyBadge(consistencyBadge);
@@ -247,12 +283,13 @@ public class BadgeVisitorTest {
     @Test
     public void visitGraphTaskNumberBadgeGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         results = List.of(graphTaskResult1, graphTaskResult2);
 
-        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudent(user);
+        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudentAndCourse(user, course);
         GraphTaskNumberBadge graphTaskNumberBadge = new GraphTaskNumberBadge(2);
+        graphTaskNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitGraphTaskNumberBadge(graphTaskNumberBadge);
@@ -264,12 +301,13 @@ public class BadgeVisitorTest {
     @Test
     public void visitGraphTaskNumberBadgeNotGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         results = List.of(graphTaskResult1, graphTaskResult2);
 
-        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudent(user);
+        doReturn(results).when(graphTaskResultService).getAllGraphTaskResultsForStudentAndCourse(user, course);
         GraphTaskNumberBadge graphTaskNumberBadge = new GraphTaskNumberBadge(3);
+        graphTaskNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitGraphTaskNumberBadge(graphTaskNumberBadge);
@@ -281,12 +319,13 @@ public class BadgeVisitorTest {
     @Test
     public void visitFileTaskNumberBadgeGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         results = List.of(fileTaskResult1, fileTaskResult2);
 
-        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user);
+        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user, course);
         FileTaskNumberBadge fileTaskNumberBadge = new FileTaskNumberBadge(2);
+        fileTaskNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitFileTaskNumberBadge(fileTaskNumberBadge);
@@ -298,12 +337,13 @@ public class BadgeVisitorTest {
     @Test
     public void visitFileTaskNumberBadgeNotGranted() {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
 
         results = List.of(fileTaskResult1, fileTaskResult2);
 
-        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user);
+        doReturn(results).when(fileTaskResultService).getAllFileTaskResultsForStudent(user, course);
         FileTaskNumberBadge fileTaskNumberBadge = new FileTaskNumberBadge(4);
+        fileTaskNumberBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitFileTaskNumberBadge(fileTaskNumberBadge);
@@ -315,13 +355,14 @@ public class BadgeVisitorTest {
     @Test
     public void visitTopScoreTaskNumberBadgeResultsLessThanFive() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
 
-        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
+        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.2, false);
+        topScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitTopScoreBadge(topScoreBadge);
@@ -333,12 +374,12 @@ public class BadgeVisitorTest {
     @Test
     public void visitTopScoreTaskNumberBadgeResultsGroupIsGranted() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
-        graphTaskResult.setUser(user);
+        graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
         results.add(graphTaskResult);
 
@@ -346,11 +387,12 @@ public class BadgeVisitorTest {
         group.setUsers(List.of(new User(), new User(), new User(), new User(), new User()));
         group.getUsers().forEach(user1 -> user1.setAccountType(AccountType.STUDENT));
 
-        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
-        when(userService.getUserGroup()).thenReturn(group);
-        when(rankingService.getGroupRankingPosition()).thenReturn(2);
+        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
+        when(userService.getCurrentUserGroup(0L)).thenReturn(group);
+        when(rankingService.getGroupRankingPosition(0l)).thenReturn(2);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.5, true);
+        topScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitTopScoreBadge(topScoreBadge);
@@ -362,12 +404,12 @@ public class BadgeVisitorTest {
     @Test
     public void visitTopScoreTaskNumberBadgeResultsGroupIsGrantedFirstPlace() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
-        graphTaskResult.setUser(user);
+        graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
         results.add(graphTaskResult);
 
@@ -375,11 +417,12 @@ public class BadgeVisitorTest {
         group.setUsers(List.of(new User(), new User(), new User(), new User(), new User()));
         group.getUsers().forEach(user1 -> user1.setAccountType(AccountType.STUDENT));
 
-        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
-        when(userService.getUserGroup()).thenReturn(group);
-        when(rankingService.getGroupRankingPosition()).thenReturn(1);
+        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
+        when(userService.getCurrentUserGroup(0L)).thenReturn(group);
+        when(rankingService.getGroupRankingPosition(0L)).thenReturn(1);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.0, true);
+        topScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitTopScoreBadge(topScoreBadge);
@@ -391,23 +434,25 @@ public class BadgeVisitorTest {
     @Test
     public void visitTopScoreTaskNumberBadgeResultsIsGranted() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
-        graphTaskResult.setUser(user);
+        graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
+        graphTaskResult.setCourse(course);
         results.add(graphTaskResult);
 
         List<User> users = List.of(new User(), new User(), new User(), new User(), new User());
         users.forEach(user1 -> user1.setAccountType(AccountType.STUDENT));
 
-        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
-        when(userService.getUsers()).thenReturn(users);
-        when(rankingService.getRankingPosition()).thenReturn(2);
+        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
+        when(course.getCourseMembers().size()).thenReturn(users.size());
+        when(rankingService.getRankingPosition(0L)).thenReturn(2);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.5, false);
+        topScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitTopScoreBadge(topScoreBadge);
@@ -419,23 +464,35 @@ public class BadgeVisitorTest {
     @Test
     public void visitTopScoreTaskNumberBadgeResultsIsGrantedFirstPlace() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(authService.getCurrentUser()).thenReturn(user);
         results = new ArrayList<>(results);
         results.remove(surveyResult);
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
-        graphTaskResult.setUser(user);
+        graphTaskResult.setMember(member);
         graphTaskResult.setPointsReceived(20d);
         results.add(graphTaskResult);
+
+        Group group = new Group();
+        group.setId(2L);
+        group.getUsers().add(user);
+        group.getMembers().add(member);
+
+        Course course = new Course();
+        course.setId(3L);
+        course.getGroups().add(group);
 
         List<User> users = List.of(new User(), new User(), new User(), new User(), new User());
         users.forEach(user1 -> user1.setAccountType(AccountType.STUDENT));
 
-        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user);
-        when(userService.getUsers()).thenReturn(users);
-        when(rankingService.getRankingPosition()).thenReturn(1);
+        group.getUsers().addAll(users);
+
+        doReturn(results).when(taskResultService).getGraphAndFileResultsForStudent(user, course);
+        when(userService.getCurrentUserGroup(course.getId())).thenReturn(group);
+        when(rankingService.getRankingPosition(0L)).thenReturn(1);
 
         TopScoreBadge topScoreBadge = new TopScoreBadge(0.0, false);
+        topScoreBadge.setCourse(course);
 
         //when
         boolean isGranted = badgeVisitor.visitTopScoreBadge(topScoreBadge);

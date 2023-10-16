@@ -15,9 +15,25 @@ import {
   faUserGroup,
   faUsers
 } from '@fortawesome/free-solid-svg-icons'
+
 import { GeneralRoutes, StudentRoutes, TeacherRoutes } from '../routes/PageRoutes'
 
-export const UserSidebarTitles = [
+export const sidebarTitles = [
+  {
+    name: 'Kursy',
+    navigateTo: GeneralRoutes.COURSE_LIST
+  },
+  {
+    name: 'Ustawienia',
+    navigateTo: GeneralRoutes.HOME // TODO: Change when settings view is completed.
+  },
+  {
+    name: 'Wyloguj',
+    navigateTo: GeneralRoutes.HOME
+  }
+]
+
+export const studentSubtitles = [
   {
     name: 'Karta gry',
     icon: faHouse,
@@ -43,25 +59,14 @@ export const UserSidebarTitles = [
     icon: faCertificate,
     navigateTo: StudentRoutes.BADGES
   },
-  // {
-  //   name: 'Świat gry',
-  //   icon: faChessBoard,
-  //   navigateTo: GeneralRoutes.CANVAS
-  // },
   {
     name: 'Profil',
     icon: faUser,
     navigateTo: StudentRoutes.PROFILE
-  },
-  {
-    name: 'Wyloguj',
-    icon: faRightFromBracket,
-    navigateTo: GeneralRoutes.HOME,
-    action: 'LOGOUT'
   }
 ]
 
-export const ProfessorSidebarTitles = [
+export const professorSubtitles = [
   {
     name: 'Podsumowanie gry',
     icon: faBullseye,
@@ -119,11 +124,5 @@ export const ProfessorSidebarTitles = [
     name: 'Ustawienia',
     icon: faGear,
     navigateTo: TeacherRoutes.SETTINGS
-  },
-  {
-    name: 'Wyloguj',
-    icon: faRightFromBracket,
-    navigateTo: GeneralRoutes.HOME,
-    action: 'LOGOUT'
   }
 ]

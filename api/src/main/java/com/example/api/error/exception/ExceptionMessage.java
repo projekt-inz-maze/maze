@@ -5,6 +5,7 @@ public class ExceptionMessage {
     public static final String INDEX_TAKEN = "Podany numer indeksu jest zajęty";
     public static final String GROUP_CODE_NOT_EXIST = "Podany kod grupy nie istnieje";
     public static final String GROUP_NAME_TAKEN = "Podana nazwa grupy jest zajęta";
+    public static final String COURSE_NAME_TAKEN = "Podana nazwa kursu jest zajęta";
     public static final String GROUP_CODE_TAKEN = "Podany kod grupy jest zajęty";
     public static final String FORM_FIELDS_NOT_NULL = "Wszystkie pola w tym pliku json muszą mieć wartość";
     public static final String GRAPH_TASK_FORM_FIELDS_NOT_NULL = "Wszystkie pola w tym pliku json w głównym obiekcie muszą mieć wartość";
@@ -31,10 +32,13 @@ public class ExceptionMessage {
     public static final String STUDENT_NOT_FOUND ="Student o podanym emailu nie istnieje: ";
     public static final String GRAPH_TASK_NOT_FOUND ="Ekspedycja o podanej nazwie nie istnieje: ";
     public static final String FILE_TASK_NOT_FOUND ="Zadanie bojowe o podanej nazwie nie istnieje: ";
-    public static final String GROUP_NAME_CONTAINS_SEMICOLON ="Nazwa grupy nie może posiadać średnika";
-    public static final String EMAIL_CONTAINS_SEMICOLON ="Email nie może posiadać średnika";
-    public static final String FILE_TASK_TITLE_CONTAINS_SEMICOLON ="Nazwa zadania bojowego nie może posiadać średnika";
-    public static final String GRAPH_TASK_TITLE_CONTAINS_SEMICOLON ="Nazwa ekspedycji nie może posiadać średnika";
+    public static final String GROUP_NAME_CONTAINS_SEMICOLON ="Nazwa grupy nie może zawierać średnika";
+    public static final String EMAIL_CONTAINS_SEMICOLON ="Email nie może zawierać średnika";
+    public static final String EMAIL_WRONG_DOMAIN ="Email nie pochodzi z domeny AGH";
+    public static final String FILE_TASK_TITLE_CONTAINS_SEMICOLON ="Nazwa zadania bojowego nie może zawierać średnika";
+    public static final String GRAPH_TASK_TITLE_CONTAINS_SEMICOLON ="Nazwa ekspedycji nie może zawierać średnika";
+    public static final String COURSE_CONTAINS_SEMICOLON ="Nazwa kursy nie może zawierać średnika";
+    public static final String COURSE_OWNER_INVALID ="użytkownik nie jest prowadzącym kursu prowadzącego";
     public static final String TIME_REMAINING_IS_UP ="Czas na przejście ekspedycji się skończył";
     public static final String CHAPTER_MAP_SIZE_TOO_SMALL = "Podane wymiary mapy są zbyt małe dla istniejących na niej aktywności";
     public static final String IMAGE_NOT_EXISTS = "Zdjęcia o podanym id nie ma w bazie danych.";
@@ -53,4 +57,9 @@ public class ExceptionMessage {
     public static final String PASSWORD_RESET_TOKEN_EXPIRED = "Ważność tokena do resetu hasła wygasła";
     public static final String PASSWORD_RESET_TOKEN_INCORRECT = "Podany token do resetu hasła jest nieprawidłowy";
     public static final String PASSWORD_NOT_MEET_REQUIREMENTS = "Hasło nie spełnia wymagań";
+    public static final String ROLE_NOT_ALLOWED = "Rola nie jest dozwolona";
+
+    public static String graphTaskResultAlreadyExists(Long taskId, Long userId) {
+        return "GraphTaskResult for GraphTask  " + taskId + " and user " + userId + " already exists";
+    }
 }

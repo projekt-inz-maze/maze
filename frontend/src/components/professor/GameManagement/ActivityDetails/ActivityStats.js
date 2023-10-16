@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { CustomCard } from '../../../student/GameCardPage/GameCardStyles'
-import CardHeader from 'react-bootstrap/CardHeader'
-import { Card, Col, Row, Spinner } from 'react-bootstrap'
-import { ChartCol, CustomTable } from '../../../student/GameCardPage/gameCardContentsStyle'
+
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js'
+import { Card, Col, Row, Spinner } from 'react-bootstrap'
+import CardHeader from 'react-bootstrap/CardHeader'
 import { Bar, Pie } from 'react-chartjs-2'
-import { getChartConfig, getChartDetails } from '../../../general/chartHelper'
-import StatsCard from './StatsCard'
-import { Activity, ERROR_OCCURRED } from '../../../../utils/constants'
-import PercentageCircle from '../../../student/PointsPage/ChartAndStats/PercentageCircle'
-import ActivityService from '../../../../services/activity.service'
 import { connect } from 'react-redux'
+
+import StatsCard from './StatsCard'
+import ActivityService from '../../../../services/activity.service'
+import { Activity, ERROR_OCCURRED } from '../../../../utils/constants'
 import { isMobileView } from '../../../../utils/mobileHelper'
+import { getChartConfig, getChartDetails } from '../../../general/chartHelper'
+import { ChartCol, CustomTable } from '../../../student/GameCardPage/gameCardContentsStyle'
+import { CustomCard } from '../../../student/GameCardPage/GameCardStyles'
+import PercentageCircle from '../../../student/PointsPage/ChartAndStats/PercentageCircle'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement)
 
@@ -64,7 +66,7 @@ function ActivityStats(props) {
       return <p>Brak statystyk dla aktywności typu: Wytyczne</p>
     }
     if (statsData === undefined) {
-      return <Spinner animation={'border'} />
+      return <Spinner animation="border" />
     }
     if (statsData == null) {
       return <p>{ERROR_OCCURRED}</p>
@@ -82,7 +84,7 @@ function ActivityStats(props) {
     if (!isSurvey) {
       bodyRows.push({
         info: 'Średni wynik procentowy dla wszystkich grup',
-        value: rounded(statsData.avgPercentageResult) + '%'
+        value: `${rounded(statsData.avgPercentageResult)  }%`
       })
       bodyRows.push({ info: 'Najlepszy wynik', value: statsData.bestScore })
       bodyRows.push({ info: 'Najgorszy wynik', value: statsData.worstScore })
@@ -115,7 +117,7 @@ function ActivityStats(props) {
       <StatsCard
         header={header}
         body={
-          <ChartCol $customHeight={'95%'}>
+          <ChartCol $customHeight="95%">
             {chartType === 'BAR' ? <Bar data={data} options={options} /> : <Pie data={data} options={options} />}
           </ChartCol>
         }
@@ -125,7 +127,7 @@ function ActivityStats(props) {
 
   return (
     <>
-      <Row className={'m-0 mt-3 gy-2'} style={{ height: isMobileView() ? '100vh' : '40vh' }}>
+      <Row className="m-0 mt-3 gy-2" style={{ height: isMobileView() ? '100vh' : '40vh' }}>
         <Col md={6}>
           <CustomCard
             $fontColor={props.theme.font}
@@ -150,7 +152,7 @@ function ActivityStats(props) {
               </CardHeader>
               <Card.Body>
                 {statsData === undefined ? (
-                  <Spinner animation={'border'} />
+                  <Spinner animation="border" />
                 ) : statsData == null ? (
                   <p>{ERROR_OCCURRED}</p>
                 ) : (
@@ -168,7 +170,7 @@ function ActivityStats(props) {
           )}
         </Col>
       </Row>
-      <Row className={'m-0 mt-3 gy-2'} style={{ height: isMobileView() ? '70vh' : '40vh' }}>
+      <Row className="m-0 mt-3 gy-2" style={{ height: isMobileView() ? '70vh' : '40vh' }}>
         <Col md={6}>
           {chartCard(
             'BAR',
@@ -193,7 +195,7 @@ function ActivityStats(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

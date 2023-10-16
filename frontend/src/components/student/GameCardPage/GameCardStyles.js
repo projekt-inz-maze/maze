@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { Card } from 'react-bootstrap'
+import styled from 'styled-components'
 
 export const CustomCard = styled(Card)`
   color: ${(props) => props.$fontColor};

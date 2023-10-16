@@ -1,7 +1,8 @@
 package com.example.api.util.csv;
 
-import com.example.api.model.user.User;
-import com.example.api.service.user.GradeService;
+import com.example.api.course.model.Course;
+import com.example.api.user.model.User;
+import com.example.api.user.service.GradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +23,12 @@ public class CSVConverter implements Converter<Map<User, List<CSVTaskResult>>> {
     private final static String department = "Wydział Informatyki, Elektroniki i Telekomunikacji";
 
     @Override
-    public byte[] convertToByteArray(Map<User, List<CSVTaskResult>> data, List<String> firstRow) {
+    public byte[] convertToByteArray(Map<User, List<CSVTaskResult>> data, List<String> firstRow, Course course) {
         List<List<String>> csv = new ArrayList<>();
         csv.add(firstRow);
         for (User user: data.keySet()) {
             List<CSVTaskResult> csvTaskResults = data.get(user);
-            Double studentGrade = gradeService.getStudentFinalGrade(user).getGrade();
+            Double studentGrade = gradeService.getStudentFinalGrade(user, course).getGrade();
             List<String> userData = List.of(user.getFirstName(),
                     user.getLastName(),
                     user.getIndexNumber().toString(),

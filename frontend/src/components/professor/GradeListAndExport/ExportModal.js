@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Card, Modal, Spinner } from 'react-bootstrap'
-import CardHeader from 'react-bootstrap/CardHeader'
-import ProfessorService from '../../../services/professor.service'
+
 import download from 'downloadjs'
 import moment from 'moment'
-import ActivitiesTable from './ActivitiesTable'
+import { Button, Card, Modal, Spinner } from 'react-bootstrap'
+import CardHeader from 'react-bootstrap/CardHeader'
 import { connect } from 'react-redux'
+
+import ActivitiesTable from './ActivitiesTable'
+import ProfessorService from '../../../services/professor.service'
+
+
 
 function ExportModal(props) {
   const [exportButtonDisabled, setExportButtonDisabled] = useState(true)
@@ -35,9 +39,9 @@ function ExportModal(props) {
   }
 
   return (
-    <Modal show={props.isModalVisible} size={'lg'}>
+    <Modal show={props.isModalVisible} size="lg">
       <Card>
-        <CardHeader className={'text-center'}>
+        <CardHeader className="text-center">
           <Card.Title>Wybór aktywności.</Card.Title>
           <p>Wybierz dla jakich aktywności chcesz dokonać eksportu ocen.</p>
         </CardHeader>
@@ -48,9 +52,9 @@ function ExportModal(props) {
             setActivitiesToExportIds={setActivitiesToExportIds}
           />
         </Card.Body>
-        <Card.Footer className={'text-center'}>
+        <Card.Footer className="text-center">
           {isFetching ? (
-            <Spinner animation={'border'} />
+            <Spinner animation="border" />
           ) : (
             <>
               <Button
@@ -61,7 +65,7 @@ function ExportModal(props) {
               </Button>
               <Button
                 style={{ backgroundColor: props.theme.success, borderColor: props.theme.success }}
-                className={'ms-2'}
+                className="ms-2"
                 onClick={startExporting}
                 disabled={exportButtonDisabled}
               >
@@ -76,7 +80,7 @@ function ExportModal(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }

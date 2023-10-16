@@ -53,12 +53,12 @@ export const MultiStepProgressBar = styled.div`
   }
 
   &::after {
-    right: ${(props) => (props.$step === 2 ? `-23px` : '-16px')};
+    right: ${(props) => (props.$step === 2 ? '-23px' : '-16px')};
     outline: ${(props) => (props.$step === 2 ? `2px dashed ${props.$accentColor}` : 'none')};
   }
 
   &::before {
-    left: ${(props) => (props.$step === 0 ? `-23px` : '-16px')};
+    left: ${(props) => (props.$step === 0 ? '-23px' : '-16px')};
     outline: ${(props) => (props.$step === 0 ? `2px dashed ${props.$accentColor}` : 'none')};
   }
 `

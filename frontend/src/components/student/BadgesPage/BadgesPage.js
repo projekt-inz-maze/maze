@@ -1,19 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Content } from '../../App/AppGeneralStyles'
+
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import moment from 'moment'
+import { Bounce, Slide } from 'react-awesome-reveal'
 import { Col, Row } from 'react-bootstrap'
+import { connect } from 'react-redux'
+
 import { HorizontalPointsLine, PercentageBar } from './BadgesStyle'
 import ContentCard from './ContentCard'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
-import { Bounce, Slide } from 'react-awesome-reveal'
-import { connect } from 'react-redux'
+import { useAppSelector } from '../../../hooks/hooks'
 import RankService from '../../../services/rank.service'
-import Loader from '../../general/Loader/Loader'
+import UserService from '../../../services/user.service'
 import { base64Header, ERROR_OCCURRED } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
-import UserService from '../../../services/user.service'
+import { Content } from '../../App/AppGeneralStyles'
+import Loader from '../../general/Loader/Loader'
 import { sortArray } from '../../general/Ranking/sortHelper'
-import moment from 'moment'
 import Tooltip from '../../general/Tooltip/Tooltip'
 
 const LATER_ITEM_DELAY = 1200
@@ -26,8 +29,10 @@ function BadgesPage(props) {
   const [unlockedBadgesList, setUnlockedBadgesList] = useState(undefined)
   const [lastUnlockedBadge, setLastUnlockedBadge] = useState(null)
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   useEffect(() => {
-    RankService.getCurrentStudentRank()
+    RankService.getCurrentStudentRank(courseId)
       .then((response) => {
         setRankInfo(response)
       })
@@ -35,7 +40,7 @@ function BadgesPage(props) {
         setRankInfo(null)
       })
 
-    UserService.getAllBadges()
+    UserService.getAllBadges(courseId)
       .then((response) => {
         setAllBadgesList(response)
       })
@@ -43,7 +48,7 @@ function BadgesPage(props) {
         setAllBadgesList(null)
       })
 
-    UserService.getUnlockedBadges()
+    UserService.getUnlockedBadges(courseId)
       .then((response) => {
         setUnlockedBadgesList(response)
         setLastUnlockedBadge(sortArray(response, 'DESC', ['unlockedDateMillis'], {})[0])
@@ -95,33 +100,31 @@ function BadgesPage(props) {
 
   const badgeContent = useCallback(
     (badge, index) => {
-      const badgeUnlockedDate = unlockedBadgesList?.find((b) => {
-        return b.badge.title === badge.title
-      })?.unlockedDateMillis
+      const badgeUnlockedDate = unlockedBadgesList?.find((b) => b.badge.title === badge.title)?.unlockedDateMillis
 
-      const tooltipText = !!badgeUnlockedDate
+      const tooltipText = badgeUnlockedDate
         ? `Odblokowano: ${moment(badgeUnlockedDate).format('DD.MM.YYYY, HH:mm')}`
         : 'Odznaka nadal nie została zdobyta.'
 
       return (
-        <Col md={4} className={'text-center d-flex flex-column align-items-center'} key={index + Date.now()}>
+        <Col md={4} className='text-center d-flex flex-column align-items-center' key={index + Date.now()}>
           <img
-            data-for={'badge-' + index}
+            data-for={`badge-${index}`}
             data-tip={tooltipText}
-            style={{ opacity: !!badgeUnlockedDate ? 1 : 0.4 }}
+            style={{ opacity: badgeUnlockedDate ? 1 : 0.4 }}
             width={100}
             src={base64Header + badge.file.file}
-            alt={'badge-icon'}
+            alt='badge-icon'
           />
 
-          <p className={'m-0'}>
-            <strong style={{ opacity: !!badgeUnlockedDate ? 1 : 0.4 }}>{badge.title}</strong>
+          <p className='m-0'>
+            <strong style={{ opacity: badgeUnlockedDate ? 1 : 0.4 }}>{badge.title}</strong>
           </p>
-          <p style={{ opacity: !!badgeUnlockedDate ? 1 : 0.4 }} className={'px-2'}>
+          <p style={{ opacity: badgeUnlockedDate ? 1 : 0.4 }} className='px-2'>
             {badge.description}
           </p>
 
-          <Tooltip id={'badge-' + index} />
+          <Tooltip id={`badge-${index}`} />
         </Col>
       )
     },
@@ -132,12 +135,14 @@ function BadgesPage(props) {
     <Content>
       {rankInfo === undefined ? (
         <Loader />
-      ) : rankInfo == null ? (
-        <p>{ERROR_OCCURRED}</p>
+      ) : rankInfo == null || rankInfo.currentRank == null ? (
+        <>
+          <p>{ERROR_OCCURRED}</p>
+        </>
       ) : (
         <>
-          <Slide delay={LATER_ITEM_DELAY} direction={'down'}>
-            <Row className={'m-0 text-center py-3'}>
+          <Slide delay={LATER_ITEM_DELAY} direction='down'>
+            <Row className='m-0 text-center py-3'>
               <Col md={4}>
                 <strong>Twoja ranga: </strong>
                 <span>{rankInfo.currentRank.name}</span>
@@ -152,27 +157,27 @@ function BadgesPage(props) {
               </Col>
             </Row>
           </Slide>
-          <Row className={'m-0'}>
+          <Row className='m-0'>
             <Col md={12}>
               <HorizontalPointsLine $pointsColor={props.theme.success} $background={props.theme.secondary}>
                 <ul>
                   {[rankInfo.previousRank, rankInfo.currentRank, rankInfo.nextRank].map((rank, index) => (
                     <li key={index + Date.now()}>
                       <div>
-                        <div className={'pointsInfo'}>{rank ? `> ${rank.minPoints} pkt` : '-'}</div>
-                        <div className={'rankInfo'}>
-                          <div className={'left-arrow'} />
+                        <div className='pointsInfo'>{rank ? `> ${rank.minPoints} pkt` : '-'}</div>
+                        <div className='rankInfo'>
+                          <div className='left-arrow' />
                           <p>
                             <strong>{rank?.name ?? 'Brak odznaki'}</strong>
                           </p>
                           {rank?.image ? (
-                            <img width={100} src={base64Header + rank.image} alt={'rank-profile'} />
+                            <img width={100} src={base64Header + rank.image} alt='rank-profile' />
                           ) : (
                             <p>Brak obrazka</p>
                           )}
 
                           {additionalContent(index)}
-                          <div className={'right-arrow'} />
+                          <div className='right-arrow' />
                         </div>
                       </div>
                     </li>
@@ -183,40 +188,40 @@ function BadgesPage(props) {
           </Row>
         </>
       )}
-      <Row className={'mx-0 my-5'} style={{ maxHeight: isMobileDisplay ? '330vh' : '55vh' }}>
+      <Row className='mx-0 my-5' style={{ maxHeight: isMobileDisplay ? '330vh' : '55vh' }}>
         <Col md={9} className={isMobileDisplay ? 'mb-3' : 'm-auto'}>
           <ContentCard
-            maxHeight={'53vh'}
-            header={'Odznaki'}
+            maxHeight='53vh'
+            header='Odznaki'
             body={
               allBadgesList === undefined ? (
                 <Loader />
               ) : allBadgesList == null ? (
                 <p>{ERROR_OCCURRED}</p>
               ) : (
-                <Row className={'m-0 w-100 h-100'} style={{ overflow: 'visible' }}>
+                <Row className='m-0 w-100 h-100' style={{ overflow: 'visible' }}>
                   {allBadgesList?.map((badge, index) => badgeContent(badge, index))}
                 </Row>
               )
             }
           />
         </Col>
-        <Col md={3} className={`p-0 ${isMobileDisplay ? 'mb-5' : 'mb-0'}`}>
-          <Row className={`pb-2 pr-2 m-0 ${isMobileDisplay ? 'mb-3' : 'mb-0 h-50'}`}>
+        <Col md={3} className={`p-0 ${isMobileDisplay ? 'mb-5' : 'mb-2'}`}>
+          <Row className={`pb-2 pr-2 m-0 ${isMobileDisplay ? 'mb-3' : 'mb-2 h-40'}`}>
             <ContentCard
-              header={'Posiadasz'}
+              header='Posiadasz'
               body={
-                <div className={'h-100 w-100'}>
+                <div className='h-100 w-100'>
                   <Bounce delay={LATER_ITEM_DELAY}>
-                    <p className={'text-center m-0'}>
+                    <p className='text-center m-0'>
                       <span style={{ fontSize: 80 }}>{unlockedBadgesList?.length ?? 0}</span>
-                      <span className={'pl-5 position-absolute'} style={{ top: '50%' }}>
+                      <span className='pl-5 position-absolute' style={{ top: '50%' }}>
                         / {allBadgesList?.length ?? 0}
                       </span>
                       <br />
                       <span>odznak</span>
                     </p>
-                    <p className={'text-center m-0'}>
+                    <p className='text-center m-0'>
                       Co stanowi
                       <strong>
                         {' '}
@@ -235,21 +240,21 @@ function BadgesPage(props) {
 
           <Row className={`m-0 pr-2 ${isMobileDisplay ? '' : 'h-50'}`}>
             <ContentCard
-              header={'Ostatnio zdobyta'}
+              header='Ostatnio zdobyta'
               body={
-                <div className={'h-100 w-100 text-center'}>
+                <div className='h-100 w-100 text-center'>
                   <Bounce delay={LATER_ITEM_DELAY}>
                     {!lastUnlockedBadge ? (
                       <p>Nie zdobyto jeszcze żadnej odznaki.</p>
                     ) : (
-                      <div className={'d-flex justify-content-center align-items-center flex-column'}>
+                      <div className='d-flex justify-content-center align-items-center flex-column'>
                         <img
                           width={75}
                           src={base64Header + lastUnlockedBadge?.badge.file.file}
                           alt={lastUnlockedBadge.badge.file.name}
                         />
                         <strong>{lastUnlockedBadge.badge.title}</strong>
-                        <p className={'px-2'}>{lastUnlockedBadge.badge.description}</p>
+                        <p className='px-2'>{lastUnlockedBadge.badge.description}</p>
                       </div>
                     )}
                   </Bounce>
@@ -264,8 +269,9 @@ function BadgesPage(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const { theme } = state
 
   return { theme }
 }
+
 export default connect(mapStateToProps)(BadgesPage)

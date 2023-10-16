@@ -7,7 +7,7 @@ function createMap() {
   img.src = map.background
 
   return {
-    img: img,
+    img,
     playerStartX: map.startCol,
     playerStartY: map.startRow,
     binMap: map.binaryRepresentation,
@@ -16,7 +16,7 @@ function createMap() {
   }
 }
 
-export let GameMap = function (canvas, heroType) {
+export const GameMap = function (canvas, heroType) {
   this.scale = 25
   this.canvas = canvas
   this.step = 0
@@ -32,7 +32,7 @@ export let GameMap = function (canvas, heroType) {
     this.canvas.style.width = '70%'
     this.canvas.width = canvas.offsetWidth
     const height = Math.round((this.canvas.width * 3) / 4) // game map has a proportion 4:3
-    this.canvas.style.height = height + 'px'
+    this.canvas.style.height = `${height  }px`
     this.canvas.height = canvas.offsetHeight
   }
 
@@ -42,7 +42,7 @@ export let GameMap = function (canvas, heroType) {
     img.src = HeroDataset[heroType][0]
 
     return {
-      img: img,
+      img,
       sizeX: playerSizeX,
       sizeY: (img.height * playerSizeX) / img.width,
       x: this.map.playerStartX,

@@ -1,18 +1,20 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { faBolt } from '@fortawesome/free-solid-svg-icons'
-import Tooltip from '../../../../general/Tooltip/Tooltip'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { connect } from 'react-redux'
+
 import { SuperPowerButton } from './SuperPowerStyle'
+import Tooltip from '../../../../general/Tooltip/Tooltip'
 
 function SuperPowerTrigger(props) {
   const isSidebarExpanded = props.sidebar.isExpanded
-  const superPowerCanBeUsed = props.superPowerCanBeUsed
+  const {superPowerCanBeUsed} = props
 
   return (
     <>
       <SuperPowerButton
-        data-for={'super-power-trigger'}
+        data-for="super-power-trigger"
         data-tip={superPowerCanBeUsed?.message ?? ''}
         $isBlocked={!superPowerCanBeUsed?.canBeUsed}
         $isExpanded={isSidebarExpanded}
@@ -22,14 +24,14 @@ function SuperPowerTrigger(props) {
         <FontAwesomeIcon icon={faBolt} />
       </SuperPowerButton>
 
-      <Tooltip id={'super-power-trigger'} />
+      <Tooltip id="super-power-trigger" />
     </>
   )
 }
 
 function mapStateToProps(state) {
-  const sidebar = state.sidebar
-  const theme = state.theme
+  const {sidebar} = state
+  const {theme} = state
 
   return {
     sidebar,

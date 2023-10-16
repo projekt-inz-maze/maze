@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react'
+
 import { Col, Row } from 'react-bootstrap'
-import { Answer, ButtonRow, QuestionCard } from '../QuestionAndOptionsStyle'
-import answerSaver from '../answerSaver'
 import { connect } from 'react-redux'
+
+import answerSaver from '../answerSaver'
+import { Answer, ButtonRow, QuestionCard } from '../QuestionAndOptionsStyle'
 
 function ClosedQuestionPage(props) {
   const answersParent = useRef(null)
@@ -71,7 +73,7 @@ function ClosedQuestionPage(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

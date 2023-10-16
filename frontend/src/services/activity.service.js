@@ -1,4 +1,3 @@
-import { axiosApiDelete, axiosApiGet, axiosApiPost } from '../utils/axios'
 import {
   DELETE_ACTIVITY,
   GET_ACTIVITY_EDIT_INFO,
@@ -11,6 +10,7 @@ import {
   POST_ACTIVITY_EDIT,
   POST_TASK_REQUIREMENTS
 } from './urls'
+import { axiosApiDelete, axiosApiGet, axiosApiPost } from '../utils/axios'
 
 class ActivityService {
   getActivityMap(mapId) {
@@ -48,7 +48,7 @@ class ActivityService {
 
   getActivityRequirements(activityId) {
     return axiosApiGet(GET_TASK_REQUIREMENTS, {
-      activityId: activityId
+      activityId
     }).catch((error) => {
       throw error
     })
@@ -56,9 +56,9 @@ class ActivityService {
 
   setActivityRequirements(activityId, requirements, isBlocked) {
     return axiosApiPost(POST_TASK_REQUIREMENTS, {
-      activityId: activityId,
-      isBlocked: isBlocked,
-      requirements: requirements
+      activityId,
+      isBlocked,
+      requirements
     }).catch((error) => {
       throw error
     })

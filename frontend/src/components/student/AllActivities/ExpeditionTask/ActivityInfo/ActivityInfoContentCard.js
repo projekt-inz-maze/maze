@@ -1,13 +1,15 @@
 import React from 'react'
-import { CustomCard } from '../../../GameCardPage/GameCardStyles'
-import CardHeader from 'react-bootstrap/CardHeader'
+
 import { Card } from 'react-bootstrap'
+import CardHeader from 'react-bootstrap/CardHeader'
 import { connect } from 'react-redux'
+
+import { CustomCard } from '../../../GameCardPage/GameCardStyles'
 
 function ActivityInfoContentCard(props) {
   return (
     <CustomCard
-      className={'p-0'}
+      className="p-0"
       $fontColor={props.theme.font}
       $background={props.theme.primary}
       $bodyColor={props.theme.secondary}
@@ -21,7 +23,7 @@ function ActivityInfoContentCard(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

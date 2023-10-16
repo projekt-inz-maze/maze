@@ -1,20 +1,23 @@
 package com.example.api.unit.service.user;
 
+import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.model.user.AccountType;
-import com.example.api.model.user.User;
-import com.example.api.model.user.badge.ActivityNumberBadge;
-import com.example.api.model.user.badge.Badge;
-import com.example.api.model.user.badge.TopScoreBadge;
-import com.example.api.model.user.badge.UnlockedBadge;
-import com.example.api.repo.user.BadgeRepo;
-import com.example.api.repo.user.UnlockedBadgeRepo;
-import com.example.api.repo.util.FileRepo;
-import com.example.api.service.user.BadgeService;
-import com.example.api.service.user.UserService;
-import com.example.api.service.validator.BadgeValidator;
+import com.example.api.security.AuthenticationService;
+import com.example.api.security.LoggedInUserService;
+import com.example.api.user.model.AccountType;
+import com.example.api.user.model.User;
+import com.example.api.user.model.badge.ActivityNumberBadge;
+import com.example.api.user.model.badge.Badge;
+import com.example.api.user.model.badge.TopScoreBadge;
+import com.example.api.user.model.badge.UnlockedBadge;
+import com.example.api.user.repository.BadgeRepository;
+import com.example.api.user.repository.UnlockedBadgeRepository;
+import com.example.api.util.repository.FileRepository;
+import com.example.api.user.service.BadgeService;
+import com.example.api.user.service.UserService;
+import com.example.api.validator.BadgeValidator;
 import com.example.api.util.visitor.BadgeVisitor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,28 +33,33 @@ import static org.mockito.Mockito.when;
 
 public class BadgeServiceTest {
     private BadgeService badgeService;
-    @Mock private BadgeRepo badgeRepo;
-    @Mock private UnlockedBadgeRepo unlockedBadgeRepo;
+    @Mock private BadgeRepository badgeRepository;
+    @Mock private UnlockedBadgeRepository unlockedBadgeRepository;
     @Mock private UserService userService;
     @Mock private BadgeVisitor badgeVisitor;
-    @Mock private FileRepo fileRepo;
+    @Mock private FileRepository fileRepository;
     @Mock private BadgeValidator badgeValidator;
+    @Mock private LoggedInUserService authService;
 
     private User user;
     List<Badge> badges = new LinkedList<>();
     TopScoreBadge topScoreBadge;
     ActivityNumberBadge activityNumberBadge;
 
+
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
         badgeService = new BadgeService(
-                badgeRepo,
-                unlockedBadgeRepo,
-                fileRepo,
+                badgeRepository,
+                unlockedBadgeRepository,
+                fileRepository,
                 userService,
                 badgeValidator,
-                badgeVisitor
+                badgeVisitor,
+                null,
+                null,
+                null
         );
 
         user = new User();
@@ -59,7 +67,6 @@ public class BadgeServiceTest {
         user.setEmail("user@gmail.com");
         user.setPassword("password");
         user.setAccountType(AccountType.STUDENT);
-        user.setPoints(10d);
 
         topScoreBadge = new TopScoreBadge();
         activityNumberBadge = new ActivityNumberBadge();
@@ -70,17 +77,18 @@ public class BadgeServiceTest {
     @Test
     public void checkAllBadgesWhenNoUnlockedBadges() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
-        when(userService.getCurrentUser()).thenReturn(user);
+        CourseMember member = new CourseMember();
+        when(authService.getCurrentUser()).thenReturn(user);
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(false);
-        when(userService.getCurrentUser()).thenReturn(user);
-        doReturn(badges).when(badgeRepo).findAll();
+        when(authService.getCurrentUser()).thenReturn(user);
+        doReturn(badges).when(badgeRepository).findAll();
 
         //when
-        badgeService.checkAllBadges();
+        badgeService.checkAllBadges(member);
 
         //then
-        List<UnlockedBadge> unlockedBadges = user.getUnlockedBadges();
+        List<UnlockedBadge> unlockedBadges = member.getUnlockedBadges();
         List<Badge> badgesInUnlockedBadges = unlockedBadges.stream()
                 .map(UnlockedBadge::getBadge)
                 .toList();
@@ -91,20 +99,21 @@ public class BadgeServiceTest {
     @Test
     public void checkAllBadgesWhenHasUnlockedBadges() throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         //given
+        CourseMember member = new CourseMember();
         UnlockedBadge unlockedBadge = new UnlockedBadge();
         unlockedBadge.setBadge(topScoreBadge);
-        user.getUnlockedBadges().add(unlockedBadge);
-        when(userService.getCurrentUser()).thenReturn(user);
+        member.getUnlockedBadges().add(unlockedBadge);
+        when(authService.getCurrentUser()).thenReturn(user);
         when(badgeVisitor.visitTopScoreBadge(topScoreBadge)).thenReturn(true);
         when(badgeVisitor.visitActivityNumberBadge(activityNumberBadge)).thenReturn(true);
-        when(userService.getCurrentUser()).thenReturn(user);
-        doReturn(badges).when(badgeRepo).findAll();
+        when(authService.getCurrentUser()).thenReturn(user);
+        doReturn(badges).when(badgeRepository).findAll();
 
         //when
-        badgeService.checkAllBadges();
+        badgeService.checkAllBadges(member);
 
         //then
-        List<UnlockedBadge> unlockedBadges = user.getUnlockedBadges();
+        List<UnlockedBadge> unlockedBadges = member.getUnlockedBadges();
         List<Badge> badgesInUnlockedBadges = unlockedBadges.stream()
                 .map(UnlockedBadge::getBadge)
                 .toList();

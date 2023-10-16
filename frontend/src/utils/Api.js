@@ -1,4 +1,5 @@
 import moment from 'moment'
+
 import 'moment/locale/pl'
 import { INVALID_DATE_MESSAGE } from './constants'
 

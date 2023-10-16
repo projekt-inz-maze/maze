@@ -1,8 +1,8 @@
 package com.example.api.util.csv;
 
-import com.example.api.model.activity.feedback.Feedback;
-import com.example.api.model.activity.result.FileTaskResult;
-import com.example.api.model.activity.result.TaskResult;
+import com.example.api.activity.feedback.model.Feedback;
+import com.example.api.activity.result.model.FileTaskResult;
+import com.example.api.activity.result.model.TaskResult;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

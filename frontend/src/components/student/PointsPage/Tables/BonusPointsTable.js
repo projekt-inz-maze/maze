@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { TableContainer } from './TableStyle'
-import StudentService from '../../../../services/student.service'
-import { Spinner } from 'react-bootstrap'
-import { ERROR_OCCURRED } from '../../../../utils/constants'
+
 import moment from 'moment'
+import { Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
+
+import { TableContainer } from './TableStyle'
+import { useAppSelector } from '../../../../hooks/hooks'
+import StudentService from '../../../../services/student.service'
+import { ERROR_OCCURRED } from '../../../../utils/constants'
+
 
 function BonusPointsTable(props) {
   const [bonusPoints, setBonusPoints] = useState(undefined)
+  const courseId = useAppSelector((state) => state.user.courseId)
 
   useEffect(() => {
-    StudentService.getBonusPointsList()
+    StudentService.getBonusPointsList(courseId)
       .then((response) => {
         setBonusPoints(response)
       })
@@ -41,14 +46,14 @@ function BonusPointsTable(props) {
       <tbody>
         {bonusPoints === undefined ? (
           <tr>
-            <td colSpan='100%' className={'text-center'}>
-              <Spinner animation={'border'} />
+            <td colSpan='100%' className="text-center">
+              <Spinner animation="border" />
             </td>
           </tr>
         ) : bonusPoints == null || bonusPoints.length === 0 ? (
           <tr>
             <td colSpan='100%'>
-              <p className={'text-center h6'} style={{ color: props.theme.warning }}>
+              <p className="text-center h6" style={{ color: props.theme.warning }}>
                 {bonusPoints ? 'Brak punktów' : ERROR_OCCURRED}
               </p>
             </td>
@@ -69,7 +74,7 @@ function BonusPointsTable(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

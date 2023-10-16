@@ -1,4 +1,5 @@
 import React from 'react'
+
 import AddActivity from './AddActivity'
 import CombatTaskService from '../../../../services/combatTask.service'
 import { Activity } from '../../../../utils/constants'

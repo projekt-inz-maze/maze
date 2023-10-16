@@ -1,15 +1,17 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { connect } from 'react-redux'
-import { Button, FormControl, FormGroup, FormLabel, FormText } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
-import { GeneralRoutes } from '../../../../routes/PageRoutes'
-import { MultiStepProgressBar } from './ResetPasswordFormStyle'
+
 import { debounce } from 'lodash'
-import { validateConfirmPassword, validateEmail, validatePassword } from '../RegistrationPage/validators'
-import { AccountType } from '../../../../utils/userRole'
-import { ALL_FIELDS_REQUIRED, ERROR_OCCURRED, FIELD_WITH_NAME_REQUIRED } from '../../../../utils/constants'
+import { Button, FormControl, FormGroup, FormLabel, FormText } from 'react-bootstrap'
+import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
+import { MultiStepProgressBar } from './ResetPasswordFormStyle'
+import { GeneralRoutes } from '../../../../routes/PageRoutes'
 import UserService from '../../../../services/user.service'
+import { ALL_FIELDS_REQUIRED, ERROR_OCCURRED, FIELD_WITH_NAME_REQUIRED } from '../../../../utils/constants'
 import { successToast } from '../../../../utils/toasts'
+import { AccountType } from '../../../../utils/userRole'
+import { validateConfirmPassword, validateEmail, validatePassword } from '../RegistrationPage/validators'
 
 function ResetPasswordForm(props) {
   const navigate = useNavigate()
@@ -46,27 +48,23 @@ function ResetPasswordForm(props) {
   }
 
   const FormButton = useCallback(
-    ({ text, onClick, color = props.theme.success, width = 100, disabled = false }) => {
-      return (
+    ({ text, onClick, color = props.theme.success, width = 100, disabled = false }) => (
         <Button
-          style={{ backgroundColor: color, borderColor: color, width: width }}
+          style={{ backgroundColor: color, borderColor: color, width }}
           disabled={disabled}
           onClick={onClick}
         >
           {text}
         </Button>
-      )
-    },
+      ),
     [props.theme.success]
   )
 
-  const ErrorMessage = useMemo(() => {
-    return error ? (
-      <p className={'py-3 text-center'} style={{ color: props.theme.danger }}>
+  const ErrorMessage = useMemo(() => error ? (
+      <p className="py-3 text-center" style={{ color: props.theme.danger }}>
         {error}
       </p>
-    ) : null
-  }, [error, props.theme.danger])
+    ) : null, [error, props.theme.danger])
 
   const FirstStepForm = useMemo(() => {
     const onCancel = () => {
@@ -80,18 +78,18 @@ function ResetPasswordForm(props) {
     }, 200)
 
     return (
-      <FormGroup className={'w-75 position-relative translate-middle-x start-50'}>
-        <FormLabel className={'fw-bold'} style={{ color: props.theme.font }}>
+      <FormGroup className="w-75 position-relative translate-middle-x start-50">
+        <FormLabel className="fw-bold" style={{ color: props.theme.font }}>
           Email
         </FormLabel>
-        <FormControl type={'email'} onChange={onInputChange} defaultValue={emailValue} />
+        <FormControl type="email" onChange={onInputChange} defaultValue={emailValue} />
         <FormText style={{ color: props.theme.font, display: 'block' }}>
           Na podany powyżej adres email zostanie wysłany mail umożliwiający reset hasła.
         </FormText>
 
         {ErrorMessage}
 
-        <div className={'my-4 d-flex justify-content-center gap-2 '}>
+        <div className="my-4 d-flex justify-content-center gap-2 ">
           {FormButton({ text: 'Anuluj', onClick: onCancel, color: props.theme.danger })}
           {FormButton({
             text: 'Dalej',
@@ -104,18 +102,18 @@ function ResetPasswordForm(props) {
     // eslint-disable-next-line
   }, [ErrorMessage, FormButton, emailValue, error, navigate, props.theme.danger, props.theme.font])
 
-  const SecondStepForm = useMemo(() => {
-    return (
+  const SecondStepForm = useMemo(() =>
+     (
       <>
         <p
           style={{ color: props.theme.font }}
-          className={'text-center position-relative translate-middle-x start-50 w-75'}
+          className="text-center position-relative translate-middle-x start-50 w-75"
         >
           Twój kod do resetu hasła zostanie wysłany na podany adres email. Jeżeli nie widzisz maila, sprawdź spam.
-          Jeżeli w przeciągu 5min nie otrzymasz maila z kodem, kliknij przycisk "Wyślij ponownie email"
+          Jeżeli w przeciągu 5min nie otrzymasz maila z kodem, kliknij przycisk &quot;Wyślij ponownie email&quot;
         </p>
 
-        <div className={'my-4 d-flex justify-content-center gap-2 '}>
+        <div className="my-4 d-flex justify-content-center gap-2 ">
           {FormButton({ text: 'Wstecz', onClick: () => setStep(0), color: props.theme.danger })}
           {FormButton({
             text: 'Wyślij ponownie email',
@@ -129,7 +127,7 @@ function ResetPasswordForm(props) {
     )
 
     // eslint-disable-next-line
-  }, [FormButton, props.theme.danger, props.theme.font, props.theme.secondary])
+  , [FormButton, props.theme.danger, props.theme.font, props.theme.secondary])
 
   const ThirdStepForm = useMemo(() => {
     const onPasswordInputChange = debounce((passwordInput) => {
@@ -160,22 +158,22 @@ function ResetPasswordForm(props) {
       }
     })
 
-    const Input = ({ label, type, onChange = null }) => (
-      <div>
-        <FormLabel className={'fw-bold'} style={{ color: props.theme.font }}>
+    function Input({ label, type, onChange = null }) {
+  return <div>
+        <FormLabel className="fw-bold" style={{ color: props.theme.font }}>
           {label}
         </FormLabel>
         <FormControl type={type} onChange={onChange} />
       </div>
-    )
+}
 
     return (
-      <FormGroup className={'w-75 position-relative translate-middle-x start-50'}>
+      <FormGroup className="w-75 position-relative translate-middle-x start-50">
         {Input({ label: 'Kod resetu hasła', type: 'text', onChange: onCodeInputChange })}
         {Input({ label: 'Nowe hasło', type: 'password', onChange: onPasswordInputChange })}
         {Input({ label: 'Powtórz nowe hasło', type: 'password', onChange: onConfirmPasswordInputChange })}
         {ErrorMessage}
-        <div className={'my-4 d-flex justify-content-center gap-2 '}>
+        <div className="my-4 d-flex justify-content-center gap-2 ">
           {FormButton({ text: 'Wstecz', onClick: () => setStep(1), color: props.theme.danger })}
           {FormButton({
             text: 'Zmień hasło',
@@ -185,7 +183,7 @@ function ResetPasswordForm(props) {
         </div>
       </FormGroup>
     )
-    //eslint-disable-next-line
+    // eslint-disable-next-line
   }, [ErrorMessage, FormButton, error, passwordValue, props.theme.danger, props.theme.font])
 
   const formContents = [FirstStepForm, SecondStepForm, ThirdStepForm]
@@ -193,15 +191,15 @@ function ResetPasswordForm(props) {
   return (
     <div>
       <MultiStepProgressBar $step={step} $accentColor={props.theme.font}>
-        <div /> {/*helper - second circle*/}
+        <div /> {/* helper - second circle */}
       </MultiStepProgressBar>
-      <>{formContents[step]}</>
+      {formContents[step]}
     </div>
   )
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

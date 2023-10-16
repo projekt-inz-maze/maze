@@ -1,20 +1,20 @@
 package com.example.api.util.visitor;
 
 import com.example.api.error.exception.EntityNotFoundException;
-import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.model.activity.result.FileTaskResult;
-import com.example.api.model.activity.result.GraphTaskResult;
-import com.example.api.model.activity.result.TaskResult;
-import com.example.api.model.activity.task.Activity;
-import com.example.api.model.user.AccountType;
-import com.example.api.model.user.User;
-import com.example.api.model.user.badge.*;
-import com.example.api.service.activity.result.FileTaskResultService;
-import com.example.api.service.activity.result.GraphTaskResultService;
-import com.example.api.service.activity.result.TaskResultService;
-import com.example.api.service.activity.result.ranking.RankingService;
-import com.example.api.service.user.UserService;
+import com.example.api.activity.result.model.FileTaskResult;
+import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.task.model.Activity;
+import com.example.api.security.LoggedInUserService;
+import com.example.api.user.model.AccountType;
+import com.example.api.user.model.User;
+import com.example.api.activity.result.service.FileTaskResultService;
+import com.example.api.activity.result.service.GraphTaskResultService;
+import com.example.api.activity.result.service.TaskResultService;
+import com.example.api.activity.result.service.ranking.RankingService;
+import com.example.api.user.model.badge.*;
+import com.example.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +31,11 @@ public class BadgeVisitor {
     private final FileTaskResultService fileTaskResultService;
     private final UserService userService;
     private final RankingService rankingService;
+    private final LoggedInUserService authService;
 
     public boolean visitActivityNumberBadge(ActivityNumberBadge badge) {
-        User student = userService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student)
+        User student = authService.getCurrentUser();
+        List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse())
                 .stream()
                 .filter(TaskResult::isEvaluated)
                 .toList();
@@ -43,8 +44,8 @@ public class BadgeVisitor {
     }
 
     public boolean visitActivityScoreBadge(ActivityScoreBadge badge) {
-        User student = userService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student)
+        User student = authService.getCurrentUser();
+        List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
                 .stream()
                 .filter(TaskResult::isEvaluated)
                 .toList();
@@ -83,8 +84,8 @@ public class BadgeVisitor {
     }
 
     public boolean visitConsistencyBadge(ConsistencyBadge badge) {
-        User student = userService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student);
+        User student = authService.getCurrentUser();
+        List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse());
         Long[] datesInMillis = results.stream()
                 .filter(TaskResult::isEvaluated)
                 .map(TaskResult::getSendDateMillis)
@@ -111,8 +112,8 @@ public class BadgeVisitor {
     }
 
     public boolean visitFileTaskNumberBadge(FileTaskNumberBadge badge) {
-        User student = userService.getCurrentUser();
-        List<FileTaskResult> results = fileTaskResultService.getAllFileTaskResultsForStudent(student)
+        User student = authService.getCurrentUser();
+        List<FileTaskResult> results = fileTaskResultService.getAllFileTaskResultsForStudent(student, badge.getCourse())
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .toList();
@@ -121,8 +122,8 @@ public class BadgeVisitor {
     }
 
     public boolean visitGraphTaskNumberBadge(GraphTaskNumberBadge badge) {
-        User student = userService.getCurrentUser();
-        List<GraphTaskResult> results = graphTaskResultService.getAllGraphTaskResultsForStudent(student)
+        User student = authService.getCurrentUser();
+        List<GraphTaskResult> results = graphTaskResultService.getAllGraphTaskResultsForStudentAndCourse(student, badge.getCourse())
                 .stream()
                 .filter(GraphTaskResult::isEvaluated)
                 .toList();
@@ -130,9 +131,9 @@ public class BadgeVisitor {
         return graphTaskNumber >= badge.getGraphTaskNumber();
     }
 
-    public boolean visitTopScoreBadge(TopScoreBadge badge) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        User student = userService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student)
+    public boolean visitTopScoreBadge(TopScoreBadge badge) throws WrongUserTypeException, EntityNotFoundException {
+        User student = authService.getCurrentUser();
+        List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
                 .stream()
                 .filter(TaskResult::isEvaluated)
                 .toList();
@@ -140,15 +141,17 @@ public class BadgeVisitor {
         if (results.size() < 5) {
             return false;
         }
+
         Boolean forGroup = badge.getForGroup();
+        Long courseId = badge.getCourse().getId();
+
         if (forGroup != null && forGroup) {
-            BigDecimal rankingInGroupPosition = BigDecimal.valueOf(rankingService.getGroupRankingPosition());
+            BigDecimal rankingInGroupPosition = BigDecimal.valueOf(rankingService.getGroupRankingPosition(courseId));
 
             if (badge.getTopScore() == 0) {
                 return rankingInGroupPosition.equals(BigDecimal.ONE);
             }
-
-            BigDecimal numStudentsInGroup = BigDecimal.valueOf(userService.getUserGroup()
+            BigDecimal numStudentsInGroup = BigDecimal.valueOf(userService.getCurrentUserGroup(courseId)
                     .getUsers()
                     .stream()
                     .filter(user -> user.getAccountType() == AccountType.STUDENT)
@@ -157,16 +160,13 @@ public class BadgeVisitor {
             BigDecimal topScore = rankingInGroupPosition.divide(numStudentsInGroup, 2, RoundingMode.HALF_UP);
             return topScore.compareTo(BigDecimal.valueOf(badge.getTopScore())) <= 0;
         } else {
-            BigDecimal rankingPosition = BigDecimal.valueOf(rankingService.getRankingPosition());
+            BigDecimal rankingPosition = BigDecimal.valueOf(rankingService.getRankingPosition(courseId));
 
             if (badge.getTopScore() == 0) {
                 return rankingPosition.equals(BigDecimal.ONE);
             }
 
-            BigDecimal numOfStudents = BigDecimal.valueOf(userService.getUsers()
-                    .stream()
-                    .filter(user -> user.getAccountType() == AccountType.STUDENT)
-                    .count());
+            BigDecimal numOfStudents = BigDecimal.valueOf(badge.getCourse().getCourseMembers().size());
 
             BigDecimal topScore = rankingPosition.divide(numOfStudents, 2, RoundingMode.HALF_UP);
             return topScore.compareTo(BigDecimal.valueOf(badge.getTopScore())) <= 0;

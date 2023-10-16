@@ -1,12 +1,13 @@
+import { faDownload } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import download from 'downloadjs'
 import { Row, Col, Button } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDownload } from '@fortawesome/free-solid-svg-icons'
-import CombatTaskService from '../../../../services/combatTask.service'
 import { connect } from 'react-redux'
 
+import CombatTaskService from '../../../../services/combatTask.service'
+
 function FeedbackFileService(props) {
-  const feedbackFile = props.feedbackFile
+  const {feedbackFile} = props
   const downloadFile = () => {
     const fileId = feedbackFile.id
     CombatTaskService.getCombatFile(fileId).then((file) => {
@@ -15,7 +16,7 @@ function FeedbackFileService(props) {
   }
 
   return (
-    <Col className={'text-center'}>
+    <Col className="text-center">
       <strong>Załączony plik prowadzącego:</strong>
       {!feedbackFile ? (
         <p>Brak pliku</p>
@@ -38,7 +39,7 @@ function FeedbackFileService(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
 
   return { theme }
 }

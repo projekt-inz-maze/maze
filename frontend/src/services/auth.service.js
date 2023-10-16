@@ -1,13 +1,14 @@
 import axios from 'axios'
 import QueryString from 'qs'
-import { AccountType } from '../utils/userRole'
+
 import { GET_TOKEN_REFRESH, POST_LOGIN, POST_REGISTER, PUT_PASSWORD_EDITION } from './urls'
 import { axiosApiPut } from '../utils/axios'
+import { AccountType } from '../utils/userRole'
 
 class AuthService {
   login({ email, password }) {
     return axios
-      .post(POST_LOGIN, QueryString.stringify({ email: email, password: password }), {
+      .post(POST_LOGIN, QueryString.stringify({ email, password }), {
         'Content-Type': 'application/x-www-form-urlencoded'
       })
       .then((response) => {
@@ -30,11 +31,11 @@ class AuthService {
 
   register({ firstName, lastName, email, password, accountType, heroType, index, token }) {
     const body = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-      accountType: accountType
+      firstName,
+      lastName,
+      email,
+      password,
+      accountType
     }
 
     if (accountType === AccountType.STUDENT) {
@@ -57,7 +58,7 @@ class AuthService {
   refreshToken(refreshToken) {
     return axios
       .get(GET_TOKEN_REFRESH, {
-        headers: { Authorization: 'Bearer ' + refreshToken }
+        headers: { Authorization: `Bearer ${  refreshToken}` }
       })
       .then((response) => {
         localStorage.setItem('user', JSON.stringify(response.data))
@@ -68,7 +69,7 @@ class AuthService {
   }
 
   editPassword(newPassword) {
-    return axiosApiPut(PUT_PASSWORD_EDITION, { newPassword: newPassword }).catch((error) => {
+    return axiosApiPut(PUT_PASSWORD_EDITION, { newPassword }).catch((error) => {
       throw error
     })
   }

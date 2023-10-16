@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
+
+import { Tab } from 'react-bootstrap'
+import { connect } from 'react-redux'
+
+import { useAppSelector } from '../../../hooks/hooks'
+import RankingService from '../../../services/ranking.service'
 import { Content } from '../../App/AppGeneralStyles'
 import Ranking from '../../general/Ranking/Ranking'
-import RankingService from '../../../services/ranking.service'
-import { Tab } from 'react-bootstrap'
 import { TabsContainer } from '../../professor/ParticipantsPage/ParticipantsStyles'
-import { connect } from 'react-redux'
+
 
 function StudentsRanking(props) {
   const [ranking, setRanking] = useState(undefined)
@@ -12,8 +16,10 @@ function StudentsRanking(props) {
   const [studentRankingPosition, setStudentRankingPosition] = useState(undefined)
   const [studentRankingGroupPosition, setStudentRankingGroupPosition] = useState(undefined)
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   useEffect(() => {
-    RankingService.getGlobalRankingList()
+    RankingService.getGlobalRankingList(courseId)
       .then((response) => {
         setRanking(response)
       })
@@ -21,7 +27,7 @@ function StudentsRanking(props) {
         setRanking(null)
       })
 
-    RankingService.getStudentGroupRankingList()
+    RankingService.getStudentGroupRankingList(courseId)
       .then((response) => {
         setStudentGroupRanking(response)
       })
@@ -29,7 +35,7 @@ function StudentsRanking(props) {
         setStudentGroupRanking(null)
       })
 
-    RankingService.getStudentPositionInGlobalRanking()
+    RankingService.getStudentPositionInGlobalRanking(courseId)
       .then((response) => {
         setStudentRankingPosition(response)
       })
@@ -37,7 +43,7 @@ function StudentsRanking(props) {
         setStudentGroupRanking(null)
       })
 
-    RankingService.getStudentPositionInGroupRanking()
+    RankingService.getStudentPositionInGroupRanking(courseId)
       .then((response) => {
         setStudentRankingGroupPosition(response)
       })
@@ -52,12 +58,12 @@ function StudentsRanking(props) {
         $background={props.theme.success}
         $fontColor={props.theme.background}
         $linkColor={props.theme.primary}
-        defaultActiveKey={'global-rank'}
+        defaultActiveKey="global-rank"
       >
-        <Tab eventKey={'global-rank'} title={'Ranking ogólny'}>
+        <Tab eventKey="global-rank" title="Ranking ogólny">
           <Ranking rankingList={ranking} studentPosition={studentRankingPosition} />
         </Tab>
-        <Tab eventKey={'student-group'} title={'Moja grupa'}>
+        <Tab eventKey="student-group" title="Moja grupa">
           <Ranking rankingList={studentGroupRanking} studentPosition={studentRankingGroupPosition} />
         </Tab>
       </TabsContainer>
@@ -66,7 +72,7 @@ function StudentsRanking(props) {
 }
 
 function mapStateToProps(state) {
-  const theme = state.theme
+  const {theme} = state
   return {
     theme
   }
