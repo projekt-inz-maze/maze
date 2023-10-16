@@ -94,6 +94,11 @@ function ExpeditionSummary(props) {
     return timeString
   }
 
+  const handleCloseSummary = () => {
+    setShowModal(false)
+    finishExpeditionAndGoHome()
+  }
+
   return (
     <Content>
       {!loaded ? (
@@ -101,7 +106,7 @@ function ExpeditionSummary(props) {
       ) : (
         <ActivityDetails
           showDetails={showModal}
-          onCloseDetails={() => setShowModal(false)}
+          onCloseDetails={handleCloseSummary}
           onStartActivity={() => setShowModal(false)}
           name='Nazwa aktywności'
           type='Typ aktywności'

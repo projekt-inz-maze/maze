@@ -1,23 +1,43 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './QuestCard.module.scss'
-import { ActivityResponse } from '../../../api/types'
+import { ActivityRequirements, ActivityResponse, Requirement } from '../../../api/types'
 import ActivityDetails from '../../../common/components/ActivityDetails/ActivityDetails'
 import { StudentRoutes } from '../../../routes/PageRoutes'
+import ActivityService from '../../../services/activity.service'
 import { getActivityPath } from '../../../utils/constants'
+
+const emptyRequirements: ActivityRequirements = {
+  isBlocked: false,
+  requirements: []
+}
 
 type QuestCardProps = {
   activity: ActivityResponse
   description: string
+  disabled: boolean
 }
 
 const QuestCard = (props: QuestCardProps) => {
   const [showModal, setShowModal] = useState(false)
+  const [requirements, setRequirements] = useState<ActivityRequirements>(emptyRequirements)
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (props.activity) {
+      ActivityService.getActivityRequirements(props.activity.id)
+        .then((response) => {
+          setRequirements(response.requirements?.filter((requirement: Requirement) => requirement.selected))
+        })
+        .catch(() => {
+          setRequirements(emptyRequirements)
+        })
+    }
+  }, [props.activity])
 
   const handleStartActivity = () => {
     setShowModal(false)
@@ -65,9 +85,12 @@ const QuestCard = (props: QuestCardProps) => {
         points={props.activity.points}
         result={0}
       />
+
       <div className={styles.questCard}>
-        <Button className={styles.questItem} onClick={() => setShowModal(!showModal)}>
-          <p>{props.description}</p>
+        <Button className={styles.questItem} onClick={() => setShowModal(!showModal)} disabled={props.disabled}>
+          <p>
+            {props.description} {props.disabled}
+          </p>
         </Button>
       </div>
     </>

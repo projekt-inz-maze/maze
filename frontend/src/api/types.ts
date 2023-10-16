@@ -52,3 +52,16 @@ export type ActivityResponse = {
   isFulfilled: boolean
   isCompleted: boolean
 }
+
+export type Requirement = {
+  id: number
+  name: string
+  value: unknown
+  type: string
+  selected: boolean
+}
+
+export type ActivityRequirements = {
+  isBlocked: boolean
+  requirements: Requirement[]
+}
