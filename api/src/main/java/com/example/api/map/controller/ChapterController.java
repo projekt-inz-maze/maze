@@ -3,7 +3,7 @@ package com.example.api.map.controller;
 import com.example.api.map.dto.request.ChapterForm;
 import com.example.api.map.dto.request.ChapterRequirementForm;
 import com.example.api.map.dto.request.EditChapterForm;
-import com.example.api.map.dto.response.RequirementResponse;
+import com.example.api.map.dto.response.RequirementsDTO;
 import com.example.api.map.dto.response.chapter.ChapterInfoResponse;
 import com.example.api.map.dto.response.chapter.ChapterResponse;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -53,7 +53,7 @@ public class ChapterController {
     }
 
     @GetMapping("/requirements")
-    ResponseEntity<RequirementResponse> getRequirementsForChapter(@RequestParam Long chapterId) throws EntityNotFoundException {
+    ResponseEntity<RequirementsDTO> getRequirementsForChapter(@RequestParam Long chapterId) throws EntityNotFoundException {
         return ResponseEntity.ok().body(chapterService.getRequirementsForChapter(chapterId));
     }
 

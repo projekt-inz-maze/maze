@@ -34,7 +34,6 @@ import { FormCol } from '../../../general/LoginAndRegistrationPage/FormCol'
 import GameMapContainer from '../../../student/GameMapPage/GameMapContainer'
 import SuccessModal from '../../SuccessModal'
 
-
 const MAP_HEIGHT = 500
 const MAP_WIDTH = 1.5 * MAP_HEIGHT
 const EMPTY_INITIAL_VALUES = {
@@ -90,7 +89,7 @@ function ChapterModal(props) {
   const sendAction = useCallback(
     (setSubmitting, editedValues, afterSendAction) => {
       if (!chapterDetails) {
-        ChapterService.sendNewChapterData(editedValues)
+        ChapterService.sendNewChapterData({ ...editedValues, courseId })
           .then(() => afterSendAction(setSubmitting))
           .catch((error) => {
             setSubmitting(false)
@@ -125,18 +124,17 @@ function ChapterModal(props) {
       }
       ChapterService.getChapterImagesList(courseId)
         .then((response) => {
-          Promise.all(
-            response?.map((imageData) => ChapterService.getChapterImage({ imageId: imageData.id }))
-          ).then((responseList) => {
-            const convertedImages = responseList.map((fullImageData) => ({
-              id: fullImageData.id,
-              url: `data:image/png;base64, ${fullImageData.file}`
-            }))
-            setImages(convertedImages)
-          })
+          Promise.all(response?.map((imageData) => ChapterService.getChapterImage({ imageId: imageData.id }))).then(
+            (responseList) => {
+              const convertedImages = responseList.map((fullImageData) => ({
+                id: fullImageData.id,
+                url: `data:image/png;base64, ${fullImageData.file}`
+              }))
+              setImages(convertedImages)
+            }
+          )
         })
-        .catch(() => {
-        })
+        .catch(() => {})
     }
   }, [isLoaded, chapterDetails])
 
@@ -263,8 +261,7 @@ function ChapterModal(props) {
                   elements={getGraphElements([graphPreviewNode])}
                   labels={[{ id: 0, label: graphPreviewNode.label }]}
                   customHeight={MAP_HEIGHT}
-                  nodeClickCallback={() => {
-                  }}
+                  nodeClickCallback={() => {}}
                 />
                 <FontAwesomeIcon icon={faRefresh} onClick={updateMap} style={{ cursor: 'pointer' }} />
               </Tab>

@@ -10,6 +10,7 @@ export type newChapterData = {
   imageId: number
   posX: number
   posY: number
+  courseId: number
 }
 
 export type addGroupRequest = {
