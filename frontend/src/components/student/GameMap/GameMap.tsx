@@ -46,8 +46,8 @@ const GameMap = () => {
               className='img-fluid'
               style={{ width: '100%', height: '100%' }}
             />
+            <img src='/map/map_sidebar.png' alt='Course legend' className={`img-fluid ${styles.mapSidebar}`} />
             <div className={styles.legend}>
-              <p style={{ paddingBottom: '1em' }}>Wybrany rozdział: {chosenChapterId ?? 'brak'}</p>
               {chaptersList.map((chapter, index) => (
                 <Button
                   key={`${chapter.name + index}`}

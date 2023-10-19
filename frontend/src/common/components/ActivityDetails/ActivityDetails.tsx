@@ -134,7 +134,7 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
         </Modal.Body>
         <Modal.Footer className={styles.modalFooter}>
           {props.isActivityCompleted ? (
-            <Button variant='primary' onClick={() => navigate('/map')} className={styles.startActivityButton}>
+            <Button variant='primary' onClick={props.onCloseDetails} className={styles.startActivityButton}>
               Powrót do mapy
             </Button>
           ) : (
