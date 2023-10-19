@@ -53,6 +53,7 @@ export type ActivityResponse = {
   isFulfilled: boolean
   isCompleted: boolean
   wager: null
+  timeLimit: number
 }
 
 export type Requirement = {

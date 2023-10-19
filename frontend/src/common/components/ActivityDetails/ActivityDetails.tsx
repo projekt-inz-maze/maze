@@ -79,11 +79,11 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
                   <img src='/icons/Thriller.png' alt='Hazard icon' />
                   <div>
                     <span>Hazard</span>
-                    <p>{props.isWager ? 'Tak' : 'Nie'}</p>
+                    <p className={`${!props.isWager ?? styles.hazardText}`}>{props.isWager ? 'Tak' : 'Nie'}</p>
                   </div>
                 </div>
                 <div className={styles.imgSection}>
-                  <img src='/icons/Hashtag.png' alt='Hazard icon' />
+                  <img src='/icons/Hashtag.png' alt='Hashtag icon' />
                   <div>
                     <span>Liczba podejść</span>
                     <p>
@@ -94,17 +94,17 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
               </div>
               <div className={styles.secondRow}>
                 <div className={styles.imgSection}>
-                  <img src='/icons/Time.png' alt='Hazard icon' />
+                  <img src='/icons/Time.png' alt='Time icon' />
                   <div>
                     <span>Czas na rozwiązanie</span>
                     <p>{props.timeLimit ? `${props.timeLimit} minut` : 'brak limitu czasowego'}</p>
                   </div>
                 </div>
                 <div className={styles.imgSection}>
-                  <img src='/icons/Star.png' alt='Hazard icon' />
+                  <img src='/icons/Star.png' alt='Star icon' />
                   <div>
                     <span>Liczba punktów do zdobycia</span>
-                    <p>{props.points}</p>
+                    <p>{props.points ?? '0'}</p>
                   </div>
                 </div>
               </div>

@@ -8,6 +8,7 @@ import { ActivityRequirements, ActivityResponse } from '../../../api/types'
 import ActivityDetails from '../../../common/components/ActivityDetails/ActivityDetails'
 import { StudentRoutes } from '../../../routes/PageRoutes'
 import { getActivityPath } from '../../../utils/constants'
+import { convertMilisecondsToMinutes } from '../../../utils/formatters'
 
 const emptyRequirements: ActivityRequirements = {
   isBlocked: false,
@@ -57,7 +58,7 @@ const QuestCard = (props: QuestCardProps) => {
         isWager={props.activity.wager}
         numberOfAttempts={0}
         maxNumberOfAttempts={1}
-        timeLimit={999}
+        timeLimit={convertMilisecondsToMinutes(props.activity.timeLimit)}
         points={props.activity.points}
         result={0}
       />
