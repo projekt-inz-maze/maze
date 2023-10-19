@@ -9,12 +9,13 @@ type ActivityDetailsProps = {
   showDetails: boolean
   onCloseDetails: () => void
   onStartActivity: () => void
+  isActivityCompleted: boolean
   name: string
   type: string
   startDate: string
   endDate: string
   description: string
-  isHazard: boolean
+  isWager: boolean | null
   numberOfAttempts: number
   maxNumberOfAttempts: number
   timeLimit: number
@@ -78,7 +79,7 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
                   <img src='/icons/Thriller.png' alt='Hazard icon' />
                   <div>
                     <span>Hazard</span>
-                    <p>{props.isHazard ? 'Tak' : 'Nie'}</p>
+                    <p>{props.isWager ? 'Tak' : 'Nie'}</p>
                   </div>
                 </div>
                 <div className={styles.imgSection}>
@@ -115,7 +116,7 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
           </div>
         </Modal.Body>
         <Modal.Footer className={styles.modalFooter}>
-          {props.result ? (
+          {props.isActivityCompleted ? (
             <Button
               variant='primary'
               onClick={() => navigate('/map')}

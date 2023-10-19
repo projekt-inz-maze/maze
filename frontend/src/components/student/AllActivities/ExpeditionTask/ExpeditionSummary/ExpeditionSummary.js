@@ -118,8 +118,8 @@ function ExpeditionSummary(props) {
             fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
             mollit anim id est laborum.'
           isHazard={false}
-          numberOfAttempts={999}
-          maxNumberOfAttempts={1000}
+          numberOfAttempts={1}
+          maxNumberOfAttempts={1}
           timeLimit={999}
           points={maxPointsClosed + maxPointsOpen}
           result={activityScore}

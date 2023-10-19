@@ -49,8 +49,10 @@ export type ActivityResponse = {
   title: string
   points: number
   creationTime: string
+  description: string
   isFulfilled: boolean
   isCompleted: boolean
+  wager: null
 }
 
 export type Requirement = {

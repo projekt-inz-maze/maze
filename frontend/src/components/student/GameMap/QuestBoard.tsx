@@ -47,7 +47,7 @@ const QuestBoard = () => {
               key={activity.id}
               activity={activity}
               description={activity.title}
-              disabled={!activity?.isFulfilled && !activity?.isCompleted}
+              isActivityCompleted={activity?.isCompleted}
             />
           ))}
         </Stack>
