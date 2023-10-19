@@ -9,6 +9,7 @@ export const StudentRoutes = {
   GAME_CARD: '/game-card',
   NEW_GAME_MAP: {
     MAIN: '/map',
+    QUESTBOARD: '/map/quests',
     GRAPH_TASK: {
       MAIN: '/game-map/expedition',
       INFO: '/game-map/expedition/info',

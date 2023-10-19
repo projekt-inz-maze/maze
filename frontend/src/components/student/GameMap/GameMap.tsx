@@ -22,6 +22,8 @@ const GameMap = () => {
     ChapterService.getChaptersList(courseId)
       .then((response) => {
         setChaptersList(response)
+        setChosenChapterId(response[0].id)
+        dispatch(setSelectedChapterId(response[0].id))
       })
       .catch(() => {
         setChaptersList([])
@@ -39,7 +41,7 @@ const GameMap = () => {
         <Col xs={12} md={9} className='p-0 w-100 h-100'>
           <div className='image-container' style={{ width: '100%', height: '100%', position: 'relative' }}>
             <img
-              src='/map/forest.png'
+              src='/map/medieval_town.png'
               alt='Chapter image'
               className='img-fluid'
               style={{ width: '100%', height: '100%' }}

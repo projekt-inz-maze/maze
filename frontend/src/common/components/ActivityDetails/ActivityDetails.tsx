@@ -35,7 +35,7 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
       // TODO: Fix this after fetching results from different activities is ready
       ExpeditionService.getExpeditionScore(props.activityId)
         .then((response) => {
-          setActivityScore(response || -1)
+          setActivityScore(response)
         })
         .catch(() => {
           setActivityScore(0)
@@ -160,5 +160,3 @@ function mapStateToProps(state: { theme: any }) {
   return { theme }
 }
 export default connect(mapStateToProps)(ActivityDetails)
-
-// export default ActivityDetails
