@@ -41,7 +41,7 @@ const GameMap = () => {
         <Col xs={12} md={9} className='p-0 w-100 h-100'>
           <div className='image-container' style={{ width: '100%', height: '100%', position: 'relative' }}>
             <img
-              src='/map/medieval_town.png'
+              src={`/map/chapter_img_${chosenChapterId}.png`}
               alt='Chapter image'
               className='img-fluid'
               style={{ width: '100%', height: '100%' }}
