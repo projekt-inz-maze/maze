@@ -4,14 +4,12 @@ import { Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { SummaryContainer } from './ExpeditionSummaryStyle'
 import ActivityDetails from '../../../../../common/components/ActivityDetails/ActivityDetails'
 import { GeneralRoutes, StudentRoutes } from '../../../../../routes/PageRoutes'
 import ExpeditionService from '../../../../../services/expedition.service'
 import { getTimer } from '../../../../../utils/storageManager'
 import { Content } from '../../../../App/AppGeneralStyles'
 import Loader from '../../../../general/Loader/Loader'
-import { ButtonRow } from '../QuestionAndOptions/QuestionAndOptionsStyle'
 
 function ExpeditionSummary(props) {
   const navigate = useNavigate()
@@ -27,6 +25,7 @@ function ExpeditionSummary(props) {
   const [showModal, setShowModal] = useState(true)
 
   useEffect(() => {
+    console.log(expeditionId)
     ExpeditionService.getExpeditionScore(expeditionId)
       .then((response) => {
         setActivityScore(response || -1)

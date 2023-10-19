@@ -23,7 +23,7 @@ type QuestCardProps = {
 
 const QuestCard = (props: QuestCardProps) => {
   const [showModal, setShowModal] = useState(false)
-  const [requirements, setRequirements] = useState<ActivityRequirements>(emptyRequirements)
+  // const [requirements, setRequirements] = useState<ActivityRequirements>(emptyRequirements)
 
   const navigate = useNavigate()
 
@@ -46,6 +46,7 @@ const QuestCard = (props: QuestCardProps) => {
   return (
     <>
       <ActivityDetails
+        activityId={props.activity.id}
         showDetails={showModal}
         onCloseDetails={() => setShowModal(false)}
         onStartActivity={handleStartActivity}
@@ -56,11 +57,10 @@ const QuestCard = (props: QuestCardProps) => {
         endDate='22:00, 12.01.2024'
         description={props.activity.description}
         isWager={props.activity.wager}
-        numberOfAttempts={0}
+        numberOfAttempts={props.isActivityCompleted ? 1 : 0}
         maxNumberOfAttempts={1}
         timeLimit={convertMilisecondsToMinutes(props.activity.timeLimit)}
         points={props.activity.points}
-        result={0}
       />
 
       <div className={styles.questCard}>

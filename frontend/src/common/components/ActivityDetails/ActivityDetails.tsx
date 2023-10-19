@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Button, Modal } from 'react-bootstrap'
+import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './ActivityDetails.module.scss'
+import ExpeditionService from '../../../services/expedition.service'
 
 type ActivityDetailsProps = {
+  activityId: number
   showDetails: boolean
   onCloseDetails: () => void
   onStartActivity: () => void
@@ -20,11 +23,25 @@ type ActivityDetailsProps = {
   maxNumberOfAttempts: number
   timeLimit: number
   points: number
-  result: number
 }
 
 const ActivityDetails = (props: ActivityDetailsProps) => {
   const navigate = useNavigate()
+
+  const [activityScore, setActivityScore] = useState<number>(0)
+
+  useEffect(() => {
+    if (props.type === 'EXPEDITION') {
+      // TODO: Fix this after fetching results from different activities is ready
+      ExpeditionService.getExpeditionScore(props.activityId)
+        .then((response) => {
+          setActivityScore(response || -1)
+        })
+        .catch(() => {
+          setActivityScore(0)
+        })
+    }
+  }, [props.activityId])
 
   return (
     <>
@@ -104,26 +121,20 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
                   <img src='/icons/Star.png' alt='Star icon' />
                   <div>
                     <span>Liczba punktów do zdobycia</span>
-                    <p>{props.points ?? '0'}</p>
+                    <p>{props.points ?? 'zadanie jest niepunktowane'}</p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className={props.result ? styles.resultFieldCompleted : styles.resultField}>
+            <div className={activityScore > 0 ? styles.resultFieldCompleted : styles.resultField}>
               <span>Twój wynik:</span>
-              <p>{props.result ? `${props.result}/${props.points}` : 'nie ukończono'}</p>
+              <p>{activityScore ? `${activityScore}/${props.points}` : 'nie ukończono'}</p>
             </div>
           </div>
         </Modal.Body>
         <Modal.Footer className={styles.modalFooter}>
           {props.isActivityCompleted ? (
-            <Button
-              variant='primary'
-              onClick={() => navigate('/map')}
-              className={`${styles.startActivityButton} ${
-                props.maxNumberOfAttempts - props.numberOfAttempts ? '' : 'disabled'
-              }`}
-            >
+            <Button variant='primary' onClick={() => navigate('/map')} className={styles.startActivityButton}>
               Powrót do mapy
             </Button>
           ) : (
@@ -143,4 +154,11 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
   )
 }
 
-export default ActivityDetails
+function mapStateToProps(state: { theme: any }) {
+  const { theme } = state
+
+  return { theme }
+}
+export default connect(mapStateToProps)(ActivityDetails)
+
+// export default ActivityDetails
