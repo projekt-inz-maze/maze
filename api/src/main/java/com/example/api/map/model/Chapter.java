@@ -1,7 +1,7 @@
 package com.example.api.map.model;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.activity.task.model.GraphTask;
-import com.example.api.activity.task.model.Survey;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.activity.survey.Survey;
 import com.example.api.course.model.Course;
 import com.example.api.map.model.requirement.Requirement;
 import lombok.AllArgsConstructor;

@@ -9,7 +9,7 @@ import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.feedback.model.ProfessorFeedback;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.task.model.FileTask;
+import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.user.model.User;
 import com.example.api.util.model.File;
 import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;

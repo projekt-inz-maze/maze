@@ -1,7 +1,7 @@
 package com.example.api.activity.result.repository;
 
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.task.model.Survey;
+import com.example.api.activity.survey.Survey;
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.user.model.User;

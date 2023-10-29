@@ -1,15 +1,15 @@
 package com.example.api.activity.result.service;
 
-import com.example.api.activity.task.dto.request.SaveFileToFileTaskResultForm;
+import com.example.api.activity.result.dto.SaveFileToFileTaskResultForm;
 import com.example.api.course.model.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.task.model.FileTask;
+import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.user.model.User;
 import com.example.api.util.model.File;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.activity.task.repository.FileTaskRepository;
+import com.example.api.activity.task.filetask.FileTaskRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.util.repository.FileRepository;
 import com.example.api.security.LoggedInUserService;

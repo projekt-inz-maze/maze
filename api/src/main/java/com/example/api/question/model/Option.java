@@ -1,6 +1,6 @@
 package com.example.api.question.model;
 
-import com.example.api.activity.task.dto.request.create.OptionForm;
+import com.example.api.question.create.OptionForm;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

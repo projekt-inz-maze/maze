@@ -1,12 +1,16 @@
 package com.example.api.activity.result.service;
 
+import com.example.api.activity.Activity;
 import com.example.api.activity.ActivityService;
 import com.example.api.activity.result.service.util.GroupActivityStatisticsCreator;
 import com.example.api.activity.result.service.util.ScaleActivityStatisticsCreator;
-import com.example.api.activity.task.dto.request.GetCSVForm;
+import com.example.api.activity.survey.Survey;
+import com.example.api.activity.task.Task;
+import com.example.api.activity.result.dto.GetCSVForm;
 import com.example.api.activity.task.dto.response.result.ActivityStatisticsResponse;
 import com.example.api.activity.task.dto.response.result.TaskPointsStatisticsResponse;
-import com.example.api.activity.task.model.*;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.course.model.Course;
 import com.example.api.course.service.CourseService;
 import com.example.api.map.dto.response.task.ActivityType;
@@ -24,9 +28,9 @@ import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
-import com.example.api.activity.task.repository.FileTaskRepository;
-import com.example.api.activity.task.repository.GraphTaskRepository;
-import com.example.api.activity.task.repository.SurveyRepository;
+import com.example.api.activity.task.filetask.FileTaskRepository;
+import com.example.api.activity.task.graphtask.GraphTaskRepository;
+import com.example.api.activity.survey.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.user.service.UserService;
 import com.example.api.util.csv.CSVConverter;
@@ -225,10 +229,10 @@ public class TaskResultService {
     }
 
     private List<Activity> getActivities(List<Long> activityIds) {
-        return (List<Activity>) List.of(graphTaskRepository.findGraphTaskByIdIn(activityIds),
+        return (List<Activity>) Stream.of(graphTaskRepository.findGraphTaskByIdIn(activityIds),
                 fileTaskRepository.findFileTaskByIdIn(activityIds),
                 surveyRepository.findSurveyByIdIn(activityIds)
-        ).stream()
+        )
                 .flatMap(Collection::stream)
                 .toList();
     }

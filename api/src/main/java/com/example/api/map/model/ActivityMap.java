@@ -1,6 +1,10 @@
 package com.example.api.map.model;
 
-import com.example.api.activity.task.model.*;
+import com.example.api.activity.Activity;
+import com.example.api.activity.info.Info;
+import com.example.api.activity.survey.Survey;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.util.model.File;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

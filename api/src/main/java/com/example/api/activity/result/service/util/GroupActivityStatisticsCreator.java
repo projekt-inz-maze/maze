@@ -4,9 +4,9 @@ import com.example.api.activity.task.dto.response.result.GroupActivityStatistics
 import com.example.api.map.dto.response.task.ActivityType;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.model.TaskResult;
-import com.example.api.activity.task.model.Activity;
-import com.example.api.activity.task.model.Survey;
-import com.example.api.activity.task.model.Task;
+import com.example.api.activity.Activity;
+import com.example.api.activity.survey.Survey;
+import com.example.api.activity.task.Task;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -1,16 +1,21 @@
 package com.example.api.activity.validator;
 
-import com.example.api.activity.task.dto.request.create.*;
-import com.example.api.activity.task.model.Info;
+import com.example.api.activity.CreateActivityForm;
+import com.example.api.activity.info.CreateInfoForm;
+import com.example.api.activity.survey.CreateSurveyForm;
+import com.example.api.activity.task.filetask.CreateFileTaskForm;
+import com.example.api.activity.task.filetask.FileTaskValidator;
+import com.example.api.activity.task.graphtask.CreateGraphTaskForm;
+import com.example.api.activity.task.graphtask.GraphTaskValidator;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.EntityRequiredAttributeNullException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.TaskResult;
-import com.example.api.activity.task.model.Activity;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.activity.task.model.GraphTask;
+import com.example.api.activity.Activity;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.map.model.ActivityMap;
 import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;

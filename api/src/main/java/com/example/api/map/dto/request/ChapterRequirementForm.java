@@ -1,6 +1,6 @@
 package com.example.api.map.dto.request;
 
-import com.example.api.activity.task.dto.request.requirement.RequirementForm;
+import com.example.api.activity.task.RequirementForm;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

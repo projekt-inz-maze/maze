@@ -3,7 +3,7 @@ package com.example.api.map.model.requirement;
 import com.example.api.course.model.Course;
 import com.example.api.map.dto.response.RequirementDTO;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.activity.task.model.GraphTask;
+import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.util.visitor.RequirementFulfilledVisitor;
 import com.example.api.util.visitor.RequirementValueVisitor;
 import lombok.AllArgsConstructor;

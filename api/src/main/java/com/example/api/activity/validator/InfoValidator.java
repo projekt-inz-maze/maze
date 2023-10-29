@@ -1,6 +1,6 @@
 package com.example.api.activity.validator;
 
-import com.example.api.activity.task.dto.request.create.CreateInfoForm;
+import com.example.api.activity.info.CreateInfoForm;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
 import lombok.extern.slf4j.Slf4j;

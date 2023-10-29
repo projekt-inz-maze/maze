@@ -1,8 +1,7 @@
 package com.example.api.activity.result.model;
 
-import com.example.api.activity.result.dto.response.SurveyAnswerResponse;
-import com.example.api.activity.task.model.Activity;
-import com.example.api.activity.task.model.Survey;
+import com.example.api.activity.Activity;
+import com.example.api.activity.survey.Survey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

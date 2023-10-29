@@ -1,6 +1,6 @@
 package com.example.api.map.service;
 
-import com.example.api.activity.task.dto.request.requirement.RequirementForm;
+import com.example.api.activity.task.RequirementForm;
 import com.example.api.course.model.Course;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.map.model.requirement.*;

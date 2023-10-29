@@ -6,10 +6,11 @@ import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.activity.task.model.GraphTask;
-import com.example.api.activity.task.model.Info;
-import com.example.api.activity.task.model.Survey;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.activity.task.graphtask.GraphTaskController;
+import com.example.api.activity.info.Info;
+import com.example.api.activity.survey.Survey;
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.course.repository.CourseMemberRepository;
@@ -44,16 +45,15 @@ import com.example.api.activity.feedback.service.ProfessorFeedbackService;
 import com.example.api.activity.feedback.service.SurveyResultService;
 import com.example.api.activity.result.service.FileTaskResultService;
 import com.example.api.activity.result.service.GraphTaskResultService;
-import com.example.api.activity.task.service.FileTaskService;
-import com.example.api.activity.task.service.GraphTaskService;
-import com.example.api.activity.task.service.InfoService;
-import com.example.api.activity.task.service.SurveyService;
+import com.example.api.activity.task.filetask.FileTaskService;
+import com.example.api.activity.info.InfoService;
+import com.example.api.activity.survey.SurveyService;
 import com.example.api.group.service.AccessDateService;
 import com.example.api.group.service.GroupService;
 import com.example.api.map.service.ActivityMapService;
 import com.example.api.map.service.RequirementService;
 import com.example.api.question.service.OptionService;
-import com.example.api.question.service.QuestionService;
+import com.example.api.question.QuestionService;
 import com.example.api.user.service.BadgeService;
 import com.example.api.user.service.UserService;
 import com.example.api.util.message.MessageManager;
@@ -91,7 +91,7 @@ public class DatabaseConfig {
 
     @Bean
     public CommandLineRunner commandLineRunner(UserService userService, CourseMemberService courseMemberService, ProfessorFeedbackService professorFeedbackService,
-                                               SurveyResultService surveyResultService, GraphTaskService graphTaskService,
+                                               SurveyResultService surveyResultService, GraphTaskController.GraphTaskService graphTaskService,
                                                GraphTaskResultService graphTaskResultService, GroupService groupService,
                                                ActivityMapService activityMapService, QuestionService questionService,
                                                FileTaskResultService fileTaskResultService, OptionService optionService,

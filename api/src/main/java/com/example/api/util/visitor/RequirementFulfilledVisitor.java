@@ -2,8 +2,8 @@ package com.example.api.util.visitor;
 
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.activity.task.model.GraphTask;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.map.model.requirement.*;
@@ -22,7 +22,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class RequirementFulfilledVisitor {
-    private final UserService userService;
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final LoggedInUserService authService;

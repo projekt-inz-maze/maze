@@ -1,6 +1,6 @@
 package com.example.api.activity.result.controller;
 
-import com.example.api.activity.task.dto.request.GetCSVForm;
+import com.example.api.activity.result.dto.GetCSVForm;
 import com.example.api.activity.task.dto.response.result.ActivityStatisticsResponse;
 import com.example.api.activity.task.dto.response.result.TaskPointsStatisticsResponse;
 import com.example.api.error.exception.EntityNotFoundException;

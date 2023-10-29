@@ -1,5 +1,7 @@
 package com.example.api.user.service;
 
+import com.example.api.activity.Activity;
+import com.example.api.activity.info.Info;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
@@ -11,11 +13,13 @@ import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.result.service.ActivityResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
-import com.example.api.activity.task.model.*;
-import com.example.api.activity.task.service.FileTaskService;
-import com.example.api.activity.task.service.GraphTaskService;
-import com.example.api.activity.task.service.InfoService;
-import com.example.api.activity.task.service.SurveyService;
+import com.example.api.activity.survey.Survey;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.activity.task.graphtask.GraphTaskController;
+import com.example.api.activity.task.filetask.FileTaskService;
+import com.example.api.activity.info.InfoService;
+import com.example.api.activity.survey.SurveyService;
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.course.service.CourseService;
@@ -54,7 +58,7 @@ public class DashboardService {
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
-    private final GraphTaskService graphTaskService;
+    private final GraphTaskController.GraphTaskService graphTaskService;
     private final FileTaskService fileTaskService;
     private final SurveyService surveyService;
     private final InfoService infoService;

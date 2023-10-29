@@ -2,13 +2,13 @@ package com.example.api.util.visitor;
 
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.activity.task.model.GraphTask;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.group.model.Group;
 import com.example.api.map.model.requirement.*;
 import com.example.api.user.model.User;
-import com.example.api.activity.task.repository.FileTaskRepository;
-import com.example.api.activity.task.repository.GraphTaskRepository;
+import com.example.api.activity.task.filetask.FileTaskRepository;
+import com.example.api.activity.task.graphtask.GraphTaskRepository;
 import com.example.api.group.repository.GroupRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.group.validator.GroupValidator;

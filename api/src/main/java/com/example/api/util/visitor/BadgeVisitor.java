@@ -5,7 +5,7 @@ import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.TaskResult;
-import com.example.api.activity.task.model.Activity;
+import com.example.api.activity.Activity;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;

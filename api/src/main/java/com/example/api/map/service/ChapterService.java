@@ -1,6 +1,6 @@
 package com.example.api.map.service;
 
-import com.example.api.activity.task.dto.request.requirement.RequirementForm;
+import com.example.api.activity.task.RequirementForm;
 import com.example.api.course.model.Course;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
@@ -16,7 +16,7 @@ import com.example.api.map.dto.response.chapter.ChapterResponseStudent;
 import com.example.api.map.dto.response.task.MapTask;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.activity.task.model.Activity;
+import com.example.api.activity.Activity;
 import com.example.api.map.model.ActivityMap;
 import com.example.api.map.model.Chapter;
 import com.example.api.map.model.requirement.Requirement;
