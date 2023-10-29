@@ -28,10 +28,6 @@ public class SurveyResultService {
     private final BadgeService badgeService;
     private final UserService userService;
 
-    public SurveyResult saveSurveyResult(SurveyResult surveyResult) {
-        return surveyResultRepository.save(surveyResult);
-    }
-
     public SurveyResultInfoResponse saveSurveyResult(SurveyResultForm form) throws RequestValidationException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
         log.info("Saving user {} feedback for survey with id {}", student.getId(), form.getSurveyId());
@@ -44,6 +40,7 @@ public class SurveyResultService {
             surveyResult = new SurveyResult();
             surveyResult.setSurvey(survey);
             surveyResult.setPointsReceived(survey.getMaxPoints());
+            surveyResult.setMember(student.getCourseMember(survey.getCourse()).orElseThrow());
             badgeService.checkAllBadges(student.getCourseMember(survey.getCourse()).orElseThrow());
         }
         else if (!surveyResult.isEvaluated()) {

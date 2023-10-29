@@ -35,7 +35,6 @@ import java.util.List;
 @Transactional
 public class SurveyService {
     private final SurveyRepository surveyRepository;
-    private final UserRepository userRepository;
     private final ChapterRepository chapterRepository;
     private final ActivityValidator activityValidator;
     private final UserValidator userValidator;
@@ -79,7 +78,7 @@ public class SurveyService {
         Survey survey = new Survey(
                 form,
                 professor,
-                null
+                chapter.getCourse()
         );
         survey.setRequirements(requirementService.getDefaultRequirements(true));
         surveyRepository.save(survey);
