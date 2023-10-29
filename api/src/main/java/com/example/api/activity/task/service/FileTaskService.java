@@ -41,12 +41,10 @@ public class FileTaskService {
     private final FileTaskRepository fileTaskRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final ProfessorFeedbackRepository professorFeedbackRepository;
-    private final UserRepository userRepository;
     private final ChapterRepository chapterRepository;
     private final UserValidator userValidator;
     private final LoggedInUserService authService;
     private final ActivityValidator activityValidator;
-    private final TimeParser timeParser;
     private final RequirementService requirementService;
     private final ChapterValidator chapterValidator;
 
@@ -107,7 +105,7 @@ public class FileTaskService {
         User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
-        FileTask fileTask = new FileTask(form, professor, null);
+        FileTask fileTask = new FileTask(form, professor, chapter.getCourse());
         fileTask.setRequirements(requirementService.getDefaultRequirements(true));
         fileTaskRepository.save(fileTask);
         chapter.getActivityMap().getFileTasks().add(fileTask);

@@ -14,8 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/task/file")
@@ -44,7 +42,7 @@ public class FileTaskController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createFileTask(@RequestBody CreateFileTaskChapterForm form)
-            throws RequestValidationException, ParseException {
+            throws RequestValidationException {
         fileTaskService.createFileTask(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
