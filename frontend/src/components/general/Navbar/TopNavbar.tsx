@@ -29,7 +29,7 @@ const TopNavbar = (props: TopNavbarProps) => {
             </Nav.Link>
             <div className={styles.upContainer}>
               {props.sidebarTitles.map((link) => (
-                <div key={link.navigateTo}>
+                <div key={link.name}>
                   <Nav.Link
                     as={Link}
                     to={link.navigateTo}
