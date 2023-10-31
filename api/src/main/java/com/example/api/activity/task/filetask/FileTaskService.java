@@ -1,5 +1,6 @@
 package com.example.api.activity.task.filetask;
 
+import com.example.api.activity.auction.AuctionService;
 import com.example.api.activity.task.dto.response.util.FileResponse;
 import com.example.api.course.model.Course;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -39,6 +40,7 @@ public class FileTaskService {
     private final ActivityValidator activityValidator;
     private final RequirementService requirementService;
     private final ChapterValidator chapterValidator;
+    private final AuctionService auctionService;
 
     public FileTask saveFileTask(FileTask fileTask) {
         return fileTaskRepository.save(fileTask);
@@ -101,6 +103,10 @@ public class FileTaskService {
         fileTask.setRequirements(requirementService.getDefaultRequirements(true));
         fileTaskRepository.save(fileTask);
         chapter.getActivityMap().getFileTasks().add(fileTask);
+
+        if (form.getAuction() != null) {
+            auctionService.createAuction(fileTask, form.getAuction());
+        }
     }
 
     public List<FileTask> getStudentFileTasks(Course course) {

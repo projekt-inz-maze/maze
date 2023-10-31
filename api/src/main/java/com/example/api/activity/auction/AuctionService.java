@@ -17,5 +17,6 @@ public class AuctionService {
     public void createAuction(Task task, CreateAuctionDTO dto) {
         Auction auction = new Auction(task, dto.getMinBidding(), Instant.ofEpochMilli(dto.getResolutionDate()));
         repository.save(auction);
+        task.setAuction(auction);
     }
 }

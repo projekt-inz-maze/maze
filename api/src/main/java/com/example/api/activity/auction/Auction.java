@@ -15,6 +15,7 @@ import java.time.Instant;
 /*
 1. dodawanie Auction podczas dodawania taska
 1.1 schedule auction resolve
+1.2 zablokowanie odblokowania Tasku, który ma Auction
 2. dodanie Biddingu
  */
 
