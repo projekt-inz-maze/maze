@@ -1,8 +1,8 @@
 package com.example.api.activity.task.graphtask;
 
-import com.example.api.activity.CreateActivityForm;
-import com.example.api.question.create.QuestionForm;
+import com.example.api.activity.task.CreateTaskForm;
 import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.question.create.QuestionForm;
 import com.example.api.question.model.Question;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateGraphTaskForm extends CreateActivityForm {
+public class CreateGraphTaskForm extends CreateTaskForm {
     @Schema(required = true) private String requiredKnowledge;
     @Schema(required = true) private List<QuestionForm> questions;
     @Schema(required = true) private String timeToSolve;

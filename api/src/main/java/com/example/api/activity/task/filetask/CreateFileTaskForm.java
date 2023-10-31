@@ -1,8 +1,7 @@
 package com.example.api.activity.task.filetask;
 
-import com.example.api.activity.CreateActivityForm;
+import com.example.api.activity.task.CreateTaskForm;
 import com.example.api.map.dto.response.task.ActivityType;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateFileTaskForm extends CreateActivityForm {
+public class CreateFileTaskForm extends CreateTaskForm {
     @Schema(required = true) private String requiredKnowledge;
     @Schema(required = true) private Double maxPoints;
 
@@ -28,7 +27,6 @@ public class CreateFileTaskForm extends CreateActivityForm {
         this.maxPoints = maxPoints;
     }
 
-    @JsonCreator
     public CreateFileTaskForm(FileTask fileTask) {
         super(fileTask);
         this.requiredKnowledge = fileTask.getRequiredKnowledge();

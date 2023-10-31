@@ -8,9 +8,9 @@ import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
-import com.example.api.activity.task.graphtask.GraphTaskController;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.survey.Survey;
+import com.example.api.activity.task.graphtask.GraphTaskService;
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.course.repository.CourseMemberRepository;
@@ -91,7 +91,7 @@ public class DatabaseConfig {
 
     @Bean
     public CommandLineRunner commandLineRunner(UserService userService, CourseMemberService courseMemberService, ProfessorFeedbackService professorFeedbackService,
-                                               SurveyResultService surveyResultService, GraphTaskController.GraphTaskService graphTaskService,
+                                               SurveyResultService surveyResultService, GraphTaskService graphTaskService,
                                                GraphTaskResultService graphTaskResultService, GroupService groupService,
                                                ActivityMapService activityMapService, QuestionService questionService,
                                                FileTaskResultService fileTaskResultService, OptionService optionService,

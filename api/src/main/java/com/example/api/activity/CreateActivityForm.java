@@ -2,8 +2,6 @@ package com.example.api.activity;
 
 import com.example.api.activity.info.CreateInfoForm;
 import com.example.api.activity.survey.CreateSurveyForm;
-import com.example.api.activity.task.filetask.CreateFileTaskForm;
-import com.example.api.activity.task.graphtask.CreateGraphTaskForm;
 import com.example.api.map.dto.response.task.ActivityType;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,8 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, visible = true, property = "activityType")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = CreateGraphTaskForm.class, name = "EXPEDITION"),
-        @JsonSubTypes.Type(value = CreateFileTaskForm.class, name = "TASK"),
         @JsonSubTypes.Type(value = CreateSurveyForm.class, name = "SURVEY"),
         @JsonSubTypes.Type(value = CreateInfoForm.class, name = "INFO")
 })
