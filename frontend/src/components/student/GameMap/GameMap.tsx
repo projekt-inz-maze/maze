@@ -42,7 +42,7 @@ const GameMap = () => {
           <div className='image-container' style={{ width: '100%', height: '100%', position: 'relative' }}>
             <img
               src={`/map/chapter_img_${chosenChapterId}.png`}
-              alt='Chapter image'
+              alt='Chapter background'
               className='img-fluid'
               style={{ width: '100%', height: '100%' }}
             />
