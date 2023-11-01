@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { Button, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row, Tab } from 'react-bootstrap'
+import {Button, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader, Row, Tab} from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import BadgeCreationForm from './BadgeCreationForm'
@@ -16,7 +16,6 @@ import { base64Header, ERROR_OCCURRED, getHeroName } from '../../../../utils/con
 import { isMobileView } from '../../../../utils/mobileHelper'
 import { successToast } from '../../../../utils/toasts'
 import { HeroType } from '../../../../utils/userRole'
-import { Content } from '../../../App/AppGeneralStyles'
 import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 import Loader from '../../../general/Loader/Loader'
 import { TabsContainer } from '../../../general/LoginAndRegistrationPage/AuthStyle'
@@ -188,7 +187,7 @@ function RankAndBadgesManagement(props) {
   }, [badgesList, props.theme])
 
   return (
-    <Content>
+    <Container fluid>
       <Row className='w-100' style={{ margin: isMobileDisplay ? '0 0 85px 0' : 0 }}>
         <Col md={6} className='pt-4' style={{ padding: isMobileDisplay ? '5px' : 'auto' }}>
           <ContentCard header='Rangi' body={ranksContent} />
@@ -260,7 +259,7 @@ function RankAndBadgesManagement(props) {
           <BadgeCreationForm setModalOpen={setIsBadgeAdditionModalOpen} onSuccess={getBadgesList} />
         </ModalBody>
       </Modal>
-    </Content>
+    </Container>
   )
 }
 

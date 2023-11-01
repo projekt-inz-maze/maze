@@ -10,10 +10,9 @@ import com.example.api.course.model.Course;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
 import com.example.api.map.dto.response.RequirementDTO;
-import com.example.api.map.dto.response.RequirementResponse;
+import com.example.api.map.dto.response.RequirementsDTO;
 import com.example.api.map.dto.response.task.ActivityType;
 import com.example.api.error.exception.EntityNotFoundException;
-import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.task.model.Activity;
@@ -88,12 +87,13 @@ public class TaskService {
                 .filter(result -> Objects.equals(result.getFileTask().getId(), task.getId()))
                 .filter(result -> !result.isEvaluated())
                 .toList();
-        if (fileTaskResults.size() == 0) return null;
+        if (fileTaskResults.isEmpty()) return null;
+
         FileTaskResult result = fileTaskResults.get(0);
         long num = fileTaskResults.size();
         boolean isLate = false;
         Long sendDateMillis = result.getSendDateMillis();
-        if(sendDateMillis != null){
+        if (sendDateMillis != null){
             isLate = task.getRequirements()
                     .stream()
                     .map(Requirement::getDateToMillis)
@@ -146,14 +146,18 @@ public class TaskService {
                 .toList();
     }
 
-    public RequirementResponse getRequirementsForActivity(Long id) throws EntityNotFoundException, MissingAttributeException {
+    public RequirementsDTO getRequirementsForActivity(Long id) throws EntityNotFoundException {
         Activity activity = getActivity(id);
+        return getRequirementsForActivity(activity);
+    }
+
+    public RequirementsDTO getRequirementsForActivity(Activity activity) {
         List<? extends RequirementDTO<?>> requirements = activity.getRequirements()
                 .stream()
                 .map(Requirement::getResponse)
                 .sorted(Comparator.comparingLong(RequirementDTO::getId))
                 .toList();
-        return new RequirementResponse(activity.getIsBlocked(), requirements);
+        return new RequirementsDTO(activity.getIsBlocked(), requirements);
     }
 
     public void updateRequirementForActivity(ActivityRequirementForm form) throws RequestValidationException {

@@ -1,8 +1,9 @@
-import { Route, Routes } from 'react-router-dom'
+import {Route, Routes} from 'react-router-dom'
 
 import BadgesAndAchievementsRoutes from './modules/studentRoutes/BadgesAndAchievementsRoutes'
 import GameCardRoutes from './modules/studentRoutes/GameCardRoutes'
 import GameMapRoutes from './modules/studentRoutes/GameMapRoutes'
+import MapRoutes from './modules/studentRoutes/MapRoutes'
 import PointsRoutes from './modules/studentRoutes/PointsRoutes'
 import ProfileRoutes from './modules/studentRoutes/ProfileRoutes'
 import StudentRankingRoutes from './modules/studentRoutes/RankingRoutes'
@@ -19,70 +20,73 @@ import ResetPassword from '../components/general/LoginAndRegistrationPage/ResetP
 import NotFound from '../components/general/NotFoundPage/NotFound'
 import PageGuard from '../components/general/PageGuard/PageGuard'
 import CanvasMap from '../components/student/CanvasMapPage/CanvasMap'
-import { Role } from '../utils/userRole'
+import {Role} from '../utils/userRole'
 
 export default function AppRoutes({showNavbar, isStudent, isProfessor}) {
-  return (
-    <Routes>
-      <Route
-        path='/'
-        exact
-        element={
-          <PageGuard role={Role.NOT_LOGGED_IN}>
-            <LoginAndRegistration />
-          </PageGuard>
-        }
-      />
+    return (
+        <Routes>
+            <Route
+                path='/'
+                exact
+                element={
+                    <PageGuard role={Role.NOT_LOGGED_IN}>
+                        <LoginAndRegistration/>
+                    </PageGuard>
+                }
+            />
 
-      <Route
-        path='/password-reset'
-        exact
-        element={
-          <PageGuard role={Role.NOT_LOGGED_IN}>
-            <ResetPassword />
-          </PageGuard>
-        }
-      />
+            <Route
+                path='/password-reset'
+                exact
+                element={
+                    <PageGuard role={Role.NOT_LOGGED_IN}>
+                        <ResetPassword/>
+                    </PageGuard>
+                }
+            />
 
-      <Route
-        path="/canvas"
-        exact
-        element={
-          <PageGuard role={Role.LOGGED_IN_AS_STUDENT}>
-            <CanvasMap />
-          </PageGuard>
-        }
-      />
+            <Route
+                path="/canvas"
+                exact
+                element={
+                    <PageGuard role={Role.LOGGED_IN_AS_STUDENT}>
+                        <CanvasMap/>
+                    </PageGuard>
+                }
+            />
 
-      <Route path={'/courses/*'} element={<CourseList showNavbar={showNavbar} isStudent={isStudent} isProfessor={isProfessor} />} />
+            <Route path={'/courses/*'}
+                   element={<CourseList showNavbar={showNavbar} isStudent={isStudent} isProfessor={isProfessor}/>}/>
 
-      <Route path={'/game-card/*'} element={<GameCardRoutes />} />
+            <Route path={'/game-card/*'} element={<GameCardRoutes/>}/>
 
-      <Route path={'/game-map/*'} element={<GameMapRoutes />} />
+            <Route path={'/game-map/*'} element={<GameMapRoutes/>}/>
 
-      <Route path={'/points/*'} element={<PointsRoutes />} />
+            <Route path={'/map/*'} element={<MapRoutes/>}/>
 
-      <Route path={'/ranking/*'} element={<StudentRankingRoutes />} />
+            <Route path={'/points/*'} element={<PointsRoutes/>}/>
 
-      <Route path={'/badges-achievements/*'} element={<BadgesAndAchievementsRoutes />} />
+            <Route path={'/ranking/*'} element={<StudentRankingRoutes/>}/>
 
-      <Route path={'/profile/*'} element={<ProfileRoutes />} />
+            <Route path={'/badges-achievements/*'} element={<BadgesAndAchievementsRoutes/>}/>
 
-      <Route path={'/game-summary/*'} element={<GameSummaryRoutes />} />
+            <Route path={'/profile/*'} element={<ProfileRoutes/>}/>
 
-      <Route path={'/students-ranking/*'} element={<TeacherRankingRoutes />} />
+            <Route path={'/game-summary/*'} element={<GameSummaryRoutes/>}/>
 
-      <Route path={'/game-management/*'} element={<GameManagementRoutes />} />
+            <Route path={'/students-ranking/*'} element={<TeacherRankingRoutes/>}/>
 
-      <Route path={'/participants/*'} element={<ParticipantsRoutes />} />
+            <Route path={'/game-management/*'} element={<GameManagementRoutes/>}/>
 
-      <Route path={'/assessment/*'} element={<ActivityAssessmentRoutes />} />
+            <Route path={'/participants/*'} element={<ParticipantsRoutes/>}/>
 
-      <Route path={'/grades/*'} element={<GradesRoutes />} />
+            <Route path={'/assessment/*'} element={<ActivityAssessmentRoutes/>}/>
 
-      <Route path={'/settings/*'} element={<SettingsRoutes />} />
+            <Route path={'/grades/*'} element={<GradesRoutes/>}/>
 
-      <Route path='*' element={<NotFound />} />
-    </Routes>
-  )
+            <Route path={'/settings/*'} element={<SettingsRoutes/>}/>
+
+            <Route path='*' element={<NotFound/>}/>
+        </Routes>
+    )
 }

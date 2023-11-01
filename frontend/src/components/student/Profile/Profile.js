@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { Col, Row, Spinner, Table } from 'react-bootstrap'
+import {Col, Container, Row, Spinner, Table} from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import DeleteAccountModal from './DeleteAccountModal'
@@ -11,7 +11,6 @@ import { useAppSelector } from '../../../hooks/hooks'
 import UserService from '../../../services/user.service'
 import { ERROR_OCCURRED, getHeroName, HeroImg } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
-import { Content } from '../../App/AppGeneralStyles'
 
 function Profile(props) {
   const isMobileDisplay = isMobileView()
@@ -93,7 +92,7 @@ function Profile(props) {
   }, [userData])
 
   return (
-    <Content>
+    <Container fluid>
       <h3 className='text-center py-3'>Mój profil</h3>
       <Row className='px-0 mx-0'>
         <Col md={6} className={isMobileDisplay ? 'mb-3' : 'mb-0'}>
@@ -143,7 +142,7 @@ function Profile(props) {
       />
       <EditPasswordModal show={isEditPasswordModalOpen} setModalOpen={setIsEditPasswordModalOpen} />
       <DeleteAccountModal show={isDeleteModalOpen} setModalOpen={setIsDeleteModalOpen} />
-    </Content>
+    </Container>
   )
 }
 

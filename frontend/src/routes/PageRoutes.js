@@ -7,6 +7,21 @@ export const GeneralRoutes = {
 
 export const StudentRoutes = {
   GAME_CARD: '/game-card',
+  NEW_GAME_MAP: {
+    MAIN: '/map',
+    QUESTBOARD: '/map/quests',
+    GRAPH_TASK: {
+      MAIN: '/game-map/expedition',
+      INFO: '/game-map/expedition/info',
+      QUESTION_SELECTION: '/game-map/expedition/doors-selection',
+      QUESTION_CONTENT: '/game-map/expedition/question',
+      SUMMARY: '/game-map/expedition/summary',
+      EXPEDITION_WRAPPER: '/game-map/expedition/test'
+    },
+    COMBAT_TASK: '/game-map/combat-task',
+    SURVEY_TASK: '/game-map/survey-task',
+    INFO_TASK: '/game-map/information'
+  },
   GAME_MAP: {
     MAIN: '/game-map',
     GRAPH_TASK: {

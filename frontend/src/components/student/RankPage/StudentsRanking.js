@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 
-import { Tab } from 'react-bootstrap'
+import {Container, Tab} from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import { useAppSelector } from '../../../hooks/hooks'
 import RankingService from '../../../services/ranking.service'
-import { Content } from '../../App/AppGeneralStyles'
 import Ranking from '../../general/Ranking/Ranking'
 import { TabsContainer } from '../../professor/ParticipantsPage/ParticipantsStyles'
 
@@ -53,7 +52,7 @@ function StudentsRanking(props) {
   }, [])
 
   return (
-    <Content>
+    <Container fluid>
       <TabsContainer
         $background={props.theme.success}
         $fontColor={props.theme.background}
@@ -67,7 +66,7 @@ function StudentsRanking(props) {
           <Ranking rankingList={studentGroupRanking} studentPosition={studentRankingGroupPosition} />
         </Tab>
       </TabsContainer>
-    </Content>
+    </Container>
   )
 }
 

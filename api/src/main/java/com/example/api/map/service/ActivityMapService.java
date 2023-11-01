@@ -1,9 +1,10 @@
 package com.example.api.map.service;
 
+import com.example.api.activity.task.service.TaskService;
 import com.example.api.map.dto.response.ActivityMapResponse;
-import com.example.api.map.dto.response.task.MapTask;
-import com.example.api.map.dto.response.task.MapTaskProfessor;
-import com.example.api.map.dto.response.task.MapTaskStudent;
+import com.example.api.map.dto.response.task.MapTaskDTO;
+import com.example.api.map.dto.response.task.MapTaskProfessorDTO;
+import com.example.api.map.dto.response.task.MapTaskStudentDTO;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
@@ -20,7 +21,6 @@ import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.map.repository.MapRepository;
-import com.example.api.user.repository.UserRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.MapValidator;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +41,10 @@ public class ActivityMapService {
     private final RequirementService requirementService;
     private final MapValidator mapValidator;
     private final LoggedInUserService authService;
-    private final UserRepository userRepository;
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
+    private final TaskService taskService;
 
     public ActivityMap saveActivityMap(ActivityMap activityMap){
         return mapRepository.save(activityMap);
@@ -56,7 +56,7 @@ public class ActivityMapService {
 
         ActivityMap activityMap = mapRepository.findActivityMapById(id);
         mapValidator.validateActivityMapIsNotNull(activityMap, id);
-        List<? extends MapTask> allTasks;
+        List<? extends MapTaskDTO> allTasks;
         if (user.getAccountType() == AccountType.STUDENT) {
             allTasks = getMapTasksForStudent(activityMap, user);
         } else {
@@ -65,50 +65,55 @@ public class ActivityMapService {
         return new ActivityMapResponse(activityMap.getId(), allTasks, activityMap.getMapSizeX(), activityMap.getMapSizeY(), activityMap.getImage());
     }
 
-    public List<MapTaskProfessor> getMapTasksForProfessor(ActivityMap activityMap, User professor) {
+    public List<MapTaskProfessorDTO> getMapTasksForProfessor(ActivityMap activityMap, User professor) {
         return Stream.of(activityMap.getGraphTasks(), activityMap.getFileTasks(), activityMap.getSurveys(), activityMap.getInfos())
                 .flatMap(List::stream)
-                .map(activity -> new MapTaskProfessor(activity, activity.getIsBlocked()))
-                .sorted(Comparator.comparingLong(MapTask::getId))
+                .map(activity -> new MapTaskProfessorDTO(activity, activity.getIsBlocked()))
+                .sorted(Comparator.comparingLong(MapTaskDTO::getId))
                 .toList();
     }
 
-    public List<MapTaskStudent> getMapTasksForStudent(ActivityMap activityMap, User student) {
-        List<MapTaskStudent> graphTasks = activityMap.getGraphTasks()
+    public List<MapTaskStudentDTO> getMapTasksForStudent(ActivityMap activityMap, User student) {
+        List<MapTaskStudentDTO> graphTasks = activityMap.getGraphTasks()
                 .stream()
                 .filter(graphTask -> !graphTask.getIsBlocked())
-                .map(graphTask -> new MapTaskStudent(
+                .map(graphTask -> new MapTaskStudentDTO(
                         graphTask,
                         areRequirementsFulfilled(graphTask),
-                        isGraphTaskCompleted(graphTask, student)))
+                        isGraphTaskCompleted(graphTask, student),
+                        taskService.getRequirementsForActivity(graphTask),
+                        graphTask.getTimeToSolveMillis()))
                 .toList();
-        List<MapTaskStudent> fileTasks = activityMap.getFileTasks()
+        List<MapTaskStudentDTO> fileTasks = activityMap.getFileTasks()
                 .stream()
                 .filter(fileTask -> !fileTask.getIsBlocked())
-                .map(fileTask -> new MapTaskStudent(
+                .map(fileTask -> new MapTaskStudentDTO(
                         fileTask,
                         areRequirementsFulfilled(fileTask),
-                        isFileTaskCompleted(fileTask, student)))
+                        isFileTaskCompleted(fileTask, student),
+                        taskService.getRequirementsForActivity(fileTask)))
                 .toList();
-        List<MapTaskStudent> infos = activityMap.getInfos()
+        List<MapTaskStudentDTO> infos = activityMap.getInfos()
                 .stream()
                 .filter(info -> !info.getIsBlocked())
-                .map(info -> new MapTaskStudent(
+                .map(info -> new MapTaskStudentDTO(
                         info,
                         areRequirementsFulfilled(info),
-                        true))
+                        true,
+                        taskService.getRequirementsForActivity(info)))
                 .toList();
-        List<MapTaskStudent> surveys = activityMap.getSurveys()
+        List<MapTaskStudentDTO> surveys = activityMap.getSurveys()
                 .stream()
                 .filter(survey -> !survey.getIsBlocked())
-                .map(survey -> new MapTaskStudent(
+                .map(survey -> new MapTaskStudentDTO(
                         survey,
                         areRequirementsFulfilled(survey),
-                        isSurveyCompleted(survey, student)))
+                        isSurveyCompleted(survey, student),
+                        taskService.getRequirementsForActivity(survey)))
                 .toList();
         return Stream.of(graphTasks, fileTasks, infos, surveys)
                 .flatMap(List::stream)
-                .sorted(Comparator.comparingLong(MapTask::getId))
+                .sorted(Comparator.comparingLong(MapTaskDTO::getId))
                 .toList();
     }
 

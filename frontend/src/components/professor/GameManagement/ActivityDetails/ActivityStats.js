@@ -127,7 +127,7 @@ function ActivityStats(props) {
 
   return (
     <>
-      <Row className="m-0 mt-3 gy-2" style={{ height: isMobileView() ? '100vh' : '40vh' }}>
+      <Row className="m-0 mt-3 gy-2">
         <Col md={6}>
           <CustomCard
             $fontColor={props.theme.font}

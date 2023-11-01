@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { debounce } from 'lodash/function'
-import { Button, Form, Modal, ModalBody, ModalFooter, ModalHeader, Tab } from 'react-bootstrap'
+import {Button, Container, Form, Modal, ModalBody, ModalFooter, ModalHeader, Tab} from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
@@ -9,8 +9,6 @@ import ActivityStats from './ActivityStats'
 import { TeacherRoutes } from '../../../../routes/PageRoutes'
 import ActivityService from '../../../../services/activity.service'
 import { Activity } from '../../../../utils/constants'
-import { isMobileView } from '../../../../utils/mobileHelper'
-import { Content } from '../../../App/AppGeneralStyles'
 import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 import Ranking from '../../../general/Ranking/Ranking'
 import { TabsContainer } from '../../ParticipantsPage/ParticipantsStyles'
@@ -57,7 +55,7 @@ function ActivityDetails(props) {
   }, 300)
 
   return (
-    <Content style={{ marginBottom: isMobileView() ? 70 : 0 }}>
+    <Container>
       <TabsContainer
         $background={props.theme.success}
         $fontColor={props.theme.background}
@@ -125,7 +123,7 @@ function ActivityDetails(props) {
           </Button>
         </ModalFooter>
       </Modal>
-    </Content>
+    </Container>
   )
 }
 
