@@ -1,7 +1,7 @@
 package com.example.api.activity.result.service.util;
 
 import com.example.api.activity.task.dto.response.result.ScaleActivityStatistics;
-import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.model.TaskResult;
 import com.example.api.activity.Activity;

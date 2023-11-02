@@ -1,6 +1,6 @@
 package com.example.api.activity.task.graphtask;
 
-import com.example.api.map.model.requirement.Requirement;
+import com.example.api.chapter.requirement.model.Requirement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

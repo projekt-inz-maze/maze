@@ -13,7 +13,7 @@ import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.course.model.Course;
 import com.example.api.course.service.CourseService;
-import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.activity.ActivityType;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.feedback.model.Feedback;
@@ -179,7 +179,7 @@ public class TaskResultService {
         userService.getCurrentUserAndValidateProfessorAccount();
 
         return activityService.getGradedActivity(activityID)
-                .map(activity -> getActivityStatisticsForActivity(activity))
+                .map(this::getActivityStatisticsForActivity)
                 .orElseThrow(() -> new EntityNotFoundException("Activity not found"));
     }
 

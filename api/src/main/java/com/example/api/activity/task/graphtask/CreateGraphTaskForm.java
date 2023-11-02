@@ -1,7 +1,7 @@
 package com.example.api.activity.task.graphtask;
 
 import com.example.api.activity.task.CreateTaskForm;
-import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.activity.ActivityType;
 import com.example.api.question.create.QuestionForm;
 import com.example.api.question.model.Question;
 import io.swagger.v3.oas.annotations.media.Schema;

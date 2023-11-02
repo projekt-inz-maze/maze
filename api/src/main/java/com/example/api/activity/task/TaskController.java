@@ -2,7 +2,7 @@ package com.example.api.activity.task;
 
 import com.example.api.activity.task.dto.response.ActivitiesResponse;
 import com.example.api.activity.task.dto.response.ActivityToEvaluateResponse;
-import com.example.api.map.dto.response.RequirementResponse;
+import com.example.api.chapter.requirement.RequirementResponse;
 import com.example.api.error.exception.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;

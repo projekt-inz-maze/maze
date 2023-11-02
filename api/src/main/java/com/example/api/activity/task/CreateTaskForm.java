@@ -4,7 +4,7 @@ import com.example.api.activity.CreateActivityForm;
 import com.example.api.activity.auction.CreateAuctionDTO;
 import com.example.api.activity.task.filetask.CreateFileTaskForm;
 import com.example.api.activity.task.graphtask.CreateGraphTaskForm;
-import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.activity.ActivityType;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

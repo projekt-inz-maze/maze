@@ -8,13 +8,13 @@ import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.feedback.model.ProfessorFeedback;
 import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.map.model.Chapter;
+import com.example.api.chapter.Chapter;
 import com.example.api.user.model.User;
 import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.map.repository.ChapterRepository;
+import com.example.api.chapter.ChapterRepository;
 import com.example.api.security.LoggedInUserService;
-import com.example.api.map.service.RequirementService;
+import com.example.api.chapter.requirement.RequirementService;
 import com.example.api.validator.ChapterValidator;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
@@ -105,7 +105,7 @@ public class FileTaskService {
         chapter.getActivityMap().getFileTasks().add(fileTask);
 
         if (form.getAuction() != null) {
-            auctionService.createAuction(fileTask, form.getAuction());
+            auctionService.createAuction(fileTask, form.getAuction(), chapter.getActivityMap());
         }
     }
 

@@ -2,7 +2,7 @@ package com.example.api.activity.survey;
 
 import com.example.api.activity.Activity;
 import com.example.api.course.model.Course;
-import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.activity.ActivityType;
 import com.example.api.user.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

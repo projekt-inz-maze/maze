@@ -16,9 +16,9 @@ import com.example.api.activity.result.model.TaskResult;
 import com.example.api.activity.Activity;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
-import com.example.api.map.model.ActivityMap;
-import com.example.api.map.model.Chapter;
-import com.example.api.map.model.requirement.Requirement;
+import com.example.api.chapter.map.ActivityMap;
+import com.example.api.chapter.Chapter;
+import com.example.api.chapter.requirement.model.Requirement;
 import com.example.api.question.model.Difficulty;
 import com.example.api.question.model.QuestionType;
 import com.example.api.user.model.User;
@@ -162,12 +162,5 @@ public class ActivityValidator {
 
     public void validateFileTaskTitle(String title, List<FileTask> fileTasks) throws RequestValidationException {
         fileTaskValidator.validateFileTaskTitle(title, fileTasks);
-    }
-
-    public void validateRequirementsHasDateTo(List<Requirement> requirements) throws EntityRequiredAttributeNullException {
-        if (requirements.size() != 1) {
-            log.error("Requirements should have one requirement with type DATE_TO");
-            throw new EntityRequiredAttributeNullException("Requirements should have one requirement with type DATE_TO");
-        }
     }
 }

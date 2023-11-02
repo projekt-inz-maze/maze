@@ -5,9 +5,9 @@ import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.course.model.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.map.model.Chapter;
-import com.example.api.map.repository.ChapterRepository;
-import com.example.api.map.service.RequirementService;
+import com.example.api.chapter.Chapter;
+import com.example.api.chapter.ChapterRepository;
+import com.example.api.chapter.requirement.RequirementService;
 import com.example.api.question.create.OptionForm;
 import com.example.api.question.create.QuestionForm;
 import com.example.api.question.model.Difficulty;
@@ -96,7 +96,7 @@ public class GraphTaskService {
         graphTaskRepository.save(graphTask);
 
         if (form.getAuction() != null) {
-            auctionService.createAuction(graphTask, form.getAuction());
+            auctionService.createAuction(graphTask, form.getAuction(), chapter.getActivityMap());
         }
 
         chapter.getActivityMap().getGraphTasks().add(graphTask);

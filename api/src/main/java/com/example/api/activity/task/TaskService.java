@@ -6,18 +6,18 @@ import com.example.api.activity.task.dto.response.util.FileResponse;
 import com.example.api.course.model.Course;
 import com.example.api.course.service.CourseService;
 import com.example.api.course.validator.CourseValidator;
-import com.example.api.map.dto.response.RequirementDTO;
-import com.example.api.map.dto.response.RequirementResponse;
-import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.chapter.requirement.RequirementDTO;
+import com.example.api.chapter.requirement.RequirementResponse;
+import com.example.api.activity.ActivityType;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.Activity;
 import com.example.api.activity.task.filetask.FileTask;
-import com.example.api.map.model.ActivityMap;
-import com.example.api.map.model.Chapter;
-import com.example.api.map.model.requirement.Requirement;
+import com.example.api.chapter.map.ActivityMap;
+import com.example.api.chapter.Chapter;
+import com.example.api.chapter.requirement.model.Requirement;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
@@ -25,8 +25,8 @@ import com.example.api.activity.task.filetask.FileTaskRepository;
 import com.example.api.activity.task.graphtask.GraphTaskRepository;
 import com.example.api.activity.info.InfoRepository;
 import com.example.api.activity.survey.SurveyRepository;
-import com.example.api.map.repository.ChapterRepository;
-import com.example.api.map.service.RequirementService;
+import com.example.api.chapter.ChapterRepository;
+import com.example.api.chapter.requirement.RequirementService;
 import com.example.api.activity.validator.ActivityValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -145,7 +145,7 @@ public class TaskService {
                 .toList();
     }
 
-    public RequirementResponse getRequirementsForActivity(Long id) throws EntityNotFoundException, MissingAttributeException {
+    public RequirementResponse getRequirementsForActivity(Long id) throws EntityNotFoundException {
         Activity activity = getActivity(id);
         List<? extends RequirementDTO<?>> requirements = activity.getRequirements()
                 .stream()

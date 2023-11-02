@@ -2,7 +2,7 @@ package com.example.api.unit.util.visitor;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.course.model.CourseMember;
-import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.activity.ActivityType;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;
@@ -34,7 +34,6 @@ import static org.mockito.Mockito.when;
 public class HeroVisitorTest {
     private HeroVisitor heroVisitor;
     @Mock private TimeCalculator timeCalculator;
-    private User user;
     private GraphTaskResult result;
 
     private CourseMember courseMember;
@@ -45,7 +44,7 @@ public class HeroVisitorTest {
     public void init() {
         MockitoAnnotations.openMocks(this);
         heroVisitor = new HeroVisitor(timeCalculator);
-        user = new User("email", "Name", "LastName", AccountType.STUDENT);
+        User user = new User("email", "Name", "LastName", AccountType.STUDENT);
 
         firstQuestion = new Question();
         Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "", "", Difficulty.EASY, List.of(), 10.0, new LinkedList<>(), null, null);

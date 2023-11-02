@@ -1,7 +1,7 @@
 package com.example.api.activity.info;
 
 import com.example.api.activity.EditActivityForm;
-import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.activity.ActivityType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

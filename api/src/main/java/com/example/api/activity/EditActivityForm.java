@@ -4,7 +4,6 @@ import com.example.api.activity.info.EditInfoForm;
 import com.example.api.activity.survey.EditSurveyForm;
 import com.example.api.activity.task.filetask.EditFileTaskForm;
 import com.example.api.activity.task.graphtask.EditGraphTaskForm;
-import com.example.api.map.dto.response.task.ActivityType;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;

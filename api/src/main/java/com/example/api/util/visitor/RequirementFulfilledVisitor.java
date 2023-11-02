@@ -4,14 +4,13 @@ import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.chapter.requirement.model.*;
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
-import com.example.api.map.model.requirement.*;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
-import com.example.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

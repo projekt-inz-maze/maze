@@ -1,8 +1,8 @@
 package com.example.api.activity.auction;
 
 import com.example.api.activity.task.Task;
+import com.example.api.chapter.map.ActivityMap;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +15,14 @@ import java.time.Instant;
 @Transactional
 public class AuctionService {
     AuctionRepository repository;
-    public void createAuction(Task task, CreateAuctionDTO dto) {
-        Auction auction = new Auction(task, dto.getMinBidding(), Instant.ofEpochMilli(dto.getResolutionDate()));
+    public void createAuction(Task task, CreateAuctionDTO dto, ActivityMap map) {
+        Auction auction = Auction.from(task)
+                .minBidding(dto.getMinBidding())
+                .resolutionDate(Instant.ofEpochMilli(dto.getResolutionDate()))
+                .build();
+
         repository.save(auction);
         task.setAuction(auction);
+        map.add(auction);
     }
 }

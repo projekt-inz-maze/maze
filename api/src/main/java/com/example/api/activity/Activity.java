@@ -1,8 +1,7 @@
 package com.example.api.activity;
 
+import com.example.api.chapter.requirement.model.Requirement;
 import com.example.api.course.model.Course;
-import com.example.api.map.dto.response.task.ActivityType;
-import com.example.api.map.model.requirement.Requirement;
 import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,7 +46,7 @@ public abstract class Activity {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    public Activity(String name, String description, int posX, int posY, User professor, Course course){
+    public Activity(String name, String description, int posX, int posY, User professor, Course course) {
         this.title = name;
         this.description = description;
         this.posX = posX;
@@ -55,5 +54,6 @@ public abstract class Activity {
         this.professor = professor;
         this.course = course;
     }
+
     abstract public Double getMaxPoints();
 }

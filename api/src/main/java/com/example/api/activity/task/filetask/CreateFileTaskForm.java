@@ -1,7 +1,7 @@
 package com.example.api.activity.task.filetask;
 
 import com.example.api.activity.task.CreateTaskForm;
-import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.activity.ActivityType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
