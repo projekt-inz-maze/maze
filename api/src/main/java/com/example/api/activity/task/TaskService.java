@@ -155,10 +155,15 @@ public class TaskService {
         return new RequirementResponse(activity.getIsBlocked(), requirements);
     }
 
-    public void updateRequirementForActivity(ActivityRequirementForm form) throws RequestValidationException {
+    public void updateRequirementForActivity(ActivityRequirementForm form) throws RequestValidationException, CannotEditRequirementsForAuctionedTaskException {
         Activity activity = getActivity(form.getActivityId());
+
+        if (activity instanceof Task task && task.getAuction().isPresent()) {
+            throw new CannotEditRequirementsForAuctionedTaskException();
+        }
+
         Boolean isBlocked = form.getIsBlocked();
-        if(isBlocked != null) {
+        if (isBlocked != null) {
             activity.setIsBlocked(isBlocked);
         }
         List<RequirementForm> requirementForms = form.getRequirements();

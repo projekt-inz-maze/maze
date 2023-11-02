@@ -43,7 +43,7 @@ public class TaskController {
     }
 
     @PostMapping("/requirements/update")
-    ResponseEntity<?> updateRequirementForActivity(@RequestBody ActivityRequirementForm form) throws RequestValidationException {
+    ResponseEntity<?> updateRequirementForActivity(@RequestBody ActivityRequirementForm form) throws RequestValidationException, CannotEditRequirementsForAuctionedTaskException {
         taskService.updateRequirementForActivity(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }

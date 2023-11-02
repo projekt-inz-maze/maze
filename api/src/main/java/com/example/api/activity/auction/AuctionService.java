@@ -1,6 +1,7 @@
 package com.example.api.activity.auction;
 
 import com.example.api.activity.task.Task;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Slf4j
 @Transactional
 public class AuctionService {
