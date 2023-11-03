@@ -38,7 +38,7 @@ public class TaskController {
 
     @GetMapping("/requirements")
     ResponseEntity<RequirementResponse> getRequirementsForActivity(@RequestParam Long activityId)
-            throws EntityNotFoundException, MissingAttributeException {
+            throws EntityNotFoundException {
         return ResponseEntity.ok().body(taskService.getRequirementsForActivity(activityId));
     }
 

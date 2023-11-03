@@ -1,5 +1,6 @@
 package com.example.api.activity.task;
 
+import com.example.api.activity.auction.AuctionRepository;
 import com.example.api.activity.task.dto.response.ActivitiesResponse;
 import com.example.api.activity.task.dto.response.ActivityToEvaluateResponse;
 import com.example.api.activity.task.dto.response.util.FileResponse;
@@ -53,7 +54,7 @@ public class TaskService {
     private final CourseValidator courseValidator;
     private final CourseService courseService;
     private final LoggedInUserService authService;
-
+    private  final AuctionRepository auctionRepository;
     public List<ActivityToEvaluateResponse> getAllActivitiesToEvaluate(Long courseId)
             throws RequestValidationException, UsernameNotFoundException {
         User professor = authService.getCurrentUser();
@@ -159,7 +160,7 @@ public class TaskService {
         Activity activity = getActivity(form.getActivityId());
 
         if (activity instanceof Task task && task.getAuction().isPresent()) {
-            throw new CannotEditRequirementsForAuctionedTaskException();
+            activity = task.getAuction().get();
         }
 
         Boolean isBlocked = form.getIsBlocked();
@@ -179,6 +180,8 @@ public class TaskService {
             return surveyRepository.findSurveyById(id);
         } else if (infoRepository.existsById(id)) {
             return infoRepository.findInfoById(id);
+        } else if (auctionRepository.existsById(id)) {
+            return auctionRepository.findById(id).get();
         } else {
             log.error("Activity with id {} not found in database", id);
             throw new EntityNotFoundException("Activity with id " + id + " not found in database");

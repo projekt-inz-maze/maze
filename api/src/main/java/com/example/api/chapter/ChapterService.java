@@ -10,7 +10,7 @@ import com.example.api.chapter.response.ChapterInfoResponse;
 import com.example.api.chapter.response.ChapterResponse;
 import com.example.api.chapter.response.ChapterResponseProfessor;
 import com.example.api.chapter.response.ChapterResponseStudent;
-import com.example.api.chapter.map.maptask.MapTask;
+import com.example.api.chapter.map.mapactivity.MapActivity;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.Activity;
@@ -21,7 +21,6 @@ import com.example.api.chapter.requirement.RequirementService;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.user.service.UserService;
 import com.example.api.util.model.File;
 import com.example.api.util.repository.FileRepository;
 import com.example.api.validator.ChapterValidator;
@@ -89,7 +88,7 @@ public class ChapterService {
         User user = authService.getCurrentUser();
         chapterValidator.validateUserCanAccess(user, chapter);
 
-        List<? extends MapTask> allTasks;
+        List<? extends MapActivity> allTasks;
         if (user.getAccountType() == AccountType.STUDENT){
             allTasks = activityMapService.getMapTasksForStudent(chapter.getActivityMap(), user);
         } else {

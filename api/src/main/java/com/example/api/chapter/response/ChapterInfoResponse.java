@@ -1,6 +1,6 @@
 package com.example.api.chapter.response;
 
-import com.example.api.chapter.map.maptask.MapTask;
+import com.example.api.chapter.map.mapactivity.MapActivity;
 import com.example.api.chapter.Chapter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,12 +19,12 @@ public class ChapterInfoResponse {
     private Integer noFileTasks;
     private Double maxPoints;
     private String mapSize;
-    private List<? extends MapTask> mapTasks;
+    private List<? extends MapActivity> mapTasks;
     private Integer posX;
     private Integer posY;
     private Long imageId;
 
-    public ChapterInfoResponse(Chapter chapter, List<? extends MapTask> mapTasks) {
+    public ChapterInfoResponse(Chapter chapter, List<? extends MapActivity> mapTasks) {
         this.id = chapter.getId();
         this.name = chapter.getName();
         this.noActivities = chapter.getNoActivities();

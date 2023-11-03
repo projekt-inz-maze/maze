@@ -1,8 +1,8 @@
 package com.example.api.activity.task.dto.response.result.question;
 
-import com.example.api.question.model.Difficulty;
-import com.example.api.question.model.Question;
-import com.example.api.question.model.QuestionType;
+import com.example.api.question.Difficulty;
+import com.example.api.question.Question;
+import com.example.api.question.QuestionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

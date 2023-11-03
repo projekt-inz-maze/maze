@@ -17,14 +17,14 @@ import com.example.api.course.model.CourseMember;
 import com.example.api.course.repository.CourseMemberRepository;
 import com.example.api.course.repository.CourseRepository;
 import com.example.api.course.service.CourseMemberService;
-import com.example.api.group.model.AccessDate;
-import com.example.api.group.model.Group;
+import com.example.api.group.accessdate.AccessDate;
+import com.example.api.group.Group;
 import com.example.api.chapter.map.ActivityMap;
 import com.example.api.chapter.Chapter;
-import com.example.api.question.model.Difficulty;
-import com.example.api.question.model.Option;
-import com.example.api.question.model.Question;
-import com.example.api.question.model.QuestionType;
+import com.example.api.question.Difficulty;
+import com.example.api.question.option.Option;
+import com.example.api.question.Question;
+import com.example.api.question.QuestionType;
 import com.example.api.user.hero.HeroRepository;
 import com.example.api.user.hero.model.*;
 import com.example.api.user.model.AccountType;
@@ -48,11 +48,11 @@ import com.example.api.activity.result.service.GraphTaskResultService;
 import com.example.api.activity.task.filetask.FileTaskService;
 import com.example.api.activity.info.InfoService;
 import com.example.api.activity.survey.SurveyService;
-import com.example.api.group.service.AccessDateService;
-import com.example.api.group.service.GroupService;
+import com.example.api.group.accessdate.AccessDateService;
+import com.example.api.group.GroupService;
 import com.example.api.chapter.map.ActivityMapService;
 import com.example.api.chapter.requirement.RequirementService;
-import com.example.api.question.service.OptionService;
+import com.example.api.question.option.OptionService;
 import com.example.api.question.QuestionService;
 import com.example.api.user.service.BadgeService;
 import com.example.api.user.service.UserService;
@@ -527,7 +527,7 @@ public class DatabaseConfig {
                 false,
                 null
         );
-        StudentsRequirements studentsRequirements = new StudentsRequirements(
+        StudentsRequirement studentsRequirement = new StudentsRequirement(
                 MessageManager.STUDENTS_REQ_NAME,
                 false,
                 new LinkedList<>()
@@ -537,7 +537,7 @@ public class DatabaseConfig {
                 dateToRequirement,
                 minPointsRequirement,
                 groupsRequirement,
-                studentsRequirements,
+                studentsRequirement,
                 graphTasksRequirement,
                 fileTasksRequirement
         );

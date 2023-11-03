@@ -62,7 +62,7 @@ public class RequirementService {
                 false,
                 null
         );
-        Requirement studentsRequirements = new StudentsRequirements(
+        Requirement studentsRequirements = new StudentsRequirement(
                 forActivity ? MessageManager.STUDENTS_REQ_NAME : MessageManager.STUDENTS_REQ_NAME_CHAPTER,
                 false,
                 new LinkedList<>()

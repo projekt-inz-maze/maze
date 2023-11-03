@@ -2,8 +2,8 @@ package com.example.api.activity.task.graphtask;
 
 import com.example.api.activity.task.CreateTaskForm;
 import com.example.api.activity.ActivityType;
-import com.example.api.question.create.QuestionForm;
-import com.example.api.question.model.Question;
+import com.example.api.question.QuestionForm;
+import com.example.api.question.Question;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

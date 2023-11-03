@@ -21,7 +21,7 @@ import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.model.TaskResult;
-import com.example.api.group.model.Group;
+import com.example.api.group.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;

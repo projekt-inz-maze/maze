@@ -1,7 +1,7 @@
 package com.example.api.activity.task.graphtask;
 
-import com.example.api.question.create.OptionForm;
-import com.example.api.question.create.QuestionForm;
+import com.example.api.question.option.OptionForm;
+import com.example.api.question.QuestionForm;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.util.message.MessageManager;

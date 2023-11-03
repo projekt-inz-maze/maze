@@ -46,7 +46,7 @@ public abstract class Task extends Activity {
         this.maxPoints = maxPoints;
     }
 
-    Optional<Auction> getAuction() {
+    public Optional<Auction> getAuction() {
         return Optional.ofNullable(auction);
     }
 }

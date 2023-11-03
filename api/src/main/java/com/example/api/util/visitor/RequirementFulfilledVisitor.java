@@ -82,7 +82,7 @@ public class RequirementFulfilledVisitor {
         return member.getPoints() >= requirement.getMinPoints();
     }
 
-    public boolean visitStudentsRequirements(StudentsRequirements requirement) {
+    public boolean visitStudentsRequirements(StudentsRequirement requirement) {
         if (!requirement.getSelected()) {
             return true;
         }

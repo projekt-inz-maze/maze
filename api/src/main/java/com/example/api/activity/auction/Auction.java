@@ -35,6 +35,38 @@ public class Auction extends Activity {
     private Task task;
     private Double minBidding;
     private Instant resolutionDate;
+    private boolean resolved = false;
+
+    public Auction(Long id,
+                   String title,
+                   String description,
+                   Integer posX,
+                   Integer posY,
+                   Double experience,
+                   Long creationTime,
+                   List<Requirement> requirements,
+                   Boolean isBlocked,
+                   User professor,
+                   Course course,
+                   Task task,
+                   Double minBidding,
+                   Instant resolutionDate) {
+        super(id,
+                title,
+                description,
+                posX,
+                posY,
+                experience,
+                creationTime,
+                requirements,
+                isBlocked,
+                professor,
+                ActivityType.AUCTION,
+                course);
+        this.task = task;
+        this.minBidding = minBidding;
+        this.resolutionDate = resolutionDate;
+    }
 
     @Override
     public Double getMaxPoints() {
@@ -158,10 +190,21 @@ public class Auction extends Activity {
             return this;
         }
 
-
-
         public Auction build() {
-            return new Auction(this.task, this.minBidding, this.resolutionDate);
+            return new  Auction( id,
+                    title,
+                    description,
+                    posX,
+                    posY,
+                    experience,
+                    creationTime,
+                    requirements,
+                    isBlocked,
+                    professor,
+                    course,
+                    task,
+                    minBidding,
+                    resolutionDate);
         }
     }
 }

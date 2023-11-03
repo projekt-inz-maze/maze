@@ -4,7 +4,6 @@ import com.example.api.activity.result.dto.request.QuestionActionForm;
 import com.example.api.activity.task.dto.response.result.question.QuestionInfoResponse;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.question.model.Question;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

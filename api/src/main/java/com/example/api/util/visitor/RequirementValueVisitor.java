@@ -5,13 +5,13 @@ import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
-import com.example.api.group.model.Group;
+import com.example.api.group.Group;
 import com.example.api.user.model.User;
 import com.example.api.activity.task.filetask.FileTaskRepository;
 import com.example.api.activity.task.graphtask.GraphTaskRepository;
-import com.example.api.group.repository.GroupRepository;
+import com.example.api.group.GroupRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.group.validator.GroupValidator;
+import com.example.api.group.GroupValidator;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
 import lombok.RequiredArgsConstructor;
@@ -112,7 +112,7 @@ public class RequirementValueVisitor {
         }
     }
 
-    public void visitStudentsRequirements(StudentsRequirements requirement, String value) {
+    public void visitStudentsRequirements(StudentsRequirement requirement, String value) {
         if (value.equals("")) {
             return;
         }

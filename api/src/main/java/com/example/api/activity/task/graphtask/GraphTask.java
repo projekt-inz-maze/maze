@@ -3,7 +3,7 @@ package com.example.api.activity.task.graphtask;
 import com.example.api.activity.task.Task;
 import com.example.api.course.model.Course;
 import com.example.api.activity.ActivityType;
-import com.example.api.question.model.Question;
+import com.example.api.question.Question;
 import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
