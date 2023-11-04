@@ -1,7 +1,7 @@
 package com.example.api.validator;
 
 import com.example.api.error.exception.EntityNotFoundException;
-import com.example.api.chapter.map.ActivityMap;
+import com.example.api.map.ActivityMap;
 import com.example.api.chapter.requirement.model.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

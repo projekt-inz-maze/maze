@@ -1,7 +1,7 @@
 package com.example.api.activity.auction;
 
 import com.example.api.activity.task.Task;
-import com.example.api.chapter.map.ActivityMap;
+import com.example.api.map.ActivityMap;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

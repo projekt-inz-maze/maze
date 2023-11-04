@@ -1,10 +1,10 @@
 package com.example.api.validator;
 
-import com.example.api.user.dto.request.badge.BadgeForm;
+import com.example.api.user.badge.dtos.BadgeForm;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.user.model.badge.Badge;
+import com.example.api.user.badge.types.Badge;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

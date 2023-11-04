@@ -11,12 +11,11 @@ import com.example.api.chapter.requirement.RequirementDTO;
 import com.example.api.chapter.requirement.RequirementResponse;
 import com.example.api.activity.ActivityType;
 import com.example.api.error.exception.EntityNotFoundException;
-import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.Activity;
 import com.example.api.activity.task.filetask.FileTask;
-import com.example.api.chapter.map.ActivityMap;
+import com.example.api.map.ActivityMap;
 import com.example.api.chapter.Chapter;
 import com.example.api.chapter.requirement.model.Requirement;
 import com.example.api.security.LoggedInUserService;
@@ -148,6 +147,7 @@ public class TaskService {
 
     public RequirementResponse getRequirementsForActivity(Long id) throws EntityNotFoundException {
         Activity activity = getActivity(id);
+
         List<? extends RequirementDTO<?>> requirements = activity.getRequirements()
                 .stream()
                 .map(Requirement::getResponse)
@@ -158,10 +158,6 @@ public class TaskService {
 
     public void updateRequirementForActivity(ActivityRequirementForm form) throws RequestValidationException, CannotEditRequirementsForAuctionedTaskException {
         Activity activity = getActivity(form.getActivityId());
-
-        if (activity instanceof Task task && task.getAuction().isPresent()) {
-            activity = task.getAuction().get();
-        }
 
         Boolean isBlocked = form.getIsBlocked();
         if (isBlocked != null) {

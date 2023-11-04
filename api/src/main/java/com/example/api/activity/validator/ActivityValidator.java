@@ -16,7 +16,7 @@ import com.example.api.activity.result.model.TaskResult;
 import com.example.api.activity.Activity;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
-import com.example.api.chapter.map.ActivityMap;
+import com.example.api.map.ActivityMap;
 import com.example.api.chapter.Chapter;
 import com.example.api.question.Difficulty;
 import com.example.api.question.QuestionType;

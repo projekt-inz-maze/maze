@@ -30,6 +30,7 @@ import com.example.api.activity.ActivityType;
 import com.example.api.chapter.Chapter;
 import com.example.api.chapter.requirement.model.Requirement;
 import com.example.api.chapter.ChapterService;
+import com.example.api.user.badge.BadgeService;
 import com.example.api.user.dto.response.dashboard.DashboardResponse;
 import com.example.api.user.dto.response.dashboard.GeneralStats;
 import com.example.api.user.dto.response.dashboard.LastAddedActivity;

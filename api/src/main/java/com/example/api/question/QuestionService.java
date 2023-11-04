@@ -15,7 +15,7 @@ import com.example.api.user.model.User;
 import com.example.api.question.answer.AnswerRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.activity.result.service.GraphTaskResultService;
-import com.example.api.user.service.BadgeService;
+import com.example.api.user.badge.BadgeService;
 import com.example.api.user.service.UserService;
 import com.example.api.validator.QuestionValidator;
 import com.example.api.validator.ResultValidator;

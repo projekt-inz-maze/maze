@@ -6,7 +6,7 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.Activity;
-import com.example.api.chapter.map.ActivityMap;
+import com.example.api.map.ActivityMap;
 import com.example.api.chapter.Chapter;
 import com.example.api.chapter.ChapterRepository;
 import com.example.api.user.model.AccountType;

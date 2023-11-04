@@ -1,7 +1,7 @@
 package com.example.api.user.dto.response.badge;
 
 import com.example.api.util.dto.response.ByteFileResponse;
-import com.example.api.user.model.badge.Badge;
+import com.example.api.user.badge.types.Badge;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

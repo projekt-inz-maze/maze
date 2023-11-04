@@ -1,21 +1,21 @@
 package com.example.api.unit.service.activity.feedback;
 
-import com.example.api.activity.feedback.dto.request.SaveProfessorFeedbackForm;
+import com.example.api.activity.feedback.SaveProfessorFeedbackForm;
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongPointsNumberException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.activity.feedback.model.ProfessorFeedback;
+import com.example.api.activity.feedback.ProfessorFeedback;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.user.model.User;
-import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;
+import com.example.api.activity.feedback.ProfessorFeedbackRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.task.filetask.FileTaskRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.activity.feedback.service.ProfessorFeedbackService;
+import com.example.api.activity.feedback.ProfessorFeedbackService;
 import com.example.api.validator.FeedbackValidator;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;

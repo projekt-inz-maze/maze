@@ -1,6 +1,6 @@
 package com.example.api.chapter.response;
 
-import com.example.api.chapter.map.mapactivity.MapActivity;
+import com.example.api.map.mapactivity.MapActivity;
 import com.example.api.chapter.Chapter;
 import lombok.AllArgsConstructor;
 import lombok.Data;

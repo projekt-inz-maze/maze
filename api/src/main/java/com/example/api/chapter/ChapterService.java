@@ -10,12 +10,12 @@ import com.example.api.chapter.response.ChapterInfoResponse;
 import com.example.api.chapter.response.ChapterResponse;
 import com.example.api.chapter.response.ChapterResponseProfessor;
 import com.example.api.chapter.response.ChapterResponseStudent;
-import com.example.api.chapter.map.mapactivity.MapActivity;
+import com.example.api.map.mapactivity.MapActivity;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.Activity;
-import com.example.api.chapter.map.ActivityMap;
-import com.example.api.chapter.map.ActivityMapService;
+import com.example.api.map.ActivityMap;
+import com.example.api.map.ActivityMapService;
 import com.example.api.chapter.requirement.model.Requirement;
 import com.example.api.chapter.requirement.RequirementService;
 import com.example.api.security.LoggedInUserService;
@@ -92,7 +92,7 @@ public class ChapterService {
         if (user.getAccountType() == AccountType.STUDENT){
             allTasks = activityMapService.getMapTasksForStudent(chapter.getActivityMap(), user);
         } else {
-            allTasks = activityMapService.getMapTasksForProfessor(chapter.getActivityMap(), user);
+            allTasks = activityMapService.getMapTasksForProfessor(chapter.getActivityMap());
         }
 
         return new ChapterInfoResponse(chapter, allTasks);

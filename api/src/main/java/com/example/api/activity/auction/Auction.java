@@ -22,6 +22,7 @@ import java.util.List;
 1.2 zablokowanie odblokowania Tasku, który ma Auction done
 przekazywanie auction do mapyyy
 2. dodanie Biddingu
+3. dodac do endpointa /statistics
  */
 
 @Getter
