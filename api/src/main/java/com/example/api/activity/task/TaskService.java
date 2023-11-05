@@ -80,6 +80,7 @@ public class TaskService {
         log.info("Fetching first activity that is needed to be evaluated for file task with id {}", id);
         FileTask task = fileTaskRepository.findFileTaskById(id);
         activityValidator.validateActivityIsNotNull(task, id);
+
         List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAll()
                 .stream()
                 .filter(result -> Objects.equals(result.getFileTask().getId(), task.getId()))
@@ -92,6 +93,7 @@ public class TaskService {
         long num = fileTaskResults.size();
         boolean isLate = false;
         Long sendDateMillis = result.getSendDateMillis();
+
         if (sendDateMillis != null){
             isLate = task.getRequirements()
                     .stream()

@@ -44,13 +44,17 @@ public class FileTaskResultService {
     public Long saveFileToFileTaskResult(SaveFileToFileTaskResultForm form) throws EntityNotFoundException, WrongUserTypeException, IOException {
         log.info("Saving file to file task result with id {}", form.getFileTaskId());
         User user = authService.getCurrentUser();
+
         FileTaskResult result = getFileTaskResultByFileTaskAndUser(form.getFileTaskId(), user.getEmail());
+
+        FileTask task = fileTaskRepository.findFileTaskById(form.getFileTaskId());
 
         if (result == null) {
             result = new FileTaskResult();
             result.setAnswer("");
             result.setFileTask(fileTaskRepository.findFileTaskById(form.getFileTaskId()));
             result.setSendDateMillis(System.currentTimeMillis());
+            result.setMember(user.getCourseMember(task.getCourse().getId(), true));
             result.setEvaluated(false);
         }
 

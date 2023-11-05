@@ -71,11 +71,7 @@ public class Auction extends Activity {
 
     @Override
     public Double getMaxPoints() {
-        return 0D;
-    }
-
-    public static AuctionBuilder builder() {
-        return new AuctionBuilder();
+        return task.getMaxPoints();
     }
 
     public static AuctionBuilder from(Task task) {
