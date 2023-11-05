@@ -1,5 +1,6 @@
 package com.example.api.error;
 
+import com.example.api.activity.auction.TooLowBidException;
 import com.example.api.activity.task.CannotEditRequirementsForAuctionedTaskException;
 import com.example.api.error.exception.*;
 import lombok.extern.slf4j.Slf4j;
@@ -100,6 +101,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CannotEditRequirementsForAuctionedTaskException.class)
     public ResponseEntity<Object> handleCannotEditRequirementsForAuctionedTaskException(CannotEditRequirementsForAuctionedTaskException ex) {
         log.warn(ex.message);
+        return  handleExceptionWithStatusCode(BAD_REQUEST, ex);
+    }
+
+    @ExceptionHandler(TooLowBidException.class)
+    public ResponseEntity<Object> handleTooLowBidException(TooLowBidException ex) {
+        log.warn(ex.getMessage());
         return  handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 

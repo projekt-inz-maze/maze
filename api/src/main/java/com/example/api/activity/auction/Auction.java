@@ -2,6 +2,7 @@ package com.example.api.activity.auction;
 
 import com.example.api.activity.Activity;
 import com.example.api.activity.ActivityType;
+import com.example.api.activity.auction.bid.Bid;
 import com.example.api.activity.task.Task;
 import com.example.api.chapter.requirement.model.Requirement;
 import com.example.api.course.model.Course;
@@ -15,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 /*
 
@@ -37,6 +39,8 @@ public class Auction extends Activity {
     private Double minBidding;
     private Instant resolutionDate;
     private boolean resolved = false;
+    @OneToOne
+    private Bid highestBid;
 
     public Auction(Long id,
                    String title,
@@ -67,6 +71,14 @@ public class Auction extends Activity {
         this.task = task;
         this.minBidding = minBidding;
         this.resolutionDate = resolutionDate;
+    }
+
+    public Optional<Bid> getHighestBid() {
+        return  Optional.ofNullable(highestBid);
+    }
+
+    public Double currentMinBiddingValue() {
+        return  getHighestBid().map(Bid::getValue).orElse(minBidding);
     }
 
     @Override
