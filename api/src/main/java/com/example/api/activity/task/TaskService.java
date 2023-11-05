@@ -158,7 +158,7 @@ public class TaskService {
         return new RequirementResponse(activity.getIsBlocked(), requirements);
     }
 
-    public void updateRequirementForActivity(ActivityRequirementForm form) throws RequestValidationException, CannotEditRequirementsForAuctionedTaskException {
+    public void updateRequirementForActivity(ActivityRequirementForm form) throws RequestValidationException {
         Activity activity = getActivity(form.getActivityId());
 
         Boolean isBlocked = form.getIsBlocked();
