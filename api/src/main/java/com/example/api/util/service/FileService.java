@@ -1,8 +1,5 @@
 package com.example.api.util.service;
 
-import com.example.api.course.model.Course;
-import com.example.api.course.service.CourseService;
-import com.example.api.course.validator.CourseValidator;
 import com.example.api.util.dto.response.ChapterImageResponse;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.util.model.Image;
@@ -21,16 +18,12 @@ import java.util.List;
 @Transactional
 public class FileService {
     private final ImageRepository imageRepository;
-    private final CourseService courseService;
-    private final CourseValidator courseValidator;
 
-    public List<ChapterImageResponse> getImagesForChapter(Long courseId) throws EntityNotFoundException {
-        courseValidator.validateCurrentUserCanAccess(courseId);
-        Course course = courseService.getCourse(courseId);
+    public List<ChapterImageResponse> getImagesForChapter() {
+
         log.info("Fetching all images for chapter");
-        return imageRepository.findAllByCourse(course)
+        return imageRepository.findAllByType(ImageType.CHAPTER)
                 .stream()
-                .filter(image -> image.getType() == ImageType.CHAPTER)
                 .map(image -> new ChapterImageResponse(image.getId(), image.getName(), image.getType()))
                 .toList();
     }
