@@ -1,13 +1,12 @@
 import { useEffect, useState, useMemo } from 'react'
 
-import { Col } from 'react-bootstrap'
+import {Col, Container} from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import ActivityListItem from './ActivityListItem'
 import { useAppSelector } from '../../../hooks/hooks'
 import ProfessorService from '../../../services/professor.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
-import { Content } from '../../App/AppGeneralStyles'
 import Loader from '../../general/Loader/Loader'
 
 
@@ -67,10 +66,10 @@ function ActivityAssessmentList(props) {
   }, [activityList, props.theme.danger])
 
   return (
-    <Content>
+    <Container fluid>
       <h1 style={{ marginLeft: '20px', paddingTop: '20px' }}>Aktywności do sprawdzenia</h1>
       <Col style={{ paddingTop: '50px' }}>{colContent}</Col>
-    </Content>
+    </Container>
   )
 }
 

@@ -19,10 +19,16 @@ import { joinGroupRequest } from '../../../services/types/serviceTypes'
 import { Role } from '../../../utils/userRole'
 import CourseNav from '../CourseNav/CourseNav'
 
-const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
+type CourseListProps = {
+  showNavbar: (show: boolean) => void
+  isStudent: boolean
+  isProfessor: boolean
+}
+
+const CourseList = (props: CourseListProps) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const role = isStudent ? Role.LOGGED_IN_AS_STUDENT : Role.LOGGED_IN_AS_TEACHER
+  const role = props.isStudent ? Role.LOGGED_IN_AS_STUDENT : Role.LOGGED_IN_AS_TEACHER
 
   const [coursesList, setCoursesList] = useState<Course[]>([])
 
@@ -32,9 +38,9 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
   const [joinCourseGroup] = useJoinCourseGroupMutation()
 
   useEffect(() => {
-    showNavbar(false)
+    props.showNavbar(false)
     return () => {
-      showNavbar(true)
+      props.showNavbar(true)
     }
   }, [])
 
@@ -47,23 +53,23 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
 
   const handleClick = (courseId: number) => {
     dispatch(setCourseId(courseId))
-    if (isStudent) {
+    if (props.isStudent) {
       navigate('/game-card')
-    } else if (isProfessor) {
+    } else if (props.isProfessor) {
       navigate('/game-summary')
     }
   }
 
-  const handleAddNewCourse = async (props: AddCourseRequest) => {
-    await addNewCourse(props).unwrap()
+  const handleAddNewCourse = async (requestBody: AddCourseRequest) => {
+    await addNewCourse(requestBody).unwrap()
   }
 
   const handleDeleteCourse = async (courseId: number) => {
     await deleteCourse(courseId).unwrap()
   }
 
-  const handleJoinCourseGroup = async (props: joinGroupRequest) => {
-    await joinCourseGroup(props).unwrap()
+  const handleJoinCourseGroup = async (requestBody: joinGroupRequest) => {
+    await joinCourseGroup(requestBody).unwrap()
   }
 
   return (

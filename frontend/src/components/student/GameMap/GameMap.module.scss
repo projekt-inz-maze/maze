@@ -1,0 +1,61 @@
+.questBoardButton {
+  border: none;
+  position: absolute;
+  top: 10%;
+  left: 75%;
+  background-image: url('../../../../public/map/map-btn.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  text-decoration: none;
+  color: transparent;
+  background-color: transparent;
+  width: 380px;
+  height: 80px;
+}
+
+.questBoardButton:hover {
+  cursor: pointer;
+  background-color: transparent;
+  transform: scale(1.05);
+}
+
+.mapSidebar {
+ position: absolute;
+ top: 0;
+ left: 0;
+ height: 100%;
+ width: 30%;
+}
+
+.legend {
+  position: absolute;
+  top: 0;
+  left: 10;
+  height: 100%;
+  width: 30%;
+  background: transparent;
+  color: black;
+  padding: 3em;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  .legendItem {
+    width: 70%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1em;
+    padding: 0.5em 1.5em;
+    border: 4px solid #D47A14;
+    background-color: #923012;
+    border-radius: 0;
+  }
+
+  .legendItem:hover,
+  .legendItem:focus {
+    cursor: pointer;
+    border: 4px solid #B0652F;
+  }
+}

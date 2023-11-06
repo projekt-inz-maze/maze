@@ -15,6 +15,6 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.offcanvas-backdrop.show{
+.offcanvas-backdrop.show {
   z-index: 1060;
 }

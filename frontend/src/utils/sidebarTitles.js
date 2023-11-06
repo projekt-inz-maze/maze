@@ -8,7 +8,6 @@ import {
   faHouse,
   faListCheck,
   faRankingStar,
-  faRightFromBracket,
   faStar,
   faTerminal,
   faUser,
@@ -43,6 +42,11 @@ export const studentSubtitles = [
     name: 'Mapa gry',
     icon: faChessBoard,
     navigateTo: StudentRoutes.GAME_MAP.MAIN
+  },
+  {
+    name: 'Mapa gry (nowa)',
+    icon: faChessBoard,
+    navigateTo: StudentRoutes.NEW_GAME_MAP.MAIN
   },
   {
     name: 'Punkty',
