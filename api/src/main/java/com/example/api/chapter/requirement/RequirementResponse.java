@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class RequirementsDTO {
+public class RequirementResponse {
     private Boolean isBlocked;
     private List<? extends RequirementDTO<?>> requirements;
 }
