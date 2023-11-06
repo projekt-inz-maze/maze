@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auction")
 @SecurityRequirement(name = "JWT_AUTH")
 public class AuctionController {
-    AuctionService auctionService;
+    private final AuctionService auctionService;
     @PostMapping
     public ResponseEntity<?> bidForAuction(@RequestBody BidDTO bid) throws TooLowBidException, WrongUserTypeException {
         auctionService.bidForAuction(bid);

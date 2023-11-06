@@ -9,6 +9,7 @@ import com.example.api.map.ActivityMap;
 import com.example.api.user.model.User;
 import com.example.api.user.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,13 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @Transactional
 public class AuctionService {
-    AuctionRepository repository;
-    UserService userService;
-    BidRepository bidRepository;
+    private final AuctionRepository repository;
+    private final UserService userService;
+    private final BidRepository bidRepository;
     public void createAuction(Task task, CreateAuctionDTO dto, ActivityMap map) {
         Auction auction = Auction.from(task)
                 .minBidding(dto.getMinBidding())
