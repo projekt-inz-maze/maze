@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import AuctionImg from './resources/activities/auctionTaskIcon.png'
 import TaskImg from './resources/activities/fileTaskIcon.png'
 import ExpeditionImg from './resources/activities/graphTaskIcon.png'
 import InformationImg from './resources/activities/infoTaskIcon.png'
@@ -57,6 +58,7 @@ export const Activity = {
   INFO: 'INFO',
   SURVEY: 'SURVEY',
   TASK: 'TASK',
+  AUCTION: 'AUCTION',
   ADDITIONAL: 'ADDITIONAL'
 }
 
@@ -76,8 +78,9 @@ export const getActivityImg = (type) => {
       return SurveyImg
     case Activity.TASK:
       return TaskImg
+    case Activity.AUCTION:
+      return AuctionImg
     default:
-
   }
 }
 
@@ -91,10 +94,11 @@ export const getActivityTypeName = (type) => {
       return 'Sondaż'
     case Activity.TASK:
       return 'Zadanie bojowe'
+    case Activity.AUCTION:
+      return 'Licytacja'
     case Activity.ADDITIONAL:
       return 'Bonus'
     default:
-
   }
 }
 
@@ -109,7 +113,6 @@ export const getActivityPath = (type) => {
     case Activity.INFO:
       return StudentRoutes.GAME_MAP.INFO_TASK
     default:
-
   }
 }
 
@@ -178,11 +181,10 @@ export const percentagesToGrade = (percentages) => {
 
   if (percentages < MIN_PERCENTAGE_FOR_POSITIVE_GRADE) return FAILING_GRADE
 
-    return (
-      MIN_POSITIVE_GRADE +
-      Math.floor((percentages - MIN_PERCENTAGE_FOR_POSITIVE_GRADE) / PERCENTAGE_FOR_HIGHER_GRADE) * HIGHER_GRADE_STEP
-    )
-
+  return (
+    MIN_POSITIVE_GRADE +
+    Math.floor((percentages - MIN_PERCENTAGE_FOR_POSITIVE_GRADE) / PERCENTAGE_FOR_HIGHER_GRADE) * HIGHER_GRADE_STEP
+  )
 }
 
 export const getHeroName = (heroName) => {
@@ -196,7 +198,6 @@ export const getHeroName = (heroName) => {
     case HeroType.WIZARD:
       return 'Czarodziej'
     default:
-
   }
 }
 
