@@ -36,7 +36,7 @@ public class ChapterValidator {
     }
 
     public void validateChapterCreation(ChapterForm form) throws RequestValidationException {
-        List<Chapter> chapters = chapterRepository.findAll();
+        List<Chapter> chapters = chapterRepository.findAllByCourse_Id(form.getCourseId());
         if (chapters.stream()
                 .anyMatch(chapter ->
                                 Objects.equals(chapter.getPosX(), form.getPosX()) &&
