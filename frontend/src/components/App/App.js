@@ -17,14 +17,19 @@ function App(props) {
   const professor = isProfessor(props.user)
 
   return (
-    <div style={{ height: '100vh' }}>
-      <div className='p-0 w-100 h-100' style={{ margin: 0 }}>
+    <div style={{ height: '100%' }}>
+      <div className='p-0 w-100' style={{ minHeight: '100%' }}>
         <BrowserRouter>
           {/* <div className='d-flex flex-column' style={{ margin: 0 }}> */}
-          {showNavbar && (
-            <TopNavbar sidebarTitles={sidebarTitles} userSubtitles={student ? studentSubtitles : professorSubtitles} />
-          )}
-          <div className='m-0 p-0' style={{ height: '90vh' }}>
+          <div style={{ height: '13vh' }}>
+            {showNavbar && (
+              <TopNavbar
+                sidebarTitles={sidebarTitles}
+                userSubtitles={student ? studentSubtitles : professorSubtitles}
+              />
+            )}
+          </div>
+          <div className='m-0 p-0' style={{ height: '87vh' }}>
             <AppRoutes showNavbar={setShowNavbar} isStudent={student} isProfessor={professor} />
           </div>
           <AuthVerify />
