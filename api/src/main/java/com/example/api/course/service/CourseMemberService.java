@@ -2,8 +2,8 @@ package com.example.api.course.service;
 
 import com.example.api.course.model.CourseMember;
 import com.example.api.course.repository.CourseMemberRepository;
-import com.example.api.group.model.Group;
-import com.example.api.group.service.GroupService;
+import com.example.api.group.Group;
+import com.example.api.group.GroupService;
 import com.example.api.user.model.User;
 import com.example.api.user.hero.model.UserHero;
 import lombok.AllArgsConstructor;

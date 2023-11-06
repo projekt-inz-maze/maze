@@ -13,7 +13,7 @@ import com.example.api.course.validator.exception.StudentNotEnrolledException;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.group.model.Group;
+import com.example.api.group.Group;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;

@@ -1,6 +1,6 @@
 package com.example.api.activity.task.dto.response.result.question;
 
-import com.example.api.question.model.Option;
+import com.example.api.question.option.Option;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

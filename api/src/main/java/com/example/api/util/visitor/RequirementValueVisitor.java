@@ -1,17 +1,17 @@
 package com.example.api.util.visitor;
 
+import com.example.api.chapter.requirement.model.*;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.activity.task.model.GraphTask;
-import com.example.api.group.model.Group;
-import com.example.api.map.model.requirement.*;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.group.Group;
 import com.example.api.user.model.User;
-import com.example.api.activity.task.repository.FileTaskRepository;
-import com.example.api.activity.task.repository.GraphTaskRepository;
-import com.example.api.group.repository.GroupRepository;
+import com.example.api.activity.task.filetask.FileTaskRepository;
+import com.example.api.activity.task.graphtask.GraphTaskRepository;
+import com.example.api.group.GroupRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.group.validator.GroupValidator;
+import com.example.api.group.GroupValidator;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class RequirementValueVisitor {
 
     public void visitDateFromRequirement(DateFromRequirement requirement, String value) throws RequestValidationException {
         try {
-            Long dateFrom = value.equals("") ? null : Long.valueOf(value);
+            Long dateFrom = value.isEmpty() ? null : Long.valueOf(value);
             requirement.setDateFromMillis(dateFrom);
         } catch (NumberFormatException e) {
             throw new RequestValidationException(ExceptionMessage.DATE_NOT_LONG);
@@ -112,7 +112,7 @@ public class RequirementValueVisitor {
         }
     }
 
-    public void visitStudentsRequirements(StudentsRequirements requirement, String value) throws RequestValidationException {
+    public void visitStudentsRequirements(StudentsRequirement requirement, String value) {
         if (value.equals("")) {
             return;
         }

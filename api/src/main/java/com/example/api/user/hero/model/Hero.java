@@ -5,7 +5,7 @@ import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.course.model.Course;
 import com.example.api.course.model.CourseMember;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.question.model.Question;
+import com.example.api.question.Question;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
 import com.example.api.util.message.HeroMessage;

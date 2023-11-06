@@ -1,6 +1,6 @@
 package com.example.api.activity.task.dto.response.result.summary;
 
-import com.example.api.activity.task.model.Activity;
+import com.example.api.activity.Activity;
 import lombok.Data;
 
 @Data

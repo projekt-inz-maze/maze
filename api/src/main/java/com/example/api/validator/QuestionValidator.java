@@ -3,8 +3,8 @@ package com.example.api.validator;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.question.model.Answer;
-import com.example.api.question.model.Question;
+import com.example.api.question.answer.Answer;
+import com.example.api.question.Question;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

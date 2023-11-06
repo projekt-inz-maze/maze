@@ -12,7 +12,7 @@ import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.LoggedInUserService;
-import com.example.api.user.service.BadgeService;
+import com.example.api.user.badge.BadgeService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

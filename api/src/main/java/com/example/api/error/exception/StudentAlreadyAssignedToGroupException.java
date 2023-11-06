@@ -1,6 +1,6 @@
 package com.example.api.error.exception;
 
-import com.example.api.group.model.Group;
+import com.example.api.group.Group;
 import com.example.api.user.model.User;
 
 public class StudentAlreadyAssignedToGroupException extends RequestValidationException{

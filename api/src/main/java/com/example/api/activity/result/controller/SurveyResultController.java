@@ -6,7 +6,7 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.activity.feedback.service.SurveyResultService;
+import com.example.api.activity.survey.SurveyResultService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

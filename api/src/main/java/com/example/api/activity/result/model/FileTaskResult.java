@@ -1,7 +1,7 @@
 package com.example.api.activity.result.model;
 
-import com.example.api.activity.task.model.Activity;
-import com.example.api.activity.task.model.FileTask;
+import com.example.api.activity.Activity;
+import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.util.model.File;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
