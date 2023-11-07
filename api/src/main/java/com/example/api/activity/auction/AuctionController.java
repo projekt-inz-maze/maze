@@ -1,6 +1,7 @@
 package com.example.api.activity.auction;
 
 import com.example.api.activity.auction.bid.BidDTO;
+import com.example.api.course.validator.exception.StudentNotEnrolledException;
 import com.example.api.error.exception.WrongUserTypeException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuctionController {
     private final AuctionService auctionService;
     @PostMapping
-    public ResponseEntity<?> bidForAuction(@RequestBody BidDTO bid) throws TooLowBidException, WrongUserTypeException {
+    public ResponseEntity<?> bidForAuction(@RequestBody BidDTO bid) throws TooLowBidException, WrongUserTypeException, StudentNotEnrolledException {
         auctionService.bidForAuction(bid);
         return ResponseEntity.ok().body(null);
     }

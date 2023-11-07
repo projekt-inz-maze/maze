@@ -5,6 +5,8 @@ import com.example.api.activity.auction.bid.BidDTO;
 import com.example.api.activity.auction.bid.BidRepository;
 import com.example.api.activity.task.Task;
 import com.example.api.chapter.requirement.model.StudentsRequirement;
+import com.example.api.course.model.CourseMember;
+import com.example.api.course.validator.exception.StudentNotEnrolledException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.map.ActivityMap;
 import com.example.api.user.model.User;
@@ -37,16 +39,16 @@ public class AuctionService {
         map.add(auction);
     }
 
-    public void bidForAuction(BidDTO dto) throws TooLowBidException, WrongUserTypeException {
+    public void bidForAuction(BidDTO dto) throws TooLowBidException, WrongUserTypeException, StudentNotEnrolledException {
         Auction auction = repository.findById(dto.auctionId()).orElseThrow(EntityNotFoundException::new);
+        CourseMember courseMember = userService.getCurrentUserAndValidateStudentAccount().getCourseMember(auction.getCourse(), true);
 
         if (auction.currentMinBiddingValue() >= dto.bidValue()) {
             throw new TooLowBidException(auction.currentMinBiddingValue());
         }
 
-        User student = userService.getCurrentUserAndValidateStudentAccount();
 
-        Bid bid = new Bid(student, auction, dto.bidValue(), Instant.now());
+        Bid bid = new Bid(courseMember, auction, dto.bidValue(), Instant.now());
         bidRepository.save(bid);
         auction.setHighestBid(bid);
     }
@@ -67,10 +69,10 @@ public class AuctionService {
     }
 
     private void resolveHighestBid(Auction auction) {
-        User auctionWinner = auction.getHighestBid().map(Bid::getUser).get();
+        CourseMember auctionWinner = auction.getHighestBid().map(Bid::getCourseMember).get();
         Task task = auction.getTask();
 
         task.setIsBlocked(false);
-        task.getRequirements().add(new StudentsRequirement(auction.getTitle(), true, List.of(auctionWinner)));
+        task.getRequirements().add(new StudentsRequirement(auction.getTitle(), true, List.of(auctionWinner.getUser())));
     }
 }

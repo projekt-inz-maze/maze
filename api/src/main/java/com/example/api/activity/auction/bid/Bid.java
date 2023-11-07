@@ -1,6 +1,7 @@
 package com.example.api.activity.auction.bid;
 
 import com.example.api.activity.auction.Auction;
+import com.example.api.course.model.CourseMember;
 import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class Bid {
     private Long id;
 
     @ManyToOne
-    User user;
+    CourseMember courseMember;
 
     @ManyToOne
     Auction auction;
@@ -30,8 +31,8 @@ public class Bid {
 
     Instant creationTime;
 
-    public Bid(User user, Auction auction, Double value, Instant creationTime) {
-        this.user = user;
+    public Bid(CourseMember courseMember, Auction auction, Double value, Instant creationTime) {
+        this.courseMember = courseMember;
         this.auction = auction;
         this.value = value;
         this.creationTime = creationTime;
