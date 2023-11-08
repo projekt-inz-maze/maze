@@ -68,4 +68,11 @@ public class CourseMember {
     public HeroType getHeroType() {
         return userHero.getHero().getType();
     }
+
+    public void decreasePoints(Double decreaseValue) {
+        if (decreaseValue < points) {
+            throw new IllegalStateException("Cannot decrease points.");
+        }
+        points = points - decreaseValue;
+    }
 }

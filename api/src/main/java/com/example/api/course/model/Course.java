@@ -59,7 +59,7 @@ public class Course {
         this.owner = owner;
     }
 
-    public List<User> getAllStudents2() {
+    public List<User> getAllStudents() {
         return groups.stream()
                 .flatMap(group -> group.getUsers().stream())
                 .filter(user -> user.getAccountType().equals(AccountType.STUDENT))

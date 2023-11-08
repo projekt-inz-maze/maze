@@ -47,7 +47,7 @@ public class GradeService {
         Course course = courseService.getCourse(courseId);
 
         return course
-                .getAllStudents2()
+                .getAllStudents()
                 .stream()
                 .map(student -> getStudentFinalGrade(student, course))
                 .sorted(Comparator.comparing(entry -> entry.getStudent().getLastName().toLowerCase() + entry.getStudent().getFirstName().toLowerCase()))

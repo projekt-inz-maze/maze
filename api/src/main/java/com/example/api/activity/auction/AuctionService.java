@@ -20,6 +20,7 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -55,14 +56,17 @@ public class AuctionService {
             throw new AuctionHasBeenResolvedException(auction.getResolutionDate());
         }
 
+        Bid bid = bidRepository.findByAuctionAndCourseMember(auction, courseMember)
+                .orElseGet(() -> new Bid(courseMember, auction, 0D));
 
-        Bid bid = new Bid(courseMember, auction, dto.bidValue());
+        courseMember.decreasePoints(dto.bidValue() - bid.getValue());
+        bid.setValue(dto.bidValue());
         bidRepository.save(bid);
         auction.setHighestBid(bid);
+        repository.save(auction);
     }
 
     public void resolveAuction(Auction auction) {
-
         if (auction.getHighestBid().isPresent()) {
             resolveHighestBid(auction);
         } else {
@@ -77,12 +81,19 @@ public class AuctionService {
     }
 
     private void resolveHighestBid(Auction auction) {
-        CourseMember winner = auction.getHighestBid().map(Bid::getCourseMember).get();
+        Bid highestBid =  auction.getHighestBid().get();
+        CourseMember winner = highestBid.getCourseMember();
         Task task = auction.getTask();
         auction.setDescription(AuctionMessageGenerator.winnerDescription(winner.getUser()));
         repository.save(auction);
         task.setIsBlocked(false);
         task.setRequirements(requirementService.requirementsForAuctionTask(auction, winner.getUser()));
+
+        bidRepository.findAllByAuction(auction)
+                .stream()
+                .filter(bid -> !bid.getId().equals(highestBid.getId()))
+                .forEach(bid -> bid.getCourseMember().changePoints(bid.getValue()));
+
         taskRepository.save(task);
     }
 }
