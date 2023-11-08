@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuctionController {
     private final AuctionService auctionService;
     @PostMapping
-    public ResponseEntity<?> bidForAuction(@RequestBody BidDTO bid) throws TooLowBidException, WrongUserTypeException, StudentNotEnrolledException {
+    public ResponseEntity<?> bidForAuction(@RequestBody BidDTO bid) throws TooLowBidException, WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
         auctionService.bidForAuction(bid);
         return ResponseEntity.ok().body(null);
     }
