@@ -1,10 +1,12 @@
 package com.example.api.chapter.requirement;
 
+import com.example.api.activity.auction.Auction;
 import com.example.api.activity.task.RequirementForm;
 
 import com.example.api.chapter.requirement.model.*;
 import com.example.api.course.model.Course;
 import com.example.api.error.exception.RequestValidationException;
+import com.example.api.user.model.User;
 import com.example.api.validator.MapValidator;
 import com.example.api.util.message.MessageManager;
 import com.example.api.util.visitor.RequirementFulfilledVisitor;
@@ -26,10 +28,6 @@ public class RequirementService {
     private final RequirementFulfilledVisitor requirementFulfilledVisitor;
     private final RequirementValueVisitor requirementValueVisitor;
     private final MapValidator mapValidator;
-
-    public Requirement saveRequirement(Requirement requirement) {
-        return requirementRepository.save(requirement);
-    }
 
     public List<Requirement> getDefaultRequirements(boolean forActivity) {
         Requirement dateFromRequirement = new DateFromRequirement(
@@ -93,5 +91,11 @@ public class RequirementService {
             requirement.setSelected(requirementForm.getSelected());
             requirement.setValue(requirementValueVisitor, requirementForm.getValue());
         }
+    }
+
+    public List<Requirement> requirementsForAuctionTask(Auction auction, User winner) {
+        Requirement requirement = new StudentsRequirement(auction.getTitle(), true, List.of(winner));
+        requirementRepository.save(requirement);
+        return List.of(requirement);
     }
 }

@@ -1,0 +1,13 @@
+{
+  activityType: 'TASK',
+  title: 'Przykładowy tytujjjjjjł',
+  description: 'Przykładowy opis',
+  posX: 0,
+  posY: 0,
+  auction: {
+    minBidding: 1,
+    resolutionDate: 1
+  },
+  requiredKnowledge: 'Wymagana wiedza',
+  maxPoints: 30
+}

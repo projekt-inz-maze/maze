@@ -14,18 +14,9 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-/*
-
-1.1 schedule auction resolve
-1.2 zablokowanie odblokowania Tasku, który ma Auction done
-przekazywanie auction do mapyyy
-2. dodanie Biddingu
-3. dodac do endpointa /statistics
- */
 
 @Getter
 @Setter
@@ -37,7 +28,9 @@ public class Auction extends Activity {
     @OneToOne
     private Task task;
     private Double minBidding;
-    private Instant resolutionDate;
+
+    private LocalDateTime resolutionDate;
+
     private boolean resolved = false;
     @OneToOne
     private Bid highestBid;
@@ -55,7 +48,7 @@ public class Auction extends Activity {
                    Course course,
                    Task task,
                    Double minBidding,
-                   Instant resolutionDate) {
+                   LocalDateTime resolutionDate) {
         super(id,
                 title,
                 description,
@@ -105,7 +98,7 @@ public class Auction extends Activity {
         private Course course;
         private Task task;
         private Double minBidding;
-        private Instant resolutionDate;
+        private LocalDateTime resolutionDate;
 
         AuctionBuilder() {
         }
@@ -194,7 +187,7 @@ public class Auction extends Activity {
             return this;
         }
 
-        public AuctionBuilder resolutionDate(Instant resolutionDate) {
+        public AuctionBuilder resolutionDate(LocalDateTime resolutionDate) {
             this.resolutionDate = resolutionDate;
             return this;
         }

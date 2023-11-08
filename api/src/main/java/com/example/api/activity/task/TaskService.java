@@ -150,6 +150,10 @@ public class TaskService {
     public RequirementResponse getRequirementsForActivity(Long id) throws EntityNotFoundException {
         Activity activity = getActivity(id);
 
+        return getRequirementsForActivity(activity);
+    }
+
+    public RequirementResponse getRequirementsForActivity(Activity activity) {
         List<? extends RequirementDTO<?>> requirements = activity.getRequirements()
                 .stream()
                 .map(Requirement::getResponse)

@@ -8,13 +8,18 @@ import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.survey.Survey;
-import com.example.api.activity.task.Task;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.chapter.requirement.RequirementDTO;
+import com.example.api.chapter.requirement.RequirementResponse;
 import com.example.api.chapter.requirement.RequirementService;
+import com.example.api.chapter.requirement.model.Requirement;
 import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Comparator;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -29,23 +34,28 @@ public class MapActivityConverter {
             case EXPEDITION -> new MapActivityStudent(
                     activity,
                     areRequirementsFulfilled(activity),
-                    isGraphTaskCompleted((GraphTask) activity, student));
+                    isGraphTaskCompleted((GraphTask) activity, student),
+                    getRequirements(activity));
             case TASK -> new MapActivityStudent(
                     activity,
                     areRequirementsFulfilled(activity),
-                    isFileTaskCompleted((FileTask) activity, student));
+                    isFileTaskCompleted((FileTask) activity, student),
+                    getRequirements(activity));
             case INFO -> new MapActivityStudent(
                     activity,
                     areRequirementsFulfilled(activity),
-                    true);
+                    true,
+                    getRequirements(activity));
             case SURVEY -> new MapActivityStudent(
                     activity,
                     areRequirementsFulfilled(activity),
-                    isSurveyCompleted((Survey) activity, student));
+                    isSurveyCompleted((Survey) activity, student),
+                    getRequirements(activity));
             case AUCTION -> new MapActivityStudent(
                     activity,
                     areRequirementsFulfilled(activity),
-                    false);
+                    false,
+                    getRequirements(activity));
             default -> throw new IllegalStateException("Invalid activity type");
         };
 
@@ -68,5 +78,14 @@ public class MapActivityConverter {
 
     private Boolean areRequirementsFulfilled(Activity activity) {
         return requirementService.areRequirementsFulfilled(activity.getRequirements(), activity.getCourse());
+    }
+
+    private RequirementResponse getRequirements(Activity activity) {
+        List<? extends RequirementDTO<?>> requirements = activity.getRequirements()
+                .stream()
+                .map(Requirement::getResponse)
+                .sorted(Comparator.comparingLong(RequirementDTO::getId))
+                .toList();
+        return new RequirementResponse(activity.getIsBlocked(), requirements);
     }
 }
