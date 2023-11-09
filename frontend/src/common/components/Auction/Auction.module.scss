@@ -11,10 +11,11 @@ span {
 .modalHeader {
   border-bottom: none !important;
   padding-bottom: 0;
+  display: flex;
+  justify-content: space-between;
 
   .customButtonClose {
     padding: calc(var(--bs-modal-header-padding-y) * .5) calc(var(--bs-modal-header-padding-x) * .5);
-    margin: calc(var(--bs-modal-header-padding-y) * -.5) calc(var(--bs-modal-header-padding-x) * -.5) calc(var(--bs-modal-header-padding-y) * -.5) auto;
     background-color: transparent;
     border: 0;
     width: 50px;
@@ -34,8 +35,27 @@ span {
 // Override the default modal styles (border top)
 .modalFooter {
   border-top: none !important;
+  padding: 1em 1em;
   display: flex;
   justify-content: center;
+  align-items: center;
+
+  span {
+    font-size: 1rem;
+    padding-right: 0.5em;
+  }
+
+  input {
+    height: 2em;
+  }
+
+  .bidButton {
+    height: 2em;
+    background-color: #FFB21C;
+    color: black;
+    border: none;
+    font-weight: bold;
+  }
 }
 
 .modalContainer {
@@ -44,30 +64,23 @@ span {
 }
 
 .modalTitle {
+  padding-left: 0.5em;
   font-weight: 600 !important;
   font-size: 1.6rem !important;
 }
 
-.modalInfoSection {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-bottom: 1em;
-  font-size: 0.9rem;
-
-  div {
-    p {
-      padding-bottom: 0.25em;
-    }
-  }
-}
-
 .dateInfo {
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  padding: 0.25em 0;
+  border: 1px solid black;
+  border-radius: 24px;
 
   img {
-    margin-right: 1em;
+    margin-right: 0.75em;
+    margin-left: 0.75em;
   }
 
   p {
@@ -76,9 +89,7 @@ span {
 }
 
 .modalTaskDescription {
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-  padding: 1em 0.75em;
+  padding: 0 0.75em;
 
   p:first-child {
     font-size: 1.2rem;
@@ -89,42 +100,15 @@ span {
 
 .modalTaskRequirements {
   font-size: 0.9rem;
-  padding: 1em 0.75em;
+  padding: 2em 0.75em 0.75em 1em;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 
   .mainFlexContainer {
     display: flex;
     flex-direction: row;
     align-items: baseline;
     justify-content: space-between;
-  }
-
-  .firstRow span,
-  .secondRow span {
-    padding-top: 5em
-  }
-
-  .firstRow {
-    display: flex;
-    flex-direction: column;
-
-    span {
-      padding-right: 4em;
-    }
-
-    div:first-child {
-      padding-bottom: 1em;
-    }
-  }
-
-  .secondRow {
-    display: flex;
-    flex-direction: column;
-
-    div:first-child {
-      padding-bottom: 1em;
-    }
   }
 
   .imgSection {
@@ -137,37 +121,5 @@ span {
       margin-right: 0.5em;
     }
 
-    .hazardText {
-      font-weight: bold;
-      color: #FF0000;
-    }
   }
-}
-
-.resultField,
-.resultFieldCompleted {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  padding: 1em 1em;
-  margin: 0 3em;
-}
-
-.resultField {
-  border: 1px solid black;
-}
-
-.resultFieldCompleted {
-  border: 2px solid #34A5BE;
-  background-color: #E0F4F9;
-}
-
-.startActivityButton {
-  background-color: #FFB21C;
-  color: black;
-  border: none;
-  padding: 0.5em 1em;
-  font-weight: bold;
 }
