@@ -35,11 +35,13 @@ public class RequirementService {
                 false,
                 null
         );
+
         Requirement dateToRequirement = new DateToRequirement(
                 forActivity ? MessageManager.DATE_TO_REQ_NAME : MessageManager.DATE_TO_REQ_NAME_CHAPTER,
                 false,
                 null
         );
+
         Requirement fileTasksRequirement = new FileTasksRequirement(
                 MessageManager.FILE_TASKS_REQ_NAME,
                 false,
@@ -50,21 +52,25 @@ public class RequirementService {
                 false,
                 new LinkedList<>()
         );
+
         Requirement groupsRequirement = new GroupsRequirement(
                 forActivity ? MessageManager.GROUPS_REQ_NAME : MessageManager.GROUPS_REQ_NAME_CHAPTER,
                 false,
                 new LinkedList<>()
         );
+
         Requirement minPointsRequirement = new MinPointsRequirement(
                 MessageManager.MIN_POINTS_REQ_NAME,
                 false,
                 null
         );
+
         Requirement studentsRequirements = new StudentsRequirement(
                 forActivity ? MessageManager.STUDENTS_REQ_NAME : MessageManager.STUDENTS_REQ_NAME_CHAPTER,
                 false,
                 new LinkedList<>()
         );
+
         List<Requirement> requirements = List.of(
                 dateFromRequirement,
                 dateToRequirement,
@@ -74,6 +80,7 @@ public class RequirementService {
                 graphTasksRequirement,
                 fileTasksRequirement
         );
+
         requirementRepository.saveAll(requirements);
         return requirements;
     }

@@ -38,6 +38,7 @@ public class AuctionService {
         Auction auction = Auction.from(task)
                 .minBidding(dto.getMinBidding())
                 .resolutionDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(dto.getResolutionDate()), ZoneOffset.systemDefault()))
+                .requirements(requirementService.getDefaultRequirements(true))
                 .build();
 
         repository.save(auction);
