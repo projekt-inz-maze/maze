@@ -47,9 +47,9 @@ public class FileTaskResultService {
 
         FileTaskResult result = getFileTaskResultByFileTaskAndUser(form.getFileTaskId(), user.getEmail());
 
-        FileTask task = fileTaskRepository.findFileTaskById(form.getFileTaskId());
-
         if (result == null) {
+            FileTask task = fileTaskRepository.findFileTaskById(form.getFileTaskId());
+
             result = new FileTaskResult();
             result.setAnswer("");
             result.setFileTask(fileTaskRepository.findFileTaskById(form.getFileTaskId()));
