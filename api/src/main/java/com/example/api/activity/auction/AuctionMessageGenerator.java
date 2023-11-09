@@ -7,9 +7,10 @@ import org.springframework.stereotype.Component;
 public class AuctionMessageGenerator {
 
     public static String noBidsDescription() {
-        return "Nikt nie wziął udziału w aukcji.";
+        return "Nikt nie wziął udziału w licytacji.";
     }
     public static String winnerDescription(User winner) {
-        return String.format("Licytację wygrał/a %s %s", winner.getFirstName(), winner.getLastName());
+        return String.format("Licytacja została wygrana przez użytkownika %s %s",
+                winner.getFirstName(), winner.getLastName());
     }
 }

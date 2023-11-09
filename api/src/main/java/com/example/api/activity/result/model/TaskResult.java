@@ -18,7 +18,8 @@ import java.util.Optional;
 @Getter
 @Setter
 @NoArgsConstructor
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class TaskResult {
 
     @Id

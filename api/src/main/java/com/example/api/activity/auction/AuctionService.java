@@ -19,6 +19,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Optional;
 
@@ -42,6 +43,22 @@ public class AuctionService {
         repository.save(auction);
         task.setAuction(auction);
         map.add(auction);
+    }
+
+    public AuctionDTO getAuction(Long id) throws WrongUserTypeException, StudentNotEnrolledException {
+        Auction auction = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Activity not found."));
+
+        CourseMember courseMember = userService
+                .getCurrentUserAndValidateStudentAccount()
+                .getCourseMember(auction.getCourse(), true);
+
+        Optional<Bid> bid = bidRepository.findByAuctionAndCourseMember(auction, courseMember);
+
+        return new AuctionDTO(auction.getId(),
+                auction.getMinBidding(),
+                courseMember.getPoints(),
+                bid.map(Bid::getValue),
+                auction.getResolutionDate().toEpochSecond((ZoneOffset) ZoneId.systemDefault()));
     }
 
     public void bidForAuction(BidDTO dto) throws TooLowBidException, WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
