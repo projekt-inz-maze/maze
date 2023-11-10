@@ -19,7 +19,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Optional;
 
@@ -38,6 +37,7 @@ public class AuctionService {
         Auction auction = Auction.from(task)
                 .minBidding(dto.getMinBidding())
                 .resolutionDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(dto.getResolutionDate()), ZoneOffset.systemDefault()))
+                .minScoreToGetPoints(dto.getMinScoreToGetPoints())
                 .requirements(requirementService.getDefaultRequirements(true))
                 .build();
 
@@ -59,7 +59,8 @@ public class AuctionService {
                 auction.getMinBidding(),
                 courseMember.getPoints(),
                 bid.map(Bid::getValue),
-                auction.getResolutionDate().toEpochSecond((ZoneOffset) ZoneId.systemDefault()));
+                auction.getResolutionDate().toEpochSecond(ZoneOffset.UTC),
+                auction.getMinScoreToGetPoints());
     }
 
     public void bidForAuction(BidDTO dto) throws TooLowBidException, WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {

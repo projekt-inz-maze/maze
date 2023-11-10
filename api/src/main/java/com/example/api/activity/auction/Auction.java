@@ -14,6 +14,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,16 +25,13 @@ import java.util.Optional;
 @AllArgsConstructor
 @Entity
 public class Auction extends Activity {
-    private final ActivityType activityType = ActivityType.AUCTION;
-    @OneToOne
-    private Task task;
-    private Double minBidding;
-
-    private LocalDateTime resolutionDate;
-
-    private boolean resolved = false;
-    @OneToOne
-    private Bid highestBid;
+    @NotNull private final ActivityType activityType = ActivityType.AUCTION;
+    @NotNull private boolean resolved = false;
+    @NotNull private Double minBidding;
+    @NotNull private Double minScoreToGetPoints;
+    @NotNull private LocalDateTime resolutionDate;
+    @OneToOne @NotNull private Task task;
+    @OneToOne @NotNull private Bid highestBid;
 
     public Auction(Long id,
                    String title,
@@ -48,7 +46,8 @@ public class Auction extends Activity {
                    Course course,
                    Task task,
                    Double minBidding,
-                   LocalDateTime resolutionDate) {
+                   LocalDateTime resolutionDate,
+                   Double minScoreToGetPoints) {
         super(id,
                 title,
                 description,
@@ -64,6 +63,7 @@ public class Auction extends Activity {
         this.task = task;
         this.minBidding = minBidding;
         this.resolutionDate = resolutionDate;
+        this.minScoreToGetPoints = minScoreToGetPoints;
     }
 
     public Optional<Bid> getHighestBid() {
@@ -94,11 +94,11 @@ public class Auction extends Activity {
         private List<Requirement> requirements;
         private Boolean isBlocked;
         private User professor;
-        private ActivityType activityType;
         private Course course;
         private Task task;
         private Double minBidding;
         private LocalDateTime resolutionDate;
+        private Double minScoreToGetPoints;
 
         AuctionBuilder() {
         }
@@ -167,8 +167,8 @@ public class Auction extends Activity {
             return this;
         }
 
-        public AuctionBuilder activityType(ActivityType activityType) {
-            this.activityType = activityType;
+        public AuctionBuilder minScoreToGetPoints(Double minScoreToGetPoints) {
+            this.minScoreToGetPoints = minScoreToGetPoints;
             return this;
         }
 
@@ -206,7 +206,8 @@ public class Auction extends Activity {
                     course,
                     task,
                     minBidding,
-                    resolutionDate);
+                    resolutionDate,
+                    minScoreToGetPoints);
         }
     }
 }

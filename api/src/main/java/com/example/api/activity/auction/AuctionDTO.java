@@ -16,4 +16,5 @@ public class AuctionDTO {
     @Schema(required = true) private Double maxBidding;
     @Schema(required = true) private Optional<Double> userBid;
     @Schema(required = true) private Long endDateEpochSeconds;
+    @Schema(required = true) private Double minScoreToGetPoints;
 }

@@ -20,7 +20,7 @@ public class AuctionController {
         return ResponseEntity.ok().body(null);
     }
 
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<AuctionDTO> getAuction(@PathVariable Long id) throws  WrongUserTypeException, StudentNotEnrolledException {
         return ResponseEntity.ok().body(auctionService.getAuction(id));
     }
