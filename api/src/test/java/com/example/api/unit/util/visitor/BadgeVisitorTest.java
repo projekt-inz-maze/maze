@@ -17,7 +17,6 @@ import com.example.api.activity.result.service.FileTaskResultService;
 import com.example.api.activity.result.service.GraphTaskResultService;
 import com.example.api.activity.result.service.TaskResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
-import com.example.api.user.model.badge.*;
 import com.example.api.user.service.UserService;
 import com.example.api.user.badge.BadgeVisitor;
 import org.junit.jupiter.api.BeforeEach;

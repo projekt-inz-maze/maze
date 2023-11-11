@@ -12,7 +12,6 @@ import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
-import com.example.api.user.repository.UserRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.UserValidator;
 import com.example.api.util.csv.PointsToGradeMapper;
@@ -31,14 +30,12 @@ import java.util.stream.Stream;
 @Slf4j
 @Transactional
 public class GradeService {
-    private final UserRepository userRepository;
     private final UserValidator userValidator;
     private final LoggedInUserService authService;
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
-    private final UserService userService;
     private final CourseService courseService;
 
     public List<GradeResponse> getAllGrades(Long courseId) throws WrongUserTypeException, EntityNotFoundException {

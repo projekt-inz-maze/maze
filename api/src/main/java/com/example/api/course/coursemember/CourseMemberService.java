@@ -1,11 +1,9 @@
 package com.example.api.course.coursemember;
 
-import com.example.api.course.coursemember.CourseMember;
-import com.example.api.course.coursemember.CourseMemberRepository;
 import com.example.api.group.Group;
 import com.example.api.group.GroupService;
-import com.example.api.user.model.User;
 import com.example.api.user.hero.model.UserHero;
+import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,5 @@
 package com.example.api.course.coursemember;
 
-import com.example.api.course.coursemember.CourseMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
