@@ -4,7 +4,7 @@ import com.example.api.activity.auction.Auction;
 import com.example.api.activity.task.RequirementForm;
 
 import com.example.api.chapter.requirement.model.*;
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.user.model.User;
 import com.example.api.validator.MapValidator;

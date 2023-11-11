@@ -1,7 +1,7 @@
 package com.example.api.question;
 
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.question.option.Option;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;

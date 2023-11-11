@@ -1,7 +1,7 @@
 package com.example.api.activity.survey;
 
 import com.example.api.activity.result.dto.response.SurveyResultInfoResponse;
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;

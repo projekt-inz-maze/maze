@@ -1,8 +1,5 @@
-package com.example.api.course.controller;
+package com.example.api.course;
 
-import com.example.api.course.dto.request.SaveCourseForm;
-import com.example.api.course.dto.response.CourseDTO;
-import com.example.api.course.service.CourseService;
 import com.example.api.error.exception.RequestValidationException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;

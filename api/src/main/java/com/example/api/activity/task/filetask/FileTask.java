@@ -1,7 +1,7 @@
 package com.example.api.activity.task.filetask;
 
 import com.example.api.activity.task.Task;
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.activity.ActivityType;
 import com.example.api.user.model.User;
 import lombok.Getter;

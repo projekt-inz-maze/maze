@@ -1,7 +1,7 @@
 package com.example.api.activity.auction;
 
 import com.example.api.activity.auction.bid.BidDTO;
-import com.example.api.course.validator.exception.StudentNotEnrolledException;
+import com.example.api.course.StudentNotEnrolledException;
 import com.example.api.error.exception.WrongUserTypeException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;

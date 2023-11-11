@@ -1,4 +1,4 @@
-package com.example.api.course.dto.request;
+package com.example.api.course;
 
 import com.example.api.user.hero.HeroType;
 import io.swagger.v3.oas.annotations.media.Schema;

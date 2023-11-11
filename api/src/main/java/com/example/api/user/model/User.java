@@ -1,8 +1,8 @@
 package com.example.api.user.model;
 
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
-import com.example.api.course.validator.exception.StudentNotEnrolledException;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.StudentNotEnrolledException;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

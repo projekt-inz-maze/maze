@@ -1,6 +1,6 @@
 package com.example.api.util.model;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

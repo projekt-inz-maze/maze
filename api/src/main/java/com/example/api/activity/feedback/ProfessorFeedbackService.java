@@ -2,7 +2,7 @@ package com.example.api.activity.feedback;
 
 
 import com.example.api.activity.task.dto.response.util.FileResponse;
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongPointsNumberException;

@@ -2,9 +2,9 @@ package com.example.api.activity.result.service;
 
 import com.example.api.activity.result.dto.request.AddAdditionalPointsForm;
 import com.example.api.activity.task.dto.response.result.AdditionalPointsResponse;
-import com.example.api.course.model.Course;
-import com.example.api.course.service.CourseService;
-import com.example.api.course.validator.CourseValidator;
+import com.example.api.course.Course;
+import com.example.api.course.CourseService;
+import com.example.api.course.CourseValidator;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.AdditionalPoints;

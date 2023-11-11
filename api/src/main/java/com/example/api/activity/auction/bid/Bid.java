@@ -1,7 +1,7 @@
 package com.example.api.activity.auction.bid;
 
 import com.example.api.activity.auction.Auction;
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.coursemember.CourseMember;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 

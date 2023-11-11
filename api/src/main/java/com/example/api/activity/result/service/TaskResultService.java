@@ -11,8 +11,8 @@ import com.example.api.activity.task.dto.response.result.ActivityStatisticsRespo
 import com.example.api.activity.task.dto.response.result.TaskPointsStatisticsResponse;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
-import com.example.api.course.model.Course;
-import com.example.api.course.service.CourseService;
+import com.example.api.course.Course;
+import com.example.api.course.CourseService;
 import com.example.api.activity.ActivityType;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;

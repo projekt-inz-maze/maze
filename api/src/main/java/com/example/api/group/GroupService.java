@@ -1,8 +1,8 @@
 package com.example.api.group;
 
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
-import com.example.api.course.service.CourseService;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.CourseService;
 import com.example.api.user.dto.response.BasicUser;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;

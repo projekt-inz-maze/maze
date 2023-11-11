@@ -1,5 +1,6 @@
-package com.example.api.course.model;
+package com.example.api.course;
 
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.group.Group;
 import com.example.api.chapter.Chapter;
 import com.example.api.user.model.AccountType;

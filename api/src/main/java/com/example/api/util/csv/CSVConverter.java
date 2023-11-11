@@ -1,6 +1,6 @@
 package com.example.api.util.csv;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.user.model.User;
 import com.example.api.user.service.GradeService;
 import lombok.RequiredArgsConstructor;

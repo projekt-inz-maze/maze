@@ -1,6 +1,6 @@
 package com.example.api.user.model;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.user.hero.HeroType;
 import com.example.api.util.model.Image;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,6 @@
-package com.example.api.course.model;
+package com.example.api.course.coursemember;
 
+import com.example.api.course.Course;
 import com.example.api.group.Group;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;

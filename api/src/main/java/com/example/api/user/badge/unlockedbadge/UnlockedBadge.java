@@ -1,6 +1,6 @@
 package com.example.api.user.badge.unlockedbadge;
 
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.user.badge.types.Badge;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

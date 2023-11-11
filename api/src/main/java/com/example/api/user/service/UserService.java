@@ -1,8 +1,8 @@
 package com.example.api.user.service;
 
-import com.example.api.course.model.CourseMember;
-import com.example.api.course.service.CourseMemberService;
-import com.example.api.course.validator.exception.StudentNotEnrolledException;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.coursemember.CourseMemberService;
+import com.example.api.course.StudentNotEnrolledException;
 import com.example.api.group.GroupService;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.hero.model.Hero;

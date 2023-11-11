@@ -1,6 +1,6 @@
 package com.example.api.user.badge.types;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.user.badge.unlockedbadge.UnlockedBadge;
 import com.example.api.user.badge.dtos.BadgeUpdateForm;
 import com.example.api.user.dto.response.badge.BadgeResponse;

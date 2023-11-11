@@ -1,8 +1,8 @@
 package com.example.api.unit.service.activity.feedback;
 
 import com.example.api.activity.feedback.SaveProfessorFeedbackForm;
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongPointsNumberException;

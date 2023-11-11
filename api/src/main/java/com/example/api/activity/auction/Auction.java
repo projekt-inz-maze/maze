@@ -5,7 +5,7 @@ import com.example.api.activity.ActivityType;
 import com.example.api.activity.auction.bid.Bid;
 import com.example.api.activity.task.Task;
 import com.example.api.chapter.requirement.model.Requirement;
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

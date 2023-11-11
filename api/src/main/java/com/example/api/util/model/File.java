@@ -1,6 +1,6 @@
 package com.example.api.util.model;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

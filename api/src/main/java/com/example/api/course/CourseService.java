@@ -1,11 +1,11 @@
-package com.example.api.course.service;
+package com.example.api.course;
 
-import com.example.api.course.dto.request.SaveCourseForm;
-import com.example.api.course.dto.response.CourseDTO;
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
-import com.example.api.course.repository.CourseRepository;
-import com.example.api.course.validator.CourseValidator;
+import com.example.api.course.SaveCourseForm;
+import com.example.api.course.CourseDTO;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.CourseRepository;
+import com.example.api.course.CourseValidator;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.security.LoggedInUserService;
@@ -14,10 +14,8 @@ import com.example.api.user.hero.HeroRepository;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.user.hero.model.Hero;
-import com.example.api.user.hero.HeroService;
 import com.example.api.validator.UserValidator;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

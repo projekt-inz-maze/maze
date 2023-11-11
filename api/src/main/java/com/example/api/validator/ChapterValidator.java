@@ -1,6 +1,6 @@
 package com.example.api.validator;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.chapter.ChapterForm;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;

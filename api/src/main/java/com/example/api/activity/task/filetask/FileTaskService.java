@@ -2,7 +2,7 @@ package com.example.api.activity.task.filetask;
 
 import com.example.api.activity.auction.AuctionService;
 import com.example.api.activity.task.dto.response.util.FileResponse;
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;

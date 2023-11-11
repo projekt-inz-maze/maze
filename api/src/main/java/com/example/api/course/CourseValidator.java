@@ -1,8 +1,8 @@
-package com.example.api.course.validator;
+package com.example.api.course;
 
-import com.example.api.course.dto.request.SaveCourseForm;
-import com.example.api.course.model.Course;
-import com.example.api.course.repository.CourseRepository;
+import com.example.api.course.SaveCourseForm;
+import com.example.api.course.Course;
+import com.example.api.course.CourseRepository;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;

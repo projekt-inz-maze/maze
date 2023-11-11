@@ -1,6 +1,6 @@
 package com.example.api.chapter;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

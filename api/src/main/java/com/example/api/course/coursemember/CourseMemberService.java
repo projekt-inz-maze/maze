@@ -1,7 +1,7 @@
-package com.example.api.course.service;
+package com.example.api.course.coursemember;
 
-import com.example.api.course.model.CourseMember;
-import com.example.api.course.repository.CourseMemberRepository;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.coursemember.CourseMemberRepository;
 import com.example.api.group.Group;
 import com.example.api.group.GroupService;
 import com.example.api.user.model.User;

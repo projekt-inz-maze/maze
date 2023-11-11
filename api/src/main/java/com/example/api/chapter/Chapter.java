@@ -2,7 +2,7 @@ package com.example.api.chapter;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.activity.survey.Survey;
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.map.ActivityMap;
 import com.example.api.chapter.requirement.model.Requirement;
 import lombok.AllArgsConstructor;

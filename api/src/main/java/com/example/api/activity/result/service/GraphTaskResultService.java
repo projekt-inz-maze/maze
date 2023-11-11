@@ -2,8 +2,8 @@ package com.example.api.activity.result.service;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.*;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;

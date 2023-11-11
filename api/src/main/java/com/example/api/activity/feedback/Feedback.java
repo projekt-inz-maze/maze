@@ -1,6 +1,6 @@
 package com.example.api.activity.feedback;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
