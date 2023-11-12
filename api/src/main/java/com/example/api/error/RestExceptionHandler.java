@@ -1,5 +1,6 @@
 package com.example.api.error;
 
+import com.example.api.activity.auction.AuctionHasBeenResolvedException;
 import com.example.api.activity.auction.TooLowBidException;
 import com.example.api.activity.task.CannotEditRequirementsForAuctionedTaskException;
 import com.example.api.error.exception.*;
@@ -106,6 +107,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(TooLowBidException.class)
     public ResponseEntity<Object> handleTooLowBidException(TooLowBidException ex) {
+        log.warn(ex.getMessage());
+        return  handleExceptionWithStatusCode(BAD_REQUEST, ex);
+    }
+
+    @ExceptionHandler(AuctionHasBeenResolvedException.class)
+    public ResponseEntity<Object> handleAuctionHasBeenResolvedException(AuctionHasBeenResolvedException ex) {
         log.warn(ex.getMessage());
         return  handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }

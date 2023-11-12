@@ -4,9 +4,9 @@ import com.example.api.activity.auction.AuctionRepository;
 import com.example.api.activity.task.dto.response.ActivitiesResponse;
 import com.example.api.activity.task.dto.response.ActivityToEvaluateResponse;
 import com.example.api.activity.task.dto.response.util.FileResponse;
-import com.example.api.course.model.Course;
-import com.example.api.course.service.CourseService;
-import com.example.api.course.validator.CourseValidator;
+import com.example.api.course.Course;
+import com.example.api.course.CourseService;
+import com.example.api.course.CourseValidator;
 import com.example.api.chapter.requirement.RequirementDTO;
 import com.example.api.chapter.requirement.RequirementResponse;
 import com.example.api.activity.ActivityType;
@@ -150,6 +150,10 @@ public class TaskService {
     public RequirementResponse getRequirementsForActivity(Long id) throws EntityNotFoundException {
         Activity activity = getActivity(id);
 
+        return getRequirementsForActivity(activity);
+    }
+
+    public RequirementResponse getRequirementsForActivity(Activity activity) {
         List<? extends RequirementDTO<?>> requirements = activity.getRequirements()
                 .stream()
                 .map(Requirement::getResponse)

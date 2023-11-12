@@ -1,6 +1,6 @@
 package com.example.api.validator;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.error.exception.*;
 import com.example.api.user.dto.request.RegisterUserForm;
 import com.example.api.user.model.AccountType;

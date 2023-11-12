@@ -1,11 +1,9 @@
 package com.example.api.activity.auction.bid;
 
 import com.example.api.activity.auction.Auction;
-import com.example.api.user.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.example.api.course.coursemember.CourseMember;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -21,19 +19,19 @@ public class Bid {
     private Long id;
 
     @ManyToOne
-    User user;
+    CourseMember courseMember;
 
     @ManyToOne
     Auction auction;
 
     Double value;
 
+    @CreationTimestamp
     Instant creationTime;
 
-    public Bid(User user, Auction auction, Double value, Instant creationTime) {
-        this.user = user;
+    public Bid(CourseMember courseMember, Auction auction, Double value) {
+        this.courseMember = courseMember;
         this.auction = auction;
         this.value = value;
-        this.creationTime = creationTime;
     }
 }

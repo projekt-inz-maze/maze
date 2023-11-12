@@ -1,13 +1,12 @@
 package com.example.api.activity.info;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.chapter.Chapter;
 import com.example.api.user.model.User;
 import com.example.api.util.model.Url;
 import com.example.api.chapter.ChapterRepository;
-import com.example.api.user.repository.UserRepository;
 import com.example.api.util.repository.UrlRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.chapter.requirement.RequirementService;

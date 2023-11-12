@@ -1,7 +1,7 @@
 package com.example.api.activity.result.service;
 
 import com.example.api.activity.result.dto.SaveFileToFileTaskResultForm;
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
@@ -47,9 +47,9 @@ public class FileTaskResultService {
 
         FileTaskResult result = getFileTaskResultByFileTaskAndUser(form.getFileTaskId(), user.getEmail());
 
-        FileTask task = fileTaskRepository.findFileTaskById(form.getFileTaskId());
-
         if (result == null) {
+            FileTask task = fileTaskRepository.findFileTaskById(form.getFileTaskId());
+
             result = new FileTaskResult();
             result.setAnswer("");
             result.setFileTask(fileTaskRepository.findFileTaskById(form.getFileTaskId()));

@@ -21,7 +21,7 @@ public class FileTaskResultController {
     private final FileTaskResultService fileTaskResultService;
 
     @PostMapping(path="/file/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Long> saveFileToFileTaskResult(@ModelAttribute SaveFileToFileTaskResultForm form)
+    public ResponseEntity<Long> saveFileTaskResult(@ModelAttribute SaveFileToFileTaskResultForm form)
             throws EntityNotFoundException, WrongUserTypeException, IOException {
         return ResponseEntity.ok().body(fileTaskResultService.saveFileToFileTaskResult(form));
     }

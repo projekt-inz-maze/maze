@@ -1,7 +1,7 @@
 package com.example.api.activity.info;
 
 import com.example.api.activity.Activity;
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.activity.ActivityType;
 import com.example.api.user.model.User;
 import com.example.api.util.model.Url;

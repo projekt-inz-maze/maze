@@ -2,7 +2,7 @@ package com.example.api.activity.task.graphtask;
 
 import com.example.api.activity.auction.AuctionService;
 import com.example.api.activity.validator.ActivityValidator;
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.chapter.Chapter;

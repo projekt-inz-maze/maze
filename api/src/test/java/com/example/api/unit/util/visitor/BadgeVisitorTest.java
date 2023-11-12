@@ -1,8 +1,8 @@
 package com.example.api.unit.util.visitor;
 
 import com.example.api.activity.result.model.*;
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -17,7 +17,6 @@ import com.example.api.activity.result.service.FileTaskResultService;
 import com.example.api.activity.result.service.GraphTaskResultService;
 import com.example.api.activity.result.service.TaskResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
-import com.example.api.user.model.badge.*;
 import com.example.api.user.service.UserService;
 import com.example.api.user.badge.BadgeVisitor;
 import org.junit.jupiter.api.BeforeEach;

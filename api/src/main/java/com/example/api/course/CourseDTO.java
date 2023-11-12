@@ -1,6 +1,5 @@
-package com.example.api.course.dto.response;
+package com.example.api.course;
 
-import com.example.api.course.model.Course;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

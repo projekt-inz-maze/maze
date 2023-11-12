@@ -1,6 +1,6 @@
 package com.example.api.unit.service.user;
 
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;

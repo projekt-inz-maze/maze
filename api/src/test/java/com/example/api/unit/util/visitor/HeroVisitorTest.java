@@ -1,7 +1,7 @@
 package com.example.api.unit.util.visitor;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.activity.ActivityType;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.GraphTaskResult;

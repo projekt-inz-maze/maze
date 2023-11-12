@@ -2,7 +2,7 @@ package com.example.api.activity.task;
 
 import com.example.api.activity.Activity;
 import com.example.api.activity.auction.Auction;
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

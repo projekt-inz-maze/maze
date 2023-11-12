@@ -1,5 +1,6 @@
-package com.example.api.course.model;
+package com.example.api.course;
 
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.group.Group;
 import com.example.api.chapter.Chapter;
 import com.example.api.user.model.AccountType;
@@ -59,7 +60,7 @@ public class Course {
         this.owner = owner;
     }
 
-    public List<User> getAllStudents2() {
+    public List<User> getAllStudents() {
         return groups.stream()
                 .flatMap(group -> group.getUsers().stream())
                 .filter(user -> user.getAccountType().equals(AccountType.STUDENT))

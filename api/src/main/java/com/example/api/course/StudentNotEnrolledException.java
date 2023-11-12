@@ -1,4 +1,4 @@
-package com.example.api.course.validator.exception;
+package com.example.api.course;
 
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.user.model.User;

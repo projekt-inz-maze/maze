@@ -1,5 +1,6 @@
-package com.example.api.course.model;
+package com.example.api.course.coursemember;
 
+import com.example.api.course.Course;
 import com.example.api.group.Group;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
@@ -67,5 +68,12 @@ public class CourseMember {
 
     public HeroType getHeroType() {
         return userHero.getHero().getType();
+    }
+
+    public void decreasePoints(Double decreaseValue) {
+        if (decreaseValue < points) {
+            throw new IllegalStateException("Cannot decrease points.");
+        }
+        points = points - decreaseValue;
     }
 }

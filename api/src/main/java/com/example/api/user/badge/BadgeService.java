@@ -1,9 +1,9 @@
 package com.example.api.user.badge;
 
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
-import com.example.api.course.service.CourseService;
-import com.example.api.course.validator.CourseValidator;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.CourseService;
+import com.example.api.course.CourseValidator;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.badge.types.*;
 import com.example.api.user.badge.unlockedbadge.UnlockedBadge;

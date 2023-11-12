@@ -1,6 +1,6 @@
 package com.example.api.chapter.requirement.model;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.chapter.requirement.RequirementDTO;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.user.model.User;

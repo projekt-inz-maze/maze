@@ -1,7 +1,7 @@
 package com.example.api.activity;
 
 import com.example.api.chapter.requirement.model.Requirement;
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

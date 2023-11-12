@@ -1,8 +1,5 @@
-package com.example.api.course.validator;
+package com.example.api.course;
 
-import com.example.api.course.dto.request.SaveCourseForm;
-import com.example.api.course.model.Course;
-import com.example.api.course.repository.CourseRepository;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
@@ -39,15 +36,6 @@ public class CourseValidator {
         userValidator.validateProfessorAccount(professor);
 
         if (!course.getOwner().equals(professor)) {
-            log.error("Course owner invalid.");
-            throw new RequestValidationException(ExceptionMessage.COURSE_OWNER_INVALID);
-        }
-    }
-
-    public void validateCourseOwner(Long courseId, User professor) throws RequestValidationException {
-        userValidator.validateProfessorAccount(professor);
-
-        if (!courseRepository.existsCourseByIdIsAndOwnerIs(courseId, professor)) {
             log.error("Course owner invalid.");
             throw new RequestValidationException(ExceptionMessage.COURSE_OWNER_INVALID);
         }

@@ -1,9 +1,9 @@
 package com.example.api.chapter;
 
 import com.example.api.activity.task.RequirementForm;
-import com.example.api.course.model.Course;
-import com.example.api.course.service.CourseService;
-import com.example.api.course.validator.CourseValidator;
+import com.example.api.course.Course;
+import com.example.api.course.CourseService;
+import com.example.api.course.CourseValidator;
 import com.example.api.chapter.requirement.RequirementDTO;
 import com.example.api.chapter.requirement.RequirementResponse;
 import com.example.api.chapter.response.ChapterInfoResponse;

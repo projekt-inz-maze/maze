@@ -1,6 +1,7 @@
 package com.example.api.map;
 
 import com.example.api.activity.Activity;
+import com.example.api.activity.task.TaskService;
 import com.example.api.map.mapactivity.MapActivityConverter;
 import com.example.api.map.mapactivity.MapActivity;
 import com.example.api.map.mapactivity.MapActivityProfessor;
@@ -30,6 +31,7 @@ public class ActivityMapService {
     private final MapValidator mapValidator;
     private final LoggedInUserService authService;
     private final MapActivityConverter mapActivityConverter;
+    private final TaskService taskService;
 
     public ActivityMap saveActivityMap(ActivityMap activityMap){
         return mapRepository.save(activityMap);
@@ -59,7 +61,7 @@ public class ActivityMapService {
                         activityMap.getInfos().stream(),
                         activityMap.getSurveys().stream())
                 .flatMap(s -> s)
-                .map(activity -> new MapActivityProfessor(activity, activity.getIsBlocked()))
+                .map(activity -> new MapActivityProfessor(activity, activity.getIsBlocked(), taskService.getRequirementsForActivity(activity)))
                 .sorted(Comparator.comparingLong(MapActivity::getId))
                 .toList();
     }
@@ -67,7 +69,7 @@ public class ActivityMapService {
     public List<MapActivityStudent> getMapTasksForStudent(ActivityMap activityMap, User student) {
         Stream<Activity> tasksWithAuctions =  Stream.of(activityMap.getGraphTasks(), activityMap.getFileTasks())
                 .flatMap(Collection::stream)
-                .map(task -> task.getAuction().map(auction -> auction.isResolved() ? auction.getTask() : auction).orElse(task));
+                .flatMap(task -> Stream.concat(Stream.of(task), task.getAuction().stream()));
 
         return Stream.of(tasksWithAuctions,
                         activityMap.getInfos().stream(),

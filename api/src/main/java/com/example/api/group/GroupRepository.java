@@ -1,7 +1,6 @@
 package com.example.api.group;
 
-import com.example.api.course.model.Course;
-import com.example.api.group.Group;
+import com.example.api.course.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
