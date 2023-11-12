@@ -1,7 +1,12 @@
 package com.example.api.activity.auction.bid;
 
+import com.example.api.activity.Activity;
 import com.example.api.activity.auction.Auction;
+import com.example.api.activity.result.model.TaskResult;
 import com.example.api.course.coursemember.CourseMember;
+import com.example.api.error.exception.EntityNotFoundException;
+import com.example.api.error.exception.MissingAttributeException;
+import com.example.api.error.exception.WrongUserTypeException;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,25 +18,18 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Bid {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Bid extends TaskResult {
+    public Bid(CourseMember member, Auction auction, Double points) {
+        super(points, Instant.now().toEpochMilli(), auction.getCourse(), member);
+        this.activity = auction;
+    }
 
-    @ManyToOne
-    CourseMember courseMember;
+    @Override
+    public boolean isEvaluated() {
+        return true;
+    }
 
-    @ManyToOne
-    Auction auction;
-
-    Double points;
-
-    @CreationTimestamp
-    Instant creationTime;
-
-    public Bid(CourseMember courseMember, Auction auction, Double points) {
-        this.courseMember = courseMember;
-        this.auction = auction;
-        this.points = points;
+    public Auction getAuction() {
+        return (Auction) activity;
     }
 }

@@ -37,9 +37,4 @@ public class AdditionalPoints extends TaskResult{
     public boolean isEvaluated() {
         return true;
     }
-
-    @Override
-    public Activity getActivity() {
-        return null;
-    }
 }

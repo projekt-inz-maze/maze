@@ -9,10 +9,10 @@ import com.example.api.activity.Activity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Optional;
 
 @Getter
@@ -21,13 +21,11 @@ import java.util.Optional;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class TaskResult {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private CourseMember member;
 
     @ManyToOne
@@ -35,14 +33,27 @@ public abstract class TaskResult {
 
     private Double points;
 
+    @CreationTimestamp
+    Instant creationTime;
+
     private Long sendDateMillis;
 
+    @ManyToOne
+    @JoinColumn(name="activity_id")
+    protected Activity activity;
+
     public abstract boolean isEvaluated();
-    public abstract Activity getActivity();
 
     public TaskResult(Long id, Double points, Long sendDateMillis, Course course, CourseMember courseMember)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         this.id = id;
+        this.setPoints(points);
+        this.sendDateMillis = sendDateMillis;
+        this.course= course;
+        this.member = courseMember;
+    }
+
+    public TaskResult(Double points, Long sendDateMillis, Course course, CourseMember courseMember) {
         this.setPoints(points);
         this.sendDateMillis = sendDateMillis;
         this.course= course;

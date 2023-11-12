@@ -105,7 +105,7 @@ public class AuctionService {
 
     private void resolveHighestBid(Auction auction) {
         Bid highestBid =  auction.getHighestBid().get();
-        CourseMember winner = highestBid.getCourseMember();
+        CourseMember winner = highestBid.getMember();
         Task task = auction.getTask();
         auction.setDescription(AuctionMessageGenerator.winnerDescription(winner.getUser()));
         repository.save(auction);
@@ -115,7 +115,7 @@ public class AuctionService {
         bidRepository.findAllByAuction(auction)
                 .stream()
                 .filter(bid -> !bid.getId().equals(highestBid.getId()))
-                .forEach(bid -> bid.getCourseMember().changePoints(bid.getPoints()));
+                .forEach(bid -> bid.getMember().changePoints(bid.getPoints()));
 
         taskRepository.save(task);
     }

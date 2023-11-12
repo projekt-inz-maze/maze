@@ -39,8 +39,7 @@ public class SurveyResult extends TaskResult{
         return this.getSendDateMillis() != null && this.getPoints() != null;
     }
 
-    @Override
-    public Activity getActivity() {
-        return survey;
+    public Survey getSurvey() {
+        return (Survey) activity;
     }
 }

@@ -30,16 +30,10 @@ public class FileTaskResult extends TaskResult {
     @Lob
     private String answer;
 
-    @ManyToOne
-    @JoinColumn(name = "fileTask_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private FileTask fileTask;
-
     public boolean isEvaluated;
 
-    @Override
-    public Activity getActivity() {
-        return fileTask;
+    public FileTask getFileTask() {
+        return (FileTask) activity;
     }
 
     @Override

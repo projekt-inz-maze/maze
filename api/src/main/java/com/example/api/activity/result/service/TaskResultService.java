@@ -2,6 +2,8 @@ package com.example.api.activity.result.service;
 
 import com.example.api.activity.Activity;
 import com.example.api.activity.ActivityService;
+import com.example.api.activity.auction.Auction;
+import com.example.api.activity.result.repository.TaskResultRepository;
 import com.example.api.activity.result.service.util.GroupActivityStatisticsCreator;
 import com.example.api.activity.result.service.util.ScaleActivityStatisticsCreator;
 import com.example.api.activity.survey.Survey;
@@ -63,6 +65,7 @@ public class TaskResultService {
     private final UserService userService;
     private final ActivityService activityService;
     private final CourseService courseService;
+    private final TaskResultRepository taskResultRepository;
 
     public ByteArrayResource getCSVFile(GetCSVForm csvForm) {
         log.info("Fetching csv files for students");
@@ -236,25 +239,15 @@ public class TaskResultService {
                 .toList();
     }
 
-    private List<? extends TaskResult> getResultsForTask(Task task) {
-        if (task.getActivityType().equals(ActivityType.EXPEDITION)) {
-            return graphTaskResultRepository.findAllByGraphTask((GraphTask) task)
-                    .stream()
-                    .filter(result -> result.getPoints() != null)
-                    .toList();
-        } else if (task.getActivityType().equals(ActivityType.TASK)) {
-            return fileTaskResultRepository.findAllByFileTask((FileTask) task)
-                    .stream()
-                    .filter(FileTaskResult::isEvaluated)
-                    .toList();
-        }
-        return List.of();
+    private List<? extends TaskResult> getResultsForActivity(Activity task) {
+        return taskResultRepository.findAllByActivity()
     }
 
     private ActivityStatisticsResponse getActivityStatisticsForActivity(Activity activity) {
         return switch (activity.getActivityType()) {
             case TASK, EXPEDITION -> getActivityStatisticsForTask((Task) activity);
             case SURVEY -> getActivityStatisticsForSurvey((Survey) activity);
+            case AUCTION -> getActivityStatisticsForAuction((Auction) activity);
             default -> null;
         };
     }
@@ -307,7 +300,7 @@ public class TaskResultService {
     private ActivityStatisticsResponse getActivityStatisticsForTask(Task task) {
         ActivityStatisticsResponse response = new ActivityStatisticsResponse();
 
-        List<? extends TaskResult> results = getResultsForTask(task);
+        List<? extends TaskResult> results = getResultsForActivity(task);
 
         Double sumPoints = results.stream().mapToDouble(TaskResult::getPoints).sum();
         OptionalDouble bestScore = results.stream().mapToDouble(TaskResult::getPoints).max();
@@ -341,12 +334,43 @@ public class TaskResultService {
         return response;
     }
 
-    private List<? extends TaskResult> getActivityResults(Activity activity) {
-        if (activity.getActivityType().equals(ActivityType.SURVEY)) {
-            return surveyResultRepository.findAllBySurvey((Survey) activity);
+    private ActivityStatisticsResponse getActivityStatisticsForAuction(Auction auction) {
+        ActivityStatisticsResponse response = new ActivityStatisticsResponse();
+
+        List<? extends TaskResult> results = getResultsForActivity(auction);
+
+        Double sumPoints = results.stream().mapToDouble(TaskResult::getPoints).sum();
+        OptionalDouble bestScore = results.stream().mapToDouble(TaskResult::getPoints).max();
+        OptionalDouble worstScore = results.stream().mapToDouble(TaskResult::getPoints).min();
+        int answersNumber = results.size();
+
+        Map<Group, GroupActivityStatisticsCreator> avgScoreCreators = results
+                .stream()
+                .collect(Collectors.toMap(result -> result.getMember().getGroup(),
+                        result -> new GroupActivityStatisticsCreator(auction, result),
+                        (existing, duplicate) -> existing));
+
+        ScaleActivityStatisticsCreator scaleScores = new ScaleActivityStatisticsCreator(auction);
+        scaleScores.addAll(results);
+
+        response.setAnswersNumber(answersNumber);
+        response.setActivity100(auction.getMaxPoints());
+
+        if (answersNumber > 0) {
+            response.setAvgPoints(sumPoints / answersNumber);
+            response.setAvgPercentageResult(100 * sumPoints / (auction.getMaxPoints() * answersNumber));
+            response.setBestScore(bestScore.orElse(0));
+            response.setWorstScore(worstScore.orElse(0));
         }
-        return getResultsForTask((Task) activity);
+
+        response.setAvgScores(avgScoreCreators.values()
+                .stream()
+                .map(GroupActivityStatisticsCreator::create)
+                .toList());
+        response.setScaleScores(scaleScores.create());
+        return response;
     }
+
     private List<SurveyResult> getSurveyResults(Survey activity) {
         return surveyResultRepository.findAllBySurvey(activity);
     }

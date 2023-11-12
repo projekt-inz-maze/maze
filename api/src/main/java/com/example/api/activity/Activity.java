@@ -14,11 +14,14 @@ import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
+
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Activity {
     @TableGenerator(name = "myGen", table = "ID_GEN", pkColumnName = "GEN_KEY", valueColumnName = "GEN_VALUE", pkColumnValue = "NEXT_ID", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "myGen")

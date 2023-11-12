@@ -25,11 +25,6 @@ public class GraphTaskResult extends TaskResult {
     @OneToMany
     private List<Answer> answers = new LinkedList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "graphTask_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private GraphTask graphTask;
-
     private int timeSpentSec;
     private Long startDateMillis;
     private ResultStatus status;
@@ -43,9 +38,8 @@ public class GraphTaskResult extends TaskResult {
         return this.getPoints() != null;
     }
 
-    @Override
-    public Activity getActivity() {
-        return graphTask;
+    public GraphTask getGraphTask() {
+        return (GraphTask) activity;
     }
 
     public GraphTaskResult(GraphTask graphTask,
@@ -53,7 +47,7 @@ public class GraphTaskResult extends TaskResult {
                            ResultStatus status,
                            Question currQuestion,
                            CourseMember member) {
-        this.graphTask = graphTask;
+        this.activity = graphTask;
         this.startDateMillis = startDateMillis;
         this.setSendDateMillis(startDateMillis);
         this.status = status;
