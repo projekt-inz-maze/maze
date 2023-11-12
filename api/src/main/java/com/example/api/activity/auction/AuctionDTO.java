@@ -12,9 +12,11 @@ import java.util.Optional;
 @NoArgsConstructor
 public class AuctionDTO {
     @Schema(required = true) private Long id;
-    @Schema(required = true) private Double minBidding;
-    @Schema(required = true) private Double maxBidding;
+    @Schema(required = true) private Optional<Double> highestBid;
     @Schema(required = true) private Optional<Double> userBid;
+    @Schema(required = true) private Double lowestAllowedBid;
+    @Schema(required = true) private Double highestAllowedBid;
+    @Schema(required = true) private Double availablePoints;
     @Schema(required = true) private Long endDateEpochSeconds;
-    @Schema(required = true) private Double minScoreToGetPoints;
+    @Schema(required = true) private Double minTaskScoreToGetPoints;
 }

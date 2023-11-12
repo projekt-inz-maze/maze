@@ -1,9 +1,11 @@
 package com.example.api.activity;
 
+import com.example.api.activity.auction.AuctionRepository;
 import com.example.api.activity.info.EditInfoForm;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.survey.EditSurveyForm;
 import com.example.api.activity.survey.Survey;
+import com.example.api.activity.task.TaskRepository;
 import com.example.api.activity.task.filetask.EditFileTaskForm;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.*;
@@ -54,6 +56,8 @@ public class ActivityService {
     private final SurveyService surveyService;
     private final ChapterRepository chapterRepository;
     private final ChapterValidator chapterValidator;
+    private final TaskRepository taskRepository;
+    private final AuctionRepository auctionRepository;
 
     public EditActivityForm getActivityEditInfo(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
         User professor = authService.getCurrentUser();
@@ -149,20 +153,19 @@ public class ActivityService {
 
     public Optional<Activity> getGradedActivity(Long activityId) {
 
-        Optional<Activity> graphTask = ofNullable(graphTaskRepository.findGraphTaskById(activityId));
-        if (graphTask.isPresent()) {
-            return graphTask;
-        }
+        Optional<Activity> task = taskRepository.findById(activityId).map(t -> t);
 
-        Optional<Activity> fileTask = ofNullable(fileTaskRepository.findFileTaskById(activityId));
-        if (fileTask.isPresent()) {
-            return fileTask;
+        if (task.isPresent()) {
+            return task;
+        } else {
+            Optional<Activity> activity = ofNullable(surveyRepository.findSurveyById(activityId));
+            if (activity.isPresent()) {
+                return activity;
+            } else
+                return auctionRepository.findById(activityId).map(a -> a);
         }
-
-         return ofNullable(surveyRepository.findSurveyById(activityId));
     }
     public Activity getActivity(Long activityId) throws EntityNotFoundException {
-
         Optional<Activity> gradedActivity = getGradedActivity(activityId);
 
         if (gradedActivity.isPresent()) {

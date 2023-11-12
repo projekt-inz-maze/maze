@@ -36,6 +36,7 @@ public class AuctionService {
     public void createAuction(Task task, CreateAuctionDTO dto, ActivityMap map) {
         Auction auction = Auction.from(task)
                 .minBidding(dto.getMinBidding())
+                .maxBidding(dto.getMaxBidding())
                 .resolutionDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(dto.getResolutionDate()), ZoneOffset.systemDefault()))
                 .minScoreToGetPoints(dto.getMinScoreToGetPoints())
                 .requirements(requirementService.getDefaultRequirements(true))
@@ -53,22 +54,25 @@ public class AuctionService {
                 .getCurrentUserAndValidateStudentAccount()
                 .getCourseMember(auction.getCourse(), true);
 
-        Optional<Bid> bid = bidRepository.findByAuctionAndCourseMember(auction, courseMember);
+        Optional<Bid> previousBid = bidRepository.findByAuctionAndCourseMember(auction, courseMember);
 
         return new AuctionDTO(auction.getId(),
-                auction.getMinBidding(),
-                courseMember.getPoints(),
-                bid.map(Bid::getValue),
+                auction.getHighestBid().map(Bid::getValue),
+                previousBid.map(Bid::getValue),
+                auction.currentMinBiddingValue(),
+                auction.getMaxBidding(),
+                courseMember.getPoints() + previousBid.map(Bid::getValue).orElse(0D),
                 auction.getResolutionDate().toEpochSecond(ZoneOffset.UTC),
-                auction.getMinScoreToGetPoints());
+                auction.getMinScoreToGetPoints()
+                );
     }
 
-    public void bidForAuction(BidDTO dto) throws TooLowBidException, WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
+    public void bidForAuction(BidDTO dto) throws InvalidBidValueException, WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
         Auction auction = repository.findById(dto.auctionId()).orElseThrow(EntityNotFoundException::new);
         CourseMember courseMember = userService.getCurrentUserAndValidateStudentAccount().getCourseMember(auction.getCourse(), true);
 
-        if (auction.currentMinBiddingValue() >= dto.bidValue()) {
-            throw new TooLowBidException(auction.currentMinBiddingValue());
+        if (auction.currentMinBiddingValue() >= dto.bidValue() || auction.getMaxBidding() < dto.bidValue()) {
+            throw new InvalidBidValueException(auction);
         }
 
         if (auction.isResolved()) {

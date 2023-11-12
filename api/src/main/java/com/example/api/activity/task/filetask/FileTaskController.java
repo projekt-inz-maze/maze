@@ -1,5 +1,6 @@
 package com.example.api.activity.task.filetask;
 
+import com.example.api.activity.auction.CreateAuctionDTO;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -31,6 +32,7 @@ public class FileTaskController {
                 3,
                 4,
                 MessageManager.REQ_KNOWLEDGE,
+                new CreateAuctionDTO(0D, 100D, 0L, 10D),
                 30.0
         );
         return ResponseEntity.ok().body(form);

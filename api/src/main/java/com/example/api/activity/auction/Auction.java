@@ -28,6 +28,7 @@ public class Auction extends Activity {
     @NotNull private final ActivityType activityType = ActivityType.AUCTION;
     @NotNull private boolean resolved = false;
     @NotNull private Double minBidding;
+    @NotNull private Double maxBidding;
     @NotNull private Double minScoreToGetPoints;
     @NotNull private LocalDateTime resolutionDate;
     @OneToOne @NotNull private Task task;
@@ -46,6 +47,7 @@ public class Auction extends Activity {
                    Course course,
                    Task task,
                    Double minBidding,
+                   Double maxBidding,
                    LocalDateTime resolutionDate,
                    Double minScoreToGetPoints) {
         super(id,
@@ -62,6 +64,7 @@ public class Auction extends Activity {
                 course);
         this.task = task;
         this.minBidding = minBidding;
+        this.maxBidding = maxBidding;
         this.resolutionDate = resolutionDate;
         this.minScoreToGetPoints = minScoreToGetPoints;
     }
@@ -97,6 +100,7 @@ public class Auction extends Activity {
         private Course course;
         private Task task;
         private Double minBidding;
+        private Double maxBidding;
         private LocalDateTime resolutionDate;
         private Double minScoreToGetPoints;
 
@@ -187,6 +191,11 @@ public class Auction extends Activity {
             return this;
         }
 
+        public AuctionBuilder maxBidding(Double maxBidding) {
+            this.maxBidding = maxBidding;
+            return this;
+        }
+
         public AuctionBuilder resolutionDate(LocalDateTime resolutionDate) {
             this.resolutionDate = resolutionDate;
             return this;
@@ -206,6 +215,7 @@ public class Auction extends Activity {
                     course,
                     task,
                     minBidding,
+                    maxBidding,
                     resolutionDate,
                     minScoreToGetPoints);
         }

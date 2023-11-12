@@ -1,5 +1,6 @@
 package com.example.api.activity.task.graphtask;
 
+import com.example.api.activity.auction.CreateAuctionDTO;
 import com.example.api.question.option.OptionForm;
 import com.example.api.question.QuestionForm;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -53,6 +54,7 @@ public class GraphTaskController {
                 4,
                 MessageManager.REQ_KNOWLEDGE,
                 questionForms,
+                new CreateAuctionDTO(0D, 100D, 0L, 10D),
                 "00:30:00"
         );
         return ResponseEntity.ok().body(form);

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateAuctionDTO {
     @Schema(required = true) private Double minBidding;
+    @Schema(required = true) private Double maxBidding;
     @Schema(required = true) private Long resolutionDate;
     @Schema(required = true) private Double minScoreToGetPoints;
 }
