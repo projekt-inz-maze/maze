@@ -1,5 +1,6 @@
 package com.example.api.activity.task.filetask;
 
+import com.example.api.activity.auction.CreateAuctionDTO;
 import com.example.api.activity.task.CreateTaskForm;
 import com.example.api.activity.ActivityType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,10 +22,12 @@ public class CreateFileTaskForm extends CreateTaskForm {
                               Integer posX,
                               Integer posY,
                               String requiredKnowledge,
+                              CreateAuctionDTO auction,
                               Double maxPoints) {
         super(ActivityType.TASK, title, description, posX, posY);
         this.requiredKnowledge = requiredKnowledge;
         this.maxPoints = maxPoints;
+        this.setAuction(auction);
     }
 
     public CreateFileTaskForm(FileTask fileTask) {

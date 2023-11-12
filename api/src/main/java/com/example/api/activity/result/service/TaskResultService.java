@@ -43,8 +43,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -253,68 +252,93 @@ public class TaskResultService {
     }
 
     private ActivityStatisticsResponse getActivityStatisticsForActivity(Activity activity) {
+        return switch (activity.getActivityType()) {
+            case TASK, EXPEDITION -> getActivityStatisticsForTask((Task) activity);
+            case SURVEY -> getActivityStatisticsForSurvey((Survey) activity);
+            default -> null;
+        };
+    }
+
+    private ActivityStatisticsResponse getActivityStatisticsForSurvey(Survey survey) {
+
         ActivityStatisticsResponse response = new ActivityStatisticsResponse();
 
-        boolean activityIsSurvey = activity.getActivityType().equals(ActivityType.SURVEY);
+        response.setActivity100(survey.getMaxPoints());
 
-        response.setActivity100(activity.getMaxPoints());
-
-
-        AtomicInteger answersNumber = new AtomicInteger(0);
-        AtomicReference<Double> sumPoints = new AtomicReference<>(0D);
-        AtomicReference<Double> bestScore = new AtomicReference<>(null);
-        AtomicReference<Double> worstScore = new AtomicReference<>(null);
-        AtomicReference<HashMap<Group, GroupActivityStatisticsCreator>> avgScoreCreators = new AtomicReference<>(new HashMap<>());
-        AtomicReference<ScaleActivityStatisticsCreator> scaleScores = new AtomicReference<>(
-                new ScaleActivityStatisticsCreator(activity));
-
-        List<? extends TaskResult> results = getActivityResults(activity);
-        results.forEach(
-                result -> {
-                    Double points = result.getPointsReceived();
-                    if (activityIsSurvey) {
-                        Integer rate = ((SurveyResult) result).getRate();
-                        if (rate == null)
-                            return;
-                        points = Double.valueOf(rate);
-                    }
-                    answersNumber.incrementAndGet();
-                    sumPoints.set(sumPoints.get() + points);
-                    if (bestScore.get() == null)
-                        bestScore.set(points);
-                    else
-                        bestScore.set(Math.max(bestScore.get(), points));
-                    if (worstScore.get() == null)
-                        worstScore.set(points);
-                    else
-                        worstScore.set(Math.min(worstScore.get(), points));
-
-                    GroupActivityStatisticsCreator creator = avgScoreCreators.get().get(result.getMember().getGroup());
-                    if (creator == null)
-                        avgScoreCreators.get().put(result.getMember().getGroup(),
-                                new GroupActivityStatisticsCreator(activity, result));
-                    else
-                        creator.add(result);
-
-                    scaleScores.get().add(result);
-                });
-        response.setAnswersNumber(answersNumber.get());
-        if (answersNumber.get() > 0) {
-            response.setAvgPoints(sumPoints.get() / answersNumber.get());
-            if (!activityIsSurvey) {
-                response.setAvgPercentageResult(
-                        100 * sumPoints.get() / (activity.getMaxPoints() * answersNumber.get()));
-            }
+        List<SurveyResult> results = getSurveyResults(survey);
+        if (results.stream().map(SurveyResult::getRate).anyMatch(Objects::isNull)) {
+            return null;
         }
-        response.setBestScore(bestScore.get());
-        response.setWorstScore(worstScore.get());
-        response.setAvgScores(avgScoreCreators.get().values()
+
+        Double sumPoints = results.stream().mapToDouble(SurveyResult::getRate).sum();
+        OptionalDouble bestScore = results.stream().mapToDouble(SurveyResult::getRate).max();
+        OptionalDouble worstScore = results.stream().mapToDouble(SurveyResult::getRate).min();
+        int answersNumber = results.size();
+
+
+        Map<Group, GroupActivityStatisticsCreator> avgScoreCreators = results
+                .stream()
+                .collect(Collectors.toMap(result -> result.getMember().getGroup(),
+                        result -> new GroupActivityStatisticsCreator(survey, result),
+                        (existing, duplicate) -> existing));
+
+        ScaleActivityStatisticsCreator scaleScores = new ScaleActivityStatisticsCreator(survey);
+        scaleScores.addAll(results);
+
+        response.setAnswersNumber(answersNumber);
+        response.setActivity100(survey.getMaxPoints());
+
+        if (answersNumber > 0) {
+            response.setAvgPoints(sumPoints / answersNumber);
+            response.setAvgPercentageResult(100 * sumPoints / (survey.getMaxPoints() * answersNumber));
+            response.setBestScore(bestScore.orElse(0));
+            response.setWorstScore(worstScore.orElse(0));
+        }
+
+        response.setAvgScores(avgScoreCreators.values()
                 .stream()
                 .map(GroupActivityStatisticsCreator::create)
                 .toList());
-        response.setScaleScores(scaleScores.get().create());
+        response.setScaleScores(scaleScores.create());
         return response;
 
+    }
+
+    private ActivityStatisticsResponse getActivityStatisticsForTask(Task task) {
+        ActivityStatisticsResponse response = new ActivityStatisticsResponse();
+
+        List<? extends TaskResult> results = getResultsForTask(task);
+
+        Double sumPoints = results.stream().mapToDouble(TaskResult::getPointsReceived).sum();
+        OptionalDouble bestScore = results.stream().mapToDouble(TaskResult::getPointsReceived).max();
+        OptionalDouble worstScore = results.stream().mapToDouble(TaskResult::getPointsReceived).min();
+        int answersNumber = results.size();
+
+        Map<Group, GroupActivityStatisticsCreator> avgScoreCreators = results
+                .stream()
+                .collect(Collectors.toMap(result -> result.getMember().getGroup(),
+                                result -> new GroupActivityStatisticsCreator(task, result),
+                                (existing, duplicate) -> existing));
+
+        ScaleActivityStatisticsCreator scaleScores = new ScaleActivityStatisticsCreator(task);
+        scaleScores.addAll(results);
+
+        response.setAnswersNumber(answersNumber);
+        response.setActivity100(task.getMaxPoints());
+
+        if (answersNumber > 0) {
+            response.setAvgPoints(sumPoints / answersNumber);
+            response.setAvgPercentageResult(100 * sumPoints / (task.getMaxPoints() * answersNumber));
+            response.setBestScore(bestScore.orElse(0));
+            response.setWorstScore(worstScore.orElse(0));
+        }
+
+        response.setAvgScores(avgScoreCreators.values()
+                .stream()
+                .map(GroupActivityStatisticsCreator::create)
+                .toList());
+        response.setScaleScores(scaleScores.create());
+        return response;
     }
 
     private List<? extends TaskResult> getActivityResults(Activity activity) {
@@ -323,6 +347,7 @@ public class TaskResultService {
         }
         return getResultsForTask((Task) activity);
     }
-
-
+    private List<SurveyResult> getSurveyResults(Survey activity) {
+        return surveyResultRepository.findAllBySurvey(activity);
+    }
 }

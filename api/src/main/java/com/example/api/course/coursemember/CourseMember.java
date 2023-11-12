@@ -71,7 +71,7 @@ public class CourseMember {
     }
 
     public void decreasePoints(Double decreaseValue) {
-        if (decreaseValue < points) {
+        if (decreaseValue > points) {
             throw new IllegalStateException("Cannot decrease points.");
         }
         points = points - decreaseValue;

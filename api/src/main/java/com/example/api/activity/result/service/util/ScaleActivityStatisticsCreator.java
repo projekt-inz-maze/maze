@@ -16,8 +16,8 @@ import java.util.stream.Stream;
 
 public class ScaleActivityStatisticsCreator {
     private Double maxPoints;
-    private PointsToGradeMapper gradeMapper = new PointsToGradeMapper();
-    private HashMap<Double, ScaleActivityStatistics> statistics = new HashMap<>();
+    private final PointsToGradeMapper gradeMapper = new PointsToGradeMapper();
+    private final HashMap<Double, ScaleActivityStatistics> statistics = new HashMap<>();
 
     public ScaleActivityStatisticsCreator(Activity activity) {
         if (activity.getActivityType().equals(ActivityType.SURVEY)) {
@@ -43,6 +43,11 @@ public class ScaleActivityStatisticsCreator {
             addSurvey((SurveyResult) taskResult);
         }
         else addTask(taskResult);
+    }
+
+
+    public void addAll(List<? extends TaskResult> taskResults) {
+        taskResults.forEach(this::add);
     }
     public void addTask(TaskResult taskResult) {
         Double grade = gradeMapper.getGrade(taskResult.getPointsReceived(), maxPoints);

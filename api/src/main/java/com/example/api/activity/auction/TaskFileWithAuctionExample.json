@@ -6,6 +6,8 @@
   posY: 0,
   auction: {
     minBidding: 1,
+    maxBidding: 10000,
+    "minScoreToGetPoints": 70,
     resolutionDate: 1
   },
   requiredKnowledge: 'Wymagana wiedza',
