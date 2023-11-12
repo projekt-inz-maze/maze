@@ -74,7 +74,7 @@ public class Auction extends Activity {
     }
 
     public Double currentMinBiddingValue() {
-        return  getHighestBid().map(Bid::getValue).orElse(minBidding);
+        return  getHighestBid().map(Bid::getPoints).orElse(minBidding);
     }
 
     @Override

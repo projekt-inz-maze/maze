@@ -34,6 +34,7 @@ public abstract class TaskResult {
     private Course course;
 
     private Double points;
+
     private Long sendDateMillis;
 
     public abstract boolean isEvaluated();

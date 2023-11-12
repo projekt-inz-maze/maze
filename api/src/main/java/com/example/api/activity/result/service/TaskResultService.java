@@ -255,7 +255,6 @@ public class TaskResultService {
         return switch (activity.getActivityType()) {
             case TASK, EXPEDITION -> getActivityStatisticsForTask((Task) activity);
             case SURVEY -> getActivityStatisticsForSurvey((Survey) activity);
-            case AUCTION ->
             default -> null;
         };
     }

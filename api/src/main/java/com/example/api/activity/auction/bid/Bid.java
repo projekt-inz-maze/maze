@@ -24,14 +24,14 @@ public class Bid {
     @ManyToOne
     Auction auction;
 
-    Double value;
+    Double points;
 
     @CreationTimestamp
     Instant creationTime;
 
-    public Bid(CourseMember courseMember, Auction auction, Double value) {
+    public Bid(CourseMember courseMember, Auction auction, Double points) {
         this.courseMember = courseMember;
         this.auction = auction;
-        this.value = value;
+        this.points = points;
     }
 }
