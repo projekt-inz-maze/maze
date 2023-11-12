@@ -103,7 +103,7 @@ public class ProfessorFeedbackService {
                 .stream()
                 .map(FileResponse::new)
                 .collect(Collectors.toList()));
-        infoResponse.setPoints(fileTaskResult.getPointsReceived());
+        infoResponse.setPoints(fileTaskResult.getPoints());
         infoResponse.setRemarks(professorFeedback.getContent());
         File feedbackFile = professorFeedback.getFeedbackFile();
 

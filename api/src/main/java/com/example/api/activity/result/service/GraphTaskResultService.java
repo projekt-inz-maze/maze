@@ -101,7 +101,7 @@ public class GraphTaskResultService {
         log.info("Fetching points from graph task result with id {}", id);
         GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultById(id);
         activityValidator.validateTaskResultIsNotNull(result, id);
-        return result.getPointsReceived();
+        return result.getPoints();
     }
 
     public Double getMaxAvailablePoints(Long id) throws EntityNotFoundException {

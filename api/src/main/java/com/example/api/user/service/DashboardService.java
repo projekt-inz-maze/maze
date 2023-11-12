@@ -143,7 +143,7 @@ public class DashboardService {
         OptionalDouble avg = graphTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
                 .filter(GraphTaskResult::isEvaluated)
-                .mapToDouble(result -> 100 * result.getPointsReceived() / result.getGraphTask().getMaxPoints())
+                .mapToDouble(result -> 100 * result.getPoints() / result.getGraphTask().getMaxPoints())
                 .average();
         return avg.isPresent() ? PointsCalculator.round(avg.getAsDouble(), 2) : null;
     }
@@ -152,7 +152,7 @@ public class DashboardService {
         OptionalDouble avg = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
-                .mapToDouble(result -> 100 * result.getPointsReceived() / result.getFileTask().getMaxPoints())
+                .mapToDouble(result -> 100 * result.getPoints() / result.getFileTask().getMaxPoints())
                 .average();
         return avg.isPresent() ? PointsCalculator.round(avg.getAsDouble(), 2) : null;
     }
@@ -181,7 +181,7 @@ public class DashboardService {
         return taskResults
                 .stream()
                 .filter(TaskResult::isEvaluated)
-                .mapToDouble(TaskResult::getPointsReceived)
+                .mapToDouble(TaskResult::getPoints)
                 .sum();
     }
 

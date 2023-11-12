@@ -29,6 +29,6 @@ public class PointsToGradeMapper {
     }
 
     public Double getGrade(TaskResult taskResult) {
-        return getGrade(taskResult.getPointsReceived(), taskResult.getActivity().getMaxPoints());
+        return getGrade(taskResult.getPoints(), taskResult.getActivity().getMaxPoints());
     }
 }

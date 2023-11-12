@@ -33,23 +33,23 @@ public abstract class TaskResult {
     @ManyToOne
     private Course course;
 
-    private Double pointsReceived;
+    private Double points;
     private Long sendDateMillis;
 
     public abstract boolean isEvaluated();
     public abstract Activity getActivity();
 
-    public TaskResult(Long id, Double pointsReceived, Long sendDateMillis, Course course, CourseMember courseMember)
+    public TaskResult(Long id, Double points, Long sendDateMillis, Course course, CourseMember courseMember)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         this.id = id;
-        this.setPointsReceived(pointsReceived);
+        this.setPoints(points);
         this.sendDateMillis = sendDateMillis;
         this.course= course;
         this.member = courseMember;
     }
 
-    public void setPointsReceived(Double newPoints) {
-        member.changePoints(newPoints - Optional.ofNullable(pointsReceived).orElse(0D));
-        pointsReceived = newPoints;
+    public void setPoints(Double newPoints) {
+        member.changePoints(newPoints - Optional.ofNullable(points).orElse(0D));
+        points = newPoints;
     }
 }

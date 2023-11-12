@@ -129,7 +129,7 @@ public class RankingService {
                         result.getMember().getUser().getLastName(),
                         result.getMember().getGroup().getName(),
                         result.getMember().getHeroType(),
-                        result.getPointsReceived(),
+                        result.getPoints(),
                         null,
                         rankService.getCurrentRank(result.getMember()).getName(),
                         result.getMember().getUnlockedBadges().size(),
@@ -201,7 +201,7 @@ public class RankingService {
     private Double getGraphTaskPoints(CourseMember member) {
         return graphTaskResultRepository.findAllByMember(member)
                 .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
                 .mapToDouble(d -> d)
                 .sum();
     }
@@ -209,7 +209,7 @@ public class RankingService {
     private Double getFileTaskPoints(CourseMember member) {
         return fileTaskResultRepository.findAllByMember(member)
                 .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
                 .mapToDouble(d -> d)
                 .sum();
     }
@@ -217,7 +217,7 @@ public class RankingService {
     private Double getAdditionalPoints(CourseMember member) {
         return additionalPointsRepository.findAllByMember(member)
                 .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
                 .mapToDouble(d -> d)
                 .sum();
     }
@@ -225,7 +225,7 @@ public class RankingService {
     private Double getSurveyPoints(CourseMember member) {
         return surveyResultRepository.findAllByMember(member)
                 .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
                 .mapToDouble(d -> d)
                 .sum();
     }

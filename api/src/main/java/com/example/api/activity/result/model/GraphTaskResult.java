@@ -40,7 +40,7 @@ public class GraphTaskResult extends TaskResult {
 
     @Override
     public boolean isEvaluated() {
-        return this.getPointsReceived() != null;
+        return this.getPoints() != null;
     }
 
     @Override

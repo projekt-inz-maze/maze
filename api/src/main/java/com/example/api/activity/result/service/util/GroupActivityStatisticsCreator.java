@@ -28,14 +28,14 @@ public class GroupActivityStatisticsCreator {
     public void initTask(Task task, TaskResult taskResult) {
         this.groupName = taskResult.getMember().getGroup().getName();
         this.answersNumber = 1;
-        this.sumPoints = taskResult.getPointsReceived();
+        this.sumPoints = taskResult.getPoints();
         this.maxPointsForTask = task.getMaxPoints();
     }
 
     public void initSurvey(Survey survey, SurveyResult surveyResult) {
         this.groupName = surveyResult.getMember().getGroup().getName();
         this.answersNumber = 1;
-        this.sumPoints = surveyResult.getPointsReceived();
+        this.sumPoints = surveyResult.getPoints();
     }
 
     public void add(TaskResult taskResult) {
@@ -47,12 +47,12 @@ public class GroupActivityStatisticsCreator {
 
     public void addTask(TaskResult taskResult) {
         this.answersNumber += 1;
-        this.sumPoints += taskResult.getPointsReceived();
+        this.sumPoints += taskResult.getPoints();
     }
 
     public void addSurvey(SurveyResult surveyResult) {
         this.answersNumber += 1;
-        this.sumPoints += surveyResult.getPointsReceived();
+        this.sumPoints += surveyResult.getPoints();
     }
 
     public GroupActivityStatistics create() {

@@ -4,10 +4,8 @@ import com.example.api.activity.result.dto.request.SurveyResultForm;
 import com.example.api.activity.result.dto.response.SurveyResultInfoResponse;
 import com.example.api.error.exception.*;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.survey.Survey;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.SurveyResultRepository;
-import com.example.api.activity.survey.SurveyRepository;
 import com.example.api.user.badge.BadgeService;
 import com.example.api.user.service.UserService;
 import com.example.api.activity.validator.ActivityValidator;
@@ -39,12 +37,12 @@ public class SurveyResultService {
         if (surveyResult == null) {
             surveyResult = new SurveyResult();
             surveyResult.setSurvey(survey);
-            surveyResult.setPointsReceived(survey.getMaxPoints());
+            surveyResult.setPoints(survey.getMaxPoints());
             surveyResult.setMember(student.getCourseMember(survey.getCourse()).orElseThrow());
             badgeService.checkAllBadges(student.getCourseMember(survey.getCourse()).orElseThrow());
         }
         else if (!surveyResult.isEvaluated()) {
-            surveyResult.setPointsReceived(survey.getMaxPoints());
+            surveyResult.setPoints(survey.getMaxPoints());
         }
 
         surveyResult.setSendDateMillis(System.currentTimeMillis());

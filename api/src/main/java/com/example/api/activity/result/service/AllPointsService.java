@@ -66,25 +66,25 @@ public class AllPointsService {
         AtomicReference<Double> totalPointsToReceive = new AtomicReference<>(0D);
         graphTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
-                .filter(graphTaskResult -> graphTaskResult.getPointsReceived() != null)
+                .filter(graphTaskResult -> graphTaskResult.getPoints() != null)
                 .forEach(graphTaskResult -> {
-                    totalPointsReceived.updateAndGet(v -> v + graphTaskResult.getPointsReceived());
+                    totalPointsReceived.updateAndGet(v -> v + graphTaskResult.getPoints());
                     totalPointsToReceive.updateAndGet(v -> v + graphTaskResult.getGraphTask().getMaxPoints());
                 });
         fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .forEach(fileTaskResult -> {
-                    totalPointsReceived.updateAndGet(v -> v + fileTaskResult.getPointsReceived());
+                    totalPointsReceived.updateAndGet(v -> v + fileTaskResult.getPoints());
                     totalPointsToReceive.updateAndGet(v -> v + fileTaskResult.getFileTask().getMaxPoints());
                 });
         surveyResultRepository.findAllByUserAndCourse(student, course)
                 .forEach(surveyTaskResult -> {
-                    totalPointsReceived.updateAndGet(v -> v + surveyTaskResult.getPointsReceived());
-                    totalPointsToReceive.updateAndGet(v -> v + surveyTaskResult.getPointsReceived());
+                    totalPointsReceived.updateAndGet(v -> v + surveyTaskResult.getPoints());
+                    totalPointsToReceive.updateAndGet(v -> v + surveyTaskResult.getPoints());
                 });
         additionalPointsRepository.findAllByUserAndCourse(student, course)
-                .forEach(additionalPoints -> totalPointsReceived.updateAndGet(v -> v + additionalPoints.getPointsReceived()));
+                .forEach(additionalPoints -> totalPointsReceived.updateAndGet(v -> v + additionalPoints.getPoints()));
         return new TotalPointsResponse(totalPointsReceived.get(), totalPointsToReceive.get());
     }
 

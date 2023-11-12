@@ -68,7 +68,7 @@ public class FeedbackValidator {
                 throw new WrongPointsNumberException("Wrong points number", form.getPoints(), fileTaskResult.getFileTask().getMaxPoints());
             }
             feedback.setPoints(form.getPoints());
-            fileTaskResult.setPointsReceived(form.getPoints());
+            fileTaskResult.setPoints(form.getPoints());
             fileTaskResultRepository.save(fileTaskResult);
             //badgeService.checkAllBadges(professor);
         }

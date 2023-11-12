@@ -161,8 +161,10 @@ public class ActivityService {
             Optional<Activity> activity = ofNullable(surveyRepository.findSurveyById(activityId));
             if (activity.isPresent()) {
                 return activity;
-            } else
-                return auctionRepository.findById(activityId).map(a -> a);
+            } else {
+            log.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa");
+                return auctionRepository.findById(activityId).map(auction -> (Activity) auction);
+            }
         }
     }
     public Activity getActivity(Long activityId) throws EntityNotFoundException {

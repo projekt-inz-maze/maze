@@ -73,7 +73,7 @@ public class AdditionalPointsService {
                     String professorName = professor.getFirstName() + " " + professor.getLastName();
                     return new AdditionalPointsResponse(additionalPoint.getSendDateMillis(),
                             professorName,
-                            additionalPoint.getPointsReceived(),
+                            additionalPoint.getPoints(),
                             additionalPoint.getDescription());
                 })
                 .sorted(((o1, o2) -> Long.compare(o2.getDateMillis(), o1.getDateMillis())))

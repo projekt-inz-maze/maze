@@ -61,11 +61,11 @@ public class GradeService {
                 .toList();
 
         Double pointsReceived = results.stream()
-                .mapToDouble(TaskResult::getPointsReceived)
+                .mapToDouble(TaskResult::getPoints)
                 .sum();
 
         Double additionalPoints = additionalPointsRepository.findAllByUserAndCourse(student, course).stream()
-                .mapToDouble(AdditionalPoints::getPointsReceived)
+                .mapToDouble(AdditionalPoints::getPoints)
                 .sum();
 
         Double pointsPossibleToGet = results.stream()

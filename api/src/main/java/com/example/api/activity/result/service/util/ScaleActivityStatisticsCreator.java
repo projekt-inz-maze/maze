@@ -50,7 +50,7 @@ public class ScaleActivityStatisticsCreator {
         taskResults.forEach(this::add);
     }
     public void addTask(TaskResult taskResult) {
-        Double grade = gradeMapper.getGrade(taskResult.getPointsReceived(), maxPoints);
+        Double grade = gradeMapper.getGrade(taskResult.getPoints(), maxPoints);
         statistics.get(grade).incrementResults();
     }
 

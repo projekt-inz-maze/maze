@@ -44,6 +44,6 @@ public class FileTaskResult extends TaskResult {
 
     @Override
     public boolean isEvaluated() {
-        return this.getPointsReceived() != null;
+        return this.getPoints() != null;
     }
 }

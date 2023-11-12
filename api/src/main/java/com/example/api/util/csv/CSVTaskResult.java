@@ -16,7 +16,7 @@ public class CSVTaskResult {
 
     public CSVTaskResult(TaskResult result) {
         this.info = "-";
-        this.points = result == null ? null : result.getPointsReceived();
+        this.points = result == null ? null : result.getPoints();
     }
 
     public CSVTaskResult(FileTaskResult result, Feedback feedback) {
@@ -24,7 +24,7 @@ public class CSVTaskResult {
             this.points = null;
             this.info = "-";
         } else {
-            this.points = result.getPointsReceived();
+            this.points = result.getPoints();
             this.info = feedback.getContent();
         }
     }

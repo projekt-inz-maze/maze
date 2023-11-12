@@ -56,7 +56,7 @@ public class BadgeVisitor {
             return results.stream().anyMatch(result -> {
                 Activity activity = result.getActivity();
                 BigDecimal maxPoints = BigDecimal.valueOf(activity.getMaxPoints());
-                BigDecimal resultPoints = BigDecimal.valueOf(result.getPointsReceived());
+                BigDecimal resultPoints = BigDecimal.valueOf(result.getPoints());
                 BigDecimal score = resultPoints.divide(maxPoints, 2, RoundingMode.HALF_UP);
                 return score.compareTo(activityScore) >= 0;
             });
@@ -70,7 +70,7 @@ public class BadgeVisitor {
                 .toList();
 
         BigDecimal currentPoints = BigDecimal.valueOf(results.stream()
-                .mapToDouble(TaskResult::getPointsReceived)
+                .mapToDouble(TaskResult::getPoints)
                 .sum());
         BigDecimal maxPoints = BigDecimal.valueOf(activities.stream()
                 .mapToDouble(Activity::getMaxPoints)

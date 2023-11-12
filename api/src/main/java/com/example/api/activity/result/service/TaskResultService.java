@@ -240,7 +240,7 @@ public class TaskResultService {
         if (task.getActivityType().equals(ActivityType.EXPEDITION)) {
             return graphTaskResultRepository.findAllByGraphTask((GraphTask) task)
                     .stream()
-                    .filter(result -> result.getPointsReceived() != null)
+                    .filter(result -> result.getPoints() != null)
                     .toList();
         } else if (task.getActivityType().equals(ActivityType.TASK)) {
             return fileTaskResultRepository.findAllByFileTask((FileTask) task)
@@ -255,6 +255,7 @@ public class TaskResultService {
         return switch (activity.getActivityType()) {
             case TASK, EXPEDITION -> getActivityStatisticsForTask((Task) activity);
             case SURVEY -> getActivityStatisticsForSurvey((Survey) activity);
+            case AUCTION ->
             default -> null;
         };
     }
@@ -309,9 +310,9 @@ public class TaskResultService {
 
         List<? extends TaskResult> results = getResultsForTask(task);
 
-        Double sumPoints = results.stream().mapToDouble(TaskResult::getPointsReceived).sum();
-        OptionalDouble bestScore = results.stream().mapToDouble(TaskResult::getPointsReceived).max();
-        OptionalDouble worstScore = results.stream().mapToDouble(TaskResult::getPointsReceived).min();
+        Double sumPoints = results.stream().mapToDouble(TaskResult::getPoints).sum();
+        OptionalDouble bestScore = results.stream().mapToDouble(TaskResult::getPoints).max();
+        OptionalDouble worstScore = results.stream().mapToDouble(TaskResult::getPoints).min();
         int answersNumber = results.size();
 
         Map<Group, GroupActivityStatisticsCreator> avgScoreCreators = results

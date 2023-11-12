@@ -23,7 +23,7 @@ public class ScoreCreator {
     }
 
     public void add(TaskResult taskResult) {
-            sumOfScores += taskResult.getPointsReceived();
+            sumOfScores += taskResult.getPoints();
             numberOfScores += 1;
     }
 
