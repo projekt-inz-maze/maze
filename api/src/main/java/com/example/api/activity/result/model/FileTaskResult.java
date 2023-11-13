@@ -36,6 +36,10 @@ public class FileTaskResult extends TaskResult {
         return (FileTask) activity;
     }
 
+    public void setFileTask(FileTask fileTask) {
+        this.activity = fileTask;
+    }
+
     @Override
     public boolean isEvaluated() {
         return this.getPoints() != null;

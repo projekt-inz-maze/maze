@@ -308,13 +308,13 @@ public class SummaryService {
 
     private List<? extends TaskResult> getAllResultsForActivity(Activity activity) {
         if (activity.getActivityType().equals(ActivityType.EXPEDITION)) {
-            return graphTaskResultRepository.findAllByGraphTask((GraphTask) activity);
+            return graphTaskResultRepository.findAllByActivity((GraphTask) activity);
         }
         else if (activity.getActivityType().equals(ActivityType.TASK)) {
-            return fileTaskResultRepository.findAllByFileTask((FileTask) activity);
+            return fileTaskResultRepository.findAllByActivity((FileTask) activity);
         }
         else if (activity.getActivityType().equals(ActivityType.SURVEY)) {
-            return surveyResultRepository.findAllBySurvey((Survey) activity);
+            return surveyResultRepository.findAllByActivity((Survey) activity);
         }
         return List.of();
     }

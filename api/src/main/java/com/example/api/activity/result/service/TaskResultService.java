@@ -239,8 +239,8 @@ public class TaskResultService {
                 .toList();
     }
 
-    private List<? extends TaskResult> getResultsForActivity(Activity task) {
-        return taskResultRepository.findAllByActivity()
+    private List<? extends TaskResult> getResultsForActivity(Activity activity) {
+        return taskResultRepository.findAllByActivity(activity);
     }
 
     private ActivityStatisticsResponse getActivityStatisticsForActivity(Activity activity) {
@@ -372,6 +372,6 @@ public class TaskResultService {
     }
 
     private List<SurveyResult> getSurveyResults(Survey activity) {
-        return surveyResultRepository.findAllBySurvey(activity);
+        return surveyResultRepository.findAllByActivity(activity);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.api.activity.result.repository;
 
+import com.example.api.activity.Activity;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.course.Course;
@@ -15,13 +16,13 @@ import java.util.List;
 public interface GraphTaskResultRepository extends JpaRepository<GraphTaskResult, Long> {
     GraphTaskResult findGraphTaskResultById(Long id);
 
-    @Query("SELECT gtr FROM GraphTaskResult gtr WHERE gtr.graphTask = ?1 AND gtr.member.user = ?2")
+    @Query("SELECT gtr FROM GraphTaskResult gtr WHERE gtr.activity = ?1 AND gtr.member.user = ?2")
     GraphTaskResult findGraphTaskResultByGraphTaskAndUser(GraphTask task, User user);
 
-    @Query("SELECT gtr FROM GraphTaskResult gtr WHERE gtr.graphTask.id = ?1 AND gtr.member.user = ?2")
+    @Query("SELECT gtr FROM GraphTaskResult gtr WHERE gtr.activity.id = ?1 AND gtr.member.user = ?2")
     GraphTaskResult findGraphTaskResultByGraphTaskIdAndUser(Long taskId, User user);
 
-    boolean existsByGraphTaskAndMember(GraphTask task, CourseMember member);
+    boolean existsByActivityAndMember(Activity task, CourseMember member);
 
     List<GraphTaskResult> findAllByMember(CourseMember courseMember);
 
@@ -29,9 +30,9 @@ public interface GraphTaskResultRepository extends JpaRepository<GraphTaskResult
 
     List<GraphTaskResult> findAllByUserAndCourse(User user, Course course);
 
-    List<GraphTaskResult> findAllByGraphTask(GraphTask graphTask);
+    List<GraphTaskResult> findAllByActivity(Activity graphTask);
 
-    @Query("SELECT gtr FROM GraphTaskResult gtr WHERE gtr.graphTask.id = ?1")
+    @Query("SELECT gtr FROM GraphTaskResult gtr WHERE gtr.activity.id = ?1")
     List<GraphTaskResult> findAllByGraphTaskId(Long graphTaskId);
 
     Long countAllByMemberAndSendDateMillisNotNull(CourseMember member);

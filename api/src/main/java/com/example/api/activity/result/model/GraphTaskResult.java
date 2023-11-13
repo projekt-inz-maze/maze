@@ -42,6 +42,10 @@ public class GraphTaskResult extends TaskResult {
         return (GraphTask) activity;
     }
 
+    public void setGraphTask(GraphTask graphTask) {
+        this.activity = graphTask;
+    }
+
     public GraphTaskResult(GraphTask graphTask,
                            Long startDateMillis,
                            ResultStatus status,

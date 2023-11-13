@@ -15,7 +15,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Entity
 public class Survey extends Activity {
-    private ActivityType activityType = ActivityType.SURVEY;
+    private final ActivityType activityType = ActivityType.SURVEY;
     private double points;
 
     public Survey(CreateSurveyForm form, User professor, Course course) {

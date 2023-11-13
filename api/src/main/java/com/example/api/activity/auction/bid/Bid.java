@@ -16,9 +16,9 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Bid extends TaskResult {
+
     public Bid(CourseMember member, Auction auction, Double points) {
         super(points, Instant.now().toEpochMilli(), auction.getCourse(), member);
         this.activity = auction;
@@ -26,7 +26,7 @@ public class Bid extends TaskResult {
 
     @Override
     public boolean isEvaluated() {
-        return true;
+        return getAuction().isResolved();
     }
 
     public Auction getAuction() {

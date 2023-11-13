@@ -54,7 +54,7 @@ public class AuctionService {
                 .getCurrentUserAndValidateStudentAccount()
                 .getCourseMember(auction.getCourse(), true);
 
-        Optional<Bid> previousBid = bidRepository.findByAuctionAndCourseMember(auction, courseMember);
+        Optional<Bid> previousBid = bidRepository.findByActivityAndMember(auction, courseMember);
 
         return new AuctionDTO(auction.getId(),
                 auction.getHighestBid().map(Bid::getPoints),
@@ -79,7 +79,7 @@ public class AuctionService {
             throw new AuctionHasBeenResolvedException(auction.getResolutionDate());
         }
 
-        Bid bid = bidRepository.findByAuctionAndCourseMember(auction, courseMember)
+        Bid bid = bidRepository.findByActivityAndMember(auction, courseMember)
                 .orElseGet(() -> new Bid(courseMember, auction, 0D));
 
         courseMember.decreasePoints(dto.bidValue() - bid.getPoints());
@@ -112,7 +112,7 @@ public class AuctionService {
         task.setIsBlocked(false);
         task.setRequirements(requirementService.requirementsForAuctionTask(auction, winner.getUser()));
 
-        bidRepository.findAllByAuction(auction)
+        bidRepository.findAllByActivity(auction)
                 .stream()
                 .filter(bid -> !bid.getId().equals(highestBid.getId()))
                 .forEach(bid -> bid.getMember().changePoints(bid.getPoints()));

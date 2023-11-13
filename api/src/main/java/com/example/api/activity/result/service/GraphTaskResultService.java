@@ -70,7 +70,7 @@ public class GraphTaskResultService {
         CourseMember member = userService.getCurrentUserAndValidateStudentAccount()
                 .getCourseMember(graphTask.getCourse(), true);
 
-        if (graphTaskResultRepository.existsByGraphTaskAndMember(graphTask, member)) {
+        if (graphTaskResultRepository.existsByActivityAndMember(graphTask, member)) {
             throw new EntityAlreadyInDatabaseException(graphTaskResultAlreadyExists(id, member.getUser().getId()));
         }
 
