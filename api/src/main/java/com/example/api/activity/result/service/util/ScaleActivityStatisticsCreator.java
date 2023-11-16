@@ -1,7 +1,8 @@
 package com.example.api.activity.result.service.util;
 
+import com.example.api.activity.auction.Auction;
+import com.example.api.activity.auction.bid.Bid;
 import com.example.api.activity.task.dto.response.result.ScaleActivityStatistics;
-import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.model.TaskResult;
 import com.example.api.activity.Activity;
@@ -20,10 +21,20 @@ public class ScaleActivityStatisticsCreator {
     private final HashMap<Double, ScaleActivityStatistics> statistics = new HashMap<>();
 
     public ScaleActivityStatisticsCreator(Activity activity) {
-        if (activity.getActivityType().equals(ActivityType.SURVEY)) {
-            initSurvey((Survey) activity);
+        switch (activity.getActivityType()) {
+            case SURVEY:
+                initSurvey((Survey) activity);
+                break;
+            case TASK:
+            case EXPEDITION:
+                initTask((Task) activity);
+                break;
+            case AUCTION:
+                initAuction((Auction) activity);
+                break;
+            default:
+                throw new IllegalStateException("Illegal activity type");
         }
-        else initTask((Task) activity);
     }
 
     public void initTask(Task task) {
@@ -38,11 +49,25 @@ public class ScaleActivityStatisticsCreator {
                 .forEach(grade -> statistics.put(grade, new ScaleActivityStatistics(grade)));
     }
 
+    public void initAuction(Auction auction) {
+        this.maxPoints = auction.getMaxPoints();
+    }
+
     public void add(TaskResult taskResult) {
-        if (taskResult.getActivity().getActivityType().equals(ActivityType.SURVEY)) {
-            addSurvey((SurveyResult) taskResult);
+        switch (taskResult.getActivity().getActivityType()) {
+            case SURVEY:
+                addSurvey((SurveyResult) taskResult);
+                break;
+            case TASK:
+            case EXPEDITION:
+                addTask(taskResult);
+                break;
+            case AUCTION:
+                addAuction((Bid) taskResult);
+                break;
+            default:
+                throw new IllegalStateException("Illegal activity type");
         }
-        else addTask(taskResult);
     }
 
 
@@ -58,6 +83,11 @@ public class ScaleActivityStatisticsCreator {
         if (surveyResult.getRate() != null) {
             statistics.get(Double.valueOf(surveyResult.getRate())).incrementResults();
         }
+    }
+
+    public void addAuction(Bid bid) {
+        statistics.putIfAbsent(bid.getPoints(), new ScaleActivityStatistics(bid.getPoints()));
+        statistics.get(bid.getPoints()).incrementResults();
     }
 
     public List<ScaleActivityStatistics> create() {

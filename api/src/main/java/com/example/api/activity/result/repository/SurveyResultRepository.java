@@ -26,6 +26,5 @@ public interface SurveyResultRepository extends JpaRepository<SurveyResult, Long
     List<SurveyResult> findAllBySurveyId(Long surveyId);
 
     long countAllByMember_UserAndCourse(User user, Course course);
-
     long countAllByMember(CourseMember member);
 }

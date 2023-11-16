@@ -4,11 +4,8 @@ import com.example.api.activity.Activity;
 import com.example.api.activity.auction.Auction;
 import com.example.api.activity.result.model.TaskResult;
 import com.example.api.course.coursemember.CourseMember;
-import com.example.api.error.exception.EntityNotFoundException;
-import com.example.api.error.exception.MissingAttributeException;
-import com.example.api.error.exception.WrongUserTypeException;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -17,9 +14,10 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 @Entity
+@Slf4j
 public class Bid extends TaskResult {
 
-    public Bid(CourseMember member, Auction auction, Double points) {
+    public Bid(CourseMember member, Activity auction, Double points) {
         super(points, Instant.now().toEpochMilli(), auction.getCourse(), member);
         this.activity = auction;
     }
@@ -31,5 +29,16 @@ public class Bid extends TaskResult {
 
     public Auction getAuction() {
         return (Auction) activity;
+    }
+
+    @Override
+    public void setPoints(Double points) {
+        if (this.points == null) {
+            member.decreasePoints(points);
+            this.points = points;
+        } else {
+            member.decreasePoints(points - this.points);
+            this.points = points;
+        }
     }
 }

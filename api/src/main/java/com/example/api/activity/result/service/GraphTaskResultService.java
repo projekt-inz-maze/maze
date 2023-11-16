@@ -2,6 +2,7 @@ package com.example.api.activity.result.service;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
+import com.example.api.activity.result.repository.TaskResultRepository;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.*;
@@ -47,6 +48,7 @@ public class GraphTaskResultService {
     private final UserService userService;
     private final ActivityValidator activityValidator;
     private final HeroVisitor heroVisitor;
+    private final TaskResultRepository taskResultRepository;
 
     public Long getGraphTaskResultId(Long graphTaskId)
             throws WrongUserTypeException, EntityNotFoundException {
@@ -185,7 +187,7 @@ public class GraphTaskResultService {
     }
 
     public GraphTaskResult getGraphTaskResultWithGraphTaskAndUser(Long graphTaskId, User user) throws EntityNotFoundException {
-        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskIdAndUser(graphTaskId, user);
+        GraphTaskResult result = (GraphTaskResult) taskResultRepository.findByActivity_IdAndMember_User(graphTaskId, user);//graphTaskResultRepository.findGraphTaskResultByGraphTaskIdAndUser(graphTaskId, user);
         resultValidator.validateResultIsNotNull(result, graphTaskId, user.getEmail());
         return result;
     }

@@ -18,8 +18,8 @@ public interface FileTaskResultRepository extends JpaRepository<FileTaskResult, 
 
     @Query("SELECT ftr FROM FileTaskResult ftr WHERE ftr.activity = ?1 AND ftr.member.user = ?2")
     FileTaskResult findFileTaskResultByFileTaskAndUser(Activity fileTask, User user);
-    List<FileTaskResult> findAllByMember(CourseMember member);
     List<FileTaskResult> findAllByMember_UserAndCourse(User user, Course course);
+    List<FileTaskResult> findAllByMember(CourseMember member);
     List<FileTaskResult> findAllByActivity(Activity fileTask);
     @Query("SELECT ftr FROM FileTaskResult ftr WHERE ftr.activity.id = ?1")
     List<FileTaskResult> findAllByFileTaskId(Long fileTaskId);

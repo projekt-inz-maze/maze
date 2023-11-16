@@ -19,45 +19,45 @@ import java.util.Optional;
 @Setter
 @NoArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class TaskResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @OneToOne
-    private CourseMember member;
+    protected Long id;
 
     @ManyToOne
-    private Course course;
+    public CourseMember member;
 
-    private Double points;
+    @ManyToOne
+    protected Course course;
+
+    protected Double points;
 
     @CreationTimestamp
-    Instant creationTime;
+    protected Instant creationTime;
 
-    private Long sendDateMillis;
+    protected Long sendDateMillis;
 
     @ManyToOne
     @JoinColumn(name="activity_id")
-    protected Activity activity;
+    public Activity activity;
 
     public abstract boolean isEvaluated();
 
     public TaskResult(Long id, Double points, Long sendDateMillis, Course course, CourseMember courseMember)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         this.id = id;
-        this.setPoints(points);
         this.sendDateMillis = sendDateMillis;
         this.course= course;
         this.member = courseMember;
+        this.setPoints(points);
     }
 
     public TaskResult(Double points, Long sendDateMillis, Course course, CourseMember courseMember) {
-        this.setPoints(points);
         this.sendDateMillis = sendDateMillis;
         this.course= course;
         this.member = courseMember;
+        this.setPoints(points);
     }
 
     public void setPoints(Double newPoints) {
