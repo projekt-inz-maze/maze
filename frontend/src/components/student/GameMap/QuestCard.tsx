@@ -69,8 +69,6 @@ const QuestCard = (props: QuestCardProps) => {
           activityId={props.activity.id}
           showDetails={showModal}
           onCloseDetails={() => setShowModal(false)}
-          type={props.activity.type}
-          endDate='22:00, 12.01.2024'
           points={props.activity.points}
         />
       )}

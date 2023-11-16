@@ -68,3 +68,19 @@ export type ActivityRequirements = {
   isBlocked: boolean
   requirements: Requirement[]
 }
+
+export type AuctionResponse = {
+  id: number
+  highestBid: number
+  userBid: number
+  lowestAllowedBid: number
+  highestAllowedBid: number
+  availablePoints: number
+  endDateEpochSeconds: number
+  minTaskScoreToGetPoints: number
+}
+
+export type BidRequest = {
+  auctionId: number
+  bidValue: number
+}
