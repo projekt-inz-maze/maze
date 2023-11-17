@@ -1,10 +1,10 @@
 package com.example.api.activity.result.model;
 
-import com.example.api.activity.task.model.Activity;
-import com.example.api.activity.task.model.GraphTask;
-import com.example.api.course.model.CourseMember;
-import com.example.api.question.model.Answer;
-import com.example.api.question.model.Question;
+import com.example.api.activity.Activity;
+import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.question.answer.Answer;
+import com.example.api.question.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

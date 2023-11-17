@@ -1,8 +1,8 @@
 package com.example.api.unit.controller.group;
 
-import com.example.api.group.controller.GroupController;
-import com.example.api.group.model.Group;
-import com.example.api.group.service.GroupService;
+import com.example.api.group.GroupController;
+import com.example.api.group.Group;
+import com.example.api.group.GroupService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.BeforeEach;

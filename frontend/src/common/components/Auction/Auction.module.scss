@@ -1,0 +1,132 @@
+p {
+  margin: 0;
+  padding-top: 0;
+}
+
+span {
+  font-weight: bold;
+}
+
+// Override the default modal styles (border bottom)
+.modalHeader {
+  border-bottom: none !important;
+  padding-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+
+  .customButtonClose {
+    padding: calc(var(--bs-modal-header-padding-y) * .5) calc(var(--bs-modal-header-padding-x) * .5);
+    background-color: transparent;
+    border: 0;
+    width: 50px;
+
+    span {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: black;
+    }
+  }
+
+  .customButtonClose:hover {
+    transform: scale(1.1);
+  }
+}
+
+// Override the default modal styles (border top)
+.modalFooter {
+  border-top: none !important;
+  padding: 1em 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    font-size: 1rem;
+    padding-right: 0.5em;
+  }
+
+  input {
+    height: 2em;
+  }
+
+  .bidButton {
+    height: 2em;
+    background-color: #FFB21C;
+    color: black;
+    border: none;
+    font-weight: bold;
+  }
+}
+
+.modalContainer {
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.modalTitle {
+  padding-left: 0.5em;
+  font-weight: 600 !important;
+  font-size: 1.6rem !important;
+}
+
+.dateInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25em 0;
+  border: 1px solid black;
+  border-radius: 24px;
+
+  img {
+    margin-right: 0.75em;
+    margin-left: 0.75em;
+  }
+
+  p {
+    padding-right: 1em;
+  }
+}
+
+.modalTaskDescription {
+  padding: 0 0.75em;
+
+  p:first-child {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding-bottom: 0.25em;
+  }
+}
+
+.modalTaskRequirements {
+  font-size: 0.9rem;
+  padding: 2em 0.75em 0.75em 1em;
+  display: flex;
+  justify-content: space-around;
+
+  .mainFlexContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .imgSection {
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 35px;
+      height: 35px;
+      margin-right: 0.5em;
+    }
+
+  }
+}
+
+.error {
+  padding: 0.5em;
+  text-align: center;
+  font-weight: bold;
+  color: red;
+}

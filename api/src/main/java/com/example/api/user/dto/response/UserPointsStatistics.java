@@ -1,6 +1,6 @@
 package com.example.api.user.dto.response;
 
-import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;

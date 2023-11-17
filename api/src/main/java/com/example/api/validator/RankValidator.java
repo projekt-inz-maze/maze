@@ -1,6 +1,5 @@
 package com.example.api.validator;
 
-import com.example.api.course.validator.CourseValidator;
 import com.example.api.user.dto.request.rank.AddRankForm;
 import com.example.api.user.dto.request.rank.EditRankForm;
 import com.example.api.error.exception.EntityNotFoundException;

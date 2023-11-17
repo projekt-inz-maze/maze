@@ -1,22 +1,21 @@
 package com.example.api.unit.util.visitor;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
-import com.example.api.course.model.CourseMember;
-import com.example.api.map.dto.response.task.ActivityType;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.activity.ActivityType;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;
-import com.example.api.activity.task.model.GraphTask;
-import com.example.api.question.model.Difficulty;
-import com.example.api.question.model.Question;
-import com.example.api.question.model.QuestionType;
+import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.question.Difficulty;
+import com.example.api.question.Question;
+import com.example.api.question.QuestionType;
 import com.example.api.user.hero.model.Priest;
 import com.example.api.user.hero.model.Rogue;
 import com.example.api.user.hero.model.UserHero;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
-import com.example.api.user.model.hero.*;
 import com.example.api.util.calculator.TimeCalculator;
 import com.example.api.user.hero.HeroVisitor;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +34,6 @@ import static org.mockito.Mockito.when;
 public class HeroVisitorTest {
     private HeroVisitor heroVisitor;
     @Mock private TimeCalculator timeCalculator;
-    private User user;
     private GraphTaskResult result;
 
     private CourseMember courseMember;
@@ -46,7 +44,7 @@ public class HeroVisitorTest {
     public void init() {
         MockitoAnnotations.openMocks(this);
         heroVisitor = new HeroVisitor(timeCalculator);
-        user = new User("email", "Name", "LastName", AccountType.STUDENT);
+        User user = new User("email", "Name", "LastName", AccountType.STUDENT);
 
         firstQuestion = new Question();
         Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "", "", Difficulty.EASY, List.of(), 10.0, new LinkedList<>(), null, null);

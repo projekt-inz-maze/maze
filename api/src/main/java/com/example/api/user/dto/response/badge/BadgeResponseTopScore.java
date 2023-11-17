@@ -1,6 +1,6 @@
 package com.example.api.user.dto.response.badge;
 
-import com.example.api.user.model.badge.TopScoreBadge;
+import com.example.api.user.badge.types.TopScoreBadge;
 import lombok.Getter;
 import lombok.Setter;
 

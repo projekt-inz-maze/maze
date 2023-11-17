@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 
 import { Button, Modal } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 
 import styles from './ActivityDetails.module.scss'
 import ExpeditionService from '../../../services/expedition.service'
@@ -26,8 +25,6 @@ type ActivityDetailsProps = {
 }
 
 const ActivityDetails = (props: ActivityDetailsProps) => {
-  const navigate = useNavigate()
-
   const [activityScore, setActivityScore] = useState<number>(0)
 
   useEffect(() => {

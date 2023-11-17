@@ -1,23 +1,26 @@
 package com.example.api.activity;
 
-import com.example.api.activity.task.dto.request.create.CreateActivityForm;
-import com.example.api.activity.task.model.*;
-import com.example.api.activity.task.service.FileTaskService;
-import com.example.api.activity.task.service.GraphTaskService;
-import com.example.api.activity.task.service.InfoService;
-import com.example.api.activity.task.service.SurveyService;
-import com.example.api.activity.task.dto.request.edit.*;
+import com.example.api.activity.auction.AuctionRepository;
+import com.example.api.activity.info.EditInfoForm;
+import com.example.api.activity.info.Info;
+import com.example.api.activity.survey.EditSurveyForm;
+import com.example.api.activity.survey.Survey;
+import com.example.api.activity.task.TaskRepository;
+import com.example.api.activity.task.filetask.EditFileTaskForm;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.*;
+import com.example.api.activity.task.filetask.FileTaskService;
+import com.example.api.activity.info.InfoService;
+import com.example.api.activity.survey.SurveyService;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.map.model.Chapter;
+import com.example.api.chapter.Chapter;
 import com.example.api.user.model.User;
-import com.example.api.activity.task.repository.FileTaskRepository;
-import com.example.api.activity.task.repository.GraphTaskRepository;
-import com.example.api.activity.task.repository.InfoRepository;
-import com.example.api.activity.task.repository.SurveyRepository;
-import com.example.api.map.repository.ChapterRepository;
-import com.example.api.user.repository.UserRepository;
+import com.example.api.activity.task.filetask.FileTaskRepository;
+import com.example.api.activity.info.InfoRepository;
+import com.example.api.activity.survey.SurveyRepository;
+import com.example.api.chapter.ChapterRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.ChapterValidator;
 import com.example.api.validator.UserValidator;
@@ -53,6 +56,8 @@ public class ActivityService {
     private final SurveyService surveyService;
     private final ChapterRepository chapterRepository;
     private final ChapterValidator chapterValidator;
+    private final TaskRepository taskRepository;
+    private final AuctionRepository auctionRepository;
 
     public EditActivityForm getActivityEditInfo(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
         User professor = authService.getCurrentUser();
@@ -148,20 +153,19 @@ public class ActivityService {
 
     public Optional<Activity> getGradedActivity(Long activityId) {
 
-        Optional<Activity> graphTask = ofNullable(graphTaskRepository.findGraphTaskById(activityId));
-        if (graphTask.isPresent()) {
-            return graphTask;
-        }
+        Optional<Activity> task = taskRepository.findById(activityId).map(t -> t);
 
-        Optional<Activity> fileTask = ofNullable(fileTaskRepository.findFileTaskById(activityId));
-        if (fileTask.isPresent()) {
-            return fileTask;
+        if (task.isPresent()) {
+            return task;
+        } else {
+            Optional<Activity> activity = ofNullable(surveyRepository.findSurveyById(activityId));
+            if (activity.isPresent()) {
+                return activity;
+            } else
+                return auctionRepository.findById(activityId).map(a -> a);
         }
-
-         return ofNullable(surveyRepository.findSurveyById(activityId));
     }
     public Activity getActivity(Long activityId) throws EntityNotFoundException {
-
         Optional<Activity> gradedActivity = getGradedActivity(activityId);
 
         if (gradedActivity.isPresent()) {

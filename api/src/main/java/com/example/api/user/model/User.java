@@ -1,7 +1,8 @@
 package com.example.api.user.model;
 
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.StudentNotEnrolledException;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -54,6 +55,21 @@ public class User {
                 .filter(member -> member.getCourse().getId().equals(courseId))
                 .findAny();
     }
+
+    public CourseMember getCourseMember(Long courseId, boolean bool) throws StudentNotEnrolledException {
+        return courseMemberships.stream()
+                .filter(member -> member.getCourse().getId().equals(courseId))
+                .findAny()
+                .orElseThrow(() -> new StudentNotEnrolledException(this, courseId));
+    }
+
+    public CourseMember getCourseMember(Course course, boolean bool) throws StudentNotEnrolledException {
+        return courseMemberships.stream()
+                .filter(member -> member.getCourse().equals(course))
+                .findAny()
+                .orElseThrow(() -> new StudentNotEnrolledException(this, course.getId()));
+    }
+
     public Optional<CourseMember> getCourseMember(Course course) {
         return courseMemberships.stream()
                 .filter(member -> member.getCourse().equals(course))

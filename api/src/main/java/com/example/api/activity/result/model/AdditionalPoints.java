@@ -1,12 +1,11 @@
 package com.example.api.activity.result.model;
 
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.activity.task.model.Activity;
-import com.example.api.user.model.User;
+import com.example.api.activity.Activity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

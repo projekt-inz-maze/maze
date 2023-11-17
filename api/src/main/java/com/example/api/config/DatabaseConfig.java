@@ -6,55 +6,56 @@ import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.activity.task.model.GraphTask;
-import com.example.api.activity.task.model.Info;
-import com.example.api.activity.task.model.Survey;
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
-import com.example.api.course.repository.CourseMemberRepository;
-import com.example.api.course.repository.CourseRepository;
-import com.example.api.course.service.CourseMemberService;
-import com.example.api.group.model.AccessDate;
-import com.example.api.group.model.Group;
-import com.example.api.map.model.ActivityMap;
-import com.example.api.map.model.Chapter;
-import com.example.api.map.model.requirement.*;
-import com.example.api.question.model.Difficulty;
-import com.example.api.question.model.Option;
-import com.example.api.question.model.Question;
-import com.example.api.question.model.QuestionType;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.activity.info.Info;
+import com.example.api.activity.survey.Survey;
+import com.example.api.activity.task.graphtask.GraphTaskService;
+import com.example.api.chapter.requirement.model.*;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.coursemember.CourseMemberRepository;
+import com.example.api.course.CourseRepository;
+import com.example.api.course.coursemember.CourseMemberService;
+import com.example.api.group.accessdate.AccessDate;
+import com.example.api.group.Group;
+import com.example.api.map.ActivityMap;
+import com.example.api.chapter.Chapter;
+import com.example.api.question.Difficulty;
+import com.example.api.question.option.Option;
+import com.example.api.question.Question;
+import com.example.api.question.QuestionType;
+import com.example.api.user.badge.BadgeRepository;
+import com.example.api.user.badge.types.*;
 import com.example.api.user.hero.HeroRepository;
 import com.example.api.user.hero.model.*;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
-import com.example.api.user.model.badge.*;
 import com.example.api.util.model.File;
 import com.example.api.util.model.Image;
 import com.example.api.util.model.ImageType;
 import com.example.api.util.model.Url;
-import com.example.api.map.repository.ChapterRepository;
-import com.example.api.map.repository.RequirementRepository;
+import com.example.api.chapter.ChapterRepository;
+import com.example.api.chapter.requirement.RequirementRepository;
 import com.example.api.user.repository.*;
 import com.example.api.util.repository.FileRepository;
 import com.example.api.util.repository.UrlRepository;
-import com.example.api.activity.feedback.service.ProfessorFeedbackService;
-import com.example.api.activity.feedback.service.SurveyResultService;
+import com.example.api.activity.feedback.ProfessorFeedbackService;
+import com.example.api.activity.survey.SurveyResultService;
 import com.example.api.activity.result.service.FileTaskResultService;
 import com.example.api.activity.result.service.GraphTaskResultService;
-import com.example.api.activity.task.service.FileTaskService;
-import com.example.api.activity.task.service.GraphTaskService;
-import com.example.api.activity.task.service.InfoService;
-import com.example.api.activity.task.service.SurveyService;
-import com.example.api.group.service.AccessDateService;
-import com.example.api.group.service.GroupService;
-import com.example.api.map.service.ActivityMapService;
-import com.example.api.map.service.RequirementService;
-import com.example.api.question.service.OptionService;
-import com.example.api.question.service.QuestionService;
-import com.example.api.user.service.BadgeService;
+import com.example.api.activity.task.filetask.FileTaskService;
+import com.example.api.activity.info.InfoService;
+import com.example.api.activity.survey.SurveyService;
+import com.example.api.group.accessdate.AccessDateService;
+import com.example.api.group.GroupService;
+import com.example.api.map.ActivityMapService;
+import com.example.api.chapter.requirement.RequirementService;
+import com.example.api.question.option.OptionService;
+import com.example.api.question.QuestionService;
+import com.example.api.user.badge.BadgeService;
 import com.example.api.user.service.UserService;
 import com.example.api.util.message.MessageManager;
 import lombok.AllArgsConstructor;
@@ -527,7 +528,7 @@ public class DatabaseConfig {
                 false,
                 null
         );
-        StudentsRequirements studentsRequirements = new StudentsRequirements(
+        StudentsRequirement studentsRequirement = new StudentsRequirement(
                 MessageManager.STUDENTS_REQ_NAME,
                 false,
                 new LinkedList<>()
@@ -537,7 +538,7 @@ public class DatabaseConfig {
                 dateToRequirement,
                 minPointsRequirement,
                 groupsRequirement,
-                studentsRequirements,
+                studentsRequirement,
                 graphTasksRequirement,
                 fileTasksRequirement
         );

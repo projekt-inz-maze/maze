@@ -2,16 +2,15 @@ package com.example.api.util.visitor;
 
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.activity.task.model.GraphTask;
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
-import com.example.api.map.model.requirement.*;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.chapter.requirement.model.*;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
-import com.example.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class RequirementFulfilledVisitor {
-    private final UserService userService;
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final LoggedInUserService authService;
@@ -84,7 +82,7 @@ public class RequirementFulfilledVisitor {
         return member.getPoints() >= requirement.getMinPoints();
     }
 
-    public boolean visitStudentsRequirements(StudentsRequirements requirement) {
+    public boolean visitStudentsRequirements(StudentsRequirement requirement) {
         if (!requirement.getSelected()) {
             return true;
         }
