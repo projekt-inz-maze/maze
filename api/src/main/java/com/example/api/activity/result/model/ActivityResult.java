@@ -20,7 +20,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class TaskResult {
+public abstract class ActivityResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -44,7 +44,7 @@ public abstract class TaskResult {
 
     public abstract boolean isEvaluated();
 
-    public TaskResult(Long id, Double points, Long sendDateMillis, Course course, CourseMember courseMember)
+    public ActivityResult(Long id, Double points, Long sendDateMillis, Course course, CourseMember courseMember)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         this.id = id;
         this.sendDateMillis = sendDateMillis;
@@ -53,7 +53,7 @@ public abstract class TaskResult {
         this.setPoints(points);
     }
 
-    public TaskResult(Double points, Long sendDateMillis, Course course, CourseMember courseMember) {
+    public ActivityResult(Double points, Long sendDateMillis, Course course, CourseMember courseMember) {
         this.sendDateMillis = sendDateMillis;
         this.course= course;
         this.member = courseMember;

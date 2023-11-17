@@ -1,6 +1,6 @@
 package com.example.api.activity.result.service;
 
-import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
@@ -23,7 +23,7 @@ public class ActivityResultService {
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
 
-    public List<? extends TaskResult> getResultsForActivity(Long activityId) {
+    public List<? extends ActivityResult> getResultsForActivity(Long activityId) {
         return Stream.of(graphTaskResultRepository.findAllByGraphTaskId(activityId),
                     fileTaskResultRepository.findAllByFileTaskId(activityId),
                     surveyResultRepository.findAllBySurveyId(activityId)

@@ -2,8 +2,7 @@ package com.example.api.activity.result.service;
 
 import com.example.api.activity.Activity;
 import com.example.api.activity.ActivityRepository;
-import com.example.api.activity.ActivityService;
-import com.example.api.activity.result.repository.TaskResultRepository;
+import com.example.api.activity.result.repository.ActivityResultRepository;
 import com.example.api.activity.result.service.util.GroupActivityStatisticsCreator;
 import com.example.api.activity.result.service.util.ScaleActivityStatisticsCreator;
 import com.example.api.activity.survey.Survey;
@@ -21,7 +20,7 @@ import com.example.api.activity.feedback.Feedback;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.group.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
@@ -63,7 +62,7 @@ public class TaskResultService {
     private final ProfessorFeedbackRepository professorFeedbackRepository;
     private final UserService userService;
     private final CourseService courseService;
-    private final TaskResultRepository taskResultRepository;
+    private final ActivityResultRepository activityResultRepository;
     private final ActivityRepository activityRepository;
 
     public ByteArrayResource getCSVFile(GetCSVForm csvForm) {
@@ -129,14 +128,14 @@ public class TaskResultService {
         }
     }
 
-    public List<? extends TaskResult> getAllResultsForStudent(User student, Course course) {
+    public List<? extends ActivityResult> getAllResultsForStudent(User student, Course course) {
         List<SurveyResult> surveyResults = surveyResultRepository.findAllByUserAndCourse(student, course);
         return Stream.of(getGraphAndFileResultsForStudent(student, course), surveyResults)
                 .flatMap(Collection::stream)
                 .toList();
     }
 
-    public List<? extends TaskResult> getGraphAndFileResultsForStudent(User student, Course course) {
+    public List<? extends ActivityResult> getGraphAndFileResultsForStudent(User student, Course course) {
         List<GraphTaskResult> graphTaskResults = graphTaskResultRepository.findAllByUserAndCourse(student, course);
         List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course);
         return Stream.of(graphTaskResults, fileTaskResults)
@@ -231,7 +230,7 @@ public class TaskResultService {
 
         ActivityStatisticsResponse.ActivityStatisticsResponseBuilder responseBuilder = ActivityStatisticsResponse.builder();
 
-        List<TaskResult> results = taskResultRepository.findAllByActivity(activity);
+        List<ActivityResult> results = activityResultRepository.findAllByActivity(activity);
         int resultCount = results.size();
 
         responseBuilder.answersNumber(resultCount);

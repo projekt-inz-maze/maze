@@ -1,6 +1,5 @@
 package com.example.api.activity.result.model;
 
-import com.example.api.activity.Activity;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.util.model.File;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class FileTaskResult extends TaskResult {
+public class FileTaskResult extends ActivityResult {
     @OneToMany
     @JoinColumn
     @OnDelete(action = OnDeleteAction.CASCADE)

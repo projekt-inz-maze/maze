@@ -55,13 +55,13 @@ public class GradeService {
         List<GraphTaskResult> graphTaskResults = graphTaskResultRepository.findAllByUserAndCourse(student, course);
         List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course);
         List<SurveyResult> surveyResults = surveyResultRepository.findAllByUserAndCourse(student, course);
-        List<? extends TaskResult> results = Stream.of(graphTaskResults, fileTaskResults, surveyResults)
+        List<? extends ActivityResult> results = Stream.of(graphTaskResults, fileTaskResults, surveyResults)
                 .flatMap(Collection::stream)
-                .filter(TaskResult::isEvaluated)
+                .filter(ActivityResult::isEvaluated)
                 .toList();
 
         Double pointsReceived = results.stream()
-                .mapToDouble(TaskResult::getPoints)
+                .mapToDouble(ActivityResult::getPoints)
                 .sum();
 
         Double additionalPoints = additionalPointsRepository.findAllByUserAndCourse(student, course).stream()
@@ -78,16 +78,16 @@ public class GradeService {
         return new GradeResponse(new BasicUser(student), finalGrade);
     }
 
-    private Double getMaxPointsFromTaskResult(TaskResult taskResult) {
-        switch (taskResult.getActivity().getActivityType()) {
+    private Double getMaxPointsFromTaskResult(ActivityResult activityResult) {
+        switch (activityResult.getActivity().getActivityType()) {
             case TASK -> {
-                return ((FileTaskResult) taskResult).getFileTask().getMaxPoints();
+                return ((FileTaskResult) activityResult).getFileTask().getMaxPoints();
             }
             case EXPEDITION -> {
-                return ((GraphTaskResult) taskResult).getGraphTask().getMaxPoints();
+                return ((GraphTaskResult) activityResult).getGraphTask().getMaxPoints();
             }
             case SURVEY -> {
-                return ((SurveyResult) taskResult).getSurvey().getMaxPoints();
+                return ((SurveyResult) activityResult).getSurvey().getMaxPoints();
             }
         }
         return 0.0;

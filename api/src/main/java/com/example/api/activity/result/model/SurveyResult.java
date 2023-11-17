@@ -15,7 +15,7 @@ import javax.validation.constraints.Min;
 @Setter
 @Entity
 @NoArgsConstructor
-public class SurveyResult extends TaskResult {
+public class SurveyResult extends ActivityResult {
 
     @Min(1)
     @Max(5)

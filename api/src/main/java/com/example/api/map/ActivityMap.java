@@ -68,13 +68,16 @@ public class ActivityMap {
     }
 
     public boolean hasActivity(Activity activity) {
-        return Stream.of(graphTasks, fileTasks, infos, surveys)
-                .flatMap(Collection::stream)
-                .toList()
-                .contains(activity);
+        return getAllActivities().contains(activity);
     }
 
     public void add(Auction auction) {
         auctions.add(auction);
+    }
+
+    public List<? extends Activity> getAllActivities() {
+        return Stream.of(graphTasks, fileTasks, infos, surveys, auctions)
+                .flatMap(Collection::stream)
+                .toList();
     }
 }

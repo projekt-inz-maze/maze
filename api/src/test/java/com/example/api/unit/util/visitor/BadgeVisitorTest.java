@@ -43,7 +43,7 @@ public class BadgeVisitorTest {
     @Mock private LoggedInUserService authService;
 
     private User user;
-    private List<TaskResult> results;
+    private List<ActivityResult> results;
     private GraphTaskResult graphTaskResult1;
     private GraphTaskResult graphTaskResult2;
     private FileTaskResult fileTaskResult1;

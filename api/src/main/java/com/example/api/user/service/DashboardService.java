@@ -7,7 +7,7 @@ import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
@@ -179,11 +179,11 @@ public class DashboardService {
         return getTaskPoints(surveyResultRepository.findAllByMember(member));
     }
 
-    private Double getTaskPoints(List<? extends TaskResult> taskResults) {
+    private Double getTaskPoints(List<? extends ActivityResult> taskResults) {
         return taskResults
                 .stream()
-                .filter(TaskResult::isEvaluated)
-                .mapToDouble(TaskResult::getPoints)
+                .filter(ActivityResult::isEvaluated)
+                .mapToDouble(ActivityResult::getPoints)
                 .sum();
     }
 

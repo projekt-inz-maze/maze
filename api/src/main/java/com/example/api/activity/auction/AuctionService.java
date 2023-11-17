@@ -67,7 +67,7 @@ public class AuctionService {
                 );
     }
 
-    public void bidForAuction(BidDTO dto) throws InvalidBidValueException, WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
+    public void bidForAuction(BidDTO dto) throws WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
         Auction auction = repository.findById(dto.auctionId()).orElseThrow(EntityNotFoundException::new);
         CourseMember courseMember = userService
                 .getCurrentUserAndValidateStudentAccount()

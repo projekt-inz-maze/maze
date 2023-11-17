@@ -1,7 +1,7 @@
 package com.example.api.activity.task.dto.response.result.summary.util;
 
 import com.example.api.activity.task.dto.response.result.summary.Score;
-import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.result.model.ActivityResult;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +22,8 @@ public class ScoreCreator {
         this.numberOfScores = 0;
     }
 
-    public void add(TaskResult taskResult) {
-            sumOfScores += taskResult.getPoints();
+    public void add(ActivityResult activityResult) {
+            sumOfScores += activityResult.getPoints();
             numberOfScores += 1;
     }
 

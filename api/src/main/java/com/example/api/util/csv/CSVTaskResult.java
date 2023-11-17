@@ -2,7 +2,7 @@ package com.example.api.util.csv;
 
 import com.example.api.activity.feedback.Feedback;
 import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.result.model.ActivityResult;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,7 +14,7 @@ public class CSVTaskResult {
     private Double points;
     private String info;
 
-    public CSVTaskResult(TaskResult result) {
+    public CSVTaskResult(ActivityResult result) {
         this.info = "-";
         this.points = result == null ? null : result.getPoints();
     }

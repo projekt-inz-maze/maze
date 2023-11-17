@@ -8,7 +8,7 @@ import com.example.api.course.CourseService;
 import com.example.api.course.CourseValidator;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.ActivityType;
-import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.Activity;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
@@ -189,7 +189,7 @@ public class SummaryService {
     private AverageGradeForChapter toAvgGradeForChapter(Chapter chapter, Group group, User professor) {
         List<Double> grades = getAllProfessorChapterActivitiesResult(chapter, professor)
                 .stream()
-                .filter(TaskResult::isEvaluated)
+                .filter(ActivityResult::isEvaluated)
                 .filter(taskResult -> taskResult.getMember().getGroup().equals(group))
                 .map(pointsToGradeMapper::getGrade)
                 .toList();
@@ -248,7 +248,7 @@ public class SummaryService {
         AtomicReference<ScoreCreator> scoreRef = new AtomicReference<>(scoreCreator);
         getAllResultsForActivity(activity)
                 .stream()
-                .filter(TaskResult::isEvaluated)
+                .filter(ActivityResult::isEvaluated)
                 .filter(taskResult -> taskResult.getMember().getGroup().equals(group))
                 .forEach(taskResult -> scoreRef.get().add(taskResult));
         return scoreRef.get().create();
@@ -306,7 +306,7 @@ public class SummaryService {
                 .toList();
     }
 
-    private List<? extends TaskResult> getAllResultsForActivity(Activity activity) {
+    private List<? extends ActivityResult> getAllResultsForActivity(Activity activity) {
         if (activity.getActivityType().equals(ActivityType.EXPEDITION)) {
             return graphTaskResultRepository.findAllByActivity((GraphTask) activity);
         }
@@ -319,7 +319,7 @@ public class SummaryService {
         return List.of();
     }
 
-    private List<? extends TaskResult> getAllProfessorChapterActivitiesResult(Chapter chapter, User professor) {
+    private List<? extends ActivityResult> getAllProfessorChapterActivitiesResult(Chapter chapter, User professor) {
         return getAllProfessorChapterActivities(chapter, professor)
                 .stream()
                 .map(this::getAllResultsForActivity)
@@ -332,7 +332,7 @@ public class SummaryService {
                 .stream()
                 .map(this::getAllResultsForActivity)
                 .flatMap(Collection::stream)
-                .filter(TaskResult::isEvaluated)
+                .filter(ActivityResult::isEvaluated)
                 .map(pointsToGradeMapper::getGrade)
                 .toList();
     }

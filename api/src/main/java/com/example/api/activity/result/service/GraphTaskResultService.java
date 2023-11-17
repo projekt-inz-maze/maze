@@ -2,7 +2,7 @@ package com.example.api.activity.result.service;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
-import com.example.api.activity.result.repository.TaskResultRepository;
+import com.example.api.activity.result.repository.ActivityResultRepository;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.*;
@@ -48,7 +48,7 @@ public class GraphTaskResultService {
     private final UserService userService;
     private final ActivityValidator activityValidator;
     private final HeroVisitor heroVisitor;
-    private final TaskResultRepository taskResultRepository;
+    private final ActivityResultRepository taskResultRepository;
 
     public Long getGraphTaskResultId(Long graphTaskId)
             throws WrongUserTypeException, EntityNotFoundException {
