@@ -5,6 +5,7 @@ import com.example.api.activity.task.dto.response.result.TaskPointsStatisticsRes
 import com.example.api.activity.task.dto.response.result.TotalPointsResponse;
 import com.example.api.course.Course;
 import com.example.api.course.CourseService;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
@@ -60,6 +61,7 @@ public class AllPointsService {
     public TotalPointsResponse getAllPointsTotal(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
         Course course = courseService.getCourse(courseId);
+        CourseMember member = student.getCourseMember(courseId, true);
 
         log.info("Fetching student all points total {}", student.getEmail());
         AtomicReference<Double> totalPointsReceived = new AtomicReference<>(0D);
@@ -85,7 +87,8 @@ public class AllPointsService {
                 });
         additionalPointsRepository.findAllByUserAndCourse(student, course)
                 .forEach(additionalPoints -> totalPointsReceived.updateAndGet(v -> v + additionalPoints.getPoints()));
-        return new TotalPointsResponse(totalPointsReceived.get(), totalPointsToReceive.get());
+
+        return new TotalPointsResponse(member.getPoints(), totalPointsToReceive.get());
     }
 
     private List<?> getAllPointsList(Long courseId, String studentEmail) throws WrongUserTypeException, EntityNotFoundException {
