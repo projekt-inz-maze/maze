@@ -1,6 +1,5 @@
 package com.example.api.activity.result.model;
 
-import com.example.api.activity.Activity;
 import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.question.answer.Answer;
@@ -9,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -21,14 +18,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class GraphTaskResult extends TaskResult {
+public class GraphTaskResult extends ActivityResult {
     @OneToMany
     private List<Answer> answers = new LinkedList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "graphTask_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private GraphTask graphTask;
 
     private int timeSpentSec;
     private Long startDateMillis;
@@ -40,12 +32,15 @@ public class GraphTaskResult extends TaskResult {
 
     @Override
     public boolean isEvaluated() {
-        return this.getPointsReceived() != null;
+        return this.getPoints() != null;
     }
 
-    @Override
-    public Activity getActivity() {
-        return graphTask;
+    public GraphTask getGraphTask() {
+        return (GraphTask) activity;
+    }
+
+    public void setGraphTask(GraphTask graphTask) {
+        this.activity = graphTask;
     }
 
     public GraphTaskResult(GraphTask graphTask,
@@ -53,7 +48,7 @@ public class GraphTaskResult extends TaskResult {
                            ResultStatus status,
                            Question currQuestion,
                            CourseMember member) {
-        this.graphTask = graphTask;
+        this.activity = graphTask;
         this.startDateMillis = startDateMillis;
         this.setSendDateMillis(startDateMillis);
         this.status = status;

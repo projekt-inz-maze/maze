@@ -1,5 +1,6 @@
 package com.example.api.question;
 
+import com.example.api.activity.auction.Auction;
 import com.example.api.activity.result.dto.request.QuestionActionForm;
 import com.example.api.activity.task.dto.response.result.question.QuestionDetails;
 import com.example.api.activity.task.dto.response.result.question.QuestionInfoResponse;
@@ -92,7 +93,13 @@ public class QuestionService {
 
                 // counting current state of points
                 double allPoints = pointsCalculator.calculateAllPoints(result);
-                result.setPointsReceived(allPoints);
+
+                result.getGraphTask()
+                        .getAuction()
+                        .flatMap(Auction::getHighestBid)
+                        .ifPresent(bid -> bid.returnPoints(allPoints));
+
+                result.setPoints(allPoints);
                 
                 // if it's the last question, set finished
                 List<Question> nextQuestions = question.getNext();

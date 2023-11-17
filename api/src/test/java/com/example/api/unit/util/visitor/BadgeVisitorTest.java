@@ -43,7 +43,7 @@ public class BadgeVisitorTest {
     @Mock private LoggedInUserService authService;
 
     private User user;
-    private List<TaskResult> results;
+    private List<ActivityResult> results;
     private GraphTaskResult graphTaskResult1;
     private GraphTaskResult graphTaskResult2;
     private FileTaskResult fileTaskResult1;
@@ -108,12 +108,12 @@ public class BadgeVisitorTest {
         surveyResult.setCourse(course);
         additionalPoints.setCourse(course);
 
-        graphTaskResult1.setPointsReceived(100d);
-        graphTaskResult2.setPointsReceived(20d);
-        fileTaskResult1.setPointsReceived(80d);
-        fileTaskResult2.setPointsReceived(30d);
-        surveyResult.setPointsReceived(5d);
-        additionalPoints.setPointsReceived(10d);
+        graphTaskResult1.setPoints(100d);
+        graphTaskResult2.setPoints(20d);
+        fileTaskResult1.setPoints(80d);
+        fileTaskResult2.setPoints(30d);
+        surveyResult.setPoints(5d);
+        additionalPoints.setPoints(10d);
         surveyResult.setSendDateMillis(System.currentTimeMillis());
 
         results = List.of(
@@ -380,7 +380,7 @@ public class BadgeVisitorTest {
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
         graphTaskResult.setMember(member);
-        graphTaskResult.setPointsReceived(20d);
+        graphTaskResult.setPoints(20d);
         results.add(graphTaskResult);
 
         Group group = new Group();
@@ -410,7 +410,7 @@ public class BadgeVisitorTest {
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
         graphTaskResult.setMember(member);
-        graphTaskResult.setPointsReceived(20d);
+        graphTaskResult.setPoints(20d);
         results.add(graphTaskResult);
 
         Group group = new Group();
@@ -440,7 +440,7 @@ public class BadgeVisitorTest {
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
         graphTaskResult.setMember(member);
-        graphTaskResult.setPointsReceived(20d);
+        graphTaskResult.setPoints(20d);
         graphTaskResult.setCourse(course);
         results.add(graphTaskResult);
 
@@ -470,7 +470,7 @@ public class BadgeVisitorTest {
         results.remove(additionalPoints);
         GraphTaskResult graphTaskResult = new GraphTaskResult();
         graphTaskResult.setMember(member);
-        graphTaskResult.setPointsReceived(20d);
+        graphTaskResult.setPoints(20d);
         results.add(graphTaskResult);
 
         Group group = new Group();

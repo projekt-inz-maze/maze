@@ -2,6 +2,7 @@ package com.example.api.activity.result.service;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
+import com.example.api.activity.result.repository.ActivityResultRepository;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.*;
@@ -47,6 +48,7 @@ public class GraphTaskResultService {
     private final UserService userService;
     private final ActivityValidator activityValidator;
     private final HeroVisitor heroVisitor;
+    private final ActivityResultRepository taskResultRepository;
 
     public Long getGraphTaskResultId(Long graphTaskId)
             throws WrongUserTypeException, EntityNotFoundException {
@@ -70,7 +72,7 @@ public class GraphTaskResultService {
         CourseMember member = userService.getCurrentUserAndValidateStudentAccount()
                 .getCourseMember(graphTask.getCourse(), true);
 
-        if (graphTaskResultRepository.existsByGraphTaskAndMember(graphTask, member)) {
+        if (graphTaskResultRepository.existsByActivityAndMember(graphTask, member)) {
             throw new EntityAlreadyInDatabaseException(graphTaskResultAlreadyExists(id, member.getUser().getId()));
         }
 
@@ -101,7 +103,7 @@ public class GraphTaskResultService {
         log.info("Fetching points from graph task result with id {}", id);
         GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultById(id);
         activityValidator.validateTaskResultIsNotNull(result, id);
-        return result.getPointsReceived();
+        return result.getPoints();
     }
 
     public Double getMaxAvailablePoints(Long id) throws EntityNotFoundException {
@@ -185,7 +187,7 @@ public class GraphTaskResultService {
     }
 
     public GraphTaskResult getGraphTaskResultWithGraphTaskAndUser(Long graphTaskId, User user) throws EntityNotFoundException {
-        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskIdAndUser(graphTaskId, user);
+        GraphTaskResult result = (GraphTaskResult) taskResultRepository.findByActivity_IdAndMember_User(graphTaskId, user);//graphTaskResultRepository.findGraphTaskResultByGraphTaskIdAndUser(graphTaskId, user);
         resultValidator.validateResultIsNotNull(result, graphTaskId, user.getEmail());
         return result;
     }

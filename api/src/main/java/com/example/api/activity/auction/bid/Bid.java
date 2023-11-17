@@ -1,9 +1,11 @@
 package com.example.api.activity.auction.bid;
 
+import com.example.api.activity.Activity;
 import com.example.api.activity.auction.Auction;
+import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.course.coursemember.CourseMember;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -11,27 +13,39 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class Bid {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Slf4j
+public class Bid extends ActivityResult {
 
-    @ManyToOne
-    CourseMember courseMember;
+    public Bid(CourseMember member, Activity auction, Double points) {
+        super(points, Instant.now().toEpochMilli(), auction.getCourse(), member);
+        this.activity = auction;
+    }
 
-    @ManyToOne
-    Auction auction;
+    @Override
+    public boolean isEvaluated() {
+        return getAuction().isResolved();
+    }
 
-    Double value;
+    public Auction getAuction() {
+        return (Auction) activity;
+    }
 
-    @CreationTimestamp
-    Instant creationTime;
+    @Override
+    public void setPoints(Double points) {
+        if (this.points == null) {
+            member.decreasePoints(points);
+            this.points = points;
+        } else {
+            member.decreasePoints(points - this.points);
+            this.points = points;
+        }
+    }
 
-    public Bid(CourseMember courseMember, Auction auction, Double value) {
-        this.courseMember = courseMember;
-        this.auction = auction;
-        this.value = value;
+    public void returnPoints(Double taskResult) {
+        if (getAuction().getMinScoreToGetPoints() <= taskResult) {
+            member.changePoints(points);
+            points = 0D;
+        }
     }
 }

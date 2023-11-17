@@ -1,5 +1,6 @@
 package com.example.api.validator;
 
+import com.example.api.activity.auction.Auction;
 import com.example.api.activity.feedback.SaveProfessorFeedbackForm;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -8,7 +9,6 @@ import com.example.api.error.exception.WrongPointsNumberException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.feedback.ProfessorFeedback;
 import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.user.model.User;
 import com.example.api.util.model.File;
@@ -68,9 +68,14 @@ public class FeedbackValidator {
                 throw new WrongPointsNumberException("Wrong points number", form.getPoints(), fileTaskResult.getFileTask().getMaxPoints());
             }
             feedback.setPoints(form.getPoints());
-            fileTaskResult.setPointsReceived(form.getPoints());
+            fileTaskResult.setPoints(form.getPoints());
             fileTaskResultRepository.save(fileTaskResult);
-            //badgeService.checkAllBadges(professor);
+
+            fileTaskResult
+                    .getFileTask()
+                    .getAuction()
+                    .flatMap(Auction::getHighestBid)
+                    .ifPresent(bid -> bid.returnPoints(form.getPoints()));
         }
 
         // Feedback file can be set only once
@@ -82,14 +87,8 @@ public class FeedbackValidator {
 
         fileTaskResult.setEvaluated(true);
         fileTaskResultRepository.save(fileTaskResult);
-        return professorFeedbackRepository.save(feedback);
-    }
 
-    public void validateFeedbackIsNotNull(SurveyResult feedback, Long id, String email) throws EntityNotFoundException {
-        if(feedback == null) {
-            log.error("SurveyResult for survey with id {} and user {} not found in database", id, email);
-            throw new EntityNotFoundException("SurveyResult for survey with id " + id + " and user " + email + " not found in database");
-        }
+        return professorFeedbackRepository.save(feedback);
     }
 
     public void validateFeedbackForInfoResponse(ProfessorFeedback professorFeedback,

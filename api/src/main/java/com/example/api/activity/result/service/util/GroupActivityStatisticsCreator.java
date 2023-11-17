@@ -3,7 +3,7 @@ package com.example.api.activity.result.service.util;
 import com.example.api.activity.task.dto.response.result.GroupActivityStatistics;
 import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.Activity;
 import com.example.api.activity.survey.Survey;
 import com.example.api.activity.task.Task;
@@ -18,41 +18,41 @@ public class GroupActivityStatisticsCreator {
     private Double sumPoints;
     private Double maxPointsForTask;
 
-    public GroupActivityStatisticsCreator(Activity activity, TaskResult taskResult) {
+    public GroupActivityStatisticsCreator(Activity activity, ActivityResult activityResult) {
         if (activity.getActivityType().equals(ActivityType.SURVEY)) {
-            initSurvey((Survey) activity, (SurveyResult) taskResult);
+            initSurvey((Survey) activity, (SurveyResult) activityResult);
         }
-        else initTask((Task) activity, taskResult);
+        else initTask((Task) activity, activityResult);
     }
 
-    public void initTask(Task task, TaskResult taskResult) {
-        this.groupName = taskResult.getMember().getGroup().getName();
+    public void initTask(Task task, ActivityResult activityResult) {
+        this.groupName = activityResult.getMember().getGroup().getName();
         this.answersNumber = 1;
-        this.sumPoints = taskResult.getPointsReceived();
+        this.sumPoints = activityResult.getPoints();
         this.maxPointsForTask = task.getMaxPoints();
     }
 
     public void initSurvey(Survey survey, SurveyResult surveyResult) {
         this.groupName = surveyResult.getMember().getGroup().getName();
         this.answersNumber = 1;
-        this.sumPoints = surveyResult.getPointsReceived();
+        this.sumPoints = surveyResult.getPoints();
     }
 
-    public void add(TaskResult taskResult) {
-        if (taskResult.getActivity().getActivityType().equals(ActivityType.SURVEY)) {
-            addSurvey((SurveyResult) taskResult);
+    public void add(ActivityResult activityResult) {
+        if (activityResult.getActivity().getActivityType().equals(ActivityType.SURVEY)) {
+            addSurvey((SurveyResult) activityResult);
         }
-        else addTask(taskResult);
+        else addTask(activityResult);
     }
 
-    public void addTask(TaskResult taskResult) {
+    public void addTask(ActivityResult activityResult) {
         this.answersNumber += 1;
-        this.sumPoints += taskResult.getPointsReceived();
+        this.sumPoints += activityResult.getPoints();
     }
 
     public void addSurvey(SurveyResult surveyResult) {
         this.answersNumber += 1;
-        this.sumPoints += surveyResult.getPointsReceived();
+        this.sumPoints += surveyResult.getPoints();
     }
 
     public GroupActivityStatistics create() {

@@ -5,7 +5,7 @@ import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.activity.Activity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,8 +15,9 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class AdditionalPoints extends TaskResult{
+public class AdditionalPoints extends ActivityResult {
     private String professorEmail;
     private String description;
 
@@ -36,10 +37,5 @@ public class AdditionalPoints extends TaskResult{
     @Override
     public boolean isEvaluated() {
         return true;
-    }
-
-    @Override
-    public Activity getActivity() {
-        return null;
     }
 }

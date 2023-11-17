@@ -22,17 +22,16 @@ import java.util.Optional;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Auction extends Activity {
-    @NotNull private final ActivityType activityType = ActivityType.AUCTION;
-    @NotNull private boolean resolved = false;
-    @NotNull private Double minBidding;
-    @NotNull private Double maxBidding;
-    @NotNull private Double minScoreToGetPoints;
-    @NotNull private LocalDateTime resolutionDate;
-    @OneToOne @NotNull private Task task;
-    @OneToOne @NotNull private Bid highestBid;
+    private final ActivityType activityType = ActivityType.AUCTION;
+    private boolean resolved = false;
+    private Double minBidding;
+    private Double maxBidding;
+    private Double minScoreToGetPoints;
+    private LocalDateTime resolutionDate;
+    @OneToOne private Task task;
+    @OneToOne private Bid highestBid;
 
     public Auction(Long id,
                    String title,
@@ -74,7 +73,7 @@ public class Auction extends Activity {
     }
 
     public Double currentMinBiddingValue() {
-        return  getHighestBid().map(Bid::getValue).orElse(minBidding);
+        return  getHighestBid().map(Bid::getPoints).orElse(minBidding);
     }
 
     @Override

@@ -12,7 +12,7 @@ import com.example.api.error.exception.EntityRequiredAttributeNullException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.Activity;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
@@ -55,15 +55,15 @@ public class ActivityValidator {
         }
     }
 
-    public void validateTaskResultIsNotNull(TaskResult taskResult, Long id) throws EntityNotFoundException {
-        if(taskResult == null) {
+    public void validateTaskResultIsNotNull(ActivityResult activityResult, Long id) throws EntityNotFoundException {
+        if(activityResult == null) {
             log.error("Task result with id {} not found in database", id);
             throw new EntityNotFoundException("Task result with id" + id + " not found in database");
         }
     }
 
-    public void validateTaskResultIsNotNull(TaskResult taskResult, User user, FileTask fileTask) throws EntityNotFoundException {
-        if(taskResult == null) {
+    public void validateTaskResultIsNotNull(ActivityResult activityResult, User user, FileTask fileTask) throws EntityNotFoundException {
+        if(activityResult == null) {
             log.error("Task result for user {} and file task {} not found in database", user.getEmail(), fileTask.getId());
             throw new EntityNotFoundException("Task result for user " + user.getEmail() +
                     " and file task " + fileTask.getId() + " not found in database");

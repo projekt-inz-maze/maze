@@ -120,17 +120,17 @@ public class FileTaskService {
     }
 
     public void editMaxPoints(FileTask fileTask, Double newMaxPoints) {
-        fileTaskResultRepository.findAllByFileTask(fileTask)
+        fileTaskResultRepository.findAllByActivity(fileTask)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .forEach(fileTaskResult -> {
-                    Double prevPoints = fileTaskResult.getPointsReceived();
+                    Double prevPoints = fileTaskResult.getPoints();
                     Double newPoints = prevPoints * (newMaxPoints / fileTask.getMaxPoints());
                     ProfessorFeedback feedback = professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(fileTaskResult);
                     if (feedback != null) {
                         feedback.setPoints(newPoints);
                     }
-                    fileTaskResult.setPointsReceived(newPoints);
+                    fileTaskResult.setPoints(newPoints);
                 });
         fileTask.setMaxPoints(newMaxPoints);
     }

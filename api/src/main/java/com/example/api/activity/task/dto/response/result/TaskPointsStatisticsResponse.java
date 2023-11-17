@@ -13,21 +13,21 @@ public class TaskPointsStatisticsResponse extends PointsResponse {
 
     public TaskPointsStatisticsResponse(GraphTaskResult result) {
         super();
-        setDateAndPoints(result.getSendDateMillis(), result.getPointsReceived());
+        setDateAndPoints(result.getSendDateMillis(), result.getPoints());
         this.activityType = ActivityType.EXPEDITION;
         this.activityName = result.getGraphTask().getTitle();
     }
 
     public TaskPointsStatisticsResponse(FileTaskResult result) {
         super();
-        setDateAndPoints(result.getSendDateMillis(), result.getPointsReceived());
+        setDateAndPoints(result.getSendDateMillis(), result.getPoints());
         this.activityType = ActivityType.TASK;
         this.activityName = result.getFileTask().getTitle();
     }
 
     public TaskPointsStatisticsResponse(SurveyResult result) {
         super();
-        setDateAndPoints(result.getSendDateMillis(), result.getPointsReceived());
+        setDateAndPoints(result.getSendDateMillis(), result.getPoints());
         this.activityType = ActivityType.SURVEY;
         this.activityName = result.getSurvey().getTitle();
     }

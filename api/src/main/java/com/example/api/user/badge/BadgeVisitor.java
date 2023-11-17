@@ -4,7 +4,7 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.Activity;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.badge.types.*;
@@ -35,9 +35,9 @@ public class BadgeVisitor {
 
     public boolean visitActivityNumberBadge(ActivityNumberBadge badge) {
         User student = authService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse())
+        List<? extends ActivityResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse())
                 .stream()
-                .filter(TaskResult::isEvaluated)
+                .filter(ActivityResult::isEvaluated)
                 .toList();
         int activityNumber = results.size();
         return activityNumber >= badge.getActivityNumber();
@@ -45,9 +45,9 @@ public class BadgeVisitor {
 
     public boolean visitActivityScoreBadge(ActivityScoreBadge badge) {
         User student = authService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
+        List<? extends ActivityResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
                 .stream()
-                .filter(TaskResult::isEvaluated)
+                .filter(ActivityResult::isEvaluated)
                 .toList();
 
         Boolean forOneActivity = badge.getForOneActivity();
@@ -56,7 +56,7 @@ public class BadgeVisitor {
             return results.stream().anyMatch(result -> {
                 Activity activity = result.getActivity();
                 BigDecimal maxPoints = BigDecimal.valueOf(activity.getMaxPoints());
-                BigDecimal resultPoints = BigDecimal.valueOf(result.getPointsReceived());
+                BigDecimal resultPoints = BigDecimal.valueOf(result.getPoints());
                 BigDecimal score = resultPoints.divide(maxPoints, 2, RoundingMode.HALF_UP);
                 return score.compareTo(activityScore) >= 0;
             });
@@ -66,11 +66,11 @@ public class BadgeVisitor {
             return false;
         }
         List<Activity> activities = results.stream()
-                .map(TaskResult::getActivity)
+                .map(ActivityResult::getActivity)
                 .toList();
 
         BigDecimal currentPoints = BigDecimal.valueOf(results.stream()
-                .mapToDouble(TaskResult::getPointsReceived)
+                .mapToDouble(ActivityResult::getPoints)
                 .sum());
         BigDecimal maxPoints = BigDecimal.valueOf(activities.stream()
                 .mapToDouble(Activity::getMaxPoints)
@@ -85,10 +85,10 @@ public class BadgeVisitor {
 
     public boolean visitConsistencyBadge(ConsistencyBadge badge) {
         User student = authService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse());
+        List<? extends ActivityResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse());
         Long[] datesInMillis = results.stream()
-                .filter(TaskResult::isEvaluated)
-                .map(TaskResult::getSendDateMillis)
+                .filter(ActivityResult::isEvaluated)
+                .map(ActivityResult::getSendDateMillis)
                 .sorted()
                 .toArray(Long[]::new);
 
@@ -133,9 +133,9 @@ public class BadgeVisitor {
 
     public boolean visitTopScoreBadge(TopScoreBadge badge) throws WrongUserTypeException, EntityNotFoundException {
         User student = authService.getCurrentUser();
-        List<? extends TaskResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
+        List<? extends ActivityResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
                 .stream()
-                .filter(TaskResult::isEvaluated)
+                .filter(ActivityResult::isEvaluated)
                 .toList();
 
         if (results.size() < 5) {

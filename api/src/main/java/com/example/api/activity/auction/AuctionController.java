@@ -14,14 +14,15 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = "JWT_AUTH")
 public class AuctionController {
     private final AuctionService auctionService;
-    @PostMapping("/bid")
-    public ResponseEntity<?> bidForAuction(@RequestBody BidDTO bid) throws InvalidBidValueException, WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
-        auctionService.bidForAuction(bid);
-        return ResponseEntity.ok().body(null);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<AuctionDTO> getAuction(@PathVariable Long id) throws  WrongUserTypeException, StudentNotEnrolledException {
         return ResponseEntity.ok().body(auctionService.getAuction(id));
+    }
+
+    @PostMapping("/bid")
+    public ResponseEntity<?> bidForAuction(@RequestBody BidDTO bid) throws InvalidBidValueException, WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
+        auctionService.bidForAuction(bid);
+        return ResponseEntity.ok().body(null);
     }
 }

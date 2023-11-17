@@ -54,36 +54,34 @@ public class AuctionService {
                 .getCurrentUserAndValidateStudentAccount()
                 .getCourseMember(auction.getCourse(), true);
 
-        Optional<Bid> previousBid = bidRepository.findByAuctionAndCourseMember(auction, courseMember);
+        Optional<Bid> previousBid = bidRepository.findByActivityAndMember(auction, courseMember);
 
         return new AuctionDTO(auction.getId(),
-                auction.getHighestBid().map(Bid::getValue),
-                previousBid.map(Bid::getValue),
+                auction.getHighestBid().map(Bid::getPoints),
+                previousBid.map(Bid::getPoints),
                 auction.currentMinBiddingValue(),
                 auction.getMaxBidding(),
-                courseMember.getPoints() + previousBid.map(Bid::getValue).orElse(0D),
+                courseMember.getPoints() + previousBid.map(Bid::getPoints).orElse(0D),
                 auction.getResolutionDate().toEpochSecond(ZoneOffset.UTC),
                 auction.getMinScoreToGetPoints()
                 );
     }
 
-    public void bidForAuction(BidDTO dto) throws InvalidBidValueException, WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
+    public void bidForAuction(BidDTO dto) throws WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
         Auction auction = repository.findById(dto.auctionId()).orElseThrow(EntityNotFoundException::new);
-        CourseMember courseMember = userService.getCurrentUserAndValidateStudentAccount().getCourseMember(auction.getCourse(), true);
-
-        if (auction.currentMinBiddingValue() >= dto.bidValue() || auction.getMaxBidding() < dto.bidValue()) {
-            throw new InvalidBidValueException(auction);
-        }
+        CourseMember courseMember = userService
+                .getCurrentUserAndValidateStudentAccount()
+                .getCourseMember(auction.getCourse(), true);
 
         if (auction.isResolved()) {
             throw new AuctionHasBeenResolvedException(auction.getResolutionDate());
         }
 
-        Bid bid = bidRepository.findByAuctionAndCourseMember(auction, courseMember)
+        Bid bid = bidRepository.findByActivityAndMember(auction, courseMember)
                 .orElseGet(() -> new Bid(courseMember, auction, 0D));
 
-        courseMember.decreasePoints(dto.bidValue() - bid.getValue());
-        bid.setValue(dto.bidValue());
+        courseMember.decreasePoints(dto.bidValue() - bid.getPoints());
+        bid.setPoints(dto.bidValue());
         bidRepository.save(bid);
         auction.setHighestBid(bid);
         repository.save(auction);
@@ -105,17 +103,17 @@ public class AuctionService {
 
     private void resolveHighestBid(Auction auction) {
         Bid highestBid =  auction.getHighestBid().get();
-        CourseMember winner = highestBid.getCourseMember();
+        CourseMember winner = highestBid.getMember();
         Task task = auction.getTask();
         auction.setDescription(AuctionMessageGenerator.winnerDescription(winner.getUser()));
         repository.save(auction);
         task.setIsBlocked(false);
         task.setRequirements(requirementService.requirementsForAuctionTask(auction, winner.getUser()));
 
-        bidRepository.findAllByAuction(auction)
+        bidRepository.findAllByActivity(auction)
                 .stream()
                 .filter(bid -> !bid.getId().equals(highestBid.getId()))
-                .forEach(bid -> bid.getCourseMember().changePoints(bid.getValue()));
+                .forEach(bid -> bid.getMember().changePoints(bid.getPoints()));
 
         taskRepository.save(task);
     }
