@@ -12,6 +12,6 @@ export const api = createApi({
       return headers
     }
   }),
-  tagTypes: ['Courses'],
+  tagTypes: ['Courses', 'Auctions'],
   endpoints: () => ({})
 })
