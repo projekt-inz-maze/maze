@@ -41,4 +41,11 @@ public class Bid extends ActivityResult {
             this.points = points;
         }
     }
+
+    public void returnPoints(Double taskResult) {
+        if (getAuction().getMinScoreToGetPoints() <= taskResult) {
+            member.changePoints(points);
+            points = 0D;
+        }
+    }
 }

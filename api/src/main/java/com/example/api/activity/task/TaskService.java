@@ -55,6 +55,7 @@ public class TaskService {
         Course course = courseService.getCourse(courseId);
         courseValidator.validateCourseOwner(course, professor);
         log.info("Fetching all activities that are needed to be evaluated for professor {}", professor.getEmail());
+
         List<ActivityToEvaluateResponse> response = new LinkedList<>();
         List<FileTask> fileTasks = fileTaskRepository.findFileTasksByCourse(course)
                 .stream()
