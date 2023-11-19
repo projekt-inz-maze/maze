@@ -1,14 +1,10 @@
-package com.example.api.activity.task.submittask;
+package com.example.api.activity.submittask;
 
-import com.example.api.activity.ActivityType;
 import com.example.api.activity.CreateActivityChapterForm;
-import com.example.api.activity.task.filetask.CreateFileTaskForm;
-import com.example.api.activity.task.filetask.FileTaskInfoResponse;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.chapter.Chapter;
 import com.example.api.chapter.ChapterRepository;
 import com.example.api.chapter.requirement.RequirementService;
-import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.User;

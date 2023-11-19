@@ -1,7 +1,6 @@
 package com.example.api.activity;
 
-import com.example.api.activity.task.filetask.CreateFileTaskForm;
-import com.example.api.activity.task.submittask.CreateSubmitTaskForm;
+import com.example.api.activity.submittask.CreateSubmitTaskForm;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

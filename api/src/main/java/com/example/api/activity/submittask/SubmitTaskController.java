@@ -1,16 +1,9 @@
-package com.example.api.activity.task.submittask;
+package com.example.api.activity.submittask;
 
 import com.example.api.activity.CreateActivityChapterForm;
-import com.example.api.activity.CreateActivityForm;
-import com.example.api.activity.task.filetask.CreateFileTaskChapterForm;
-import com.example.api.activity.task.filetask.CreateFileTaskForm;
-import com.example.api.activity.task.filetask.FileTaskInfoResponse;
-import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.error.exception.WrongUserTypeException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

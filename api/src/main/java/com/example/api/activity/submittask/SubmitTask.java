@@ -1,4 +1,4 @@
-package com.example.api.activity.task.submittask;
+package com.example.api.activity.submittask;
 
 import com.example.api.activity.Activity;
 import com.example.api.activity.ActivityType;

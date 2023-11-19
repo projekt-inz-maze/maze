@@ -2,7 +2,7 @@ package com.example.api.activity;
 
 import com.example.api.activity.info.CreateInfoForm;
 import com.example.api.activity.survey.CreateSurveyForm;
-import com.example.api.activity.task.submittask.CreateSubmitTaskForm;
+import com.example.api.activity.submittask.CreateSubmitTaskForm;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -7,7 +7,7 @@ import com.example.api.activity.survey.Survey;
 import com.example.api.activity.task.Task;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
-import com.example.api.activity.task.submittask.SubmitTask;
+import com.example.api.activity.submittask.SubmitTask;
 import com.example.api.util.model.File;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

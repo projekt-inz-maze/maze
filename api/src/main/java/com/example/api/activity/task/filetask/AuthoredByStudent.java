@@ -1,7 +1,7 @@
 package com.example.api.activity.task.filetask;
 
 
-import com.example.api.activity.task.submittask.SubmitTask;
+import com.example.api.activity.submittask.SubmitTask;
 import com.example.api.user.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
