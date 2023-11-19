@@ -1,9 +1,13 @@
 package com.example.api.activity.submittask;
 
 import com.example.api.activity.CreateActivityChapterForm;
+import com.example.api.activity.submittask.result.SubmitTaskResultDTO;
+import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
+import com.example.api.error.exception.WrongUserTypeException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = "JWT_AUTH")
 public class SubmitTaskController {
     private final SubmitTaskService submitTaskService;
-    private final SubmitTaskRepository rep;
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> aaaa(@PathVariable Long id) {
-        return ResponseEntity.ok().body(rep.existsById(id));
-    }
 
     @GetMapping("/create")
     public ResponseEntity<CreateSubmitTaskForm> getExampleSubmitTaskForm() {
@@ -29,5 +27,11 @@ public class SubmitTaskController {
     public ResponseEntity<Long> createSubmitTask(@RequestBody CreateActivityChapterForm form)
             throws RequestValidationException {
         return ResponseEntity.ok().body(submitTaskService.createSubmitTask(form));
+    }
+
+    @PostMapping("/solve")
+    public ResponseEntity<Long> resultForSubmitTask(@RequestBody SubmitTaskResultDTO dto) throws WrongUserTypeException, EntityNotFoundException {
+        submitTaskService.createResultForSubmitTask(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

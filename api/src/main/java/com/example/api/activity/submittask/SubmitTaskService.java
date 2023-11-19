@@ -1,13 +1,20 @@
 package com.example.api.activity.submittask;
 
 import com.example.api.activity.CreateActivityChapterForm;
+import com.example.api.activity.submittask.result.SubmitTaskResult;
+import com.example.api.activity.submittask.result.SubmitTaskResultDTO;
+import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.chapter.Chapter;
 import com.example.api.chapter.ChapterRepository;
 import com.example.api.chapter.requirement.RequirementService;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
+import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.User;
+import com.example.api.user.service.UserService;
 import com.example.api.validator.ChapterValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +35,8 @@ public class SubmitTaskService {
     private final LoggedInUserService authService;
     private final UserValidator userValidator;
     private final RequirementService requirementService;
+    private final UserService userService;
+    private final SubmitTaskResultRepository submitTaskResultRepository;
 
     public Long createSubmitTask(CreateActivityChapterForm chapterForm) throws RequestValidationException {
         log.info("Starting the creation of submit task");
@@ -46,5 +55,16 @@ public class SubmitTaskService {
         chapter.getActivityMap().add(submitTask);
 
         return submitTask.getId();
+    }
+
+    public void createResultForSubmitTask(SubmitTaskResultDTO dto) throws WrongUserTypeException, EntityNotFoundException {
+        User student = userService.getCurrentUserAndValidateStudentAccount();
+        SubmitTask task = submitTaskRepository.findById(dto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Activity not found"));
+
+        CourseMember member = student.getCourseMember(task.getCourse(), true);
+
+        SubmitTaskResult result = new SubmitTaskResult(dto, member);
+        submitTaskResultRepository.save(result);
     }
 }

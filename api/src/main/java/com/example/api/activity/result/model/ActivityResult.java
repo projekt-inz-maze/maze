@@ -46,11 +46,8 @@ public abstract class ActivityResult {
 
     public ActivityResult(Long id, Double points, Long sendDateMillis, Course course, CourseMember courseMember)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+        this(points, sendDateMillis, course, courseMember);
         this.id = id;
-        this.sendDateMillis = sendDateMillis;
-        this.course= course;
-        this.member = courseMember;
-        this.setPoints(points);
     }
 
     public ActivityResult(Double points, Long sendDateMillis, Course course, CourseMember courseMember) {
@@ -59,6 +56,11 @@ public abstract class ActivityResult {
         this.member = courseMember;
         this.setPoints(points);
     }
+
+    public ActivityResult(CourseMember courseMember) {
+        this(0D, Instant.now().toEpochMilli(), courseMember.getCourse(), courseMember);
+    }
+
 
     public void setPoints(Double newPoints) {
         member.changePoints(newPoints - Optional.ofNullable(points).orElse(0D));

@@ -62,6 +62,7 @@ public class BadgeService {
         User student = userService.getCurrentUserAndValidateStudentAccount();
         CourseMember member = student.getCourseMember(courseId).orElseThrow();
         checkAllBadges(member);
+
         return member.getUnlockedBadges()
                 .stream()
                 .filter(badge -> badge.getBadge().getCourse().getId().equals(courseId))
