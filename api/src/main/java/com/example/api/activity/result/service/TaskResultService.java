@@ -223,6 +223,7 @@ public class TaskResultService {
         responseBuilder.activity100(activity.getMaxPoints());
 
         log.info("Calculating point values for activity {}", activity.getId());
+
         if (!results.isEmpty()) {
 
             if (results.stream().anyMatch(result -> result instanceof SurveyResult? ((SurveyResult) result).getRate() == null : result.getPoints() == null)) {

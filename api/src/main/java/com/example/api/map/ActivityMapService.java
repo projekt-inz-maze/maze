@@ -53,14 +53,7 @@ public class ActivityMapService {
     }
 
     public List<MapActivityProfessor> getMapTasksForProfessor(ActivityMap activityMap) {
-        Stream<Activity> tasksWithAuctions =  Stream.of(activityMap.getGraphTasks(), activityMap.getFileTasks())
-                .flatMap(Collection::stream)
-                .map(task -> task.getAuction().map(auction -> auction.isResolved() ? auction.getTask() : auction).orElse(task));
-
-        return Stream.of(tasksWithAuctions,
-                        activityMap.getInfos().stream(),
-                        activityMap.getSurveys().stream())
-                .flatMap(s -> s)
+        return activityMap.getAllActivities().stream()
                 .map(activity -> new MapActivityProfessor(activity, activity.getIsBlocked(), taskService.getRequirementsForActivity(activity)))
                 .sorted(Comparator.comparingLong(MapActivity::getId))
                 .toList();

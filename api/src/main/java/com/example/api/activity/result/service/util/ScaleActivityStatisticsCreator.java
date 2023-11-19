@@ -31,7 +31,6 @@ public class ScaleActivityStatisticsCreator {
 
     public void initTask(Task task) {
         this.maxPoints = task.getMaxPoints();
-
         Stream.of(5.0, 4.5, 4.0, 3.5, 3.0, 2.0)
                 .forEach(grade -> statistics.put(grade, new ScaleActivityStatistics(grade)));
     }

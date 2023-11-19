@@ -92,6 +92,7 @@ public class ActivityMap {
         List<Task> tasks = Stream.concat(fileTasks.stream(), graphTasks.stream())
                 .filter(task -> task.getAuction().map(Auction::isResolved).orElse(true))
                 .toList();
+
         List<Auction> unresolvedAuctions = auctions.stream().filter(a -> !a.isResolved()).toList();
 
         return Stream.of(tasks, infos, surveys, unresolvedAuctions, submitTasks)
