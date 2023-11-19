@@ -20,16 +20,15 @@ function App(props) {
     <div style={{ height: '100%' }}>
       <div className='p-0 w-100' style={{ minHeight: '100%' }}>
         <BrowserRouter>
-          {/* <div className='d-flex flex-column' style={{ margin: 0 }}> */}
-          <div style={{ height: '13vh' }}>
-            {showNavbar && (
+          {showNavbar && (
+            <div style={{ height: '11vh' }}>
               <TopNavbar
                 sidebarTitles={sidebarTitles}
                 userSubtitles={student ? studentSubtitles : professorSubtitles}
               />
-            )}
-          </div>
-          <div className='m-0 p-0' style={{ height: '87vh' }}>
+            </div>
+          )}
+          <div className='m-0 p-0' style={{ height: '89vh' }}>
             <AppRoutes showNavbar={setShowNavbar} isStudent={student} isProfessor={professor} />
           </div>
           <AuthVerify />
