@@ -2,39 +2,38 @@ import { useState } from 'react'
 
 import { connect } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import './App.css'
 import { ToastContainer } from 'react-toastify'
 
+import styles from './App.module.scss'
 import AuthVerify from '../../common/auth-verify'
 import AppRoutes from '../../routes/AppRoutes'
 import { professorSubtitles, sidebarTitles, studentSubtitles } from '../../utils/sidebarTitles'
 import { isProfessor, isStudent } from '../../utils/storageManager'
 import TopNavbar from '../general/Navbar/TopNavbar'
 
-function App(props) {
+function App(props: any) {
   const [showNavbar, setShowNavbar] = useState(false)
   const student = isStudent(props.user)
   const professor = isProfessor(props.user)
 
   return (
     <div style={{ height: '100%' }}>
-      <div className='p-0 w-100' style={{ minHeight: '100%' }}>
-        <BrowserRouter>
+      <BrowserRouter>
+        <div className={styles.appContainer}>
           {showNavbar && (
-            <div style={{ height: '11vh' }}>
+            <div>
               <TopNavbar
                 sidebarTitles={sidebarTitles}
                 userSubtitles={student ? studentSubtitles : professorSubtitles}
               />
             </div>
           )}
-          <div className='m-0 p-0' style={{ height: '89vh' }}>
+          <div className={styles.content}>
             <AppRoutes showNavbar={setShowNavbar} isStudent={student} isProfessor={professor} />
           </div>
           <AuthVerify />
-          {/* </div> */}
-        </BrowserRouter>
-      </div>
+        </div>
+      </BrowserRouter>
       <ToastContainer
         position='top-right'
         autoClose={4000}
@@ -51,7 +50,7 @@ function App(props) {
   )
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
   const { user } = state.auth
   const { sidebar } = state
   return {
