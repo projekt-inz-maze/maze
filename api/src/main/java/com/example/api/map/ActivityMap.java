@@ -4,6 +4,7 @@ import com.example.api.activity.Activity;
 import com.example.api.activity.auction.Auction;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.survey.Survey;
+import com.example.api.activity.task.Task;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.activity.task.submittask.SubmitTask;
@@ -88,7 +89,12 @@ public class ActivityMap {
     }
 
     public List<? extends Activity> getAllActivities() {
-        return Stream.of(graphTasks, fileTasks, infos, surveys, auctions, submitTasks)
+        List<Task> tasks = Stream.concat(fileTasks.stream(), graphTasks.stream())
+                .filter(task -> task.getAuction().map(Auction::isResolved).orElse(true))
+                .toList();
+        List<Auction> unresolvedAuctions = auctions.stream().filter(a -> !a.isResolved()).toList();
+
+        return Stream.of(tasks, infos, surveys, unresolvedAuctions, submitTasks)
                 .flatMap(Collection::stream)
                 .toList();
     }
