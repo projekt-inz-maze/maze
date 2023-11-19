@@ -20,27 +20,6 @@ public class TaskPointsStatisticsResponse extends PointsResponse {
         this.activityName = result.getActivity().getTitle();
     }
 
-    public TaskPointsStatisticsResponse(GraphTaskResult result) {
-        super();
-        setDateAndPoints(result.getSendDateMillis(), result.getPoints());
-        this.activityType = ActivityType.EXPEDITION;
-        this.activityName = result.getGraphTask().getTitle();
-    }
-
-    public TaskPointsStatisticsResponse(FileTaskResult result) {
-        super();
-        setDateAndPoints(result.getSendDateMillis(), result.getPoints());
-        this.activityType = ActivityType.TASK;
-        this.activityName = result.getFileTask().getTitle();
-    }
-
-    public TaskPointsStatisticsResponse(SurveyResult result) {
-        super();
-        setDateAndPoints(result.getSendDateMillis(), result.getPoints());
-        this.activityType = ActivityType.SURVEY;
-        this.activityName = result.getSurvey().getTitle();
-    }
-
     private void setDateAndPoints(Long dateMillis, Double pointsReceived) {
         this.dateMillis = dateMillis;
         this.pointsReceived = pointsReceived;
