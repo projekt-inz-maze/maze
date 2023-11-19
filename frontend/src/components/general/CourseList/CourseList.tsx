@@ -17,7 +17,7 @@ import { useAppDispatch } from '../../../hooks/hooks'
 import { setCourseId } from '../../../reducers/userSlice'
 import { joinGroupRequest } from '../../../services/types/serviceTypes'
 import { Role } from '../../../utils/userRole'
-import CourseNav from '../CourseNav/CourseNav'
+import CourseNav from '../Navbars/CourseNavbar/CourseNav'
 
 type CourseListProps = {
   showNavbar: (show: boolean) => void

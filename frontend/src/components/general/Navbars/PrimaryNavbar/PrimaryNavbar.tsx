@@ -6,15 +6,15 @@ import { Container, Nav } from 'react-bootstrap'
 import Navbar from 'react-bootstrap/Navbar'
 import { Link, useNavigate } from 'react-router-dom'
 
-import styles from './TopNavbar.module.scss'
-import { logout } from '../../../actions/auth'
+import styles from './PrimaryNavbar.module.scss'
+import { logout } from '../../../../actions/auth'
 
-type TopNavbarProps = {
-  sidebarTitles: { name: string; navigateTo: string }[]
+type PrimaryNavbarProps = {
+  navbarTitles: { name: string; navigateTo: string }[]
   userSubtitles: { name: string; navigateTo: string }[]
 }
 
-const TopNavbar = (props: TopNavbarProps) => {
+const PrimaryNavbar = (props: PrimaryNavbarProps) => {
   const navigate = useNavigate()
 
   return (
@@ -28,7 +28,7 @@ const TopNavbar = (props: TopNavbarProps) => {
               <span>Maze</span>
             </Nav.Link>
             <div className={styles.upContainer}>
-              {props.sidebarTitles.map((link) => (
+              {props.navbarTitles.map((link) => (
                 <div key={link.name}>
                   <Nav.Link
                     as={Link}
@@ -56,4 +56,4 @@ const TopNavbar = (props: TopNavbarProps) => {
   )
 }
 
-export default TopNavbar
+export default PrimaryNavbar
