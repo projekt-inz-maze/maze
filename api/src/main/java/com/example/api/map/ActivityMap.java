@@ -102,8 +102,8 @@ public class ActivityMap {
 
     public long getActivityCount() {
         return Stream.of(graphTasks, fileTasks, infos, surveys, submitTasks)
-                .flatMap(Collection::stream)
-                .count();
+                .mapToLong(Collection::size)
+                .sum();
     }
 
 
