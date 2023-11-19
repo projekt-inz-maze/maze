@@ -63,7 +63,7 @@ public class FeedbackValidator {
             feedback.setContent(form.getContent());
         }
 
-        if(form.getPoints() != null) {
+        if (form.getPoints() != null) {
             if (form.getPoints() < 0 || form.getPoints() > fileTaskResult.getFileTask().getMaxPoints()) {
                 throw new WrongPointsNumberException("Wrong points number", form.getPoints(), fileTaskResult.getFileTask().getMaxPoints());
             }

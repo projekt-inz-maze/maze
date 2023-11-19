@@ -92,7 +92,7 @@ public class FileTaskService {
         activityValidator.validateActivityPosition(form, chapter);
 
         List<FileTask> fileTasks = fileTaskRepository.findAll();
-        activityValidator.validateFileTaskTitle(form.getTitle(), fileTasks);
+        activityValidator.validateActivityTitle(form.getTitle(), fileTasks);
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 

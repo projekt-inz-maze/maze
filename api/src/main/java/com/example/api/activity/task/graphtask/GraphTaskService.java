@@ -74,7 +74,7 @@ public class GraphTaskService {
         activityValidator.validateActivityPosition(form, chapter);
 
         List<GraphTask> graphTasks = graphTaskRepository.findAll();
-        activityValidator.validateGraphTaskTitle(form.getTitle(), graphTasks);
+        activityValidator.validateActivityTitle(form.getTitle(), graphTasks);
 
         SimpleDateFormat timeToSolveFormat = new SimpleDateFormat("HH:mm:ss");
         long timeToSolveMillis = timeParser.parseAndGetTimeMillisFromHour(timeToSolveFormat, form.getTimeToSolve());

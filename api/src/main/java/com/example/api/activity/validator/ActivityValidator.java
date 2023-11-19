@@ -155,11 +155,27 @@ public class ActivityValidator {
         }
     }
 
-    public void validateGraphTaskTitle(String title, List<GraphTask> graphTasks) throws RequestValidationException {
-        graphTaskValidator.validateGraphTaskTitle(title, graphTasks);
+    public void validateActivityTitle(String title, List<? extends Activity> activities) throws RequestValidationException {
+        int idx = title.indexOf(";");
+        if (idx != -1) {
+            log.error("Title cannot contain a semicolon!");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_CONTAINS_SEMICOLON);
+        }
+        if (activities.stream().anyMatch(fileTask -> fileTask.getTitle().equals(title))) {
+            log.error("Activity has to have unique title");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_NOT_UNIQUE);
+        }
     }
 
-    public void validateFileTaskTitle(String title, List<FileTask> fileTasks) throws RequestValidationException {
-        fileTaskValidator.validateFileTaskTitle(title, fileTasks);
+    public void validateActivityTitle(String title, Boolean titleExists) throws RequestValidationException {
+        int idx = title.indexOf(";");
+        if (idx != -1) {
+            log.error("Title cannot contain a semicolon!");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_CONTAINS_SEMICOLON);
+        }
+        if (titleExists) {
+            log.error("Activity has to have unique title");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_NOT_UNIQUE);
+        }
     }
 }

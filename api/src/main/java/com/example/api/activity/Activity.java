@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public abstract class Activity {
     @JoinColumn(name = "course_id")
     private Course course;
 
+    private Double maxPoints;
+
     public Activity(String name, String description, int posX, int posY, User professor, Course course) {
         this.title = name;
         this.description = description;
@@ -58,5 +61,8 @@ public abstract class Activity {
         this.course = course;
     }
 
-    abstract public Double getMaxPoints();
+    public Activity(String name, String description, int posX, int posY, User professor, Course course, Double maxPoints) {
+        this(name, description, posX, posY, professor, course);
+        this.maxPoints = maxPoints;
+    }
 }

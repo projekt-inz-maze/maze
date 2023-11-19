@@ -6,6 +6,7 @@ import com.example.api.activity.info.Info;
 import com.example.api.activity.survey.Survey;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.activity.task.submittask.SubmitTask;
 import com.example.api.util.model.File;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -55,6 +56,11 @@ public class ActivityMap {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Auction> auctions = new LinkedList<>();
 
+    @OneToMany
+    @JoinColumn
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<SubmitTask> submitTasks = new LinkedList<>();
+
     private Integer mapSizeX;
     private Integer mapSizeY;
 
@@ -74,10 +80,24 @@ public class ActivityMap {
     public void add(Auction auction) {
         auctions.add(auction);
     }
+    public void add(FileTask fileTask) {
+        fileTasks.add(fileTask);
+    }
+    public void add(SubmitTask submitTask) {
+        submitTasks.add(submitTask);
+    }
 
     public List<? extends Activity> getAllActivities() {
-        return Stream.of(graphTasks, fileTasks, infos, surveys, auctions)
+        return Stream.of(graphTasks, fileTasks, infos, surveys, auctions, submitTasks)
                 .flatMap(Collection::stream)
                 .toList();
     }
+
+    public long getActivityCount() {
+        return Stream.of(graphTasks, fileTasks, infos, surveys, submitTasks)
+                .flatMap(Collection::stream)
+                .count();
+    }
+
+
 }

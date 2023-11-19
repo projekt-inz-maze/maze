@@ -4,6 +4,7 @@ import com.example.api.activity.Activity;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
+import com.example.api.activity.result.repository.ActivityResultRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
@@ -24,10 +25,9 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class MapActivityConverter {
-    GraphTaskResultRepository graphTaskResultRepository;
-    FileTaskResultRepository fileTaskResultRepository;
-    SurveyResultRepository surveyResultRepository;
-    RequirementService requirementService;
+    private final GraphTaskResultRepository graphTaskResultRepository;
+    private final RequirementService requirementService;
+    private final ActivityResultRepository activityResultRepository;
 
     public MapActivityStudent toMapTaskStudent(Activity activity, User student) {
         return switch (activity.getActivityType()) {
@@ -36,20 +36,15 @@ public class MapActivityConverter {
                     areRequirementsFulfilled(activity),
                     isGraphTaskCompleted((GraphTask) activity, student),
                     getRequirements(activity));
-            case TASK -> new MapActivityStudent(
+            case TASK, SURVEY, SUBMIT -> new MapActivityStudent(
                     activity,
                     areRequirementsFulfilled(activity),
-                    isFileTaskCompleted((FileTask) activity, student),
+                    isActivityCompleted(activity.getId(), student),
                     getRequirements(activity));
             case INFO -> new MapActivityStudent(
                     activity,
                     areRequirementsFulfilled(activity),
                     true,
-                    getRequirements(activity));
-            case SURVEY -> new MapActivityStudent(
-                    activity,
-                    areRequirementsFulfilled(activity),
-                    isSurveyCompleted((Survey) activity, student),
                     getRequirements(activity));
             case AUCTION -> new MapActivityStudent(
                     activity,
@@ -61,19 +56,13 @@ public class MapActivityConverter {
 
     }
 
+    private Boolean isActivityCompleted(Long activityId, User user) {
+        return activityResultRepository.existsByActivity_IdAndMember_User(activityId, user);
+    }
+
     private Boolean isGraphTaskCompleted(GraphTask graphTask, User user) {
         GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskAndUser(graphTask, user);
         return result != null && result.getSendDateMillis() != null;
-    }
-
-    private Boolean isFileTaskCompleted(FileTask fileTask, User user) {
-        FileTaskResult result = fileTaskResultRepository.findFileTaskResultByFileTaskAndUser(fileTask, user);
-        return result != null;
-    }
-
-    private Boolean isSurveyCompleted(Survey survey, User student) {
-        SurveyResult result = surveyResultRepository.findSurveyResultBySurveyAndUser(survey, student);
-        return result != null;
     }
 
     private Boolean areRequirementsFulfilled(Activity activity) {

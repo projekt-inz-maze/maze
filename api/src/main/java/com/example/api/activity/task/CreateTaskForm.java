@@ -21,14 +21,17 @@ import lombok.Setter;
         @JsonSubTypes.Type(value = CreateFileTaskForm.class, name = "TASK")
 })
 public abstract class CreateTaskForm extends CreateActivityForm {
-    @Schema
-    CreateAuctionDTO auction;
+    @Schema CreateAuctionDTO auction;
+    @Schema String requiredKnowledge;
 
-    public CreateTaskForm(ActivityType activityType, String title, String description, Integer posX, Integer posY) {
+
+    public CreateTaskForm(ActivityType activityType, String title, String description, Integer posX, Integer posY, String requiredKnowledge) {
         super(activityType, title, description, posX, posY);
+        this.requiredKnowledge = requiredKnowledge;
     }
 
     public  CreateTaskForm(Task task) {
      super(task);
+     this.requiredKnowledge = task.getRequiredKnowledge();
     }
 }

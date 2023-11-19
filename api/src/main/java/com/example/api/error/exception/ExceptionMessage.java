@@ -25,6 +25,7 @@ public class ExceptionMessage {
     public static final String CONTENT_LEN_TOO_BIG ="Liczba znaków w polu content nie może przekraczać 1000";
     public static final String GRAPH_TASK_TITLE_NOT_UNIQUE ="Tytuł ekspedycji musi byc unikalny";
     public static final String FILE_TASK_TITLE_NOT_UNIQUE ="Tytuł zadania bojowego musi byc unikalny";
+    public static final String ACTIVITY_TITLE_NOT_UNIQUE ="Tytuł zadania musi byc unikalny";
     public static final String TWO_ACTIVITIES_ON_THE_SAME_POSITION ="Dwie aktywności nie mogą być na takiej samej pozycji!";
     public static final String ACTIVITY_OUTSIDE_BOUNDARIES ="Pozycja aktywności musi mieścić się w obszarze mapy!";
     public static final String TWO_CHAPTERS_ON_THE_SAME_POSITION ="Dwa rozdziały nie mogą być na takiej samej pozycji!";
@@ -35,7 +36,7 @@ public class ExceptionMessage {
     public static final String GROUP_NAME_CONTAINS_SEMICOLON ="Nazwa grupy nie może zawierać średnika";
     public static final String EMAIL_CONTAINS_SEMICOLON ="Email nie może zawierać średnika";
     public static final String EMAIL_WRONG_DOMAIN ="Email nie pochodzi z domeny AGH";
-    public static final String FILE_TASK_TITLE_CONTAINS_SEMICOLON ="Nazwa zadania bojowego nie może zawierać średnika";
+    public static final String ACTIVITY_TITLE_CONTAINS_SEMICOLON ="Nazwa zadania nie może zawierać średnika";
     public static final String GRAPH_TASK_TITLE_CONTAINS_SEMICOLON ="Nazwa ekspedycji nie może zawierać średnika";
     public static final String COURSE_CONTAINS_SEMICOLON ="Nazwa kursy nie może zawierać średnika";
     public static final String COURSE_OWNER_INVALID ="użytkownik nie jest prowadzącym kursu prowadzącego";

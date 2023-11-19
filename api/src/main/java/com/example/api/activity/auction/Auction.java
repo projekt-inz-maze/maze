@@ -60,7 +60,8 @@ public class Auction extends Activity {
                 isBlocked,
                 professor,
                 ActivityType.AUCTION,
-                course);
+                course,
+                task.getMaxPoints());
         this.task = task;
         this.minBidding = minBidding;
         this.maxBidding = maxBidding;
@@ -74,11 +75,6 @@ public class Auction extends Activity {
 
     public Double currentMinBiddingValue() {
         return  getHighestBid().map(Bid::getPoints).orElse(minBidding);
-    }
-
-    @Override
-    public Double getMaxPoints() {
-        return task.getMaxPoints();
     }
 
     public static AuctionBuilder from(Task task) {

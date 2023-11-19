@@ -150,23 +150,9 @@ public class TaskResultService {
     }
 
     public List<TaskPointsStatisticsResponse> getUserPointsStatistics(User student, Course course) {
-
-        List<TaskPointsStatisticsResponse> graphTaskStatistics = graphTaskResultRepository.findAllByUserAndCourse(student, course)
-                .stream()
-                .filter(graphTaskResult -> graphTaskResult.getSendDateMillis() != null)
-                .map(TaskPointsStatisticsResponse::new)
-                .toList();
-        List<TaskPointsStatisticsResponse> fileTaskResults = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
-                .stream()
-                .filter(FileTaskResult::isEvaluated)
-                .map(TaskPointsStatisticsResponse::new)
-                .toList();
-        List<TaskPointsStatisticsResponse> surveyResults = surveyResultRepository.findAllByUserAndCourse(student, course)
+        return activityResultRepository.findAllByMember_CourseAndMember_User(course, student)
                 .stream()
                 .map(TaskPointsStatisticsResponse::new)
-                .toList();
-        return Stream.of(graphTaskStatistics, fileTaskResults, surveyResults)
-                .flatMap(Collection::stream)
                 .sorted(((o1, o2) -> Long.compare(o2.getDateMillis(), o1.getDateMillis())))
                 .toList();
     }

@@ -67,14 +67,8 @@ public class ActivityMapService {
     }
 
     public List<MapActivityStudent> getMapTasksForStudent(ActivityMap activityMap, User student) {
-        Stream<Activity> tasksWithAuctions =  Stream.of(activityMap.getGraphTasks(), activityMap.getFileTasks())
-                .flatMap(Collection::stream)
-                .flatMap(task -> Stream.concat(Stream.of(task), task.getAuction().stream()));
-
-        return Stream.of(tasksWithAuctions,
-                        activityMap.getInfos().stream(),
-                        activityMap.getSurveys().stream())
-                .flatMap(s -> s)
+        return activityMap.getAllActivities()
+                .stream()
                 .filter(activity -> !activity.getIsBlocked())
                 .map(activity -> mapActivityConverter.toMapTaskStudent(activity, student))
                 .sorted(Comparator.comparingLong(MapActivity::getId))
