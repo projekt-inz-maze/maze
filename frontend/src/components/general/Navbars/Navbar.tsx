@@ -3,6 +3,8 @@ import { AddCourseRequest } from '../../../api/types'
 import { joinGroupRequest } from '../../../services/types/serviceTypes'
 
 type NavbarProps = {
+  isStudent: boolean
+  isProfessor: boolean
   navbarTitles: { name: string; navigateTo: string }[]
   userSubtitles: { name: string; navigateTo: string }[]
   // dispatch: any
@@ -13,7 +15,14 @@ type NavbarProps = {
 
 const Navbar = (props: NavbarProps) => {
   const placeholder = true
-  return <PrimaryNavbar navbarTitles={props.navbarTitles} userSubtitles={props.userSubtitles} />
+  return (
+    <PrimaryNavbar
+      isStudent={props.isStudent}
+      isProfessor={props.isProfessor}
+      navbarTitles={props.navbarTitles}
+      userSubtitles={props.userSubtitles}
+    />
+  )
 }
 
 export default Navbar

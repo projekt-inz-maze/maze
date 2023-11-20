@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Col, Container, Stack } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './CourseList.module.scss'
 import {

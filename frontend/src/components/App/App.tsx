@@ -21,7 +21,12 @@ function App(props: any) {
       <BrowserRouter>
         <div className={styles.appContainer}>
           {showNavbar && (
-            <Navbar navbarTitles={sidebarTitles} userSubtitles={student ? studentSubtitles : professorSubtitles} />
+            <Navbar
+              isStudent={student}
+              isProfessor={professor}
+              navbarTitles={sidebarTitles}
+              userSubtitles={student ? studentSubtitles : professorSubtitles}
+            />
           )}
           <div className={styles.content}>
             <AppRoutes showNavbar={setShowNavbar} isStudent={student} isProfessor={professor} />

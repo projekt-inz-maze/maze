@@ -10,6 +10,8 @@ import styles from './PrimaryNavbar.module.scss'
 import { logout } from '../../../../actions/auth'
 
 type PrimaryNavbarProps = {
+  isStudent: boolean
+  isProfessor: boolean
   navbarTitles: { name: string; navigateTo: string }[]
   userSubtitles: { name: string; navigateTo: string }[]
 }
@@ -17,7 +19,7 @@ type PrimaryNavbarProps = {
 const PrimaryNavbar = (props: PrimaryNavbarProps) => {
   const navigate = useNavigate()
 
-  return (
+  return props.isStudent || props.isProfessor ? (
     <Navbar expand='sm' className={`${styles.navbar} bg-body-tertiary`}>
       <Container fluid style={{ width: '100%', margin: 0, padding: 0 }}>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
@@ -53,6 +55,8 @@ const PrimaryNavbar = (props: PrimaryNavbarProps) => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+  ) : (
+    <></>
   )
 }
 
