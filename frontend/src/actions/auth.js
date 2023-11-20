@@ -5,7 +5,8 @@ import AuthService from '../services/auth.service'
 const message = (error) =>
   (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
 
-export const register = (values) => (dispatch) => AuthService.register(values)
+export const register = (values) => (dispatch) =>
+  AuthService.register(values)
     .then((response) => {
       if (response) {
         dispatch({ type: REGISTER_SUCCESS })
@@ -27,17 +28,17 @@ export const register = (values) => (dispatch) => AuthService.register(values)
       return Promise.reject()
     })
 
-export const login = (email, password) => (dispatch) => AuthService.login(email, password)
+export const login = (email, password) => (dispatch) =>
+  AuthService.login(email, password)
     .then((data) => {
       if (data) {
         dispatch({ type: LOGIN_SUCCESS, payload: { user: data } })
         return Promise.resolve()
       }
-        const msg = message('Login Fail')
-        dispatch({ type: LOGIN_FAIL })
-        dispatch({ type: SET_MESSAGE, payload: msg })
-        return Promise.reject()
-
+      const msg = message('Login Fail')
+      dispatch({ type: LOGIN_FAIL })
+      dispatch({ type: SET_MESSAGE, payload: msg })
+      return Promise.reject()
     })
     .catch((err) => {
       throw err

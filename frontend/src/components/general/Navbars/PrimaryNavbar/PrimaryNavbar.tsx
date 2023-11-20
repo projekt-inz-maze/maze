@@ -6,18 +6,20 @@ import { Container, Nav } from 'react-bootstrap'
 import Navbar from 'react-bootstrap/Navbar'
 import { Link, useNavigate } from 'react-router-dom'
 
-import styles from './TopNavbar.module.scss'
-import { logout } from '../../../actions/auth'
+import styles from './PrimaryNavbar.module.scss'
+import { logout } from '../../../../actions/auth'
 
-type TopNavbarProps = {
-  sidebarTitles: { name: string; navigateTo: string }[]
+type PrimaryNavbarProps = {
+  isStudent: boolean
+  isProfessor: boolean
+  navbarTitles: { name: string; navigateTo: string }[]
   userSubtitles: { name: string; navigateTo: string }[]
 }
 
-const TopNavbar = (props: TopNavbarProps) => {
+const PrimaryNavbar = (props: PrimaryNavbarProps) => {
   const navigate = useNavigate()
 
-  return (
+  return props.isStudent || props.isProfessor ? (
     <Navbar expand='sm' className={`${styles.navbar} bg-body-tertiary`}>
       <Container fluid style={{ width: '100%', margin: 0, padding: 0 }}>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
@@ -28,7 +30,7 @@ const TopNavbar = (props: TopNavbarProps) => {
               <span>Maze</span>
             </Nav.Link>
             <div className={styles.upContainer}>
-              {props.sidebarTitles.map((link) => (
+              {props.navbarTitles.map((link) => (
                 <div key={link.name}>
                   <Nav.Link
                     as={Link}
@@ -53,7 +55,9 @@ const TopNavbar = (props: TopNavbarProps) => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+  ) : (
+    <></>
   )
 }
 
-export default TopNavbar
+export default PrimaryNavbar

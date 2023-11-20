@@ -8,11 +8,11 @@ import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './CourseNav.module.scss'
-import { logout } from '../../../actions/auth'
-import { AddCourseRequest } from '../../../api/types'
-import CustomModal from '../../../common/components/CustomModal/CustomModal'
-import { joinGroupRequest } from '../../../services/types/serviceTypes'
-import { Role } from '../../../utils/userRole'
+import { logout } from '../../../../actions/auth'
+import { AddCourseRequest } from '../../../../api/types'
+import CustomModal from '../../../../common/components/CustomModal/CustomModal'
+import { joinGroupRequest } from '../../../../services/types/serviceTypes'
+import { Role } from '../../../../utils/userRole'
 
 type CourseNavProps = {
   dispatch: any

@@ -9,7 +9,7 @@ import AuthVerify from '../../common/auth-verify'
 import AppRoutes from '../../routes/AppRoutes'
 import { professorSubtitles, sidebarTitles, studentSubtitles } from '../../utils/sidebarTitles'
 import { isProfessor, isStudent } from '../../utils/storageManager'
-import TopNavbar from '../general/Navbar/TopNavbar'
+import Navbar from '../general/Navbars/Navbar'
 
 function App(props: any) {
   const [showNavbar, setShowNavbar] = useState(false)
@@ -21,12 +21,12 @@ function App(props: any) {
       <BrowserRouter>
         <div className={styles.appContainer}>
           {showNavbar && (
-            <div>
-              <TopNavbar
-                sidebarTitles={sidebarTitles}
-                userSubtitles={student ? studentSubtitles : professorSubtitles}
-              />
-            </div>
+            <Navbar
+              isStudent={student}
+              isProfessor={professor}
+              navbarTitles={sidebarTitles}
+              userSubtitles={student ? studentSubtitles : professorSubtitles}
+            />
           )}
           <div className={styles.content}>
             <AppRoutes showNavbar={setShowNavbar} isStudent={student} isProfessor={professor} />

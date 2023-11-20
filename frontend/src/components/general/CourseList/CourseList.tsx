@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Col, Container, Stack } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './CourseList.module.scss'
 import {
@@ -17,7 +17,7 @@ import { useAppDispatch } from '../../../hooks/hooks'
 import { setCourseId } from '../../../reducers/userSlice'
 import { joinGroupRequest } from '../../../services/types/serviceTypes'
 import { Role } from '../../../utils/userRole'
-import CourseNav from '../CourseNav/CourseNav'
+import CourseNav from '../Navbars/CourseNavbar/CourseNav'
 
 type CourseListProps = {
   showNavbar: (show: boolean) => void
