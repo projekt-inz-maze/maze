@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface ActivityResultRepository extends JpaRepository<ActivityResult, Long> {
     List<ActivityResult> findAllByActivity(Activity activity);
+    List<ActivityResult> findAllByActivity_Id(Long id);
     ActivityResult findByActivity_IdAndMember_User(Long activity, User user);
     boolean existsByActivity_IdAndMember_User(Long activity, User user);
 

@@ -14,6 +14,6 @@ public class SurveyAnswerResponse {
     @Schema(required = true) private Integer studentPoints;
 
     public SurveyAnswerResponse(SurveyResult result) {
-        new SurveyAnswerResponse(result.getFeedback(), result.getRate());
+        this(result.getFeedback(), result.getRate());
     }
 }

@@ -10,12 +10,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Optional;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateFileTaskForm extends CreateTaskForm {
     @Schema(required = true) private Double maxPoints;
+    @Schema private Optional<Long> basedOn;
 
     public CreateFileTaskForm(String title,
                               String description,

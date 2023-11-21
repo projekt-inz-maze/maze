@@ -1,5 +1,6 @@
 package com.example.api.activity.task.filetask;
 
+import com.example.api.activity.submittask.result.SubmitTaskResult;
 import com.example.api.activity.task.Task;
 import com.example.api.course.Course;
 import com.example.api.activity.ActivityType;
@@ -20,7 +21,7 @@ public class FileTask extends Task {
     private ActivityType activityType = ActivityType.TASK;
 
     @OneToOne
-    private AuthoredByStudent authoredByStudent;
+    private SubmitTaskResult authoredByStudent;
 
     public FileTask(CreateFileTaskForm form, User professor, Course course) {
         super(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), professor,
@@ -29,7 +30,7 @@ public class FileTask extends Task {
         super.setExperience(experience);
     }
 
-    public Optional<AuthoredByStudent> getAuthoredByStudent() {
+    public Optional<SubmitTaskResult> getAuthoredByStudent() {
         return Optional.ofNullable(authoredByStudent);
     }
 }

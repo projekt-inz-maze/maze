@@ -4,6 +4,7 @@ import com.example.api.activity.CreateActivityChapterForm;
 import com.example.api.activity.submittask.result.SubmitTaskResult;
 import com.example.api.activity.submittask.result.SubmitTaskResultDTO;
 import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
+import com.example.api.activity.task.filetask.CreateFileTaskForm;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.chapter.Chapter;
 import com.example.api.chapter.ChapterRepository;
@@ -22,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,14 +59,34 @@ public class SubmitTaskService {
         return submitTask.getId();
     }
 
-    public void createResultForSubmitTask(SubmitTaskResultDTO dto) throws WrongUserTypeException, EntityNotFoundException {
+    public Long createResultForSubmitTask(SubmitTaskResultDTO dto) throws WrongUserTypeException, EntityNotFoundException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
         SubmitTask task = submitTaskRepository.findById(dto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Activity not found"));
 
         CourseMember member = student.getCourseMember(task.getCourse(), true);
 
-        SubmitTaskResult result = new SubmitTaskResult(dto, member);
+        SubmitTaskResult result = new SubmitTaskResult(dto, member, task);
         submitTaskResultRepository.save(result);
+        return result.getId();
+    }
+
+    public void rejectResult(Long id) {
+        SubmitTaskResult result = submitTaskResultRepository.findById(id).orElseThrow(() -> new javax.persistence.EntityNotFoundException("Result not found"));
+        result.setEvaluated(true);
+        submitTaskResultRepository.save(result);
+    }
+
+    public CreateFileTaskForm acceptResult(Long id) {
+        SubmitTaskResult result = submitTaskResultRepository.findById(id).orElseThrow(() -> new javax.persistence.EntityNotFoundException("Result not found"));
+        result.setEvaluated(true);
+        submitTaskResultRepository.save(result);
+
+        CreateFileTaskForm fileTask = CreateFileTaskForm.example();
+        fileTask.setTitle(result.getSubmittedTitle());
+        fileTask.setRequiredKnowledge(result.getSubmittedContent());
+        fileTask.setBasedOn(Optional.of(id));
+
+        return fileTask;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.api.activity.task.filetask;
 
 import com.example.api.activity.auction.AuctionService;
+import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
 import com.example.api.activity.task.dto.response.util.FileResponse;
 import com.example.api.course.Course;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -23,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -41,6 +41,7 @@ public class FileTaskService {
     private final RequirementService requirementService;
     private final ChapterValidator chapterValidator;
     private final AuctionService auctionService;
+    private final SubmitTaskResultRepository submitTaskResultRepository;
 
     public FileTask saveFileTask(FileTask fileTask) {
         return fileTaskRepository.save(fileTask);
@@ -94,8 +95,6 @@ public class FileTaskService {
         List<FileTask> fileTasks = fileTaskRepository.findAll();
         activityValidator.validateActivityTitle(form.getTitle(), fileTasks);
 
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
         User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
@@ -107,6 +106,13 @@ public class FileTaskService {
         if (form.getAuction() != null) {
             auctionService.createAuction(fileTask, form.getAuction(), chapter.getActivityMap());
         }
+
+        form.getBasedOn()
+                .flatMap(submitTaskResultRepository::findById)
+                .ifPresent(submitResult -> {
+                    fileTask.setAuthoredByStudent(submitResult);
+                    submitResult.setPoints(0D);
+                });
     }
 
     public List<FileTask> getStudentFileTasks(Course course) {

@@ -61,6 +61,14 @@ public abstract class ActivityResult {
         this(0D, Instant.now().toEpochMilli(), courseMember.getCourse(), courseMember);
     }
 
+    public ActivityResult(CourseMember courseMember, Activity activity) {
+        this.sendDateMillis = Instant.now().toEpochMilli();
+        this.course= courseMember.getCourse();
+        this.member = courseMember;
+        this.activity = activity;
+        this.points = 0D;
+    }
+
 
     public void setPoints(Double newPoints) {
         member.changePoints(newPoints - Optional.ofNullable(points).orElse(0D));

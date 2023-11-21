@@ -29,9 +29,19 @@ public class SubmitTaskController {
         return ResponseEntity.ok().body(submitTaskService.createSubmitTask(form));
     }
 
-    @PostMapping("/solve")
-    public ResponseEntity<Long> resultForSubmitTask(@RequestBody SubmitTaskResultDTO dto) throws WrongUserTypeException, EntityNotFoundException {
-        submitTaskService.createResultForSubmitTask(dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PostMapping("/result")
+    public ResponseEntity<Long> addResult(@RequestBody SubmitTaskResultDTO dto) throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(submitTaskService.createResultForSubmitTask(dto));
+    }
+
+    @PostMapping("/result/{id}")
+    public ResponseEntity<?> rejectResult(@PathVariable Long id, @RequestParam boolean accept) {
+        if (accept) {
+           return ResponseEntity.ok(submitTaskService.acceptResult(id));
+        } else {
+            submitTaskService.rejectResult(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
     }
 }

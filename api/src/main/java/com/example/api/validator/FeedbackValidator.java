@@ -53,6 +53,8 @@ public class FeedbackValidator {
         }
         ProfessorFeedback feedback = professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(fileTaskResult);
 
+        FileTask task = fileTaskResult.getFileTask();
+
         if (feedback == null) {
             feedback = new ProfessorFeedback();
             feedback.setFrom(professor);
@@ -64,18 +66,15 @@ public class FeedbackValidator {
         }
 
         if (form.getPoints() != null) {
-            if (form.getPoints() < 0 || form.getPoints() > fileTaskResult.getFileTask().getMaxPoints()) {
-                throw new WrongPointsNumberException("Wrong points number", form.getPoints(), fileTaskResult.getFileTask().getMaxPoints());
+            if (form.getPoints() < 0 || form.getPoints() > task.getMaxPoints()) {
+                throw new WrongPointsNumberException("Wrong points number", form.getPoints(), task.getMaxPoints());
             }
             feedback.setPoints(form.getPoints());
             fileTaskResult.setPoints(form.getPoints());
             fileTaskResultRepository.save(fileTaskResult);
 
-            fileTaskResult
-                    .getFileTask()
-                    .getAuction()
-                    .flatMap(Auction::getHighestBid)
-                    .ifPresent(bid -> bid.returnPoints(form.getPoints()));
+            task.getAuction().flatMap(Auction::getHighestBid).ifPresent(bid -> bid.returnPoints(form.getPoints()));
+            task.getAuthoredByStudent().ifPresent(authored -> authored.setPoints(form.getPoints()));
         }
 
         // Feedback file can be set only once
