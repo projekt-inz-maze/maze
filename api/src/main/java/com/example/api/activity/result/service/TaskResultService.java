@@ -225,14 +225,19 @@ public class TaskResultService {
         log.info("Calculating point values for activity {}", activity.getId());
 
         if (!results.isEmpty()) {
+            List<Double> points = results.stream()
+                    .map(result -> {
+                        if (result instanceof SurveyResult) {
+                            return ((SurveyResult) result).getRate().doubleValue();
+                        } else {
+                            return result.getPoints();
+                        }
+                    })
+                    .toList();
 
-            if (results.stream().anyMatch(result -> result instanceof SurveyResult? ((SurveyResult) result).getRate() == null : result.getPoints() == null)) {
+            if (points.stream().anyMatch(Objects::isNull)) {
                 return null;
             }
-
-            List<Double> points = results.stream()
-                    .map(result -> result instanceof SurveyResult? ((SurveyResult) result).getRate() : result.getPoints())
-                    .toList();
 
             Double sumPoints = points.stream().reduce(Double::sum).get();
 

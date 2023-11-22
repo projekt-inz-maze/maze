@@ -46,18 +46,10 @@ public class ScaleActivityStatisticsCreator {
 
     public void add(ActivityResult activityResult) {
         switch (activityResult.getActivity().getActivityType()) {
-            case SURVEY:
-                addSurvey((SurveyResult) activityResult);
-                break;
-            case TASK:
-            case EXPEDITION:
-                addTask(activityResult);
-                break;
-            case AUCTION:
-                addAuction((Bid) activityResult);
-                break;
-            default:
-                throw new IllegalStateException("Illegal activity type");
+            case SURVEY, TASK -> addSurvey((SurveyResult) activityResult);
+            case EXPEDITION -> addTask(activityResult);
+            case AUCTION -> addAuction((Bid) activityResult);
+            default -> throw new IllegalStateException("Illegal activity type");
         }
     }
 
