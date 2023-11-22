@@ -12,7 +12,6 @@ import javax.persistence.MappedSuperclass;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
 public abstract class PointsResponse {
     protected Long dateMillis;
     protected Double pointsReceived;

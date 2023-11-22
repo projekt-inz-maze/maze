@@ -152,6 +152,7 @@ public class TaskResultService {
     public List<TaskPointsStatisticsResponse> getUserPointsStatistics(User student, Course course) {
         return activityResultRepository.findAllByMember_CourseAndMember_User(course, student)
                 .stream()
+                .filter(result -> result.activity != null)
                 .map(TaskPointsStatisticsResponse::new)
                 .sorted(((o1, o2) -> Long.compare(o2.getDateMillis(), o1.getDateMillis())))
                 .toList();
