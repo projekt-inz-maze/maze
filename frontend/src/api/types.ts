@@ -84,3 +84,18 @@ export type BidRequest = {
   auctionId: number
   bidValue: number
 }
+
+export type TaskRequest = {
+  chapterId: number
+  form: SubmitTaskForm
+}
+
+export type SubmitTaskForm = {
+  activityType: string
+  title: string
+  description: string
+  posX: number
+  posY: number
+  percentageForAuthor: number
+  maxPointsForAuthor: number
+}

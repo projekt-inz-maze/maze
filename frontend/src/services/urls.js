@@ -78,6 +78,11 @@ export const GET_TASK_FILE = `${BASE_URL}/task/file`
 export const GET_TASK_FILE_CREATE = `${GET_TASK_FILE}/create`
 export const POST_TASK_FILE_CREATE = `${GET_TASK_FILE}/create`
 
+// Submit Task Controller
+export const GET_SUBMIT_TASK_FILE = `${BASE_URL}/task/submit/create`
+export const POST_SUBMIT_TASK_CREATE = `${BASE_URL}/task/submit/create`
+export const POST_SUBMIT_TASK_RESULT = `${BASE_URL}/task/submit/result`
+
 // Survey Controller
 export const GET_SURVEY = `${BASE_URL}/survey`
 export const GET_SURVEY_CREATE = `${GET_SURVEY}/create`
