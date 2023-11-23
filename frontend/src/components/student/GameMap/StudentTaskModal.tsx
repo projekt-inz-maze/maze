@@ -3,33 +3,23 @@ import React from 'react'
 import {Button, Col, Form, Modal, Row} from 'react-bootstrap'
 
 import styles from './StudentTaskModal.module.scss'
-import {useCreateNewTaskMutation, useGetExampleTaskQuery} from '../../../api/apiAuctions'
-import {TaskRequest} from '../../../api/types'
+import {useSubmitTaskMutation} from '../../../api/apiAuctions'
+import {StudentSubmitRequest} from '../../../api/types'
 
 type StudentTaskModalProps = {
-    // chapterId: number
     showDetails: boolean
     onCloseDetails: () => void
 }
 
 const StudentTaskModal = (props: StudentTaskModalProps) => {
-    const [createNewTask] = useCreateNewTaskMutation<TaskRequest>()
-    const {data} = useGetExampleTaskQuery()
+    const [submitTask] = useSubmitTaskMutation<StudentSubmitRequest>()
 
     const handleSubmitTask = () => {
-        console.log(data)
-        // createNewTask({
-        //     chapterId: 1,
-        //     form: {
-        //         activityType: 'SUBMIT',
-        //         title: 'Tytuł',
-        //         description: 'Opis',
-        //         posX: 3,
-        //         posY: 2,
-        //         percentageForAuthor: 10,
-        //         maxPointsForAuthor: 50
-        //     }
-        // })
+        submitTask({
+            id: 1,
+            title: 'Rzeź',
+            content: 'xd'
+        })
     }
 
     return (<>

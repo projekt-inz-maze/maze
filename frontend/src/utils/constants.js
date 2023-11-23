@@ -4,6 +4,7 @@ import AuctionImg from './resources/activities/auctionTaskIcon.png'
 import TaskImg from './resources/activities/fileTaskIcon.png'
 import ExpeditionImg from './resources/activities/graphTaskIcon.png'
 import InformationImg from './resources/activities/infoTaskIcon.png'
+import SubmitImg from './resources/activities/submitTaskIcon.png'
 import SurveyImg from './resources/activities/surveyTaskIcon.png'
 import priestImg from './resources/heroes/pope.png'
 import rogueImg from './resources/heroes/rogue.png'
@@ -81,6 +82,8 @@ export const getActivityImg = (type) => {
       return TaskImg
     case Activity.AUCTION:
       return AuctionImg
+    case Activity.SUBMIT:
+      return SubmitImg
     default:
   }
 }

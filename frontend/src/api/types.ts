@@ -99,3 +99,9 @@ export type SubmitTaskForm = {
   percentageForAuthor: number
   maxPointsForAuthor: number
 }
+
+export type StudentSubmitRequest = {
+  id: number
+  title: string
+  content: string
+}

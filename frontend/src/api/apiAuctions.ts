@@ -1,5 +1,5 @@
 import {api} from './api'
-import {AuctionResponse, BidRequest, SubmitTaskForm, TaskRequest} from './types'
+import {AuctionResponse, BidRequest, StudentSubmitRequest, SubmitTaskForm} from './types'
 
 const apiAuctions = api.injectEndpoints({
     endpoints: (build) => ({
@@ -25,13 +25,12 @@ const apiAuctions = api.injectEndpoints({
                 }
             ), providesTags: ['Auctions']
         }),
-        createNewTask: build.mutation<number, TaskRequest>({
-            query: (args) => ({
-                url: '/task/submit/create',
+        submitTask: build.mutation<number, StudentSubmitRequest>({
+            query: (body) => ({
+                url: '/task/submit/result',
                 method: 'POST',
-                body: args
-            }),
-            invalidatesTags: ['Auctions']
+                body
+            }), invalidatesTags: ['Auctions']
         })
     }),
     overrideExisting: false
@@ -40,6 +39,5 @@ const apiAuctions = api.injectEndpoints({
 export const {
     useGetAuctionByIdQuery,
     useSetBidMutation,
-    useCreateNewTaskMutation,
-    useGetExampleTaskQuery
+    useSubmitTaskMutation
 } = apiAuctions
