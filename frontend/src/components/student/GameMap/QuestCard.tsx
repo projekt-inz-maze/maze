@@ -19,10 +19,8 @@ type QuestCardProps = {
 }
 
 const QuestCard = (props: QuestCardProps) => {
-    const [showModal, setShowModal] = useState(false)
-    // const [requirements, setRequirements] = useState<ActivityRequirements>(emptyRequirements)
-
     const navigate = useNavigate()
+    const [showModal, setShowModal] = useState(false)
 
     const handleStartActivity = () => {
         setShowModal(false)
