@@ -61,7 +61,9 @@ public class TaskService {
                 .collect(Collectors.groupingBy(ActivityResult::getActivity))
                 .entrySet()
                 .stream()
-                .map(entry -> new ActivityToEvaluateResponse(entry.getKey().getId(), (long) entry.getValue().size()))
+                .map(entry -> new ActivityToEvaluateResponse(entry.getKey().getId(),
+                        entry.getKey().getActivityType(),
+                        (long) entry.getValue().size()))
                 .toList();
     }
 
