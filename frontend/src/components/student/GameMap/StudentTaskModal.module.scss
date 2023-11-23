@@ -1,0 +1,78 @@
+p {
+  margin: 0;
+  padding-top: 0;
+}
+
+span {
+  font-weight: bold;
+}
+
+// Override the default modal styles (border bottom)
+.modalHeader {
+  border-bottom: none !important;
+  padding-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+
+  .customButtonClose {
+    padding: calc(var(--bs-modal-header-padding-y) * .5) calc(var(--bs-modal-header-padding-x) * .5);
+    background-color: transparent;
+    border: 0;
+    width: 50px;
+
+    span {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: black;
+    }
+  }
+
+  .customButtonClose:hover {
+    transform: scale(1.1);
+  }
+}
+
+// Override the default modal styles (border top)
+.modalFooter {
+  border-top: none !important;
+  padding: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    font-size: 1.3rem;
+  }
+
+  .bidButton {
+    padding: 1em 2em;
+    background-color: #FFB21C;
+    color: black;
+    border: none;
+    font-weight: bold;
+  }
+}
+
+.modalContainer {
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.modalTitle {
+  padding-left: 1em;
+  font-weight: 600 !important;
+  font-size: 2rem !important;
+  text-decoration: underline;
+}
+
+.formContainer {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

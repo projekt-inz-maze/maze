@@ -59,6 +59,7 @@ export const Activity = {
   SURVEY: 'SURVEY',
   TASK: 'TASK',
   AUCTION: 'AUCTION',
+  SUBMIT: 'SUBMIT',
   ADDITIONAL: 'ADDITIONAL'
 }
 
@@ -96,6 +97,8 @@ export const getActivityTypeName = (type) => {
       return 'Zadanie bojowe'
     case Activity.AUCTION:
       return 'Licytacja'
+    case Activity.SUBMIT:
+      return 'Propozycja'
     case Activity.ADDITIONAL:
       return 'Bonus'
     default:
