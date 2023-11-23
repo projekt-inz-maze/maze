@@ -105,17 +105,14 @@ public class TaskService {
 
         List<FileResponse> filesResponse = result.getFiles().stream().map(FileResponse::new).toList();
 
-        return new TaskToEvaluateResponse(result.getMember().getUser(),
-                result.getId(),
-                task.getTitle(),
-                isLate,
-                task.getDescription(),
-                result.getAnswer(),
-                filesResponse,
-                task.getMaxPoints(),
-                task.getId(),
-                num - 1
-        );
+        return TaskToEvaluateResponse.builder()
+                .from(result)
+                .withUser(result.getMember().getUser())
+                .withIsLate(isLate)
+                .withUserAnswer(result.getAnswer())
+                .withFile(filesResponse)
+                .withRemaining(num - 1)
+                .build();
     }
 
     private TaskToEvaluateResponse getFirstAnswerToEvaluateForSubmitTask(Activity task) {
@@ -134,17 +131,15 @@ public class TaskService {
                         .anyMatch(dateTo -> sendDateMillis > dateTo);
             }
 
-            return new TaskToEvaluateResponse(result.getMember().getUser(),
-                    result.getId(),
-                    task.getTitle(),
-                    isLate,
-                    task.getDescription(),
-                    result.getSubmittedTitle(),
-                    Collections.emptyList(),
-                    task.getMaxPoints(),
-                    task.getId(),
-                    num - 1
-            );
+
+            return TaskToEvaluateResponse.builder()
+                    .from(result)
+                    .withUser(result.getMember().getUser())
+                    .withIsLate(isLate)
+                    .withUserTitle(result.getSubmittedTitle())
+                    .withUserContent(result.getSubmittedContent())
+                    .withRemaining(num - 1)
+                    .build();
         }).orElse(null);
     }
 
