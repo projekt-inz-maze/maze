@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import {Button, Col, Form, Modal, Row} from 'react-bootstrap'
 
@@ -7,6 +7,7 @@ import {useSubmitTaskMutation} from '../../../api/apiAuctions'
 import {StudentSubmitRequest} from '../../../api/types'
 
 type StudentTaskModalProps = {
+    activityId: number
     showDetails: boolean
     onCloseDetails: () => void
 }
@@ -14,12 +15,25 @@ type StudentTaskModalProps = {
 const StudentTaskModal = (props: StudentTaskModalProps) => {
     const [submitTask] = useSubmitTaskMutation<StudentSubmitRequest>()
 
+    const [title, setTitle] = useState<string>('')
+    const [content, setContent] = useState<string>('')
+
+    const onTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target?.value ?? '')
+    }
+
+    const onContentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setContent(event.target?.value ?? '')
+    }
+
     const handleSubmitTask = () => {
         submitTask({
-            id: 1,
-            title: 'Rzeź',
-            content: 'xd'
+            id: props.activityId,
+            title,
+            content
         })
+        setTitle('')
+        setContent('')
     }
 
     return (<>
@@ -43,9 +57,15 @@ const StudentTaskModal = (props: StudentTaskModalProps) => {
             <Modal.Body>
                 <Form className={styles.formContainer}>
                     <Row>
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlText1">
+                            <Form.Label><span>Tytuł zadania (wymagane)</span></Form.Label>
+                            <Form.Control as='textarea' rows={1} required onChange={onTitleChange}/>
+                        </Form.Group>
+                    </Row>
+                    <Row>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <Form.Label><span>Treść zadania (wymagane)</span></Form.Label>
-                            <Form.Control as="textarea" rows={3}/>
+                            <Form.Control as="textarea" rows={3} required onChange={onContentChange}/>
                         </Form.Group>
                     </Row>
                     <Row className={styles.form}>
@@ -64,7 +84,7 @@ const StudentTaskModal = (props: StudentTaskModalProps) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer className={styles.modalFooter}>
-                <Button variant='primary' className={styles.bidButton} onClick={handleSubmitTask}>
+                <Button variant='primary' type='submit' className={styles.bidButton} onClick={handleSubmitTask}>
                     <span>Zgłoś zadanie</span>
                 </Button>
             </Modal.Footer>

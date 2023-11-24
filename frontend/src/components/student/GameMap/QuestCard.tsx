@@ -66,7 +66,7 @@ const QuestCard = (props: QuestCardProps) => {
                     points={props.activity.points}
                 />}
             {props.activity.type === 'SUBMIT' &&
-                <StudentTaskModal showDetails={showModal} onCloseDetails={() => setShowModal(false)}/>}
+                <StudentTaskModal activityId={props.activity.id} showDetails={showModal} onCloseDetails={() => setShowModal(false)}/>}
             <div className={styles.questCard}>
                 <Button className={styles.questItem} onClick={() => setShowModal(!showModal)}>
                     <p>{props.description}</p>
