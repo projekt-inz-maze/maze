@@ -29,7 +29,7 @@ public class FileTaskResult extends ActivityResult {
     @Lob
     private String answer;
 
-    public boolean isEvaluated;
+    public boolean isEvaluated = false;
 
     public FileTask getFileTask() {
         return (FileTask) activity;
@@ -37,6 +37,11 @@ public class FileTaskResult extends ActivityResult {
 
     public void setFileTask(FileTask fileTask) {
         this.activity = fileTask;
+    }
+
+    public void setPoints(double points) {
+        super.setPoints(points);
+        this.isEvaluated = true;
     }
 
     @Override

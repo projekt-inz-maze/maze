@@ -20,8 +20,6 @@ public interface FileTaskResultRepository extends JpaRepository<FileTaskResult, 
     List<FileTaskResult> findAllByMember_UserAndCourse(User user, Course course);
     List<FileTaskResult> findAllByMember(CourseMember member);
     List<FileTaskResult> findAllByActivity(Activity fileTask);
-    @Query("SELECT ftr FROM FileTaskResult ftr WHERE ftr.activity.id = ?1")
-    List<FileTaskResult> findAllByFileTaskId(Long fileTaskId);
-
     long countAllByMember(CourseMember member);
+    List<FileTaskResult> findAllByMember_CourseIsAndActivity_ProfessorIs(Course course, User professor);
 }

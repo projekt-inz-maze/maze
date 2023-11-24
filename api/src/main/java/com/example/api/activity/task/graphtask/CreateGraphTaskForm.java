@@ -21,7 +21,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateGraphTaskForm extends CreateTaskForm {
-    @Schema(required = true) private String requiredKnowledge;
     @Schema(required = true) private List<QuestionForm> questions;
     @Schema(required = true) private String timeToSolve;
 
@@ -33,8 +32,7 @@ public class CreateGraphTaskForm extends CreateTaskForm {
                                List<QuestionForm> questions,
                                CreateAuctionDTO auctionDTO,
                                String timeToSolve) {
-        super(ActivityType.EXPEDITION, title, description, posX, posY);
-        this.requiredKnowledge = requiredKnowledge;
+        super(ActivityType.EXPEDITION, title, description, posX, posY, requiredKnowledge);
         this.questions = questions;
         this.timeToSolve = timeToSolve;
         setAuction(auctionDTO);
@@ -42,7 +40,6 @@ public class CreateGraphTaskForm extends CreateTaskForm {
 
     public CreateGraphTaskForm(GraphTask graphTask) {
         super(graphTask);
-        this.requiredKnowledge = graphTask.getRequiredKnowledge();
 
         HashMap<Long, Integer> mapping = getIdToQuestionNumberMapping(graphTask.getQuestions());
         this.questions = graphTask.getQuestions().stream().map(q->new QuestionForm(q, mapping)).toList();

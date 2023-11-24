@@ -2,12 +2,14 @@ package com.example.api.activity.task;
 
 import com.example.api.activity.Activity;
 import com.example.api.activity.ActivityRepository;
+import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
+import com.example.api.activity.submittask.result.SubmitTaskResult;
+import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
 import com.example.api.activity.task.dto.response.ActivitiesResponse;
 import com.example.api.activity.task.dto.response.ActivityToEvaluateResponse;
 import com.example.api.activity.task.dto.response.util.FileResponse;
-import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.filetask.FileTaskRepository;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.chapter.Chapter;
@@ -29,54 +31,55 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
 public class TaskService {
-    private final FileTaskRepository fileTaskRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final ChapterRepository chapterRepository;
-    private final ActivityValidator activityValidator;
     private final RequirementService requirementService;
     private final CourseValidator courseValidator;
     private final CourseService courseService;
     private final LoggedInUserService authService;
     private final ActivityRepository activityRepository;
+    private final SubmitTaskResultRepository submitTaskResultRepository;
 
     public List<ActivityToEvaluateResponse> getAllActivitiesToEvaluate(Long courseId)
             throws RequestValidationException, UsernameNotFoundException {
         User professor = authService.getCurrentUser();
         Course course = courseService.getCourse(courseId);
-        courseValidator.validateCourseOwner(course, professor);
         log.info("Fetching all activities that are needed to be evaluated for professor {}", professor.getEmail());
-
-        List<ActivityToEvaluateResponse> response = new LinkedList<>();
-        List<FileTask> fileTasks = fileTaskRepository.findFileTasksByCourse(course)
+        return
+        Stream.concat(fileTaskResultRepository.findAllByMember_CourseIsAndActivity_ProfessorIs(course, professor).stream(),
+                        submitTaskResultRepository.findAllByMember_CourseIsAndActivity_ProfessorIs(course, professor).stream())
+                .filter(result -> !result.isEvaluated())
+                .collect(Collectors.groupingBy(ActivityResult::getActivity))
+                .entrySet()
                 .stream()
-                .filter(fileTask -> fileTask.getProfessor().equals(professor))
+                .map(entry -> new ActivityToEvaluateResponse(entry.getKey().getId(), (long) entry.getValue().size()))
                 .toList();
-        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAll();
-        for (FileTask task : fileTasks) {
-            long num = fileTaskResults.stream()
-                    .filter(result -> Objects.equals(result.getFileTask().getId(), task.getId()))
-                    .filter(result -> !result.isEvaluated())
-                    .count();
-            response.add(new ActivityToEvaluateResponse(task.getId(), num));
-        }
-        return response;
     }
 
     public TaskToEvaluateResponse getFirstAnswerToEvaluate(Long id) throws EntityNotFoundException {
         log.info("Fetching first activity that is needed to be evaluated for file task with id {}", id);
-        FileTask task = fileTaskRepository.findFileTaskById(id);
-        activityValidator.validateActivityIsNotNull(task, id);
+        Activity task = activityRepository.findById(id).orElseThrow(() -> new javax.persistence.EntityNotFoundException("activty not found"));
+        switch (task.getActivityType()) {
+            case TASK -> {
+                return getFirstAnswerToEvaluateForFileTask(task);
+            }
+            case SUBMIT -> {
+                return getFirstAnswerToEvaluateForSubmitTask(task);
+            }
+            default -> throw new EntityNotFoundException("Invalid activity type");
+        }
+    }
 
+    private TaskToEvaluateResponse getFirstAnswerToEvaluateForFileTask(Activity task) {
         List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAll()
                 .stream()
                 .filter(result -> Objects.equals(result.getFileTask().getId(), task.getId()))
@@ -108,9 +111,39 @@ public class TaskService {
                 result.getAnswer(),
                 filesResponse,
                 task.getMaxPoints(),
-                id,
-                num-1
+                task.getId(),
+                num - 1
         );
+    }
+
+    private TaskToEvaluateResponse getFirstAnswerToEvaluateForSubmitTask(Activity task) {
+        List<SubmitTaskResult> results = submitTaskResultRepository.findAllByActivityAndEvaluatedIs(task, false);
+        long num = results.size();
+
+        return results.stream().findAny().map(result -> {
+            boolean isLate = false;
+            Long sendDateMillis = result.getSendDateMillis();
+
+            if (sendDateMillis != null){
+                isLate = task.getRequirements()
+                        .stream()
+                        .map(Requirement::getDateToMillis)
+                        .filter(Objects::nonNull)
+                        .anyMatch(dateTo -> sendDateMillis > dateTo);
+            }
+
+            return new TaskToEvaluateResponse(result.getMember().getUser(),
+                    result.getId(),
+                    task.getTitle(),
+                    isLate,
+                    task.getDescription(),
+                    result.getSubmittedTitle(),
+                    Collections.emptyList(),
+                    task.getMaxPoints(),
+                    task.getId(),
+                    num - 1
+            );
+        }).orElse(null);
     }
 
     public List<ActivitiesResponse> getAllActivities(Long courseId) throws EntityNotFoundException {

@@ -26,16 +26,7 @@ public class FileTaskController {
 
     @GetMapping("/create")
     public ResponseEntity<CreateFileTaskForm> getExampleFileTaskForm() {
-        CreateFileTaskForm form = new CreateFileTaskForm(
-                MessageManager.TITLE,
-                MessageManager.DESC,
-                3,
-                4,
-                MessageManager.REQ_KNOWLEDGE,
-                new CreateAuctionDTO(0D, 100D, 0L, 10D),
-                30.0
-        );
-        return ResponseEntity.ok().body(form);
+        return ResponseEntity.ok().body(CreateFileTaskForm.example());
     }
 
     @PostMapping("/create")

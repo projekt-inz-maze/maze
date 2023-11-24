@@ -1,6 +1,5 @@
-package com.example.api.activity.validator;
+package com.example.api.activity.survey;
 
-import com.example.api.activity.survey.CreateSurveyForm;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
 import lombok.extern.slf4j.Slf4j;

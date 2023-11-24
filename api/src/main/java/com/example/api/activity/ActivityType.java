@@ -7,6 +7,7 @@ public enum ActivityType {
     INFO("INFORMATION"),
     SURVEY("SURVEY"),
     AUCTION("AUCTION"),
+    SUBMIT("SUBMIT"),
     ADDITIONAL("ADDITIONAL");
 
     private final String activityType;

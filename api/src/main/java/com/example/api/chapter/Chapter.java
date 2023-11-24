@@ -50,8 +50,7 @@ public class Chapter {
     }
 
     public int getNoActivities() {
-        return activityMap.getGraphTasks().size() + activityMap.getFileTasks().size() +
-                activityMap.getInfos().size() + activityMap.getSurveys().size();
+        return (int) activityMap.getActivityCount();
     }
 
     public double getMaxPoints() {

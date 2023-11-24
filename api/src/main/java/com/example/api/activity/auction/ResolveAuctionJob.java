@@ -18,7 +18,7 @@ import java.util.List;
 public class ResolveAuctionJob {
     private final AuctionRepository auctionRepository;
     private final AuctionService auctionService;
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0/5 * * * *")
     private void resolveAllAuctions() {
         List<Auction> auctions = auctionRepository.findAllByResolutionDateIsBeforeAndResolvedIsFalse(LocalDateTime.now());
         log.info("Running ResolveAuctionJob for auctions: {}", auctions.stream().map(Activity::getId).toList());

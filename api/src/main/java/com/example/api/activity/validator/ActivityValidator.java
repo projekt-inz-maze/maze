@@ -3,6 +3,7 @@ package com.example.api.activity.validator;
 import com.example.api.activity.CreateActivityForm;
 import com.example.api.activity.info.CreateInfoForm;
 import com.example.api.activity.survey.CreateSurveyForm;
+import com.example.api.activity.survey.SurveyValidator;
 import com.example.api.activity.task.filetask.CreateFileTaskForm;
 import com.example.api.activity.task.filetask.FileTaskValidator;
 import com.example.api.activity.task.graphtask.CreateGraphTaskForm;
@@ -15,7 +16,6 @@ import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.Activity;
 import com.example.api.activity.task.filetask.FileTask;
-import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.map.ActivityMap;
 import com.example.api.chapter.Chapter;
 import com.example.api.question.Difficulty;
@@ -155,11 +155,27 @@ public class ActivityValidator {
         }
     }
 
-    public void validateGraphTaskTitle(String title, List<GraphTask> graphTasks) throws RequestValidationException {
-        graphTaskValidator.validateGraphTaskTitle(title, graphTasks);
+    public void validateActivityTitle(String title, List<? extends Activity> activities) throws RequestValidationException {
+        int idx = title.indexOf(";");
+        if (idx != -1) {
+            log.error("Title cannot contain a semicolon!");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_CONTAINS_SEMICOLON);
+        }
+        if (activities.stream().anyMatch(fileTask -> fileTask.getTitle().equals(title))) {
+            log.error("Activity has to have unique title");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_NOT_UNIQUE);
+        }
     }
 
-    public void validateFileTaskTitle(String title, List<FileTask> fileTasks) throws RequestValidationException {
-        fileTaskValidator.validateFileTaskTitle(title, fileTasks);
+    public void validateActivityTitle(String title, Boolean titleExists) throws RequestValidationException {
+        int idx = title.indexOf(";");
+        if (idx != -1) {
+            log.error("Title cannot contain a semicolon!");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_CONTAINS_SEMICOLON);
+        }
+        if (titleExists) {
+            log.error("Activity has to have unique title");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_NOT_UNIQUE);
+        }
     }
 }

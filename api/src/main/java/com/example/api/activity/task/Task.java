@@ -27,9 +27,6 @@ public abstract class Task extends Activity {
     @NotNull
     private String requiredKnowledge;
 
-    @NotNull
-    private Double maxPoints;
-
     @OneToOne
     private Auction auction;
 
@@ -41,9 +38,8 @@ public abstract class Task extends Activity {
                 String requiredKnowledge,
                 Double maxPoints,
                 Course course){
-        super(name, description, posX, posY, professor, course);
+        super(name, description, posX, posY, professor, course, maxPoints);
         this.requiredKnowledge = requiredKnowledge;
-        this.maxPoints = maxPoints;
     }
 
     public Optional<Auction> getAuction() {

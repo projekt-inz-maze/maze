@@ -37,8 +37,9 @@ public class SurveyResultService {
         if (surveyResult == null) {
             surveyResult = new SurveyResult();
             surveyResult.setSurvey(survey);
-            surveyResult.setPoints(survey.getMaxPoints());
             surveyResult.setMember(student.getCourseMember(survey.getCourse()).orElseThrow());
+            surveyResult.setCourse(survey.getCourse());
+            surveyResult.setPoints(survey.getMaxPoints());
             badgeService.checkAllBadges(student.getCourseMember(survey.getCourse()).orElseThrow());
         }
         else if (!surveyResult.isEvaluated()) {

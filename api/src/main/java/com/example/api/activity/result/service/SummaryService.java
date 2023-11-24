@@ -1,5 +1,6 @@
 package com.example.api.activity.result.service;
 
+import com.example.api.activity.result.repository.ActivityResultRepository;
 import com.example.api.activity.task.dto.response.result.summary.*;
 import com.example.api.activity.task.dto.response.result.summary.util.AverageGradeForChapterCreator;
 import com.example.api.activity.task.dto.response.result.summary.util.ScoreCreator;
@@ -46,18 +47,15 @@ import java.util.stream.Stream;
 public class SummaryService {
     private final GroupRepository groupRepository;
     private final GraphTaskRepository graphTaskRepository;
-    private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskRepository fileTaskRepository;
-    private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyRepository surveyRepository;
-    private final SurveyResultRepository surveyResultRepository;
     private final ChapterRepository chapterRepository;
     private final PointsToGradeMapper pointsToGradeMapper;
-    private final UserService userService;
     private final CourseService courseService;
     private final CourseValidator courseValidator;
     private final ChapterService chapterService;
     private final LoggedInUserService authService;
+    private final ActivityResultRepository activityResultRepository;
 
     public SummaryResponse getSummary(Long courseId) throws RequestValidationException {
         User professor = authService.getCurrentUser();
@@ -307,16 +305,7 @@ public class SummaryService {
     }
 
     private List<? extends ActivityResult> getAllResultsForActivity(Activity activity) {
-        if (activity.getActivityType().equals(ActivityType.EXPEDITION)) {
-            return graphTaskResultRepository.findAllByActivity((GraphTask) activity);
-        }
-        else if (activity.getActivityType().equals(ActivityType.TASK)) {
-            return fileTaskResultRepository.findAllByActivity((FileTask) activity);
-        }
-        else if (activity.getActivityType().equals(ActivityType.SURVEY)) {
-            return surveyResultRepository.findAllByActivity((Survey) activity);
-        }
-        return List.of();
+        return activityResultRepository.findAllByActivity(activity);
     }
 
     private List<? extends ActivityResult> getAllProfessorChapterActivitiesResult(Chapter chapter, User professor) {
