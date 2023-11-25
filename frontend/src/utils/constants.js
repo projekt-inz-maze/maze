@@ -98,6 +98,8 @@ export const getActivityTypeName = (type) => {
       return 'Sondaż'
     case Activity.TASK:
       return 'Zadanie bojowe'
+    case Activity.AUCTION:
+      return 'Licytacja'
     case Activity.SUBMIT:
       return 'Propozycja'
     case Activity.ADDITIONAL:

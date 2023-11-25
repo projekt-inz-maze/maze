@@ -1,5 +1,5 @@
 import {api} from './api'
-import {AuctionResponse, BidRequest, StudentSubmitRequest, SubmitTaskForm} from './types'
+import {AuctionResponse, BidRequest, ProfessorGradeRequest, StudentSubmitRequest, SubmitTaskForm} from './types'
 
 const apiAuctions = api.injectEndpoints({
     endpoints: (build) => ({
@@ -30,6 +30,12 @@ const apiAuctions = api.injectEndpoints({
                 url: '/task/submit/result',
                 method: 'POST',
                 body
+            }), invalidatesTags: ['Auctions']
+        }),
+        giveGradeTask: build.mutation<number, ProfessorGradeRequest>({
+            query: (body) => ({
+                url: `/task/submit/result?id=${body.id}&accepted=${body.accepted}`,
+                method: 'POST'
             }), invalidatesTags: ['Auctions']
         })
     }),
