@@ -6,8 +6,6 @@ import com.example.api.activity.task.dto.response.result.ScaleActivityStatistics
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.Activity;
-import com.example.api.activity.survey.Survey;
-import com.example.api.activity.task.Task;
 import com.example.api.util.csv.PointsToGradeMapper;
 
 import java.util.Comparator;
@@ -22,20 +20,20 @@ public class ScaleActivityStatisticsCreator {
 
     public ScaleActivityStatisticsCreator(Activity activity) {
         switch (activity.getActivityType()) {
-            case SURVEY -> initSurvey((Survey) activity);
-            case TASK, EXPEDITION -> initTask((Task) activity);
+            case SURVEY -> initSurvey();
+            case TASK, EXPEDITION, SUBMIT-> initTask(activity);
             case AUCTION -> initAuction((Auction) activity);
             default -> throw new IllegalStateException("Illegal activity type");
         }
     }
 
-    public void initTask(Task task) {
+    public void initTask(Activity task) {
         this.maxPoints = task.getMaxPoints();
         Stream.of(5.0, 4.5, 4.0, 3.5, 3.0, 2.0)
                 .forEach(grade -> statistics.put(grade, new ScaleActivityStatistics(grade)));
     }
 
-    public void initSurvey(Survey survey) {
+    public void initSurvey() {
         Stream.of(5.0, 4.0, 3.0, 2.0, 1.0)
                 .forEach(grade -> statistics.put(grade, new ScaleActivityStatistics(grade)));
     }
@@ -46,8 +44,8 @@ public class ScaleActivityStatisticsCreator {
 
     public void add(ActivityResult activityResult) {
         switch (activityResult.getActivity().getActivityType()) {
-            case SURVEY, TASK -> addSurvey((SurveyResult) activityResult);
-            case EXPEDITION -> addTask(activityResult);
+            case SURVEY -> addSurvey((SurveyResult) activityResult);
+            case EXPEDITION, TASK, SUBMIT -> addTask(activityResult);
             case AUCTION -> addAuction((Bid) activityResult);
             default -> throw new IllegalStateException("Illegal activity type");
         }
