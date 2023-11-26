@@ -7,14 +7,12 @@ import com.example.api.activity.task.Task;
 import com.example.api.chapter.requirement.model.Requirement;
 import com.example.api.course.Course;
 import com.example.api.user.model.User;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

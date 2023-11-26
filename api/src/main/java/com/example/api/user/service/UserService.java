@@ -4,6 +4,7 @@ import com.example.api.course.coursemember.CourseMember;
 import com.example.api.course.coursemember.CourseMemberService;
 import com.example.api.course.StudentNotEnrolledException;
 import com.example.api.group.GroupService;
+import com.example.api.personalityquiz.PersonalityType;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.hero.model.Hero;
 import com.example.api.user.hero.model.UserHero;
@@ -37,9 +38,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -268,5 +268,18 @@ public class UserService implements UserDetailsService {
         User user = authService.getCurrentUser();
         userValidator.validateProfessorAccount(user);
         return user;
+    }
+
+    public void setPersonalityForUser(User user, Map<PersonalityType, Integer> quizResult) {
+        int allAnswers = quizResult.values().stream().reduce(Integer::sum).orElseThrow();
+
+        Map<PersonalityType, Double> personality = quizResult
+                .entrySet()
+                .stream()
+                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), 100D * (double)e.getValue()/(double) allAnswers))
+                        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+        user.setPersonality(personality);
+        userRepository.save(user);
     }
 }
