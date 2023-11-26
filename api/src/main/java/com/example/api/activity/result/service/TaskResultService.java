@@ -152,6 +152,7 @@ public class TaskResultService {
     public List<TaskPointsStatisticsResponse> getUserPointsStatistics(User student, Course course) {
         return activityResultRepository.findAllByMember_CourseAndMember_User(course, student)
                 .stream()
+                .filter(result -> result.activity != null)
                 .map(TaskPointsStatisticsResponse::new)
                 .sorted(((o1, o2) -> Long.compare(o2.getDateMillis(), o1.getDateMillis())))
                 .toList();
@@ -225,14 +226,19 @@ public class TaskResultService {
         log.info("Calculating point values for activity {}", activity.getId());
 
         if (!results.isEmpty()) {
+            List<Double> points = results.stream()
+                    .map(result -> {
+                        if (result instanceof SurveyResult) {
+                            return ((SurveyResult) result).getRate().doubleValue();
+                        } else {
+                            return result.getPoints();
+                        }
+                    })
+                    .toList();
 
-            if (results.stream().anyMatch(result -> result instanceof SurveyResult? ((SurveyResult) result).getRate() == null : result.getPoints() == null)) {
+            if (points.stream().anyMatch(Objects::isNull)) {
                 return null;
             }
-
-            List<Double> points = results.stream()
-                    .map(result -> result instanceof SurveyResult? ((SurveyResult) result).getRate() : result.getPoints())
-                    .toList();
 
             Double sumPoints = points.stream().reduce(Double::sum).get();
 

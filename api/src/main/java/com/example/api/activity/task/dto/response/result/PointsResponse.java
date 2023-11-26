@@ -6,13 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.MappedSuperclass;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
 public abstract class PointsResponse {
     protected Long dateMillis;
     protected Double pointsReceived;
