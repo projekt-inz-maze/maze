@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 
 import styles from './ActivityAssessmentList.module.scss'
 import ActivityListItem from './ActivityListItem'
+import {useGetTasksToGradeQuery} from '../../../api/apiGrades'
 import {useAppSelector} from '../../../hooks/hooks'
 import ProfessorService from '../../../services/professor.service'
 import {ERROR_OCCURRED} from '../../../utils/constants'
@@ -14,10 +15,21 @@ import Loader from '../../general/Loader/Loader'
 // an ID is unique only in the task group. we might need to add a field that lets us know which task type it is
 // on the backend if we want to check other types of activities in the future
 
+const emptyActivityList = [{activity: {activity: {activityName: ''}}, toGrade: 0}]
+
 function ActivityAssessmentList(props) {
-  const [activityList, setActivityList] = useState(undefined)
+  const [activityList, setActivityList] = useState(emptyActivityList)
 
   const courseId = useAppSelector((state) => state.user.courseId)
+
+  const { data: activities, isSuccess } = useGetTasksToGradeQuery(courseId)
+
+    useEffect(() => {
+        if (!isSuccess) {
+            return
+        }
+        console.log('new list', activities)
+    }, [])
 
   useEffect(() => {
     ProfessorService.getTasksToEvaluateList(courseId)

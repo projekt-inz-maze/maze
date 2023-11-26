@@ -4,16 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-159] send correct user query in submit task">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityAssessmentList.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.module.scss" afterDir="false" />
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-159] add new styles for ActivityAssessment">
+      <change afterPath="$PROJECT_DIR$/frontend/src/api/apiGrades.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTaskModal/GradeFileTaskModal.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTaskModal/GradeFileTaskModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTaskModal/GradeSubmitTaskModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/apiAuctions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/apiAuctions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/api.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentDetails.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentProfessorFileService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentProfessorFileService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentStudentFileService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentStudentFileService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityAssessmentList.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityAssessmentList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/AddActivityModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/AddActivityModal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/constants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeListAndExport/ActivitiesTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeListAndExport/ActivitiesTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/services/activity.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/activity.service.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +79,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTaskModal" />
+      <recent name="$PROJECT_DIR$/frontend/src/components/professor/GradeTask" />
       <recent name="$PROJECT_DIR$/frontend/public" />
     </key>
   </component>
@@ -97,7 +107,9 @@
       <workItem from="1700815063886" duration="4047000" />
       <workItem from="1700821766731" duration="307000" />
       <workItem from="1700937481594" duration="4158000" />
-      <workItem from="1700946978239" duration="1665000" />
+      <workItem from="1700946978239" duration="2885000" />
+      <workItem from="1700949872398" duration="4163000" />
+      <workItem from="1700986227287" duration="17916000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -163,7 +175,15 @@
       <option name="project" value="LOCAL" />
       <updated>1700818474961</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="[MAZE-159] add new styles for ActivityAssessment">
+      <option name="closed" value="true" />
+      <created>1700948956397</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1700948956397</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -178,6 +198,7 @@
     <MESSAGE value="[MAZE-159] change order of hooks in QuestCard" />
     <MESSAGE value="[MAZE-159] add submitTaskMutation" />
     <MESSAGE value="[MAZE-159] send correct user query in submit task" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-159] send correct user query in submit task" />
+    <MESSAGE value="[MAZE-159] add new styles for ActivityAssessment" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-159] add new styles for ActivityAssessment" />
   </component>
 </project>
