@@ -3,6 +3,7 @@ package com.example.api.user.model;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.course.StudentNotEnrolledException;
+import com.example.api.personalityquiz.PersonalityType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,6 +50,11 @@ public class User {
     @OneToMany(mappedBy = "owner")
     @JsonBackReference
     private List<Course> courses = new LinkedList<>();
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @MapKeyClass(PersonalityType.class)
+    @MapKeyEnumerated(EnumType.STRING)
+    private Map<PersonalityType, Double> personality;
 
     public Optional<CourseMember> getCourseMember(Long courseId) {
         return courseMemberships.stream()

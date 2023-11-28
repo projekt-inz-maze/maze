@@ -5,8 +5,6 @@ import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.Activity;
-import com.example.api.activity.survey.Survey;
-import com.example.api.activity.task.Task;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,19 +18,19 @@ public class GroupActivityStatisticsCreator {
 
     public GroupActivityStatisticsCreator(Activity activity, ActivityResult activityResult) {
         if (activity.getActivityType().equals(ActivityType.SURVEY)) {
-            initSurvey((Survey) activity, (SurveyResult) activityResult);
+            initSurvey((SurveyResult) activityResult);
         }
-        else initTask((Task) activity, activityResult);
+        else initTask(activity, activityResult);
     }
 
-    public void initTask(Task task, ActivityResult activityResult) {
+    public void initTask(Activity task, ActivityResult activityResult) {
         this.groupName = activityResult.getMember().getGroup().getName();
         this.answersNumber = 1;
         this.sumPoints = activityResult.getPoints();
         this.maxPointsForTask = task.getMaxPoints();
     }
 
-    public void initSurvey(Survey survey, SurveyResult surveyResult) {
+    public void initSurvey(SurveyResult surveyResult) {
         this.groupName = surveyResult.getMember().getGroup().getName();
         this.answersNumber = 1;
         this.sumPoints = surveyResult.getPoints();

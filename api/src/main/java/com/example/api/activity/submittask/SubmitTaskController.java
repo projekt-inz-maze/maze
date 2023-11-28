@@ -42,6 +42,5 @@ public class SubmitTaskController {
             submitTaskService.rejectResult(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-
     }
 }
