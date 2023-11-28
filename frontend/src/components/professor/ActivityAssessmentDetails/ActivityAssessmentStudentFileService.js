@@ -19,7 +19,7 @@ function ActivityAssessmentStudentFileService(props) {
     <Col>
       <strong>Załączone pliki: </strong>
       {!activityResponseInfo || activityResponseInfo.file?.length === 0 ? (
-        <p style={{ 'font-weight': 'normal' }}>Brak dodanych plików</p>
+        <p>Brak dodanych plików</p>
       ) : (
         activityResponseInfo.file?.map((file, idx) => (
           <ActivityAssessmentStudentFileRow key={idx} className='mt-4'>

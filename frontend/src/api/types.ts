@@ -156,8 +156,8 @@ export type ActivityToGrade = {
 }
 
 export type GradeTaskRequest = {
-  taskId: number
-  remarks: string
+  fileTaskResultId: number
+  content: string
   points: number
   file: any
   fileName: string

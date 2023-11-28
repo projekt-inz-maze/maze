@@ -1,5 +1,5 @@
 import { api } from './api'
-import {ActivityResponseInfo, ActivityToGrade, GradeTaskRequest, GradeTaskResponse} from './types'
+import { ActivityResponseInfo, ActivityToGrade, GradeTaskResponse } from './types'
 
 const apiGrades = api.injectEndpoints({
   endpoints: (build) => ({
@@ -17,7 +17,7 @@ const apiGrades = api.injectEndpoints({
       }),
       providesTags: ['Grades']
     }),
-    gradeTask: build.mutation<GradeTaskResponse, GradeTaskRequest>({
+    gradeTask: build.mutation<GradeTaskResponse, FormData>({
       query: (body) => ({
         url: 'feedback/professor',
         method: 'POST',
