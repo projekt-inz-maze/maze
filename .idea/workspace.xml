@@ -4,18 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit/QuestSubmit.tsx" afterDir="false" />
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-159] add missing file">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/GameMap.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/GameMap.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/QuestBoard.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard/QuestBoard.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/QuestBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard/QuestBoard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/QuestCard.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/QuestCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/StudentTaskModal.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit/QuestSubmit.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/StudentTaskModal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/routes/modules/studentRoutes/MapRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/modules/studentRoutes/MapRoutes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit/QuestSubmit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit/QuestSubmit.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +101,7 @@
       <workItem from="1701188965780" duration="16274000" />
       <workItem from="1701250473899" duration="1424000" />
       <workItem from="1701280500132" duration="599000" />
-      <workItem from="1701342254293" duration="1963000" />
+      <workItem from="1701342254293" duration="2317000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -192,7 +183,23 @@
       <option name="project" value="LOCAL" />
       <updated>1701206989831</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx">
+      <option name="closed" value="true" />
+      <created>1701350423699</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1701350423700</updated>
+    </task>
+    <task id="LOCAL-00012" summary="[MAZE-159] add missing file">
+      <option name="closed" value="true" />
+      <created>1701350445030</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1701350445030</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,6 +217,7 @@
     <MESSAGE value="[MAZE-159] add new styles for ActivityAssessment" />
     <MESSAGE value="[MAZE-159] refactor ActivityAssessment files" />
     <MESSAGE value="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx" />
+    <MESSAGE value="[MAZE-159] add missing file" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-159] add missing file" />
   </component>
 </project>

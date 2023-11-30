@@ -81,11 +81,6 @@ const QuestSubmit = (props: StudentTaskModalProps) => {
                   <Form.Control type='file' />
                 </Form.Group>
               </Col>
-              <Col xs={3}>
-                <Form.Group id='formGridCheckbox'>
-                  <Form.Check type='checkbox' label='Zadanie z zajęć laboratoryjnych' />
-                </Form.Group>
-              </Col>
             </Row>
           </Form>
         </Modal.Body>
