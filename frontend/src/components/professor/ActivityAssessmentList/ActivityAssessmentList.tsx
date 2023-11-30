@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 
 import { Container } from 'react-bootstrap'
-import { connect } from 'react-redux'
 
 import styles from './ActivityAssessmentList.module.scss'
 import ActivityListItem from './ActivityListItem'
@@ -13,9 +12,9 @@ import { useAppSelector } from '../../../hooks/hooks'
 // an ID is unique only in the task group. we might need to add a field that lets us know which task type it is
 // on the backend if we want to check other types of activities in the future
 
-const emptyActivityList: ActivityToGrade[] = [{ activityId: -1, toGrade: 0 }]
+const emptyActivityList: ActivityToGrade[] = [{ activityId: -1, activityType: 'TASK', toGrade: 0 }]
 
-function ActivityAssessmentList(props: any) {
+const ActivityAssessmentList = () => {
   const [activityList, setActivityList] = useState<ActivityToGrade[]>(emptyActivityList)
 
   const courseId = useAppSelector((state) => state.user.courseId)
@@ -35,17 +34,15 @@ function ActivityAssessmentList(props: any) {
       <div className={styles.listItem}>
         {isActivitiesSuccess &&
           activityList.map((activity) => (
-            <ActivityListItem activity={activity.activityId} toGrade={activity.toGrade} />
+            <ActivityListItem
+              activityId={activity.activityId}
+              activityType={activity.activityType}
+              toGrade={activity.toGrade}
+            />
           ))}
       </div>
     </Container>
   )
 }
 
-function mapStateToProps(state: any) {
-  const { theme } = state
-
-  return { theme }
-}
-
-export default connect(mapStateToProps)(ActivityAssessmentList)
+export default ActivityAssessmentList

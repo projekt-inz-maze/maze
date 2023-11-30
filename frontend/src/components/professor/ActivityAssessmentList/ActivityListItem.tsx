@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 
 import styles from './ActivityListItem.module.scss'
 import { useGetFirstTaskToGradeQuery } from '../../../api/apiGrades'
-import { ActivityResponseInfo } from '../../../api/types'
-import { Activity, getActivityTypeName } from '../../../utils/constants'
+import { ActivityResponseInfo, ActivityType } from '../../../api/types'
+import { getActivityTypeName } from '../../../utils/constants'
 import GradeFileTaskModal from '../GradeTask/GradeFileTaskModal/GradeFileTaskModal'
 
 const emptyActivity: ActivityResponseInfo = {
@@ -22,7 +22,8 @@ const emptyActivity: ActivityResponseInfo = {
 }
 
 type ActivityListItemProps = {
-  activity: number
+  activityId: number
+  activityType: ActivityType
   toGrade: number
 }
 
@@ -31,8 +32,8 @@ const ActivityListItem = (props: ActivityListItemProps) => {
 
   const [activity, setActivity] = useState<ActivityResponseInfo>(emptyActivity)
 
-  const { data: activityToGrade, isSuccess } = useGetFirstTaskToGradeQuery(props.activity, {
-    skip: props.activity === -1
+  const { data: activityToGrade, isSuccess } = useGetFirstTaskToGradeQuery(props.activityId, {
+    skip: props.activityId === -1
   })
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const ActivityListItem = (props: ActivityListItemProps) => {
       {activity ? (
         <div className={styles.activityItem} onClick={() => setShowModal(true)}>
           <>
-            <div>{`${getActivityTypeName(Activity.TASK)} - ${activity.activityName}`}</div>
+            <div>{`${getActivityTypeName(props.activityType)} - ${activity.activityName}`}</div>
             <div>{`Do sprawdzenia: ${props.toGrade}`}</div>
           </>
         </div>

@@ -150,8 +150,11 @@ export type File = {
   name: string
 }
 
+export type ActivityType = 'TASK' | 'SUBMIT'
+
 export type ActivityToGrade = {
   activityId: number
+  activityType: ActivityType
   toGrade: number
 }
 

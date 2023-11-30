@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-159] add missing file">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-159] correct displaying for activityType in activity list">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit/QuestSubmit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit/QuestSubmit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityAssessmentList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityAssessmentList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +103,7 @@
       <workItem from="1701188965780" duration="16274000" />
       <workItem from="1701250473899" duration="1424000" />
       <workItem from="1701280500132" duration="599000" />
-      <workItem from="1701342254293" duration="2317000" />
+      <workItem from="1701342254293" duration="2684000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -199,7 +201,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701350445030</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="[MAZE-159] remove checkbox from QuestSubmit.tsx">
+      <option name="closed" value="true" />
+      <created>1701350797335</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1701350797335</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -218,6 +228,8 @@
     <MESSAGE value="[MAZE-159] refactor ActivityAssessment files" />
     <MESSAGE value="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx" />
     <MESSAGE value="[MAZE-159] add missing file" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-159] add missing file" />
+    <MESSAGE value="[MAZE-159] remove checkbox from QuestSubmit.tsx" />
+    <MESSAGE value="[MAZE-159] correct displaying for activityType in activity list" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-159] correct displaying for activityType in activity list" />
   </component>
 </project>
