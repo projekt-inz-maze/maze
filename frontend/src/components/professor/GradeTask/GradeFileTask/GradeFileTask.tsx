@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 
-import styles from './GradeFileTaskModal.module.scss'
+import styles from './GradeFileTask.module.scss'
 import { useGradeTaskMutation } from '../../../../api/apiGrades'
 import { ActivityResponseInfo, GradeTaskRequest } from '../../../../api/types'
 import { Activity, getActivityTypeName } from '../../../../utils/constants'
@@ -15,7 +15,7 @@ type GradeFileTaskModalProps = {
   activity: ActivityResponseInfo
 }
 
-const GradeFileTaskModal = (props: GradeFileTaskModalProps) => {
+const GradeFileTask = (props: GradeFileTaskModalProps) => {
   const [gradeValue, setGradeValue] = useState<number>(0)
   const [fileBlob, setFileBlob] = useState<Blob | null>(null)
   const [fileName, setFileName] = useState<string>('')
@@ -142,4 +142,4 @@ const GradeFileTaskModal = (props: GradeFileTaskModalProps) => {
   )
 }
 
-export default GradeFileTaskModal
+export default GradeFileTask

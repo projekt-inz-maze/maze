@@ -4,7 +4,7 @@ import styles from './ActivityListItem.module.scss'
 import { useGetFirstTaskToGradeQuery } from '../../../api/apiGrades'
 import { ActivityResponseInfo, ActivityType } from '../../../api/types'
 import { getActivityTypeName } from '../../../utils/constants'
-import GradeFileTaskModal from '../GradeTask/GradeFileTaskModal/GradeFileTaskModal'
+import GradeFileTask from '../GradeTask/GradeFileTask/GradeFileTask'
 
 const emptyActivity: ActivityResponseInfo = {
   userEmail: '',
@@ -55,7 +55,7 @@ const ActivityListItem = (props: ActivityListItemProps) => {
       ) : (
         <div>Brak zadań do sprawdzenia</div>
       )}
-      <GradeFileTaskModal showDetails={showModal} onCloseDetails={() => setShowModal(false)} activity={activity} />
+      <GradeFileTask showDetails={showModal} onCloseDetails={() => setShowModal(false)} activity={activity} />
     </>
   )
 }
