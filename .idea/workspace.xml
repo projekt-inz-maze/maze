@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-111] src: removed scrollbar from some professor views, add routes for map">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/GameMap/QuestBoard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/GameMap.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/GameMap/GameMap.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/routes/modules/studentRoutes/MapRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/modules/studentRoutes/MapRoutes.tsx" afterDir="false" />
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-159] add endpoint to handle submit task results">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/apiGrades.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/apiGrades.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +28,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="MAZE-165" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -42,21 +52,29 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;MAZE-111&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;MAZE-159&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jkbstepien/projects/work/fslab-react-component-library&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/jkbstepien/projects/university/maze/frontend/node_modules/prettier&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.linters.eslint&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/home/jkbstepien/projects/university/maze/frontend/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/frontend/public" />
+      <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit" />
+      <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard" />
+      <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard" />
+      <recent name="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTaskModal" />
+      <recent name="$PROJECT_DIR$/frontend/src/components/professor/GradeTask" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -74,6 +92,22 @@
       <workItem from="1694938845143" duration="1850000" />
       <workItem from="1696064730498" duration="225000" />
       <workItem from="1696096177816" duration="3000" />
+      <workItem from="1700735727440" duration="817000" />
+      <workItem from="1700736631987" duration="306000" />
+      <workItem from="1700736964709" duration="4420000" />
+      <workItem from="1700741654329" duration="2706000" />
+      <workItem from="1700746919482" duration="12626000" />
+      <workItem from="1700815063886" duration="4047000" />
+      <workItem from="1700821766731" duration="307000" />
+      <workItem from="1700937481594" duration="4158000" />
+      <workItem from="1700946978239" duration="2885000" />
+      <workItem from="1700949872398" duration="4163000" />
+      <workItem from="1700986227287" duration="17916000" />
+      <workItem from="1701164011251" duration="2462000" />
+      <workItem from="1701188965780" duration="16274000" />
+      <workItem from="1701250473899" duration="1424000" />
+      <workItem from="1701280500132" duration="599000" />
+      <workItem from="1701342254293" duration="7268000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -99,7 +133,103 @@
       <option name="project" value="LOCAL" />
       <updated>1694618190108</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="[MAZE-159] add mock view for submit task">
+      <option name="closed" value="true" />
+      <created>1700743050913</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1700743050914</updated>
+    </task>
+    <task id="LOCAL-00005" summary="[MAZE-159] add submitTask service">
+      <option name="closed" value="true" />
+      <created>1700763563925</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1700763563925</updated>
+    </task>
+    <task id="LOCAL-00006" summary="[MAZE-159] change order of hooks in QuestCard">
+      <option name="closed" value="true" />
+      <created>1700763586385</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1700763586385</updated>
+    </task>
+    <task id="LOCAL-00007" summary="[MAZE-159] add submitTaskMutation">
+      <option name="closed" value="true" />
+      <created>1700766727166</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1700766727166</updated>
+    </task>
+    <task id="LOCAL-00008" summary="[MAZE-159] send correct user query in submit task">
+      <option name="closed" value="true" />
+      <created>1700818474961</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1700818474961</updated>
+    </task>
+    <task id="LOCAL-00009" summary="[MAZE-159] add new styles for ActivityAssessment">
+      <option name="closed" value="true" />
+      <created>1700948956397</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1700948956397</updated>
+    </task>
+    <task id="LOCAL-00010" summary="[MAZE-159] refactor ActivityAssessment files">
+      <option name="closed" value="true" />
+      <created>1701206989831</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1701206989831</updated>
+    </task>
+    <task id="LOCAL-00011" summary="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx">
+      <option name="closed" value="true" />
+      <created>1701350423699</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1701350423700</updated>
+    </task>
+    <task id="LOCAL-00012" summary="[MAZE-159] add missing file">
+      <option name="closed" value="true" />
+      <created>1701350445030</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1701350445030</updated>
+    </task>
+    <task id="LOCAL-00013" summary="[MAZE-159] remove checkbox from QuestSubmit.tsx">
+      <option name="closed" value="true" />
+      <created>1701350797335</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1701350797335</updated>
+    </task>
+    <task id="LOCAL-00014" summary="[MAZE-159] correct displaying for activityType in activity list">
+      <option name="closed" value="true" />
+      <created>1701351229218</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1701351229218</updated>
+    </task>
+    <task id="LOCAL-00015" summary="[MAZE-159] rename GradeTask modals">
+      <option name="closed" value="true" />
+      <created>1701351554435</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1701351554435</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,6 +239,19 @@
     <MESSAGE value="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views" />
     <MESSAGE value="[MAZE-111] src: removed slider from `BadgesPage`" />
     <MESSAGE value="[MAZE-111] src: removed scrollbar from some professor views, add routes for map" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-111] src: removed scrollbar from some professor views, add routes for map" />
+    <MESSAGE value="[MAZE-159] add mock view for submit task" />
+    <MESSAGE value="[MAZE-159] add submitTask service" />
+    <MESSAGE value="[MAZE-159] change order of hooks in QuestCard" />
+    <MESSAGE value="[MAZE-159] add submitTaskMutation" />
+    <MESSAGE value="[MAZE-159] send correct user query in submit task" />
+    <MESSAGE value="[MAZE-159] add new styles for ActivityAssessment" />
+    <MESSAGE value="[MAZE-159] refactor ActivityAssessment files" />
+    <MESSAGE value="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx" />
+    <MESSAGE value="[MAZE-159] add missing file" />
+    <MESSAGE value="[MAZE-159] remove checkbox from QuestSubmit.tsx" />
+    <MESSAGE value="[MAZE-159] correct displaying for activityType in activity list" />
+    <MESSAGE value="[MAZE-159] rename GradeTask modals" />
+    <MESSAGE value="[MAZE-159] add endpoint to handle submit task results" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-159] add endpoint to handle submit task results" />
   </component>
 </project>

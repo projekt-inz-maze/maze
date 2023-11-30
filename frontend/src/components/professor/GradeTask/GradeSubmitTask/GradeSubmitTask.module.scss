@@ -1,0 +1,122 @@
+p {
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0.5em;
+}
+
+span {
+  font-weight: bold;
+}
+
+// Override the default modal styles (border bottom)
+.modalHeader {
+  border-bottom: none !important;
+  padding-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+
+  .customButtonClose {
+    padding: calc(var(--bs-modal-header-padding-y) * .5) calc(var(--bs-modal-header-padding-x) * .5);
+    background-color: transparent;
+    border: 0;
+    width: 50px;
+
+    span {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: black;
+    }
+  }
+
+  .customButtonClose:hover {
+    transform: scale(1.1);
+  }
+}
+
+.dateInfo {
+  display: flex;
+  align-items: center;
+
+  p {
+    padding-right: 2em;
+    font-weight: bold;
+  }
+}
+
+// Override the default modal styles (border top)
+.modalFooter {
+  border-top: none !important;
+  padding: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .acceptButton,
+  .rejectButton {
+    padding: 0.5em 1em;
+    color: black;
+    border: none;
+    font-weight: bold;
+    min-width: 200px;
+  }
+
+  .acceptButton:hover,
+  .rejectButton:hover {
+    transform: scale(1.01);
+    opacity: 0.8;
+  }
+
+  .acceptButton {
+    background-color: #FFB21C;
+  }
+
+  .rejectButton {
+   background-color: #E8E8E8;
+  }
+}
+
+.modalContainer {
+  padding: 0 0.5em;
+  font-family: 'Poppins', sans-serif;
+}
+
+.modalTitle {
+  font-weight: 600 !important;
+  font-size: 1.75rem !important;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #BAAA9C;
+  text-underline-offset: 8px;
+}
+
+.modalTaskDescription {
+  border-top: 1px solid black;
+  padding: 1em 0.75em;
+  margin: 2em 0;
+
+  p {
+    padding-bottom: 1.5em !important;
+  }
+}
+
+.modalInfoSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  p {
+    padding-bottom: 0;
+  }
+}
+
+.formContainer {
+  margin: 0 auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

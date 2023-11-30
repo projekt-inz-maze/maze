@@ -4,6 +4,7 @@ import AuctionImg from './resources/activities/auctionTaskIcon.png'
 import TaskImg from './resources/activities/fileTaskIcon.png'
 import ExpeditionImg from './resources/activities/graphTaskIcon.png'
 import InformationImg from './resources/activities/infoTaskIcon.png'
+import SubmitImg from './resources/activities/submitTaskIcon.png'
 import SurveyImg from './resources/activities/surveyTaskIcon.png'
 import priestImg from './resources/heroes/pope.png'
 import rogueImg from './resources/heroes/rogue.png'
@@ -59,6 +60,7 @@ export const Activity = {
   SURVEY: 'SURVEY',
   TASK: 'TASK',
   AUCTION: 'AUCTION',
+  SUBMIT: 'SUBMIT',
   ADDITIONAL: 'ADDITIONAL'
 }
 
@@ -80,6 +82,8 @@ export const getActivityImg = (type) => {
       return TaskImg
     case Activity.AUCTION:
       return AuctionImg
+    case Activity.SUBMIT:
+      return SubmitImg
     default:
   }
 }
@@ -96,6 +100,8 @@ export const getActivityTypeName = (type) => {
       return 'Zadanie bojowe'
     case Activity.AUCTION:
       return 'Licytacja'
+    case Activity.SUBMIT:
+      return 'Propozycja'
     case Activity.ADDITIONAL:
       return 'Bonus'
     default:

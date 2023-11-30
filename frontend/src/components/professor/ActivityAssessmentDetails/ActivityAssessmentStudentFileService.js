@@ -1,7 +1,7 @@
 import { faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import download from 'downloadjs'
-import { Col, Button } from 'react-bootstrap'
+import { Button, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import { ActivityAssessmentStudentFileRow } from './ActivityAssesmentDetailsStyles'
@@ -16,8 +16,8 @@ function ActivityAssessmentStudentFileService(props) {
     })
   }
   return (
-    <Col className='text-center'>
-      <strong>Załączone pliki:</strong>
+    <Col>
+      <strong>Załączone pliki: </strong>
       {!activityResponseInfo || activityResponseInfo.file?.length === 0 ? (
         <p>Brak dodanych plików</p>
       ) : (
@@ -41,8 +41,9 @@ function ActivityAssessmentStudentFileService(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }
+
 export default connect(mapStateToProps)(ActivityAssessmentStudentFileService)

@@ -7,7 +7,7 @@ export function ActivityAssessmentProfessorFileService({ setFile, setFileName, f
 
   return (
     <>
-      <strong>Plik uwag:</strong>
+      <strong>Załącz pliki:</strong>
       <input ref={fileRef} type='file' className='m-auto' onChange={saveFile} />
     </>
   )

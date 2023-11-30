@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { Row, Col, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
-import styles from './GameMap.module.scss'
+import styles from './ChapterMap.module.scss'
 import { ChapterResponse } from '../../../api/types'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import { setSelectedChapterId } from '../../../reducers/userSlice'
 import ChapterService from '../../../services/chapter.service'
 
-const GameMap = () => {
+const ChapterMap = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
@@ -66,4 +66,4 @@ const GameMap = () => {
   )
 }
 
-export default GameMap
+export default ChapterMap

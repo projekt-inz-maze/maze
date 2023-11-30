@@ -4,17 +4,13 @@ import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './QuestCard.module.scss'
-import { ActivityRequirements, ActivityResponse } from '../../../api/types'
-import ActivityDetails from '../../../common/components/ActivityDetails/ActivityDetails'
-import Auction from '../../../common/components/Auction/Auction'
-import { StudentRoutes } from '../../../routes/PageRoutes'
-import { getActivityPath } from '../../../utils/constants'
-import { convertMilisecondsToMinutes } from '../../../utils/formatters'
-
-const emptyRequirements: ActivityRequirements = {
-  isBlocked: false,
-  requirements: []
-}
+import { ActivityResponse } from '../../../../api/types'
+import ActivityDetails from '../../../../common/components/ActivityDetails/ActivityDetails'
+import Auction from '../../../../common/components/Auction/Auction'
+import { StudentRoutes } from '../../../../routes/PageRoutes'
+import { getActivityPath } from '../../../../utils/constants'
+import { convertMilisecondsToMinutes } from '../../../../utils/formatters'
+import QuestSubmit from '../QuestSubmit/QuestSubmit'
 
 type QuestCardProps = {
   activity: ActivityResponse
@@ -23,10 +19,8 @@ type QuestCardProps = {
 }
 
 const QuestCard = (props: QuestCardProps) => {
-  const [showModal, setShowModal] = useState(false)
-  // const [requirements, setRequirements] = useState<ActivityRequirements>(emptyRequirements)
-
   const navigate = useNavigate()
+  const [showModal, setShowModal] = useState(false)
 
   const handleStartActivity = () => {
     setShowModal(false)
@@ -46,7 +40,7 @@ const QuestCard = (props: QuestCardProps) => {
 
   return (
     <>
-      {props.activity.type !== 'AUCTION' ? (
+      {props.activity.type !== 'AUCTION' && props.activity.type !== 'SUBMIT' && (
         <ActivityDetails
           activityId={props.activity.id}
           showDetails={showModal}
@@ -64,12 +58,20 @@ const QuestCard = (props: QuestCardProps) => {
           timeLimit={convertMilisecondsToMinutes(props.activity.timeLimit)}
           points={props.activity.points}
         />
-      ) : (
+      )}
+      {props.activity.type === 'AUCTION' && (
         <Auction
           activityId={props.activity.id}
           showDetails={showModal}
           onCloseDetails={() => setShowModal(false)}
           points={props.activity.points}
+        />
+      )}
+      {props.activity.type === 'SUBMIT' && (
+        <QuestSubmit
+          activityId={props.activity.id}
+          showDetails={showModal}
+          onCloseDetails={() => setShowModal(false)}
         />
       )}
       <div className={styles.questCard}>

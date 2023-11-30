@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react'
 
 import { Spinner, Table } from 'react-bootstrap'
 
+import { useAppSelector } from '../../../hooks/hooks'
 import ActivityService from '../../../services/activity.service'
 import { ERROR_OCCURRED, getActivityTypeName } from '../../../utils/constants'
 
 function ActivitiesTable(props) {
   const [activitiesList, setActivitiesList] = useState(undefined)
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   useEffect(() => {
-    ActivityService.getActivitiesList()
+    ActivityService.getActivitiesList(courseId)
       .then((response) => {
         setActivitiesList(response)
       })
@@ -32,7 +35,8 @@ function ActivitiesTable(props) {
         : []
     )
 
-  const inputChecked = (activityId, activityType) => props.activitiesToExportIds.some(({ id, type }) => activityId === id && type === activityType)
+  const inputChecked = (activityId, activityType) =>
+    props.activitiesToExportIds.some(({ id, type }) => activityId === id && type === activityType)
 
   const checkRow = (event) => {
     const [activityId, activityType] = event.target.value.split(',')
@@ -49,7 +53,7 @@ function ActivitiesTable(props) {
       <thead>
         <tr>
           <th>
-            <input type="checkbox" onChange={checkAllRows} />
+            <input type='checkbox' onChange={checkAllRows} />
           </th>
           <th>Nazwa aktywności</th>
           <th>Typ aktywności</th>
@@ -59,13 +63,13 @@ function ActivitiesTable(props) {
       <tbody>
         {activitiesList === undefined ? (
           <tr>
-            <td colSpan='100%' className="text-center">
-              <Spinner animation="border" />
+            <td colSpan='100%' className='text-center'>
+              <Spinner animation='border' />
             </td>
           </tr>
         ) : activitiesList == null || activitiesList.length === 0 ? (
           <tr>
-            <td colSpan='100%' className="text-center">
+            <td colSpan='100%' className='text-center'>
               <p>{activitiesList == null ? ERROR_OCCURRED : 'Brak aktywności'}</p>
             </td>
           </tr>
@@ -74,9 +78,9 @@ function ActivitiesTable(props) {
             <tr key={index + Date.now()}>
               <td>
                 <input
-                  type="checkbox"
+                  type='checkbox'
                   onChange={checkRow}
-                  value={`${activity.id  },${  activity.type}`}
+                  value={`${activity.id},${activity.type}`}
                   checked={inputChecked(activity.id, activity.type)}
                 />
               </td>

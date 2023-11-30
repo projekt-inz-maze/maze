@@ -19,8 +19,8 @@ class ActivityService {
     })
   }
 
-  getActivitiesList() {
-    return axiosApiGet(GET_TASK_ACTIVITIES).catch((error) => {
+  getActivitiesList(id) {
+    return axiosApiGet(`${GET_TASK_ACTIVITIES}?courseId=${id}`).catch((error) => {
       throw error
     })
   }
