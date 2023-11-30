@@ -1,5 +1,5 @@
 import { api } from './api'
-import { ActivityResponseInfo, ActivityToGrade, GradeTaskResponse } from './types'
+import { ActivityResponseInfo, ActivityToGrade, GradeTaskResponse, ProfessorGradeRequest } from './types'
 
 const apiGrades = api.injectEndpoints({
   endpoints: (build) => ({
@@ -24,9 +24,21 @@ const apiGrades = api.injectEndpoints({
         body
       }),
       invalidatesTags: ['Grades']
+    }),
+    gradeSubmitTask: build.mutation<ActivityResponseInfo | NonNullable<unknown>, ProfessorGradeRequest>({
+      query: (body) => ({
+        url: `task/submit/result/${body.id}?accept=${body.accepted}`,
+        method: 'POST'
+      }),
+      invalidatesTags: ['Grades']
     })
   }),
   overrideExisting: false
 })
 
-export const { useGetFirstTaskToGradeQuery, useGetTasksToGradeQuery, useGradeTaskMutation } = apiGrades
+export const {
+  useGetFirstTaskToGradeQuery,
+  useGetTasksToGradeQuery,
+  useGradeTaskMutation,
+  useGradeSubmitTaskMutation
+} = apiGrades

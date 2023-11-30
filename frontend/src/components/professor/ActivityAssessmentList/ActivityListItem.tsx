@@ -5,6 +5,7 @@ import { useGetFirstTaskToGradeQuery } from '../../../api/apiGrades'
 import { ActivityResponseInfo, ActivityType } from '../../../api/types'
 import { getActivityTypeName } from '../../../utils/constants'
 import GradeFileTask from '../GradeTask/GradeFileTask/GradeFileTask'
+import GradeSubmitTask from '../GradeTask/GradeSubmitTask/GradeSubmitTask'
 
 const emptyActivity: ActivityResponseInfo = {
   userEmail: '',
@@ -15,6 +16,8 @@ const emptyActivity: ActivityResponseInfo = {
   isLate: false,
   activityDetails: '',
   userAnswer: '',
+  userContent: '',
+  userTitle: '',
   file: [],
   maxPoints: 0,
   fileTaskId: 0,
@@ -55,7 +58,11 @@ const ActivityListItem = (props: ActivityListItemProps) => {
       ) : (
         <div>Brak zadań do sprawdzenia</div>
       )}
-      <GradeFileTask showDetails={showModal} onCloseDetails={() => setShowModal(false)} activity={activity} />
+      {props.activityType === 'TASK' ? (
+        <GradeFileTask showDetails={showModal} onCloseDetails={() => setShowModal(false)} activity={activity} />
+      ) : (
+        <GradeSubmitTask showDetails={showModal} onCloseDetails={() => setShowModal(false)} activity={activity} />
+      )}
     </>
   )
 }

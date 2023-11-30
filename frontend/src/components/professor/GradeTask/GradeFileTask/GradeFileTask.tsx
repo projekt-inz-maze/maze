@@ -9,13 +9,13 @@ import { Activity, getActivityTypeName } from '../../../../utils/constants'
 import { ActivityAssessmentProfessorFileService } from '../../ActivityAssessmentDetails/ActivityAssessmentProfessorFileService'
 import ActivityAssessmentStudentFileService from '../../ActivityAssessmentDetails/ActivityAssessmentStudentFileService'
 
-type GradeFileTaskModalProps = {
+type GradeFileTaskProps = {
   showDetails: boolean
   onCloseDetails: () => void
   activity: ActivityResponseInfo
 }
 
-const GradeFileTask = (props: GradeFileTaskModalProps) => {
+const GradeFileTask = (props: GradeFileTaskProps) => {
   const [gradeValue, setGradeValue] = useState<number>(0)
   const [fileBlob, setFileBlob] = useState<Blob | null>(null)
   const [fileName, setFileName] = useState<string>('')
@@ -131,7 +131,7 @@ const GradeFileTask = (props: GradeFileTaskModalProps) => {
               <span>{` / ${props.activity.maxPoints}`}</span>
             </label>
             <Button variant='primary' type='submit' className={styles.gradeButton} onClick={handleSubmit}>
-              <span>Prześlij i przejdź dalej</span>
+              <span>Oceń</span>
             </Button>
           </Modal.Footer>
         </Modal>

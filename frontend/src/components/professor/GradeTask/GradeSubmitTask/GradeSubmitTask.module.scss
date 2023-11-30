@@ -48,29 +48,30 @@ span {
   border-top: none !important;
   padding: 2em;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  span {
-    font-size: 1rem;
-  }
-
-  input {
-    margin: 0 0.5em;
-  }
-
-  label {
-    padding-bottom: 1em;
-  }
-
-  .gradeButton {
-    padding: 0.5em 2em;
-    background-color: #FFB21C;
+  .acceptButton,
+  .rejectButton {
+    padding: 0.5em 1em;
     color: black;
     border: none;
     font-weight: bold;
-    min-width: 150px;
+    min-width: 200px;
+  }
+
+  .acceptButton:hover,
+  .rejectButton:hover {
+    transform: scale(1.01);
+    opacity: 0.8;
+  }
+
+  .acceptButton {
+    background-color: #FFB21C;
+  }
+
+  .rejectButton {
+   background-color: #E8E8E8;
   }
 }
 
@@ -90,12 +91,11 @@ span {
 
 .modalTaskDescription {
   border-top: 1px solid black;
-  border-bottom: 1px solid black;
   padding: 1em 0.75em;
   margin: 2em 0;
 
-  p:first-child {
-    padding-bottom: 0.5em !important;
+  p {
+    padding-bottom: 1.5em !important;
   }
 }
 

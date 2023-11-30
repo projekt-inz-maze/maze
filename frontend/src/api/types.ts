@@ -139,6 +139,8 @@ export type ActivityResponseInfo = {
   isLate: boolean
   activityDetails: string
   userAnswer: string
+  userTitle: string
+  userContent: string
   file: File[]
   maxPoints: number
   fileTaskId: number
