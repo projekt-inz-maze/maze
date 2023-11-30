@@ -3,10 +3,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Row, Stack } from 'react-bootstrap'
 
 import style from './QuestBoard.module.scss'
-import QuestCard from './QuestCard'
-import { ActivityMapResponse } from '../../../api/types'
-import { useAppSelector } from '../../../hooks/hooks'
-import ActivityService from '../../../services/activity.service'
+import { ActivityMapResponse } from '../../../../api/types'
+import { useAppSelector } from '../../../../hooks/hooks'
+import ActivityService from '../../../../services/activity.service'
+import QuestCard from '../QuestCard/QuestCard'
 
 const emptyMapResponse: ActivityMapResponse = {
   id: 0,

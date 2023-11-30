@@ -4,24 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-159] add new styles for ActivityAssessment">
-      <change afterPath="$PROJECT_DIR$/frontend/src/api/apiGrades.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTaskModal/GradeFileTaskModal.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTaskModal/GradeFileTaskModal.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTaskModal/GradeSubmitTaskModal.tsx" afterDir="false" />
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit/QuestSubmit.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentProfessorFileService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentProfessorFileService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentStudentFileService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentStudentFileService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityAssessmentList.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityAssessmentList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityListItem.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeListAndExport/ActivitiesTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeListAndExport/ActivitiesTable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/activity.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/activity.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/GameMap.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/GameMap.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/QuestBoard.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard/QuestBoard.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/QuestBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard/QuestBoard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/QuestCard.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/QuestCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/StudentTaskModal.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit/QuestSubmit.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameMap/StudentTaskModal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/modules/studentRoutes/MapRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/modules/studentRoutes/MapRoutes.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +33,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="development" />
+        <entry key="$PROJECT_DIR$" value="MAZE-165" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,7 +56,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;MAZE-159&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/jkbstepien/projects/work/frontend-mobint&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jkbstepien/projects/work/fslab-react-component-library&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -72,16 +66,18 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/jkbstepien/projects/university/maze/frontend/node_modules/prettier&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.linters.eslint&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/home/jkbstepien/projects/university/maze/frontend/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit" />
+      <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard" />
+      <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard" />
       <recent name="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTaskModal" />
       <recent name="$PROJECT_DIR$/frontend/src/components/professor/GradeTask" />
-      <recent name="$PROJECT_DIR$/frontend/public" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -110,6 +106,11 @@
       <workItem from="1700946978239" duration="2885000" />
       <workItem from="1700949872398" duration="4163000" />
       <workItem from="1700986227287" duration="17916000" />
+      <workItem from="1701164011251" duration="2462000" />
+      <workItem from="1701188965780" duration="16274000" />
+      <workItem from="1701250473899" duration="1424000" />
+      <workItem from="1701280500132" duration="599000" />
+      <workItem from="1701342254293" duration="1963000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -183,7 +184,15 @@
       <option name="project" value="LOCAL" />
       <updated>1700948956397</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="[MAZE-159] refactor ActivityAssessment files">
+      <option name="closed" value="true" />
+      <created>1701206989831</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1701206989831</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,6 +208,8 @@
     <MESSAGE value="[MAZE-159] add submitTaskMutation" />
     <MESSAGE value="[MAZE-159] send correct user query in submit task" />
     <MESSAGE value="[MAZE-159] add new styles for ActivityAssessment" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-159] add new styles for ActivityAssessment" />
+    <MESSAGE value="[MAZE-159] refactor ActivityAssessment files" />
+    <MESSAGE value="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx" />
   </component>
 </project>
