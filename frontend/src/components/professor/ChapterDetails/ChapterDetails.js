@@ -6,7 +6,8 @@ import {
   Button,
   Card,
   Col,
-  Collapse, Container,
+  Collapse,
+  Container,
   ListGroup,
   ListGroupItem,
   OverlayTrigger,
@@ -105,7 +106,7 @@ function ChapterDetails(props) {
   }, [])
 
   const goToChapterDetails = (activityName, activityId, activityType) => {
-    navigate(`${location.pathname  }/activity/${activityName}`, {
+    navigate(`${location.pathname}/activity/${activityName}`, {
       state: {
         activityId,
         activityType,
@@ -168,14 +169,14 @@ function ChapterDetails(props) {
 
   return (
     <Container fluid style={{ overflowX: 'hidden', marginBottom: isMobileView() ? 60 : 0 }}>
-      <Row className="px-0 m-0">
-        <Col className="m-0 h-100" md={6}>
+      <Row className='px-0 m-0'>
+        <Col className='m-0 h-100' md={6}>
           <Col md={12}>
             <MapCard
               $bodyColor={props.theme.secondary}
               $headerColor={props.theme.primary}
               $fontColor={props.theme.font}
-              className="mt-2"
+              className='mt-2'
             >
               <Card.Header>Mapa rozdziału</Card.Header>
               <Card.Body ref={mapCardBody}>
@@ -188,10 +189,10 @@ function ChapterDetails(props) {
               $bodyColor={props.theme.secondary}
               $headerColor={props.theme.primary}
               $fontColor={props.theme.font}
-              className="h-100"
+              className='h-100'
             >
               <Card.Header>Podsumowanie rozdziału</Card.Header>
-              <Card.Body className="p-0">
+              <Card.Body className='p-0'>
                 {chapterDetails === undefined ? (
                   <Loader />
                 ) : chapterDetails == null ? (
@@ -200,13 +201,13 @@ function ChapterDetails(props) {
                   <ListGroup>
                     <ListGroupItem>Nazwa rozdziału: {chapterDetails.name}</ListGroupItem>
                     <ListGroupItem>
-                      <Row className="d-flex align-items-center">
+                      <Row className='d-flex align-items-center'>
                         <Col xs={10}>Liczba dodanych aktywności: {chapterDetails.noActivities}</Col>
-                        <Col xs={2} className="text-end">
+                        <Col xs={2} className='text-end'>
                           <FontAwesomeIcon
                             icon={openActivitiesDetailsList ? faArrowUp : faArrowDown}
                             onClick={() => setOpenActivitiesDetailsList(!openActivitiesDetailsList)}
-                            aria-controls="activities"
+                            aria-controls='activities'
                             aria-expanded={openActivitiesDetailsList}
                           />
                         </Col>
@@ -229,40 +230,40 @@ function ChapterDetails(props) {
               </Card.Body>
             </SummaryCard>
           </Col>
-          <Col md={12} style={{ height: '20%' }} className="my-2">
+          <Col md={12} style={{ height: '20%' }} className='my-2'>
             <GameCard
               onButtonClick={goToRequirements}
-              headerText="Wymagania"
+              headerText='Wymagania'
               content={
-                <p className="text-center">
+                <p className='text-center'>
                   Edycja wymagań rozdziału, które musi spełnić student, aby zobaczyć rozdział na mapie gry.
                 </p>
               }
             />
           </Col>
         </Col>
-        <Col className="m-0" md={6}>
+        <Col className='m-0' md={6}>
           <Col md={12}>
             <ActivitiesCard
               $bodyColor={props.theme.secondary}
               $headerColor={props.theme.primary}
               $fontColor={props.theme.font}
               style={{ height: '96.5%' }}
-              className="mt-2"
+              className='mt-2'
             >
               <Card.Header>Lista aktywności</Card.Header>
-              <Card.Body className="p-0 mx-100" style={{ overflow: 'auto' }}>
+              <Card.Body className='p-0 mx-100' style={{ overflow: 'auto' }}>
                 <Table style={{ width: isMobileView() ? '200%' : '100%' }}>
                   <tbody>
                     {chapterDetails === undefined ? (
                       <tr>
-                        <td colSpan='100%' className="text-center">
-                          <Spinner animation="border" />
+                        <td colSpan='100%' className='text-center'>
+                          <Spinner animation='border' />
                         </td>
                       </tr>
                     ) : chapterDetails == null || chapterDetails.mapTasks.length === 0 ? (
                       <tr>
-                        <td colSpan='100%' className="text-center">
+                        <td colSpan='100%' className='text-center'>
                           <p>{chapterDetails == null ? ERROR_OCCURRED : 'Lista aktywności jest pusta'}</p>
                         </td>
                       </tr>
@@ -288,7 +289,7 @@ function ChapterDetails(props) {
                             style={{ opacity: activity.isActivityBlocked ? 0.4 : 1 }}
                           >
                             <td>
-                              <img src={getActivityImg(activity.type)} width={32} height={32} alt="activity img" />
+                              <img src={getActivityImg(activity.type)} width={32} height={32} alt='activity img' />
                             </td>
                             <td>{getActivityTypeName(activity.type)}</td>
                             <td>{activity.title}</td>
@@ -355,7 +356,7 @@ function ChapterDetails(props) {
       <DeletionModal
         showModal={isDeletionModalOpen}
         setModalOpen={setDeletionModalOpen}
-        modalTitle="Usunięcie rozdziału"
+        modalTitle='Usunięcie rozdziału'
         modalBody={
           <>
             <div>
@@ -400,7 +401,7 @@ function ChapterDetails(props) {
       <DeletionModal
         showModal={isDeleteActivityModalOpen}
         setModalOpen={setIsDeleteActivityModalOpen}
-        modalTitle="Usunięcie aktywności"
+        modalTitle='Usunięcie aktywności'
         modalBody={
           <>
             <div>
@@ -424,7 +425,7 @@ function ChapterDetails(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }

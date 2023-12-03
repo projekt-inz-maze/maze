@@ -25,7 +25,7 @@ const apiGrades = api.injectEndpoints({
       }),
       invalidatesTags: ['Grades']
     }),
-    gradeSubmitTask: build.mutation<ActivityResponseInfo | NonNullable<unknown>, ProfessorGradeRequest>({
+    gradeSubmitTask: build.mutation<ActivityResponseInfo, ProfessorGradeRequest>({
       query: (body) => ({
         url: `task/submit/result/${body.id}?accept=${body.accepted}`,
         method: 'POST'
