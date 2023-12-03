@@ -76,7 +76,6 @@ span {
 }
 
 .modalContainer {
-  padding: 0 0.5em;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -119,4 +118,30 @@ span {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+.editorContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.editorButton {
+  margin-top: 2em;
+  padding: 0.5em 1em;
+  color: black;
+  border: none;
+  font-weight: bold;
+  min-width: 200px;
+  background-color: #FFB21C;
+}
+
+.chapterForm {
+  padding-bottom: 1em;
+
+  input {
+    width: 50px;
+    margin-left: 1em;
+  }
 }

@@ -35,6 +35,7 @@ const ActivityAssessmentList = () => {
         {isActivitiesSuccess &&
           activityList.map((activity) => (
             <ActivityListItem
+              key={activity.activityId}
               activityId={activity.activityId}
               activityType={activity.activityType}
               toGrade={activity.toGrade}
