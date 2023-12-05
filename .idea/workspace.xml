@@ -5,16 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] feat: add new api to handle personality quiz&#10;&#10;- add two endpoints to apiPersonality.ts&#10;- refactored StudentSettings, modal with quiz is now isolated component">
-      <change afterPath="$PROJECT_DIR$/frontend/src/api/apiPersonality.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuiz.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuiz.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizIntro/PersonalityQuizIntro.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizIntro/PersonalityQuizIntro.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/com/example/api/personalityquiz/PersonalityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/example/api/personalityquiz/PersonalityController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuiz.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuiz.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuiz.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuiz.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +111,7 @@
       <workItem from="1701679457414" duration="67000" />
       <workItem from="1701693316871" duration="4662000" />
       <workItem from="1701771782404" duration="348000" />
-      <workItem from="1701784188293" duration="5122000" />
+      <workItem from="1701784188293" duration="7659000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -301,11 +297,57 @@
       <option name="project" value="LOCAL" />
       <updated>1701771900160</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="[MAZE-169] feat: add new api to handle personality quiz&#10;&#10;- add two endpoints to apiPersonality.ts&#10;- refactored StudentSettings, modal with quiz is now isolated component">
+      <option name="closed" value="true" />
+      <created>1701806272589</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1701806272589</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="HEAD" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views" />
