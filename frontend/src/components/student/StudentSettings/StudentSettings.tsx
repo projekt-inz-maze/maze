@@ -84,7 +84,7 @@ const StudentSettings = () => {
         </Modal.Body>
         <Modal.Footer className={styles.modalFooter}>
           <p>
-            Pamiętaj, że wynik testu nie jest ostateczny. Jeśli uznasz, że bliżej Ci do innego typu gracze, możesz go
+            Pamiętaj, że wynik testu nie jest ostateczny. Jeśli uznasz, że bliżej Ci do innego typu gracza, możesz go
             zmienić w Ustawieniach.
           </p>
           <Button variant='primary' type='submit' className={styles.acceptButton}>
