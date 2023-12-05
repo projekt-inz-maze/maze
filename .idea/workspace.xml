@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] style: remove comments in navbar">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.module.scss" afterDir="false" />
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] refactor: correct styling of testButton">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.module.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -260,7 +260,23 @@
       <option name="project" value="LOCAL" />
       <updated>1701767335579</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="[MAZE-169] feat: add initial view of StudentSettings">
+      <option name="closed" value="true" />
+      <created>1701769075667</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1701769075667</updated>
+    </task>
+    <task id="LOCAL-00021" summary="[MAZE-169] refactor: correct styling of testButton">
+      <option name="closed" value="true" />
+      <created>1701769245124</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1701769245124</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -286,6 +302,8 @@
     <MESSAGE value="[MAZE-168] add modal for adding activities in grading section" />
     <MESSAGE value="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir" />
     <MESSAGE value="[MAZE-169] style: remove comments in navbar" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] style: remove comments in navbar" />
+    <MESSAGE value="[MAZE-169] feat: add initial view of StudentSettings" />
+    <MESSAGE value="[MAZE-169] refactor: correct styling of testButton" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] refactor: correct styling of testButton" />
   </component>
 </project>
