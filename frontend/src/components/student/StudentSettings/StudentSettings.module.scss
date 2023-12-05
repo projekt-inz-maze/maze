@@ -21,6 +21,17 @@ p {
 
     .testButton {
       width: 200px;
+      padding: 0.5em 1em;
+      color: black;
+      border: none;
+      font-weight: bold;
+      min-width: 200px;
+      background-color: #FFB21C;
+    }
+
+    .testButton:hover {
+      transform: scale(1.01);
+      opacity: 0.8;
     }
   }
 }
