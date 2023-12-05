@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] style: remove comments in navbar">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.module.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/general/Navbars/CourseNavbar/CourseNav.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/general/Navbars/CourseNavbar/CourseNav.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/general/Navbars/CourseNavbar/CourseNav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/general/Navbars/CourseNavbar/CourseNav.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/general/Navbars/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/general/Navbars/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -253,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701766399226</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="[MAZE-169] style: remove comments in navbar">
+      <option name="closed" value="true" />
+      <created>1701767335579</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1701767335579</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,6 +285,7 @@
     <MESSAGE value="[MAZE-159] add endpoint to handle submit task results" />
     <MESSAGE value="[MAZE-168] add modal for adding activities in grading section" />
     <MESSAGE value="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir" />
+    <MESSAGE value="[MAZE-169] style: remove comments in navbar" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] style: remove comments in navbar" />
   </component>
 </project>

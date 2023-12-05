@@ -1,0 +1,26 @@
+p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.container {
+  padding: 2em 1em;
+  width: 80%;
+
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .items {
+    padding-top: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+
+    .testButton {
+      width: 200px;
+    }
+  }
+}
