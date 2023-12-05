@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-159] add endpoint to handle submit task results">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/apiGrades.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/apiGrades.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityAssessmentList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityAssessmentList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/AddActivityModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/AddActivityModal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/ChapterDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/ChapterDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/App/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/App/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/Settings/DeleteAccountModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ProfessorSettings/DeleteAccountModal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/Settings/ProfessorSettings.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ProfessorSettings/ProfessorSettings.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/PageRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/PageRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/modules/teacherRoutes/GameManagementRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/modules/teacherRoutes/GameManagementRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/modules/teacherRoutes/SettingsRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/modules/teacherRoutes/SettingsRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/sidebarTitles.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/sidebarTitles.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +31,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="MAZE-165" />
+        <entry key="$PROJECT_DIR$" value="MAZE-168" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -53,8 +53,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "MAZE-168",
-    "last_opened_file_path": "/home/jkbstepien/projects/work/fslab-react-component-library",
+    "git-widget-placeholder": "MAZE-169",
+    "last_opened_file_path": "/home/jkbstepien/projects/work/frontend-prozodia",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -71,11 +71,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src/components/student/StudentSettings" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard" />
       <recent name="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTaskModal" />
-      <recent name="$PROJECT_DIR$/frontend/src/components/professor/GradeTask" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -111,6 +111,8 @@
       <workItem from="1701342254293" duration="11736000" />
       <workItem from="1701420842731" duration="4619000" />
       <workItem from="1701595813853" duration="6745000" />
+      <workItem from="1701679457414" duration="67000" />
+      <workItem from="1701693316871" duration="4662000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -240,7 +242,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701355764443</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="[MAZE-168] add modal for adding activities in grading section">
+      <option name="closed" value="true" />
+      <created>1701604168509</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1701604168509</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -263,6 +273,8 @@
     <MESSAGE value="[MAZE-159] correct displaying for activityType in activity list" />
     <MESSAGE value="[MAZE-159] rename GradeTask modals" />
     <MESSAGE value="[MAZE-159] add endpoint to handle submit task results" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-159] add endpoint to handle submit task results" />
+    <MESSAGE value="[MAZE-168] add modal for adding activities in grading section" />
+    <MESSAGE value="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir" />
   </component>
 </project>
