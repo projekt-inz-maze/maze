@@ -1,0 +1,97 @@
+.modalContainer {
+  font-family: 'Poppins', sans-serif;
+
+  // Override the default modal styles (border bottom)
+  .modalHeader {
+    border-bottom: none !important;
+    padding-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+
+    .customButtonClose {
+      padding: calc(var(--bs-modal-header-padding-y) * .5) calc(var(--bs-modal-header-padding-x) * .5);
+      background-color: transparent;
+      border: 0;
+      width: 50px;
+
+      span {
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: black;
+      }
+    }
+
+    .customButtonClose:hover {
+      transform: scale(1.1);
+    }
+
+    .modalTitle {
+      font-weight: 600 !important;
+      font-size: 1.75rem !important;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-decoration-color: #BAAA9C;
+      text-underline-offset: 9px;
+    }
+  }
+
+  .modalTaskDescription {
+    padding: 1em 0.75em;
+    font-size: 1.1rem;
+
+    ol {
+      span {
+        font-weight: bold;
+      }
+
+      p {
+        padding: 0.1em !important;
+      }
+
+      li {
+        padding-bottom: 1em;
+      }
+    }
+
+    p {
+      padding-bottom: 1.5em !important;
+    }
+  }
+
+  // Override the default modal styles (border top)
+  .modalFooter {
+    border-top: none !important;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      margin-bottom: 1em !important;
+    }
+
+    .acceptButton,
+    .rejectButton {
+      padding: 0.5em 1em;
+      color: black;
+      border: none;
+      font-weight: bold;
+      min-width: 200px;
+    }
+
+    .acceptButton:hover,
+    .rejectButton:hover {
+      transform: scale(1.01);
+      opacity: 0.8;
+    }
+
+    .acceptButton {
+      background-color: #FFB21C;
+    }
+
+    .rejectButton {
+      background-color: #E8E8E8;
+    }
+  }
+}
