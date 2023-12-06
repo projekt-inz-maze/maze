@@ -3,6 +3,13 @@ import { QuizQuestion, QuizResults } from './types'
 
 const apiPersonality = api.injectEndpoints({
   endpoints: (build) => ({
+    getPersonality: build.query<QuizResults, void>({
+      query: () => ({
+        url: 'personality',
+        method: 'GET'
+      }),
+      providesTags: ['Quiz']
+    }),
     getPersonalityQuiz: build.query<QuizQuestion[], void>({
       query: () => ({
         url: 'personality/quiz',
@@ -22,4 +29,5 @@ const apiPersonality = api.injectEndpoints({
   overrideExisting: false
 })
 
-export const { useGetPersonalityQuizQuery, useSendPersonalityQuizResultsMutation } = apiPersonality
+export const { useGetPersonalityQuery, useGetPersonalityQuizQuery, useSendPersonalityQuizResultsMutation } =
+  apiPersonality
