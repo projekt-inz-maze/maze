@@ -1,6 +1,7 @@
 import React from 'react'
 
 import styles from './PersonalityQuizIntro.module.scss'
+import { personalityQuizIntro } from '../../../../utils/constants'
 
 const PersonalityQuizIntro = () => (
   <div className={styles.modalTaskDescription}>
@@ -9,36 +10,14 @@ const PersonalityQuizIntro = () => (
       Cię do jednego z czterech typów graczy wg. taksonomii Bartle&apos;a:
     </p>
     <ol>
-      <li>
-        <p>
-          <span>Zabójców</span> (Killers)
-        </p>
-        <p>Gracze, którzy największą przyjemność czerpią z pokonywania innych graczy.</p>
-      </li>
-      <li>
-        <p>
-          <span>Zdobywców</span> (Achievers)
-        </p>
-        <p>
-          Gracze, którzy największą przyjemność czerpią z osiągania różnych sukcesów (przejście do kolejnego poziomu,
-          zdobycie wyższej rangi, znalezienie wszystkich &quot;znajdziek&quot;).
-        </p>
-      </li>
-      <li>
-        <p>
-          <span>Odkrywców</span> (Explorers)
-        </p>
-        <p>
-          Gracze, którzy lubią odkrywać świat i mechaniki gry - lubią szukać ukrytych przejść, easter eggów oraz
-          ograniczeń.
-        </p>
-      </li>
-      <li>
-        <p>
-          <span>Towarzyskich / Społecznościowców</span> (Socializers)
-        </p>
-        <p>Gracze, którzy najwięcej przyjemności czerpią z interakcji z innymi graczami.</p>
-      </li>
+      {personalityQuizIntro.map((listItem) => (
+        <li>
+          <p key={listItem.name}>
+            <span>{listItem.name}</span> {listItem.nameEng}
+          </p>
+          <p>{listItem.description}</p>
+        </li>
+      ))}
     </ol>
   </div>
 )

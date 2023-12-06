@@ -122,6 +122,31 @@ export const getActivityPath = (type) => {
   }
 }
 
+export const personalityQuizIntro = [
+  {
+    name: 'Zabójców',
+    nameEng: '(Killers)',
+    description: 'Gracze, którzy największą przyjemność czerpią z pokonywania innych graczy.'
+  },
+  {
+    name: 'Zdobywców',
+    nameEng: '(Achievers)',
+    description:
+      'Gracze, którzy największą przyjemność czerpią z osiągania różnych sukcesów (przejście do kolejnego poziomu, zdobycie wyższej rangi, znalezienie wszystkich "znajdziek".'
+  },
+  {
+    name: 'Odkrywców',
+    nameEng: '(Explorers)',
+    description:
+      'Gracze, którzy lubią odkrywać świat i mechaniki gry - lubią szukać ukrytych przejść, easter eggów oraz ograniczeń.'
+  },
+  {
+    name: 'Towarzyskich / Społecznościowców',
+    nameEng: '(Socializers)',
+    description: 'Gracze, którzy najwięcej przyjemności czerpią z interakcji z innymi graczami.'
+  }
+]
+
 export const RegistrationLabelsAndTypes = {
   firstName: ['Imię', 'text'],
   lastName: ['Nazwisko', 'text'],
