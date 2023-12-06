@@ -26,6 +26,15 @@ const PersonalityQuiz = (props: PersonalityQuizProps) => {
     setQuiz(questions)
   }, [questions, isSuccess])
 
+  const handleTestProceed = () => {
+    setShowQuestions(!showQuestions)
+  }
+
+  const handleTestSubmit = () => {
+    setShowQuestions(false)
+    props.setShowModal(false)
+  }
+
   return (
     <Modal
       fullscreen
@@ -50,18 +59,21 @@ const PersonalityQuiz = (props: PersonalityQuizProps) => {
       </Modal.Header>
       <Modal.Body>{showQuestions ? <PersonalityQuizContent quiz={quiz} /> : <PersonalityQuizIntro />}</Modal.Body>
       <Modal.Footer className={styles.modalFooter}>
-        <p>
-          Pamiętaj, że wynik testu nie jest ostateczny. Jeśli uznasz, że bliżej Ci do innego typu gracza, możesz go
-          zmienić w Ustawieniach.
-        </p>
-        <Button
-          variant='primary'
-          type='submit'
-          className={styles.acceptButton}
-          onClick={() => setShowQuestions(!showQuestions)}
-        >
-          <span>Przejdź do testu</span>
-        </Button>
+        {!showQuestions ? (
+          <>
+            <p>
+              Pamiętaj, że wynik testu nie jest ostateczny. Jeśli uznasz, że bliżej Ci do innego typu gracza, możesz go
+              zmienić w Ustawieniach.
+            </p>
+            <Button variant='primary' type='submit' className={styles.acceptButton} onClick={() => handleTestProceed()}>
+              <span>Przejdź do testu</span>
+            </Button>
+          </>
+        ) : (
+          <Button variant='primary' type='submit' className={styles.acceptButton} onClick={() => handleTestSubmit()}>
+            Prześlij odpowiedź
+          </Button>
+        )}
       </Modal.Footer>
     </Modal>
   )
