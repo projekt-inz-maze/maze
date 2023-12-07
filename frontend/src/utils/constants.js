@@ -155,7 +155,7 @@ export const personalityQuizIntro = [
     name: 'Zdobywców',
     nameEng: '(Achievers)',
     description:
-      'Gracze, którzy największą przyjemność czerpią z osiągania różnych sukcesów (przejście do kolejnego poziomu, zdobycie wyższej rangi, znalezienie wszystkich "znajdziek".'
+      'Gracze, którzy największą przyjemność czerpią z osiągania różnych sukcesów - przejście do kolejnego poziomu, zdobycie wyższej rangi, znalezienie wszystkich "znajdziek".'
   },
   {
     type: 'EXPLORER',
