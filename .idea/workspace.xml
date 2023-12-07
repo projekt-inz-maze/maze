@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] refactor: fix typo in constants.js function">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] feat: add dropdown for changing personality type">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizResults/PersonalityQuizResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizResults/PersonalityQuizResults.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +112,7 @@
       <workItem from="1701854029289" duration="364000" />
       <workItem from="1701854404548" duration="21868000" />
       <workItem from="1701947303810" duration="44000" />
-      <workItem from="1701947357758" duration="18112000" />
+      <workItem from="1701947357758" duration="19183000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -395,7 +394,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701973889328</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="[MAZE-169] feat: add dropdown for changing personality type">
+      <option name="closed" value="true" />
+      <created>1701975393943</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1701975393943</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -440,7 +447,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx" />
     <MESSAGE value="[MAZE-159] add missing file" />
     <MESSAGE value="[MAZE-159] remove checkbox from QuestSubmit.tsx" />
     <MESSAGE value="[MAZE-159] correct displaying for activityType in activity list" />
@@ -465,6 +471,7 @@
     <MESSAGE value="[MAZE-169] feat: display button which opens quiz for fresh user" />
     <MESSAGE value="[MAZE-169] feat: personality quiz results view" />
     <MESSAGE value="[MAZE-169] refactor: fix typo in constants.js function" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] refactor: fix typo in constants.js function" />
+    <MESSAGE value="[MAZE-169] feat: add dropdown for changing personality type" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] feat: add dropdown for changing personality type" />
   </component>
 </project>

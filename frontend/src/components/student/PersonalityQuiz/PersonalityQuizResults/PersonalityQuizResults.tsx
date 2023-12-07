@@ -56,7 +56,8 @@ const PersonalityQuizResults = () => {
               <Row>
                 <p className={styles.typeInfo}>Twój typ gracza to:</p>
                 <p className={styles.typeResult}>
-                  <span>{getPersonalityName(dominantPersonality)}</span> {`(${userPersonality.type.toFixed(2)}%)`}
+                  <span>{getPersonalityName(dominantPersonality)}</span>{' '}
+                  {`(${userPersonality ? (userPersonality.type || 0).toFixed(2) : ''}%)`}
                 </p>
               </Row>
               <Row>
@@ -69,13 +70,14 @@ const PersonalityQuizResults = () => {
                 <ul>
                   {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                   {/* @ts-ignore */}
-                  {Object.entries(personality)
-                    .filter(([pe]) => pe !== dominantPersonality)
-                    .map(([p, percentage]) => (
-                      <li key={p}>
-                        {getPersonalityName(p)} - {percentage.toFixed(2)}%
-                      </li>
-                    ))}
+                  {personality &&
+                    Object.entries(personality)
+                      .filter(([pe]) => pe !== dominantPersonality)
+                      .map(([p, percentage]) => (
+                        <li key={p}>
+                          {getPersonalityName(p)} - {(percentage || 0).toFixed(2)}%
+                        </li>
+                      ))}
                 </ul>
               </Row>
             </Col>
