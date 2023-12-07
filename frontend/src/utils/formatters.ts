@@ -18,6 +18,21 @@ export const getMaxValuePersonality = (personality: QuizResults) => {
   return maxEntry?.name
 }
 
+export const getMaxValuePersonalityType = (personality: QuizResults) => {
+  const values = [
+    { id: 'KILLER', name: 'Zabójca', type: personality?.KILLER },
+    { id: 'EXPLORER', name: 'Odkrywca', type: personality?.EXPLORER },
+    { id: 'ACHIEVER', name: 'Zdobywca', type: personality?.ACHIEVER },
+    { id: 'SOCIALIZER', name: 'Towarzyski / Społecznościowiec', type: personality?.SOCIALIZER }
+  ]
+
+  return values.reduce((max, current) => ((current.type ?? 0) > (max.type ?? 0) ? current : max), {
+    id: '',
+    name: '',
+    type: -Infinity
+  })
+}
+
 export const getGreetingForPersonality = (personality: QuizResults): string => {
   const maxValuePersonality = getMaxValuePersonality(personality)
 

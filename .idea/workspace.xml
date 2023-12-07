@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] feat: display personality type in greeting after login&#10;&#10;- move getMaxPersonality type function to formatters.ts">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] feat: personality quiz results view">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizResults/PersonalityQuizResults.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizResults/PersonalityQuizResults.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/general/CourseList/CourseList.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/general/CourseList/CourseList.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/general/CourseList/CourseList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/general/CourseList/CourseList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/AppRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/AppRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/constants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/formatters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/formatters.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +117,7 @@
       <workItem from="1701854029289" duration="364000" />
       <workItem from="1701854404548" duration="21868000" />
       <workItem from="1701947303810" duration="44000" />
-      <workItem from="1701947357758" duration="6277000" />
+      <workItem from="1701947357758" duration="16097000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -371,7 +375,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701955227041</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="[MAZE-169] feat: display button which opens quiz for fresh user">
+      <option name="closed" value="true" />
+      <created>1701956427209</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1701956427209</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -416,8 +428,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-159] send correct user query in submit task" />
-    <MESSAGE value="[MAZE-159] add new styles for ActivityAssessment" />
     <MESSAGE value="[MAZE-159] refactor ActivityAssessment files" />
     <MESSAGE value="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx" />
     <MESSAGE value="[MAZE-159] add missing file" />
@@ -441,6 +451,8 @@
     <MESSAGE value="[MAZE-169] feat: add selecting answers in quiz and non-styled results" />
     <MESSAGE value="[MAZE-169] style: add bold to personality type paragraph" />
     <MESSAGE value="[MAZE-169] feat: display personality type in greeting after login&#10;&#10;- move getMaxPersonality type function to formatters.ts" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] feat: display personality type in greeting after login&#10;&#10;- move getMaxPersonality type function to formatters.ts" />
+    <MESSAGE value="[MAZE-169] feat: display button which opens quiz for fresh user" />
+    <MESSAGE value="[MAZE-169] feat: personality quiz results view" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] feat: personality quiz results view" />
   </component>
 </project>

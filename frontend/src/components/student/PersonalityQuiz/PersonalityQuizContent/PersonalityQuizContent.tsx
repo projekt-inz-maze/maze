@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { Button, Container } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 
 import styles from './PersonalityQuizContent.module.scss'
 import Question from './Question/Question'
@@ -13,6 +14,7 @@ type PersonalityQuizContentProps = {
 }
 
 const PersonalityQuizContent = (props: PersonalityQuizContentProps) => {
+  const navigate = useNavigate()
   const [sendResults] = useSendPersonalityQuizResultsMutation()
   const [currentQuestion, setCurrentQuestion] = useState<number>(0)
   const [socializerValue, setSocializerValue] = useState<number>(0)
@@ -29,6 +31,7 @@ const PersonalityQuizContent = (props: PersonalityQuizContentProps) => {
     }
     await sendResults(results)
     props.setShowQuestions()
+    navigate('/quiz-result')
   }
 
   const handleAnswer = (id: number) => {
@@ -54,7 +57,11 @@ const PersonalityQuizContent = (props: PersonalityQuizContentProps) => {
         <Question question={props.quiz[currentQuestion]} onAnswer={handleAnswer} />
       ) : (
         <div className={styles.info}>
-          <p>Wynik testu osobowości oraz jego edycja będą dostępne w zakładce &quot;Ustawienia&quot;.</p>
+          <p>Kliknij &quot;Prześlij odpowiedź&quot; żeby przejść do ekranu z podsumowaniem.</p>
+          <p>
+            {' '}
+            Pamiętaj, że wynik testu osobowości oraz jego edycja wciąż będą dostępne w zakładce &quot;Ustawienia&quot;.
+          </p>
           <Button variant='primary' type='submit' className={styles.acceptButton} onClick={() => handleSendResults()}>
             Prześlij odpowiedź
           </Button>

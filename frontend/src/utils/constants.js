@@ -70,6 +70,27 @@ export const QuestionType = {
   OPEN_QUESTION: 'OPENED'
 }
 
+export const PersonalityName = {
+  KILLER: 'KILLER',
+  ACHIEVER: 'ACHIEVER',
+  EXPLORER: 'EXPLORER',
+  SOCIALIZER: 'SOCIALIZER'
+}
+
+export const getPersonalityName = (personality) => {
+  switch (personality) {
+    case PersonalityName.ACHIEVER:
+      return 'ZABÓJCA'
+    case PersonalityName.EXPLORER:
+      return 'ODKRYWCA'
+    case PersonalityName.SOCIALIZER:
+      return 'TOWARZYSKI'
+    case PersonalityName.KILLER:
+      return 'ZABÓJCA'
+    default:
+  }
+}
+
 export const getActivityImg = (type) => {
   switch (type) {
     case Activity.EXPEDITION:
@@ -124,23 +145,27 @@ export const getActivityPath = (type) => {
 
 export const personalityQuizIntro = [
   {
+    type: 'KILLER',
     name: 'Zabójców',
     nameEng: '(Killers)',
     description: 'Gracze, którzy największą przyjemność czerpią z pokonywania innych graczy.'
   },
   {
+    type: 'ACHIEVER',
     name: 'Zdobywców',
     nameEng: '(Achievers)',
     description:
       'Gracze, którzy największą przyjemność czerpią z osiągania różnych sukcesów (przejście do kolejnego poziomu, zdobycie wyższej rangi, znalezienie wszystkich "znajdziek".'
   },
   {
+    type: 'EXPLORER',
     name: 'Odkrywców',
     nameEng: '(Explorers)',
     description:
       'Gracze, którzy lubią odkrywać świat i mechaniki gry - lubią szukać ukrytych przejść, easter eggów oraz ograniczeń.'
   },
   {
+    type: 'SOCIALIZER',
     name: 'Towarzyskich / Społecznościowców',
     nameEng: '(Socializers)',
     description: 'Gracze, którzy najwięcej przyjemności czerpią z interakcji z innymi graczami.'
