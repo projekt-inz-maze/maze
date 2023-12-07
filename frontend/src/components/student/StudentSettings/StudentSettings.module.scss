@@ -23,14 +23,26 @@ p {
       font-weight: bold;
     }
 
-    .testButton {
-      width: 200px;
-      padding: 0.5em 1em;
-      color: black;
+    .testButtonsContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .testButton,
+    .testDropdown {
+      color: black !important;
+      background-color: #FBB93B !important;
       border: none;
       font-weight: bold;
-      min-width: 200px;
-      background-color: #FFB21C;
+      padding: 0.5em 1em;
+    }
+
+    .testButton {
+      width: 160px;
+      margin-left: 1em;
+      padding: 0.5em 1em;
+      min-width: 160px;
     }
 
     .testButton:hover {
