@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] style: add bold to personality type paragraph">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] feat: display personality type in greeting after login&#10;&#10;- move getMaxPersonality type function to formatters.ts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/general/CourseList/CourseList.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/general/CourseList/CourseList.module.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/general/CourseList/CourseList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/general/CourseList/CourseList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/formatters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/formatters.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +113,7 @@
       <workItem from="1701854029289" duration="364000" />
       <workItem from="1701854404548" duration="21868000" />
       <workItem from="1701947303810" duration="44000" />
-      <workItem from="1701947357758" duration="5044000" />
+      <workItem from="1701947357758" duration="6277000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -365,7 +363,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701952219737</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="[MAZE-169] feat: display personality type in greeting after login&#10;&#10;- move getMaxPersonality type function to formatters.ts">
+      <option name="closed" value="true" />
+      <created>1701955227041</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1701955227041</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -410,7 +416,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-159] add submitTaskMutation" />
     <MESSAGE value="[MAZE-159] send correct user query in submit task" />
     <MESSAGE value="[MAZE-159] add new styles for ActivityAssessment" />
     <MESSAGE value="[MAZE-159] refactor ActivityAssessment files" />
@@ -435,6 +440,7 @@
     <MESSAGE value="[MAZE-169] feat: add quiz form demo using Formik" />
     <MESSAGE value="[MAZE-169] feat: add selecting answers in quiz and non-styled results" />
     <MESSAGE value="[MAZE-169] style: add bold to personality type paragraph" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] style: add bold to personality type paragraph" />
+    <MESSAGE value="[MAZE-169] feat: display personality type in greeting after login&#10;&#10;- move getMaxPersonality type function to formatters.ts" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] feat: display personality type in greeting after login&#10;&#10;- move getMaxPersonality type function to formatters.ts" />
   </component>
 </project>

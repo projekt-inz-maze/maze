@@ -19,6 +19,7 @@ import { setCourseId } from '../../../reducers/userSlice'
 import { joinGroupRequest } from '../../../services/types/serviceTypes'
 import { getGreetingForPersonality } from '../../../utils/formatters'
 import { Role } from '../../../utils/userRole'
+import PersonalityQuiz from '../../student/PersonalityQuiz/PersonalityQuiz'
 import CourseNav from '../Navbars/CourseNavbar/CourseNav'
 
 type CourseListProps = {
@@ -34,6 +35,7 @@ const CourseList = (props: CourseListProps) => {
 
   const [coursesList, setCoursesList] = useState<Course[]>([])
   const [userPersonality, setUserPersonality] = useState<QuizResults>()
+  const [showQuiz, setShowQuiz] = useState<boolean>(false)
 
   const { data: courses, isSuccess: coursesSuccess } = useGetAllCoursesQuery()
   const { data: personality, isSuccess: personalitySuccess } = useGetPersonalityQuery(undefined, {
@@ -91,11 +93,17 @@ const CourseList = (props: CourseListProps) => {
       <Container className={styles.mainContainer}>
         <Col>
           <Row className={styles.headerRow}>
-            b
             {personality?.ACHIEVER || personality?.EXPLORER || personality?.KILLER || personality?.SOCIALIZER ? (
               <p className={styles.greeting}>{getGreetingForPersonality(personality)}</p>
             ) : (
-              <p className={styles.greeting}>Cześć!</p>
+              <p className={styles.greeting}>
+                <span>Cześć!</span>
+                {role !== Role.LOGGED_IN_AS_TEACHER && (
+                  <button type='button' className={styles.actionButton} onClick={() => setShowQuiz(true)}>
+                    Poznaj swój typ osobowości!
+                  </button>
+                )}
+              </p>
             )}
             <p className={styles.courseInfo}>Twoje kursy</p>
           </Row>
@@ -128,6 +136,7 @@ const CourseList = (props: CourseListProps) => {
           </Row>
         </Col>
       </Container>
+      <PersonalityQuiz showModal={showQuiz} setShowModal={setShowQuiz} />
     </div>
   )
 }
