@@ -80,7 +80,7 @@ export const PersonalityName = {
 export const getPersonalityName = (personality) => {
   switch (personality) {
     case PersonalityName.ACHIEVER:
-      return 'ZABÓJCA'
+      return 'ZDOBYWCA'
     case PersonalityName.EXPLORER:
       return 'ODKRYWCA'
     case PersonalityName.SOCIALIZER:

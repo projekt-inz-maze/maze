@@ -20,6 +20,7 @@ const PersonalityQuizResults = () => {
 
   const [userPersonality, setUserPersonality] = useState(emptyPersonality)
   const [dominantPersonality, setDominantPersonality] = useState<string>('')
+  const [personalityDescription, setPersonalityDescription] = useState<string>('')
 
   const { data: personality, isSuccess: personalitySuccess } = useGetPersonalityQuery()
 
@@ -27,9 +28,13 @@ const PersonalityQuizResults = () => {
     if (!personalitySuccess) {
       return
     }
+
     const maxValuePersonality = getMaxValuePersonalityType(personality)
+    const description = personalityQuizIntro.find((p) => p.type === maxValuePersonality.id)?.description ?? ''
+
     setUserPersonality(maxValuePersonality)
     setDominantPersonality(maxValuePersonality.id)
+    setPersonalityDescription(description)
   }, [personality, personalitySuccess])
 
   return (
@@ -55,9 +60,7 @@ const PersonalityQuizResults = () => {
                 </p>
               </Row>
               <Row>
-                <p className={styles.typeDescription}>
-                  {personalityQuizIntro.find((p) => p.type === dominantPersonality)?.description ?? ''}
-                </p>
+                <p className={styles.typeDescription}>{personalityDescription}</p>
               </Row>
               <Row>
                 <p className={styles.typeOther}>

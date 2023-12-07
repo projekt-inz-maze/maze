@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] feat: personality quiz results view">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizResults/PersonalityQuizResults.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizResults/PersonalityQuizResults.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/routes/AppRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/AppRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizResults/PersonalityQuizResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizResults/PersonalityQuizResults.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/utils/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/formatters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/formatters.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +113,7 @@
       <workItem from="1701854029289" duration="364000" />
       <workItem from="1701854404548" duration="21868000" />
       <workItem from="1701947303810" duration="44000" />
-      <workItem from="1701947357758" duration="16097000" />
+      <workItem from="1701947357758" duration="16536000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -383,7 +379,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701956427209</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="[MAZE-169] feat: personality quiz results view">
+      <option name="closed" value="true" />
+      <created>1701973356644</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1701973356644</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
