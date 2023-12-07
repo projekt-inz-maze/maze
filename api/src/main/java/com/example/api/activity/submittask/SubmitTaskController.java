@@ -1,7 +1,6 @@
 package com.example.api.activity.submittask;
 
 import com.example.api.activity.CreateActivityChapterForm;
-import com.example.api.activity.result.dto.SaveFileToFileTaskResultForm;
 import com.example.api.activity.submittask.result.SubmitTaskResultDTO;
 import com.example.api.activity.submittask.result.SubmitTaskResultWithFileDTO;
 import com.example.api.error.exception.EntityNotFoundException;
