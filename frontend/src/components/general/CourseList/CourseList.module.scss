@@ -10,18 +10,19 @@
     display: flex;
     justify-content: center;
     padding-top: 2em;
+    font-family: 'Poppins', sans-serif;
 }
 
 .headerRow {
     padding: 1em 0 1em;
 
-    h1 {
-        margin-bottom: 0.75em;
-        font-size: 2.5rem;
+    .greeting {
+        margin-bottom: 1em !important;
+        font-size: 2rem;
     }
 
-    h2 {
-        font-size: 1.5rem;
+    .courseInfo {
+        font-size: 1.3rem;
     }
 }
 

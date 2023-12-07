@@ -5,6 +5,7 @@ import { Button, Container, Row } from 'react-bootstrap'
 import styles from './StudentSettings.module.scss'
 import { useGetPersonalityQuery } from '../../../api/apiPersonality'
 import { QuizResults } from '../../../api/types'
+import { getMaxValuePersonality } from '../../../utils/formatters'
 import PersonalityQuiz from '../PersonalityQuiz/PersonalityQuiz'
 
 const emptyQuizResults: QuizResults = {
@@ -26,22 +27,6 @@ const StudentSettings = () => {
     setPersonality(studentPersonality)
   }, [studentPersonality, isSuccess, personality])
 
-  const getMaxValuePersonality = () => {
-    const values = [
-      { name: 'Zabójca', type: personality?.KILLER },
-      { name: 'Odkrywca', type: personality?.EXPLORER },
-      { name: 'Zdobywca', type: personality?.ACHIEVER },
-      { name: 'Towarzyski / Społecznościowiec', type: personality?.SOCIALIZER }
-    ]
-
-    const maxEntry = values.reduce((max, current) => ((current.type ?? 0) > (max.type ?? 0) ? current : max), {
-      name: '',
-      type: -Infinity
-    })
-
-    return maxEntry?.name
-  }
-
   return (
     <>
       <Container fluid className={styles.container}>
@@ -53,7 +38,7 @@ const StudentSettings = () => {
             <span>Typ osobowości: </span>
             {`${
               personality?.ACHIEVER || personality?.EXPLORER || personality?.KILLER || personality?.SOCIALIZER
-                ? getMaxValuePersonality()
+                ? getMaxValuePersonality(personality)
                 : 'nie wypełniono testu'
             }`}
           </p>
