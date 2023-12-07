@@ -1,54 +1,65 @@
-import { Field, Formik } from 'formik'
-import { Container, Form } from 'react-bootstrap'
+import { useState } from 'react'
+
+import { Button, Container } from 'react-bootstrap'
 
 import styles from './PersonalityQuizContent.module.scss'
-import { QuizQuestion } from '../../../../api/types'
+import Question from './Question/Question'
+import { useSendPersonalityQuizResultsMutation } from '../../../../api/apiPersonality'
+import { QuizQuestion, QuizResults } from '../../../../api/types'
 
 type PersonalityQuizContentProps = {
   quiz: QuizQuestion[]
+  setShowQuestions: () => void
 }
 
 const PersonalityQuizContent = (props: PersonalityQuizContentProps) => {
-  const initialValues: Record<string, Record<string, boolean>> = {}
+  const [sendResults] = useSendPersonalityQuizResultsMutation()
+  const [currentQuestion, setCurrentQuestion] = useState<number>(0)
+  const [socializerValue, setSocializerValue] = useState<number>(0)
+  const [killerValue, setKillerValue] = useState<number>(0)
+  const [achieverValue, setAchieverValue] = useState<number>(0)
+  const [explorerValue, setExplorerValue] = useState<number>(0)
 
-  props.quiz.forEach((question, index) => {
-    initialValues[`question${index + 1}`] = {}
+  const handleSendResults = async () => {
+    const results: QuizResults = {
+      SOCIALIZER: socializerValue,
+      KILLER: killerValue,
+      EXPLORER: explorerValue,
+      ACHIEVER: achieverValue
+    }
+    await sendResults(results)
+    props.setShowQuestions()
+  }
 
-    question.answers.forEach((answer, answerIndex) => {
-      initialValues[`question${index + 1}`][`answer${answerIndex + 1}`] = false
-    })
-  })
+  const handleAnswer = (id: number) => {
+    const answer = props.quiz[currentQuestion].answers[id].personalityType
+    if (answer === 'SOCIALIZER') {
+      setSocializerValue(socializerValue + 1)
+    }
+    if (answer === 'KILLER') {
+      setKillerValue(killerValue + 1)
+    }
+    if (answer === 'EXPLORER') {
+      setExplorerValue(explorerValue + 1)
+    }
+    if (answer === 'ACHIEVER') {
+      setAchieverValue(achieverValue + 1)
+    }
+    setCurrentQuestion(currentQuestion + 1)
+  }
 
   return (
-    <Container>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={(values) => {
-          console.log('User answers:', values)
-        }}
-      >
-        <Form>
-          {props.quiz.map((question, index) => (
-            <div key={index} className={styles.testQuestionContainer}>
-              <p className={styles.testQuestion}>{question.question}</p>
-              {question.answers.map((answer, answerIndex) => (
-                <div key={answerIndex}>
-                  <label className={styles.radioLabel}>
-                    <Field
-                      type='radio'
-                      name={`question${index + 1}`}
-                      value={`answer${answerIndex + 1}`}
-                      className={styles.radioInput}
-                    />
-                    {answer.content}
-                  </label>
-                </div>
-              ))}
-            </div>
-          ))}
-          <button type='submit'>Submit</button>
-        </Form>
-      </Formik>
+    <Container className={styles.container}>
+      {currentQuestion < props.quiz.length ? (
+        <Question question={props.quiz[currentQuestion]} onAnswer={handleAnswer} />
+      ) : (
+        <div className={styles.info}>
+          <p>Wynik testu osobowości oraz jego edycja będą dostępne w zakładce &quot;Ustawienia&quot;.</p>
+          <Button variant='primary' type='submit' className={styles.acceptButton} onClick={() => handleSendResults()}>
+            Prześlij odpowiedź
+          </Button>
+        </div>
+      )}
     </Container>
   )
 }

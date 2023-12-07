@@ -11,7 +11,7 @@ const PersonalityQuizIntro = () => (
     </p>
     <ol>
       {personalityQuizIntro.map((listItem) => (
-        <li>
+        <li key={listItem.nameEng}>
           <p key={listItem.name}>
             <span>{listItem.name}</span> {listItem.nameEng}
           </p>

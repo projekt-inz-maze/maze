@@ -4,10 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] feat: add endpoint for getting user personality">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] feat: add selecting answers in quiz and non-styled results">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/Question/Question.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/Question/Question.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuiz.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuiz.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizIntro/PersonalityQuizIntro.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizIntro/PersonalityQuizIntro.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/constants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/StudentSettings/StudentSettings.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +118,9 @@
       <workItem from="1701784188293" duration="8215000" />
       <workItem from="1701853409566" duration="217000" />
       <workItem from="1701854029289" duration="364000" />
-      <workItem from="1701854404548" duration="2700000" />
+      <workItem from="1701854404548" duration="21868000" />
+      <workItem from="1701947303810" duration="44000" />
+      <workItem from="1701947357758" duration="1964000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -321,7 +330,31 @@
       <option name="project" value="LOCAL" />
       <updated>1701855683710</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="[MAZE-169] refactor: put intro text to constants.js">
+      <option name="closed" value="true" />
+      <created>1701857145782</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1701857145782</updated>
+    </task>
+    <task id="LOCAL-00028" summary="[MAZE-169] feat: add correct flow of content in quiz modal">
+      <option name="closed" value="true" />
+      <created>1701861542221</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1701861542221</updated>
+    </task>
+    <task id="LOCAL-00029" summary="[MAZE-169] feat: add quiz form demo using Formik">
+      <option name="closed" value="true" />
+      <created>1701863356877</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1701863356877</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -366,10 +399,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-111] src: removed slider from `BadgesPage`" />
-    <MESSAGE value="[MAZE-111] src: removed scrollbar from some professor views, add routes for map" />
-    <MESSAGE value="[MAZE-159] add mock view for submit task" />
-    <MESSAGE value="[MAZE-159] add submitTask service" />
     <MESSAGE value="[MAZE-159] change order of hooks in QuestCard" />
     <MESSAGE value="[MAZE-159] add submitTaskMutation" />
     <MESSAGE value="[MAZE-159] send correct user query in submit task" />
@@ -391,6 +420,10 @@
     <MESSAGE value="[MAZE-169] feat: add new api to handle personality quiz&#10;&#10;- add two endpoints to apiPersonality.ts&#10;- refactored StudentSettings, modal with quiz is now isolated component" />
     <MESSAGE value="[MAZE-169] feat: display quiz content downloaded from api" />
     <MESSAGE value="[MAZE-169] feat: add endpoint for getting user personality" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] feat: add endpoint for getting user personality" />
+    <MESSAGE value="[MAZE-169] refactor: put intro text to constants.js" />
+    <MESSAGE value="[MAZE-169] feat: add correct flow of content in quiz modal" />
+    <MESSAGE value="[MAZE-169] feat: add quiz form demo using Formik" />
+    <MESSAGE value="[MAZE-169] feat: add selecting answers in quiz and non-styled results" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] feat: add selecting answers in quiz and non-styled results" />
   </component>
 </project>

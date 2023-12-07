@@ -184,7 +184,7 @@ export type GradeTaskResponse = {
 
 export type PersonalityType = 'SOCIALIZER' | 'KILLER' | 'ACHIEVER' | 'EXPLORER'
 
-export type QuizResults = Record<PersonalityType, number> | null
+export type QuizResults = Record<PersonalityType, number>
 
 export type QuizAnswer = {
   content: string
