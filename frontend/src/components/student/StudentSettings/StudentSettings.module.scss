@@ -19,6 +19,10 @@ p {
     align-items: center;
     font-size: 1.1rem;
 
+    span {
+      font-weight: bold;
+    }
+
     .testButton {
       width: 200px;
       padding: 0.5em 1em;

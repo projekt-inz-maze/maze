@@ -49,11 +49,14 @@ const StudentSettings = () => {
           <p className={styles.title}>Ustawienia</p>
         </Row>
         <div className={styles.items}>
-          <p>{`Typ osobowości: ${
-            personality?.ACHIEVER || personality?.EXPLORER || personality?.KILLER || personality?.SOCIALIZER
-              ? getMaxValuePersonality()
-              : 'nie wypełniono testu'
-          }`}</p>
+          <p>
+            <span>Typ osobowości: </span>
+            {`${
+              personality?.ACHIEVER || personality?.EXPLORER || personality?.KILLER || personality?.SOCIALIZER
+                ? getMaxValuePersonality()
+                : 'nie wypełniono testu'
+            }`}
+          </p>
           <Button className={styles.testButton} onClick={() => setShowTest(true)}>
             Wypełnij test!
           </Button>
