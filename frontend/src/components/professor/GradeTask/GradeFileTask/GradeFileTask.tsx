@@ -6,8 +6,8 @@ import styles from './GradeFileTask.module.scss'
 import { useGradeTaskMutation } from '../../../../api/apiGrades'
 import { ActivityResponseInfo, GradeTaskRequest } from '../../../../api/types'
 import { Activity, getActivityTypeName } from '../../../../utils/constants'
-import { ActivityAssessmentProfessorFileService } from '../../ActivityAssessmentDetails/ActivityAssessmentProfessorFileService'
-import ActivityAssessmentStudentFileService from '../../ActivityAssessmentDetails/ActivityAssessmentStudentFileService'
+import { ProfessorFileService } from '../../ActivityAssessmentDetails/ProfessorFileService'
+import ActivityAssessmentStudentFileService from '../../ActivityAssessmentDetails/StudentFileService'
 
 type GradeFileTaskProps = {
   showDetails: boolean
@@ -55,6 +55,8 @@ const GradeFileTask = (props: GradeFileTaskProps) => {
       setFileBlob(null)
     })
   }
+
+  console.log(props.activity)
 
   return (
     <>
@@ -108,11 +110,7 @@ const GradeFileTask = (props: GradeFileTaskProps) => {
               </Row>
               <Row className={styles.form}>
                 <Col xs={3}>
-                  <ActivityAssessmentProfessorFileService
-                    setFile={setFileBlob}
-                    setFileName={setFileName}
-                    fileRef={fileRef}
-                  />
+                  <ProfessorFileService setFile={setFileBlob} setFileName={setFileName} fileRef={fileRef} />
                 </Col>
               </Row>
             </Form>

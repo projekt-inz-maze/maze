@@ -13,8 +13,8 @@ import {
   PointsRow,
   RemarksTextArea
 } from './ActivityAssesmentDetailsStyles'
-import { ActivityAssessmentProfessorFileService } from './ActivityAssessmentProfessorFileService'
-import ActivityAssessmentStudentFileService from './ActivityAssessmentStudentFileService'
+import { ProfessorFileService } from './ProfessorFileService'
+import ActivityAssessmentStudentFileService from './StudentFileService'
 import { SET_ASSESSMENT_NUMBERS } from '../../../actions/types'
 import { TeacherRoutes } from '../../../routes/PageRoutes'
 import ProfessorService from '../../../services/professor.service'
@@ -201,11 +201,7 @@ function ActivityAssessmentDetails(props) {
               ref={textRef}
             />
             <ActivityAssessmentProfessorFileCol $background={props.theme.primary} $fontColor={props.theme.font}>
-              <ActivityAssessmentProfessorFileService
-                setFile={setFileBlob}
-                setFileName={setFileName}
-                fileRef={fileRef}
-              />
+              <ProfessorFileService setFile={setFileBlob} setFileName={setFileName} fileRef={fileRef} />
             </ActivityAssessmentProfessorFileCol>
             <PointsRow>
               <p className='m-0'>Punkty: </p>

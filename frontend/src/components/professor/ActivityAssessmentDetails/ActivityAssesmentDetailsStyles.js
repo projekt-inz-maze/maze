@@ -61,8 +61,12 @@ export const RemarksTextArea = styled.textarea`
 `
 
 export const ActivityAssessmentStudentFileRow = styled(Row)`
-  margin: 0 auto;
-  width: 80%;
+  //margin: 0 auto;
+  //width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 `
 
 export const ActivityAssessmentProfessorFileCol = styled(Col)`
