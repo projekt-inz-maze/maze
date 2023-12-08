@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Col, Container, Stack } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import styles from './CourseList.module.scss'
 import {
@@ -11,12 +11,15 @@ import {
   useGetAllCoursesQuery,
   useJoinCourseGroupMutation
 } from '../../../api/apiCourses'
-import { AddCourseRequest, Course } from '../../../api/types'
+import { useGetPersonalityQuery } from '../../../api/apiPersonality'
+import { AddCourseRequest, Course, QuizResults } from '../../../api/types'
 import CourseCard from '../../../common/components/CourseCard/CourseCard'
 import { useAppDispatch } from '../../../hooks/hooks'
 import { setCourseId } from '../../../reducers/userSlice'
 import { joinGroupRequest } from '../../../services/types/serviceTypes'
+import { getGreetingForPersonality } from '../../../utils/formatters'
 import { Role } from '../../../utils/userRole'
+import PersonalityQuiz from '../../student/PersonalityQuiz/PersonalityQuiz'
 import CourseNav from '../Navbars/CourseNavbar/CourseNav'
 
 type CourseListProps = {
@@ -31,8 +34,13 @@ const CourseList = (props: CourseListProps) => {
   const role = props.isStudent ? Role.LOGGED_IN_AS_STUDENT : Role.LOGGED_IN_AS_TEACHER
 
   const [coursesList, setCoursesList] = useState<Course[]>([])
+  const [userPersonality, setUserPersonality] = useState<QuizResults>()
+  const [showQuiz, setShowQuiz] = useState<boolean>(false)
 
   const { data: courses, isSuccess: coursesSuccess } = useGetAllCoursesQuery()
+  const { data: personality, isSuccess: personalitySuccess } = useGetPersonalityQuery(undefined, {
+    skip: role === Role.LOGGED_IN_AS_TEACHER
+  })
   const [addNewCourse] = useAddNewCourseMutation()
   const [deleteCourse] = useDeleteCourseMutation()
   const [joinCourseGroup] = useJoinCourseGroupMutation()
@@ -50,6 +58,13 @@ const CourseList = (props: CourseListProps) => {
     }
     setCoursesList(courses)
   }, [courses, coursesSuccess])
+
+  useEffect(() => {
+    if (!personalitySuccess) {
+      return
+    }
+    setUserPersonality(personality)
+  }, [personality, personalitySuccess])
 
   const handleClick = (courseId: number) => {
     dispatch(setCourseId(courseId))
@@ -78,8 +93,19 @@ const CourseList = (props: CourseListProps) => {
       <Container className={styles.mainContainer}>
         <Col>
           <Row className={styles.headerRow}>
-            <h1>Cześć!</h1>
-            <h2>Twoje kursy</h2>
+            {personality?.ACHIEVER || personality?.EXPLORER || personality?.KILLER || personality?.SOCIALIZER ? (
+              <p className={styles.greeting}>{getGreetingForPersonality(personality)}</p>
+            ) : (
+              <p className={styles.greeting}>
+                <span>Cześć!</span>
+                {role !== Role.LOGGED_IN_AS_TEACHER && (
+                  <button type='button' className={styles.actionButton} onClick={() => setShowQuiz(true)}>
+                    Poznaj swój typ osobowości!
+                  </button>
+                )}
+              </p>
+            )}
+            <p className={styles.courseInfo}>Twoje kursy</p>
           </Row>
 
           <Row>
@@ -110,6 +136,7 @@ const CourseList = (props: CourseListProps) => {
           </Row>
         </Col>
       </Container>
+      <PersonalityQuiz showModal={showQuiz} setShowModal={setShowQuiz} />
     </div>
   )
 }

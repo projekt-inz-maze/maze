@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.acceptButton {
+  padding: 0.5em 1em;
+  color: black;
+  border: none;
+  font-weight: bold;
+  min-width: 200px;
+  background-color: #FFB21C;
+}
+
+.acceptButton:hover {
+  transform: scale(1.01);
+  opacity: 0.8;
+  background-color: #FBB93B;
+  color: black;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-size: 1.1rem;
+    padding-bottom: 1.5em !important;
+  }
+}

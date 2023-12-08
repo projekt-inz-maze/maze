@@ -1,40 +1,61 @@
 .color {
-    background-color: #071542;
-    height: 100vh;
+  background-color: #071542;
+  height: 100vh;
 }
 
 .mainContainer {
-    background-color: #071542;
-    color: whitesmoke;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding-top: 2em;
+  background-color: #071542;
+  color: whitesmoke;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 2em;
+  font-family: 'Poppins', sans-serif;
 }
 
 .headerRow {
-    padding: 1em 0 1em;
+  padding: 1em 0 1em;
 
-    h1 {
-        margin-bottom: 0.75em;
-        font-size: 2.5rem;
-    }
+  .greeting {
+    margin-bottom: 1em !important;
+    font-size: 1.75rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
 
-    h2 {
-        font-size: 1.5rem;
-    }
+  .actionButton {
+    background-color: #ffb30d;
+    color: #071542;
+    border: none;
+    border-radius: 6px;
+    margin-left: 2em;
+    padding: 0.5em;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .actionButton:hover {
+    transform: scale(1.05);
+    background-color: #ffb30d;
+  }
+
+  .courseInfo {
+    font-size: 1.3rem;
+  }
 }
 
 .stackContainer {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    align-items: stretch;
-    color: black;
-    flex: 3;
-    flex-wrap: wrap;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: stretch;
+  color: black;
+  flex: 3;
+  flex-wrap: wrap;
 }
 
 .stackContainer > * {
-    flex: 1;
+  flex: 1;
 }

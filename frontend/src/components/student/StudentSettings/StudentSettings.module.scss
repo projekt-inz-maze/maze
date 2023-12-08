@@ -1,0 +1,53 @@
+p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.container {
+  padding: 2em 1em;
+  width: 80%;
+
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .items {
+    padding-top: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+
+    span {
+      font-weight: bold;
+    }
+
+    .testButtonsContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .testButton,
+    .testDropdown {
+      color: black !important;
+      background-color: #FBB93B !important;
+      border: none;
+      font-weight: bold;
+      padding: 0.5em 1em;
+    }
+
+    .testButton {
+      width: 160px;
+      margin-left: 1em;
+      padding: 0.5em 1em;
+      min-width: 160px;
+    }
+
+    .testButton:hover {
+      transform: scale(1.01);
+      opacity: 0.8;
+    }
+  }
+}

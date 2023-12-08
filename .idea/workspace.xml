@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-159] add endpoint to handle submit task results">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] fix: missing bracket">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/apiGrades.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/apiGrades.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityAssessmentList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentList/ActivityAssessmentList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/AddActivityModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/AddActivityModal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/ChapterDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/ChapterDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/Question/Question.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/Question/Question.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/Question/Question.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/Question/Question.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="MAZE-165" />
+        <entry key="$PROJECT_DIR$" value="MAZE-168" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -48,34 +43,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "MAZE-168",
-    "last_opened_file_path": "/home/jkbstepien/projects/work/fslab-react-component-library",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "/home/jkbstepien/projects/university/maze/frontend/node_modules/prettier",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "settings.javascript.linters.eslint",
-    "ts.external.directory.path": "/home/jkbstepien/projects/university/maze/frontend/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;MAZE-169&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jkbstepien/projects/work/frontend-prozodia&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/jkbstepien/projects/university/maze/frontend/node_modules/prettier&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/jkbstepien/projects/university/maze/frontend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz" />
+      <recent name="$PROJECT_DIR$/frontend/src/components/student/StudentSettings" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard" />
-      <recent name="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTaskModal" />
-      <recent name="$PROJECT_DIR$/frontend/src/components/professor/GradeTask" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -111,6 +106,16 @@
       <workItem from="1701342254293" duration="11736000" />
       <workItem from="1701420842731" duration="4619000" />
       <workItem from="1701595813853" duration="6745000" />
+      <workItem from="1701679457414" duration="67000" />
+      <workItem from="1701693316871" duration="4662000" />
+      <workItem from="1701771782404" duration="348000" />
+      <workItem from="1701784188293" duration="8215000" />
+      <workItem from="1701853409566" duration="217000" />
+      <workItem from="1701854029289" duration="364000" />
+      <workItem from="1701854404548" duration="21868000" />
+      <workItem from="1701947303810" duration="44000" />
+      <workItem from="1701947357758" duration="20808000" />
+      <workItem from="1702024615297" duration="3523000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -240,29 +245,252 @@
       <option name="project" value="LOCAL" />
       <updated>1701355764443</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="[MAZE-168] add modal for adding activities in grading section">
+      <option name="closed" value="true" />
+      <created>1701604168509</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1701604168509</updated>
+    </task>
+    <task id="LOCAL-00018" summary="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir">
+      <option name="closed" value="true" />
+      <created>1701766399226</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1701766399226</updated>
+    </task>
+    <task id="LOCAL-00019" summary="[MAZE-169] style: remove comments in navbar">
+      <option name="closed" value="true" />
+      <created>1701767335579</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1701767335579</updated>
+    </task>
+    <task id="LOCAL-00020" summary="[MAZE-169] feat: add initial view of StudentSettings">
+      <option name="closed" value="true" />
+      <created>1701769075667</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1701769075667</updated>
+    </task>
+    <task id="LOCAL-00021" summary="[MAZE-169] refactor: correct styling of testButton">
+      <option name="closed" value="true" />
+      <created>1701769245124</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1701769245124</updated>
+    </task>
+    <task id="LOCAL-00022" summary="[MAZE-169] feat: add modal for test introduction">
+      <option name="closed" value="true" />
+      <created>1701771384632</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1701771384632</updated>
+    </task>
+    <task id="LOCAL-00023" summary="[MAZE-169] refactor: fix typo">
+      <option name="closed" value="true" />
+      <created>1701771900160</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1701771900160</updated>
+    </task>
+    <task id="LOCAL-00024" summary="[MAZE-169] feat: add new api to handle personality quiz&#10;&#10;- add two endpoints to apiPersonality.ts&#10;- refactored StudentSettings, modal with quiz is now isolated component">
+      <option name="closed" value="true" />
+      <created>1701806272589</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1701806272589</updated>
+    </task>
+    <task id="LOCAL-00025" summary="[MAZE-169] feat: display quiz content downloaded from api">
+      <option name="closed" value="true" />
+      <created>1701809568027</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1701809568027</updated>
+    </task>
+    <task id="LOCAL-00026" summary="[MAZE-169] feat: add endpoint for getting user personality">
+      <option name="closed" value="true" />
+      <created>1701855683710</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1701855683710</updated>
+    </task>
+    <task id="LOCAL-00027" summary="[MAZE-169] refactor: put intro text to constants.js">
+      <option name="closed" value="true" />
+      <created>1701857145782</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1701857145782</updated>
+    </task>
+    <task id="LOCAL-00028" summary="[MAZE-169] feat: add correct flow of content in quiz modal">
+      <option name="closed" value="true" />
+      <created>1701861542221</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1701861542221</updated>
+    </task>
+    <task id="LOCAL-00029" summary="[MAZE-169] feat: add quiz form demo using Formik">
+      <option name="closed" value="true" />
+      <created>1701863356877</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1701863356877</updated>
+    </task>
+    <task id="LOCAL-00030" summary="[MAZE-169] feat: add selecting answers in quiz and non-styled results">
+      <option name="closed" value="true" />
+      <created>1701951960714</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1701951960714</updated>
+    </task>
+    <task id="LOCAL-00031" summary="[MAZE-169] style: add bold to personality type paragraph">
+      <option name="closed" value="true" />
+      <created>1701952219737</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1701952219737</updated>
+    </task>
+    <task id="LOCAL-00032" summary="[MAZE-169] feat: display personality type in greeting after login&#10;&#10;- move getMaxPersonality type function to formatters.ts">
+      <option name="closed" value="true" />
+      <created>1701955227041</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1701955227041</updated>
+    </task>
+    <task id="LOCAL-00033" summary="[MAZE-169] feat: display button which opens quiz for fresh user">
+      <option name="closed" value="true" />
+      <created>1701956427209</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1701956427209</updated>
+    </task>
+    <task id="LOCAL-00034" summary="[MAZE-169] feat: personality quiz results view">
+      <option name="closed" value="true" />
+      <created>1701973356644</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1701973356644</updated>
+    </task>
+    <task id="LOCAL-00035" summary="[MAZE-169] refactor: fix typo in constants.js function">
+      <option name="closed" value="true" />
+      <created>1701973889327</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1701973889328</updated>
+    </task>
+    <task id="LOCAL-00036" summary="[MAZE-169] feat: add dropdown for changing personality type">
+      <option name="closed" value="true" />
+      <created>1701975393943</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1701975393943</updated>
+    </task>
+    <task id="LOCAL-00037" summary="[MAZE-169] fix: .toFix does not throw error on results page">
+      <option name="closed" value="true" />
+      <created>1701976532739</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1701976532739</updated>
+    </task>
+    <task id="LOCAL-00038" summary="[MAZE-169] fix: missing bracket">
+      <option name="closed" value="true" />
+      <created>1701978425583</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1701978425583</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="HEAD" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views" />
-    <MESSAGE value="[MAZE-111] src: removed slider from `BadgesPage`" />
-    <MESSAGE value="[MAZE-111] src: removed scrollbar from some professor views, add routes for map" />
-    <MESSAGE value="[MAZE-159] add mock view for submit task" />
-    <MESSAGE value="[MAZE-159] add submitTask service" />
-    <MESSAGE value="[MAZE-159] change order of hooks in QuestCard" />
-    <MESSAGE value="[MAZE-159] add submitTaskMutation" />
-    <MESSAGE value="[MAZE-159] send correct user query in submit task" />
-    <MESSAGE value="[MAZE-159] add new styles for ActivityAssessment" />
-    <MESSAGE value="[MAZE-159] refactor ActivityAssessment files" />
-    <MESSAGE value="[MAZE-159] refactor dir structure&#10;&#10;- rename files and folders of GameMap.tsx to ChapterMap.tsx&#10;- rename and divide into separate folders QuestBoard and QuestCard&#10;- rename StudentTaskModal.tsx to QuestSubmit.tsx" />
-    <MESSAGE value="[MAZE-159] add missing file" />
-    <MESSAGE value="[MAZE-159] remove checkbox from QuestSubmit.tsx" />
     <MESSAGE value="[MAZE-159] correct displaying for activityType in activity list" />
     <MESSAGE value="[MAZE-159] rename GradeTask modals" />
     <MESSAGE value="[MAZE-159] add endpoint to handle submit task results" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-159] add endpoint to handle submit task results" />
+    <MESSAGE value="[MAZE-168] add modal for adding activities in grading section" />
+    <MESSAGE value="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir" />
+    <MESSAGE value="[MAZE-169] style: remove comments in navbar" />
+    <MESSAGE value="[MAZE-169] feat: add initial view of StudentSettings" />
+    <MESSAGE value="[MAZE-169] refactor: correct styling of testButton" />
+    <MESSAGE value="[MAZE-169] feat: add modal for test introduction" />
+    <MESSAGE value="[MAZE-169] refactor: fix typo" />
+    <MESSAGE value="[MAZE-169] feat: add new api to handle personality quiz&#10;&#10;- add two endpoints to apiPersonality.ts&#10;- refactored StudentSettings, modal with quiz is now isolated component" />
+    <MESSAGE value="[MAZE-169] feat: display quiz content downloaded from api" />
+    <MESSAGE value="[MAZE-169] feat: add endpoint for getting user personality" />
+    <MESSAGE value="[MAZE-169] refactor: put intro text to constants.js" />
+    <MESSAGE value="[MAZE-169] feat: add correct flow of content in quiz modal" />
+    <MESSAGE value="[MAZE-169] feat: add quiz form demo using Formik" />
+    <MESSAGE value="[MAZE-169] feat: add selecting answers in quiz and non-styled results" />
+    <MESSAGE value="[MAZE-169] style: add bold to personality type paragraph" />
+    <MESSAGE value="[MAZE-169] feat: display personality type in greeting after login&#10;&#10;- move getMaxPersonality type function to formatters.ts" />
+    <MESSAGE value="[MAZE-169] feat: display button which opens quiz for fresh user" />
+    <MESSAGE value="[MAZE-169] feat: personality quiz results view" />
+    <MESSAGE value="[MAZE-169] refactor: fix typo in constants.js function" />
+    <MESSAGE value="[MAZE-169] feat: add dropdown for changing personality type" />
+    <MESSAGE value="[MAZE-169] fix: .toFix does not throw error on results page" />
+    <MESSAGE value="[MAZE-169] fix: missing bracket" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] fix: missing bracket" />
   </component>
 </project>

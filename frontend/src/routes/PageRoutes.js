@@ -2,7 +2,9 @@ export const GeneralRoutes = {
   HOME: '/',
   PASSWORD_RESET: '/password-reset',
   CANVAS: '/canvas', // other case
-  COURSE_LIST: '/courses'
+  COURSE_LIST: '/courses',
+  PROFESSOR_SETTINGS: '/settings/professor',
+  STUDENT_SETTINGS: '/settings/student'
 }
 
 export const StudentRoutes = {
@@ -61,6 +63,5 @@ export const TeacherRoutes = {
     LIST: '/assessment/list',
     ACTIVITY: '/assessment/activity-assessment'
   },
-  GRADES: '/grades',
-  SETTINGS: '/settings'
+  GRADES: '/grades'
 }
