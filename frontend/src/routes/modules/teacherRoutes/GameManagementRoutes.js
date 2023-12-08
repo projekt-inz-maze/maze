@@ -5,7 +5,6 @@ import PageGuard from '../../../components/general/PageGuard/PageGuard'
 import ChapterDetails from '../../../components/professor/ChapterDetails/ChapterDetails'
 import ChapterRequirements from '../../../components/professor/ChapterDetails/ChapterRequirements/ChapterRequirements'
 import ActivityDetails from '../../../components/professor/GameManagement/ActivityDetails/ActivityDetails'
-// import GameSettings from '../../../components/professor/GameManagement/GameSettings/GameSettings'
 import GameManagement from '../../../components/professor/GameManagement/GameManagement'
 import Logs from '../../../components/professor/GameManagement/Logs/Logs'
 import RankAndBadgesManagement from '../../../components/professor/GameManagement/RanksAndBadges/RankAndBadgesManagement'
@@ -16,7 +15,7 @@ export default function GameManagementRoutes() {
   return (
     <Routes>
       <Route
-        path=""
+        path=''
         element={
           <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
             <GameManagement />
@@ -25,7 +24,7 @@ export default function GameManagementRoutes() {
       />
 
       <Route
-        path="groups"
+        path='groups'
         element={
           <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
             <Groups />
@@ -34,7 +33,7 @@ export default function GameManagementRoutes() {
       />
 
       <Route
-        path="logs"
+        path='logs'
         element={
           <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
             <Logs />
@@ -43,7 +42,7 @@ export default function GameManagementRoutes() {
       />
 
       <Route
-        path="chapter/:name/:id"
+        path='chapter/:name/:id'
         element={
           <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
             <ChapterDetails />
@@ -52,7 +51,7 @@ export default function GameManagementRoutes() {
       />
 
       <Route
-        path="chapter/:name/:id/requirements"
+        path='chapter/:name/:id/requirements'
         element={
           <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
             <ChapterRequirements />
@@ -61,7 +60,7 @@ export default function GameManagementRoutes() {
       />
 
       <Route
-        path="chapter/:name/:id/activity/:activityName"
+        path='chapter/:name/:id/activity/:activityName'
         element={
           <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
             <ActivityDetails />
@@ -70,22 +69,13 @@ export default function GameManagementRoutes() {
       />
 
       <Route
-        path="ranks-and-badges"
+        path='ranks-and-badges'
         element={
           <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
             <RankAndBadgesManagement />
           </PageGuard>
         }
       />
-
-      {/* <Route */}
-      {/*  path={'game-settings'} */}
-      {/*  element={ */}
-      {/*    <PageGuard role={Role.LOGGED_IN_AS_TEACHER}> */}
-      {/*      <GameSettings /> */}
-      {/*    </PageGuard> */}
-      {/*  } */}
-      {/* /> */}
 
       <Route path='*' element={<NotFound />} />
     </Routes>

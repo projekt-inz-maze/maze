@@ -181,3 +181,17 @@ export type GradeTaskResponse = {
   remarks: string
   feedbackFile: File
 }
+
+export type PersonalityType = 'SOCIALIZER' | 'KILLER' | 'ACHIEVER' | 'EXPLORER'
+
+export type QuizResults = Record<PersonalityType, number>
+
+export type QuizAnswer = {
+  content: string
+  personalityType: PersonalityType
+}
+
+export type QuizQuestion = {
+  question: string
+  answers: QuizAnswer[]
+}

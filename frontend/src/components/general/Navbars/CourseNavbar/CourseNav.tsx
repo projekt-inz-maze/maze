@@ -41,7 +41,6 @@ const CourseNav = (props: CourseNavProps): JSX.Element => {
           <button type='button' className={styles.actionButton} onClick={handleModalDisplay}>
             {props.userRole === Role.LOGGED_IN_AS_STUDENT ? 'Dołącz do kursu' : '+ Dodaj kurs'}
           </button>
-          <button type='button'>Ustawienia</button>
           <button type='button' onClick={logOut}>
             Wyloguj
           </button>

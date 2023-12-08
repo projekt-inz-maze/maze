@@ -11,7 +11,7 @@ import { useGradeSubmitTaskMutation } from '../../../../api/apiGrades'
 import { ActivityResponseInfo } from '../../../../api/types'
 import CombatTaskService from '../../../../services/combatTask.service'
 import { Activity, getActivityTypeName } from '../../../../utils/constants'
-import ActivityAssessmentStudentFileService from '../../ActivityAssessmentDetails/ActivityAssessmentStudentFileService'
+import ActivityAssessmentStudentFileService from '../../ActivityAssessmentDetails/StudentFileService'
 
 type GradeSubmitTaskProps = {
   showDetails: boolean

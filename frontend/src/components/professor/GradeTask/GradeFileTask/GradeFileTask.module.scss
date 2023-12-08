@@ -94,9 +94,13 @@ span {
   padding: 1em 0.75em;
   margin: 2em 0;
 
-  p:first-child {
-    padding-bottom: 0.5em !important;
+  span {
+    margin-bottom: 1em !important;
   }
+
+  //p:first-child {
+  //  padding-bottom: 0.5em !important;
+  //}
 }
 
 .modalInfoSection {

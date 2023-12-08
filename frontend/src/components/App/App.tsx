@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify'
 import styles from './App.module.scss'
 import AuthVerify from '../../common/auth-verify'
 import AppRoutes from '../../routes/AppRoutes'
-import { professorSubtitles, sidebarTitles, studentSubtitles } from '../../utils/sidebarTitles'
+import { professorSubtitles, getUserSidebarTitles, studentSubtitles } from '../../utils/sidebarTitles'
 import { isProfessor, isStudent } from '../../utils/storageManager'
 import Navbar from '../general/Navbars/Navbar'
 
@@ -24,7 +24,7 @@ function App(props: any) {
             <Navbar
               isStudent={student}
               isProfessor={professor}
-              navbarTitles={sidebarTitles}
+              navbarTitles={getUserSidebarTitles(student)}
               userSubtitles={student ? studentSubtitles : professorSubtitles}
             />
           )}
