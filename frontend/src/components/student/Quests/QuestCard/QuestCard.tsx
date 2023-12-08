@@ -40,7 +40,7 @@ const QuestCard = (props: QuestCardProps) => {
 
   return (
     <>
-      {props.activity.type !== 'AUCTION' && props.activity.type !== 'SUBMIT' && (
+      {props.activity.type !== 'AUCTION' && props.activity.type !== 'SUBMIT' && props.activity.type !== 'INFO' && (
         <ActivityDetails
           activityId={props.activity.id}
           showDetails={showModal}
@@ -52,8 +52,25 @@ const QuestCard = (props: QuestCardProps) => {
           startDate='20:00, 10.01.2024'
           endDate='22:00, 12.01.2024'
           description={props.activity.description}
-          isWager={props.activity.wager}
           numberOfAttempts={props.isActivityCompleted ? 1 : 0}
+          maxNumberOfAttempts={1}
+          timeLimit={convertMilisecondsToMinutes(props.activity.timeLimit)}
+          points={props.activity.points}
+        />
+      )}
+      {props.activity.type === 'INFO' && (
+        <ActivityDetails
+          activityId={props.activity.id}
+          showDetails={showModal}
+          onCloseDetails={() => setShowModal(false)}
+          onStartActivity={handleStartActivity}
+          isActivityCompleted={false}
+          name={props.activity.title}
+          type={props.activity.type}
+          startDate='20:00, 10.01.2024'
+          endDate='22:00, 12.01.2024'
+          description={props.activity.description}
+          numberOfAttempts={0}
           maxNumberOfAttempts={1}
           timeLimit={convertMilisecondsToMinutes(props.activity.timeLimit)}
           points={props.activity.points}
