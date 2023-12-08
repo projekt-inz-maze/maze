@@ -6,6 +6,8 @@ import styles from './Question.module.scss'
 import { QuizQuestion } from '../../../../../api/types'
 
 type QuestionProps = {
+  current: number
+  questionsNumber: number
   question: QuizQuestion
   onAnswer: (arg: number) => void
 }
@@ -13,9 +15,17 @@ type QuestionProps = {
 const Question = (props: QuestionProps) => {
   const [checked, setChecked] = useState<string>('')
 
+  // TODO: useHandleOnAnswer when switching to production
+  const handleOnAnswer = () => {
+    props.onAnswer(parseInt(checked, 10))
+    setChecked('')
+  }
+
   return (
     <div className={styles.testQuestionContainer}>
-      <p className={styles.testQuestion}>{props.question.question}</p>
+      <p
+        className={styles.testQuestion}
+      >{`Pytanie (${props.current}/${props.questionsNumber}): ${props.question.question}`}</p>
       <div key='0'>
         <label className={styles.radioLabel}>
           <input
@@ -45,7 +55,8 @@ const Question = (props: QuestionProps) => {
       <Button
         variant='primary'
         type='submit'
-        className={styles.acceptButton}
+        className={`${styles.acceptButton} ${checked === '' ? 'disabled' : ''}`}
+        // TODO: useHandleOnAnswer when switching to production
         onClick={() => props.onAnswer(parseInt(checked, 10))}
       >
         Następne pytanie

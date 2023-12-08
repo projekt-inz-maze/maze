@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] fix: .toFix does not throw error on results page">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-169] fix: missing bracket">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/constants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/PersonalityQuizContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/Question/Question.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/Question/Question.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/Question/Question.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz/PersonalityQuizContent/Question/Question.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +114,8 @@
       <workItem from="1701854029289" duration="364000" />
       <workItem from="1701854404548" duration="21868000" />
       <workItem from="1701947303810" duration="44000" />
-      <workItem from="1701947357758" duration="20261000" />
+      <workItem from="1701947357758" duration="20808000" />
+      <workItem from="1702024615297" duration="3523000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -410,7 +413,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701976532739</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="[MAZE-169] fix: missing bracket">
+      <option name="closed" value="true" />
+      <created>1701978425583</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1701978425583</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -455,7 +466,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-159] remove checkbox from QuestSubmit.tsx" />
     <MESSAGE value="[MAZE-159] correct displaying for activityType in activity list" />
     <MESSAGE value="[MAZE-159] rename GradeTask modals" />
     <MESSAGE value="[MAZE-159] add endpoint to handle submit task results" />
@@ -480,6 +490,7 @@
     <MESSAGE value="[MAZE-169] refactor: fix typo in constants.js function" />
     <MESSAGE value="[MAZE-169] feat: add dropdown for changing personality type" />
     <MESSAGE value="[MAZE-169] fix: .toFix does not throw error on results page" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] fix: .toFix does not throw error on results page" />
+    <MESSAGE value="[MAZE-169] fix: missing bracket" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-169] fix: missing bracket" />
   </component>
 </project>

@@ -54,7 +54,12 @@ const PersonalityQuizContent = (props: PersonalityQuizContentProps) => {
   return (
     <Container className={styles.container}>
       {currentQuestion < props.quiz.length ? (
-        <Question question={props.quiz[currentQuestion]} onAnswer={handleAnswer} />
+        <Question
+          current={currentQuestion + 1}
+          questionsNumber={props.quiz.length}
+          question={props.quiz[currentQuestion]}
+          onAnswer={handleAnswer}
+        />
       ) : (
         <div className={styles.info}>
           <p>Kliknij &quot;Prześlij odpowiedź&quot; żeby przejść do ekranu z podsumowaniem.</p>
