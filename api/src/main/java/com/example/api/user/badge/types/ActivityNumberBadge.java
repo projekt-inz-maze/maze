@@ -4,7 +4,7 @@ import com.example.api.course.Course;
 import com.example.api.user.badge.dtos.BadgeUpdateForm;
 import com.example.api.user.dto.response.badge.BadgeResponse;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.util.model.Image;
+import com.example.api.file.image.Image;
 import com.example.api.validator.BadgeValidator;
 import com.example.api.user.badge.BadgeVisitor;
 import lombok.AllArgsConstructor;

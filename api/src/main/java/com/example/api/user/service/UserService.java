@@ -4,7 +4,7 @@ import com.example.api.course.coursemember.CourseMember;
 import com.example.api.course.coursemember.CourseMemberService;
 import com.example.api.course.StudentNotEnrolledException;
 import com.example.api.group.GroupService;
-import com.example.api.personalityquiz.PersonalityType;
+import com.example.api.personality.PersonalityType;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.hero.model.Hero;
 import com.example.api.user.hero.model.UserHero;

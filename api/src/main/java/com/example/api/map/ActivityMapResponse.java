@@ -1,7 +1,7 @@
 package com.example.api.map;
 
 import com.example.api.map.mapactivity.MapActivity;
-import com.example.api.util.model.File;
+import com.example.api.file.File;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

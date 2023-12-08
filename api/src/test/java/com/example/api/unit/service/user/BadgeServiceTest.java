@@ -13,7 +13,7 @@ import com.example.api.user.badge.types.TopScoreBadge;
 import com.example.api.user.badge.unlockedbadge.UnlockedBadge;
 import com.example.api.user.badge.BadgeRepository;
 import com.example.api.user.badge.unlockedbadge.UnlockedBadgeRepository;
-import com.example.api.util.repository.FileRepository;
+import com.example.api.file.FileRepository;
 import com.example.api.user.badge.BadgeService;
 import com.example.api.user.service.UserService;
 import com.example.api.validator.BadgeValidator;

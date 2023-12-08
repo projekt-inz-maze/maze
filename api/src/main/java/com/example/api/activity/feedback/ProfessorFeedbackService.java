@@ -10,7 +10,7 @@ import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.user.model.User;
-import com.example.api.util.model.File;
+import com.example.api.file.File;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.task.filetask.FileTaskRepository;
 import com.example.api.user.repository.UserRepository;

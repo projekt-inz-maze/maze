@@ -16,10 +16,10 @@ import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
-import com.example.api.util.model.Image;
-import com.example.api.util.model.ImageType;
+import com.example.api.file.image.Image;
+import com.example.api.file.image.ImageType;
 import com.example.api.user.repository.RankRepository;
-import com.example.api.util.repository.ImageRepository;
+import com.example.api.file.image.ImageRepository;
 import com.example.api.validator.RankValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -116,14 +116,14 @@ public class RankService {
         return getCurrentRankResponse(user, courseId);
     }
 
-    public CurrentRankResponse getCurrentRankResponse(User user, Long courseId) throws EntityNotFoundException {
+    public CurrentRankResponse getCurrentRankResponse(User user, Long courseId)  {
         CourseMember member = user.getCourseMember(courseId).orElseThrow();
 
         double points = member.getPoints();
         List<Rank> ranks = getSortedRanksForHeroType(member);
         Rank currentRank = getCurrentRankResponse(ranks, points);
         if (currentRank == null) {
-            if (ranks.size() == 0) {
+            if (ranks.isEmpty()) {
                 return new CurrentRankResponse(null, null, null, points);
             } else {
                 return new CurrentRankResponse(null, null, new RankResponse(ranks.get(0)), points);
