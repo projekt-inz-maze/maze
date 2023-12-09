@@ -70,6 +70,7 @@ export const GET_TASK_GRAPH_MAP = `${GET_TASK_GRAPH}/map`
 
 // File Task Result Controller
 export const GET_TASK_FILE_RESULT_FILE = `${BASE_URL}/task/file/result/file`
+// TODO: Potencjalny problem z /add
 export const POST_TASK_FILE_RESULT_FILE = `${GET_TASK_FILE_RESULT_FILE}/add`
 export const DELETE_TASK_FILE_RESULT_FILE = `${GET_TASK_FILE_RESULT_FILE}/delete`
 

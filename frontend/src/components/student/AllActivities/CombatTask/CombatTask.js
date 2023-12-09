@@ -20,6 +20,7 @@ import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 import Loader from '../../../general/Loader/Loader'
 import { Header, VerticalSpacer, HorizontalSpacer, ActivityDetails } from '../../../general/TaskSharedComponents'
 import { RemarksTextArea } from '../../../professor/ActivityAssessmentDetails/ActivityAssesmentDetailsStyles'
+import AttachedFiles from '../AttachedFiles/AttachedFiles'
 
 const FIELD_DELAY = 600
 
@@ -87,132 +88,131 @@ function CombatTask(props) {
   )
 
   function AwaitingFeedbackField() {
-  return <Col md={6} className="text-center p-4 my-auto">
-      <Fade delay={FIELD_DELAY}>
-        <FontAwesomeIcon className="m-2" icon={faHourglass} size='5x' spin />
-        <h2 className="m-2">Odpowiedź została przesłana, oczekiwanie na sprawdzenie przez prowadzącego</h2>
-      </Fade>
-    </Col>
-}
+    return (
+      <Col md={6} className='text-center p-4 my-auto'>
+        <Fade delay={FIELD_DELAY}>
+          <FontAwesomeIcon className='m-2' icon={faHourglass} size='5x' spin />
+          <h2 className='m-2'>Odpowiedź została przesłana, oczekiwanie na sprawdzenie przez prowadzącego</h2>
+        </Fade>
+      </Col>
+    )
+  }
 
   const contentBody = () => (
-      <>
-        <HorizontalSpacer height="3vh" />
-        <Col
-          className='pt-4 mx-auto'
-          style={{
-            height: isMobileDisplay ? 'auto' : '86vh',
-            width: '90%',
-            backgroundColor: props.theme.secondary,
-            margin: isMobileDisplay ? '0 0 85px 0' : 0
-          }}
+    <>
+      <HorizontalSpacer height='3vh' />
+      <Col
+        className='pt-4 mx-auto'
+        style={{
+          height: isMobileDisplay ? 'auto' : '86vh',
+          width: '90%',
+          backgroundColor: props.theme.secondary,
+          margin: isMobileDisplay ? '0 0 85px 0' : 0
+        }}
+      >
+        <Row
+          className='p-2 rounded mx-2'
+          style={{ backgroundColor: props.theme.primary, height: isMobileDisplay ? 'auto' : '6vh' }}
         >
-          <Row
-            className='p-2 rounded mx-2'
-            style={{ backgroundColor: props.theme.primary, height: isMobileDisplay ? 'auto' : '6vh' }}
+          <Header activityName={task.name} activityType={Activity.TASK} />
+        </Row>
+        <VerticalSpacer height='2vh' />
+        <Row
+          className='p-2 rounded mx-2 overflow-auto'
+          style={{ backgroundColor: props.theme.primary, height: '25vh' }}
+        >
+          <ActivityDetails description={task.description} />
+          <AttachedFiles files={task.files} />
+        </Row>
+        <VerticalSpacer height='2vh' />
+        <Row
+          className='p-2 rounded mx-2'
+          style={{ backgroundColor: props.theme.primary, height: isMobileDisplay ? 'auto' : '46vh' }}
+        >
+          <Col
+            md={task.answer || answerWasSentNow ? MD_WHEN_TASK_SENT : MD_WHEN_TASK_NOT_SENT}
+            className='h-100 overflow-auto'
           >
-            <Header activityName={task.name} activityType={Activity.TASK} />
-          </Row>
-          <VerticalSpacer height="2vh" />
-          <Row
-            className='p-2 rounded mx-2 overflow-auto'
-            style={{ backgroundColor: props.theme.primary, height: '25vh' }}
-          >
-            <ActivityDetails description={task.description} />
-          </Row>
-          <VerticalSpacer height="2vh" />
-          <Row
-            className='p-2 rounded mx-2'
-            style={{ backgroundColor: props.theme.primary, height: isMobileDisplay ? 'auto' : '46vh' }}
-          >
-            <Col
-              md={task.answer || answerWasSentNow ? MD_WHEN_TASK_SENT : MD_WHEN_TASK_NOT_SENT}
-              className="h-100 overflow-auto"
-            >
-              <Fade delay={FIELD_DELAY}>
-                <>
-                  <h4>Odpowiedź:</h4>
-                  {isReviewed() ? (
-                    <Col>
-                      <h4>Twoja odpowiedź</h4>
-                      <p>{task.answer}</p>
-                    </Col>
-                  ) : (
-                    <>
-                      {task.answer && (
-                        <Col>
-                          <h5>Twoja obecna odpowiedź</h5>
-                          <p>{task.answer}</p>
-                        </Col>
-                      )}
-                      <RemarksTextArea
-                        $fontColor={props.theme.font}
-                        $background={props.theme.secondary}
-                        $borderColor={props.theme.warning}
-                        ref={textAreaRef}
-                        disabled={isReviewed()}
-                        onChange={handleAnswerChange}
-                      />
-                    </>
-                  )}
-                  <Col className="text-center">
-                    <FileService
-                      task={task}
-                      setFile={setFileBlob}
-                      setFileName={setFileName}
-                      setIsFetching={setIsFetching}
-                      isFetching={isFetching}
-                      isReviewed={isReviewed()}
+            <Fade delay={FIELD_DELAY}>
+              <>
+                <h4>Odpowiedź:</h4>
+                {isReviewed() ? (
+                  <Col>
+                    <h4>Twoja odpowiedź</h4>
+                    <p>{task.answer}</p>
+                  </Col>
+                ) : (
+                  <>
+                    {task.answer && (
+                      <Col>
+                        <h5>Twoja obecna odpowiedź</h5>
+                        <p>{task.answer}</p>
+                      </Col>
+                    )}
+                    <RemarksTextArea
+                      $fontColor={props.theme.font}
+                      $background={props.theme.secondary}
+                      $borderColor={props.theme.warning}
+                      ref={textAreaRef}
+                      disabled={isReviewed()}
+                      onChange={handleAnswerChange}
                     />
-                  </Col>
-                  <Col className="w-100 text-center">
-                    <SendTaskButton
-                      $background={props.theme.success}
-                      disabled={task.points != null}
-                      onClick={sendAnswer}
-                    >
-                      {isFetching ? (
-                        <Spinner animation="border" size="sm" />
-                      ) : isReviewed() ? (
-                        <span>Aktywność została oceniona</span>
-                      ) : (
-                        <span>Wyślij</span>
-                      )}
-                    </SendTaskButton>
-                  </Col>
-                </>
-              </Fade>
-            </Col>
-
-            {task.answer != null || task.files != null || answerWasSentNow ? (
-              !isReviewed() ? (
-                <AwaitingFeedbackField />
-              ) : (
-                <Col className="border-left border-warning overflow-auto">
-                  <h4>Aktywność została oceniona</h4>
-                  <VerticalSpacer height="2vh" />
-                  <Col
-                    className="text-center mx-auto border p-1 rounded"
-                    style={{ width: '20%', borderColor: props.theme.warning }}
-                  >
-                    <h5>Punkty </h5>
-                    <p>{task.points}</p>
-                  </Col>
-                  <VerticalSpacer height="2vh" />
-                  <h5>Uwagi:</h5>
-                  {task.remarks ? <p>{task.remarks}</p> : 'Brak uwag'}
-                  <FeedbackFileService feedbackFile={task.feedbackFile} />
+                  </>
+                )}
+                <Col className='text-center'>
+                  <FileService
+                    task={task}
+                    setFile={setFileBlob}
+                    setFileName={setFileName}
+                    setIsFetching={setIsFetching}
+                    isFetching={isFetching}
+                    isReviewed={isReviewed()}
+                  />
                 </Col>
-              )
+                <Col className='w-100 text-center'>
+                  <SendTaskButton $background={props.theme.success} disabled={task.points != null} onClick={sendAnswer}>
+                    {isFetching ? (
+                      <Spinner animation='border' size='sm' />
+                    ) : isReviewed() ? (
+                      <span>Aktywność została oceniona</span>
+                    ) : (
+                      <span>Wyślij</span>
+                    )}
+                  </SendTaskButton>
+                </Col>
+              </>
+            </Fade>
+          </Col>
+
+          {task.answer != null || task.files != null || answerWasSentNow ? (
+            !isReviewed() ? (
+              <AwaitingFeedbackField />
             ) : (
-              <></>
-            )}
-          </Row>
-        </Col>
-        <GoBackButton goTo={StudentRoutes.GAME_MAP.MAIN} />
-        <HorizontalSpacer height="3vh" />
-      </>
-    )
+              <Col className='border-left border-warning overflow-auto'>
+                <h4>Aktywność została oceniona</h4>
+                <VerticalSpacer height='2vh' />
+                <Col
+                  className='text-center mx-auto border p-1 rounded'
+                  style={{ width: '20%', borderColor: props.theme.warning }}
+                >
+                  <h5>Punkty </h5>
+                  <p>{task.points}</p>
+                </Col>
+                <VerticalSpacer height='2vh' />
+                <h5>Uwagi:</h5>
+                {task.remarks ? <p>{task.remarks}</p> : 'Brak uwag'}
+                <FeedbackFileService feedbackFile={task.feedbackFile} />
+              </Col>
+            )
+          ) : (
+            <></>
+          )}
+        </Row>
+      </Col>
+      <GoBackButton goTo={StudentRoutes.GAME_MAP.MAIN} />
+      <HorizontalSpacer height='3vh' />
+    </>
+  )
 
   return (
     <Content style={{ color: props.theme.font }}>
@@ -222,7 +222,7 @@ function CombatTask(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }

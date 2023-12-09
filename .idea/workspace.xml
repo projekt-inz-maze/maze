@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-176] feat: /files/add finally works" />
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-174] refactor: remove comments in code">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/services/urls.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/urls.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -466,7 +475,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702145000899</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="[MAZE-174] refactor: remove comments in code">
+      <option name="closed" value="true" />
+      <created>1702145056564</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1702145056564</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -511,7 +528,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-169] feat: add initial view of StudentSettings" />
     <MESSAGE value="[MAZE-169] refactor: correct styling of testButton" />
     <MESSAGE value="[MAZE-169] feat: add modal for test introduction" />
     <MESSAGE value="[MAZE-169] refactor: fix typo" />
@@ -536,6 +552,7 @@
     <MESSAGE value="[MAZE-174] feat: add new column to game management &quot;add photo&quot;" />
     <MESSAGE value="[MAZE-174] refactor: cleanup of ChapterDetails.js, new temporary layout" />
     <MESSAGE value="[MAZE-176] feat: /files/add finally works" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-176] feat: /files/add finally works" />
+    <MESSAGE value="[MAZE-174] refactor: remove comments in code" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-174] refactor: remove comments in code" />
   </component>
 </project>
