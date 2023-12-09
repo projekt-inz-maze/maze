@@ -3,8 +3,6 @@ import React, { ChangeEvent, useState } from 'react'
 import { Button, Form, Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
 
 import styles from './AddPhotoModal.module.scss'
-import { useSendFileMutation } from '../../../../api/apiFiles'
-import { SendFileRequest } from '../../../../api/types'
 import ProfessorService from '../../../../services/professor.service'
 
 type AddPhotoModalProps = {
@@ -20,8 +18,6 @@ const AddPhotoModal = (props: AddPhotoModalProps) => {
 
   const fileRef = React.useRef<HTMLInputElement>(null)
 
-  const [sendFile] = useSendFileMutation()
-
   const saveFile = (event: ChangeEvent<HTMLInputElement>) => {
     const filename = event.target.value.split(/(\\|\/)/g).pop()
     if (filename != null) {
@@ -32,37 +28,7 @@ const AddPhotoModal = (props: AddPhotoModalProps) => {
     }
   }
 
-  const prepareRequest = (body: SendFileRequest): FormData => {
-    const formData = new FormData()
-    // Object.keys(body).forEach((key) => {
-    //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //   // @ts-ignore
-    //   if (body[key]) {
-    //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //     // @ts-ignore
-    //     formData.append(key, body[key])
-    //   }
-    // })
-    formData.append('fileTaskId', body.fileTaskId)
-    formData.append('openAnswer', body.openAnswer)
-    formData.append('file', body.file)
-    formData.append('fileName', body.fileName)
-
-    return formData
-  }
-
   const handleAddPhoto = async () => {
-    // TODO: finish this
-    // const request: SendFileRequest = {
-    //   fileTaskId: props.activityId.toString() || '0',
-    //   openAnswer: 'openAnswer',
-    //   file: fileBlob,
-    //   fileName
-    // }
-    // const preparedRequest = prepareRequest(request)
-    // // console.log('request', request)
-    // // console.log('prepared', preparedRequest)
-    // await sendFile(preparedRequest)
     const request = {
       activityId: props.activityId,
       file: fileBlob,
