@@ -1,6 +1,5 @@
-package com.example.api.activity.task.dto.response.util;
+package com.example.api.file;
 
-import com.example.api.file.File;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
