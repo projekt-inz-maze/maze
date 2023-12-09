@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState, useLayoutEffect } from 'react'
 
-import { faArrowDown, faArrowUp, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faArrowDown, faArrowUp, faPenToSquare, faTrash, faImage } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   Button,
@@ -289,17 +289,36 @@ function ChapterDetails(props) {
                             style={{ opacity: activity.isActivityBlocked ? 0.4 : 1 }}
                           >
                             <td>
-                              <img src={getActivityImg(activity.type)} width={32} height={32} alt='activity img' />
+                              <img
+                                src={getActivityImg(activity.type)}
+                                width={32}
+                                height={32}
+                                alt='activity img'
+                                style={{ padding: '0.2em' }}
+                              />
                             </td>
                             <td>{getActivityTypeName(activity.type)}</td>
                             <td>{activity.title}</td>
                             <td>
                               ({activity.posX}, {activity.posY})
                             </td>
-                            <td>Pkt: {activity.points ?? '-'}</td>
+                            <td style={{ minWidth: '70px' }}>Pkt: {activity.points ?? '-'}</td>
+                            <td>
+                              <FontAwesomeIcon
+                                icon={faImage}
+                                size='lg'
+                                style={{ padding: '0.25em' }}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  console.log('add photo')
+                                }}
+                              />
+                            </td>
                             <td>
                               <FontAwesomeIcon
                                 icon={faPenToSquare}
+                                size='lg'
+                                style={{ padding: '0.25em' }}
                                 onClick={(e) => {
                                   e.stopPropagation()
                                   startActivityEdition(activity)
@@ -309,6 +328,8 @@ function ChapterDetails(props) {
                             <td>
                               <FontAwesomeIcon
                                 icon={faTrash}
+                                size='lg'
+                                style={{ padding: '0.25em' }}
                                 onClick={(e) => {
                                   e.stopPropagation()
                                   startActivityDeletion(activity)

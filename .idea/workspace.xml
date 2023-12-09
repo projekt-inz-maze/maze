@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-171] fix: change file services to correctly display attached files">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-171] refactor: remove hazard icon">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/ChapterDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ChapterDetails/ChapterDetails.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="MAZE-169" />
+        <entry key="$PROJECT_DIR$" value="maze-170" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -48,7 +46,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "MAZE-171",
+    "git-widget-placeholder": "MAZE-174",
     "last_opened_file_path": "/home/jkbstepien/projects/work/frontend-prozodia",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -116,6 +114,8 @@
       <workItem from="1701947303810" duration="44000" />
       <workItem from="1701947357758" duration="20808000" />
       <workItem from="1702024615297" duration="7706000" />
+      <workItem from="1702065542946" duration="342000" />
+      <workItem from="1702119542102" duration="2753000" />
     </task>
     <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
       <option name="closed" value="true" />
@@ -437,7 +437,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702034721036</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="[MAZE-171] refactor: remove hazard icon">
+      <option name="closed" value="true" />
+      <created>1702036039782</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1702036039782</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,7 +490,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-159] add endpoint to handle submit task results" />
     <MESSAGE value="[MAZE-168] add modal for adding activities in grading section" />
     <MESSAGE value="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir" />
     <MESSAGE value="[MAZE-169] style: remove comments in navbar" />
@@ -507,6 +514,7 @@
     <MESSAGE value="[MAZE-169] fix: missing bracket" />
     <MESSAGE value="[MAZE-169] feat: add question counter" />
     <MESSAGE value="[MAZE-171] fix: change file services to correctly display attached files" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-171] fix: change file services to correctly display attached files" />
+    <MESSAGE value="[MAZE-171] refactor: remove hazard icon" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-171] refactor: remove hazard icon" />
   </component>
 </project>
