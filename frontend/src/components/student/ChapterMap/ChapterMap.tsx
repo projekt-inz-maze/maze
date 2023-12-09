@@ -33,6 +33,7 @@ const ChapterMap = () => {
   const handleSelectChapter = (chapterId: number) => {
     dispatch(setSelectedChapterId(chapterId))
     setChosenChapterId(chapterId)
+    navigate('/map/quests')
   }
 
   return (
@@ -58,7 +59,7 @@ const ChapterMap = () => {
                 </Button>
               ))}
             </div>
-            <Button onClick={() => navigate('/map/quests')} className={styles.questBoardButton} />
+            <div className={styles.questBoardButton} />
           </div>
         </Col>
       </Row>

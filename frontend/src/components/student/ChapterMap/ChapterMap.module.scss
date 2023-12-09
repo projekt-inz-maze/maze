@@ -11,12 +11,14 @@
   background-color: transparent;
   width: 380px;
   height: 80px;
+  cursor: default;
 }
 
 .questBoardButton:hover {
-  cursor: pointer;
+  //cursor: pointer;
+  cursor: default;
   background-color: transparent;
-  transform: scale(1.05);
+  //transform: scale(1.05);
 }
 
 .mapSidebar {
@@ -58,5 +60,6 @@
   .legendItem:focus {
     cursor: pointer;
     border: 4px solid #B0652F;
+    transform: scale(1.01);
   }
 }
