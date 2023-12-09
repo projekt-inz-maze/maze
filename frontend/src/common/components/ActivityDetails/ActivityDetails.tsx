@@ -14,8 +14,8 @@ type ActivityDetailsProps = {
   isActivityCompleted: boolean
   name: string
   type: string
-  startDate: string
-  endDate: string
+  startDate: number
+  endDate: number
   description: string
   numberOfAttempts: number
   maxNumberOfAttempts: number
@@ -25,6 +25,8 @@ type ActivityDetailsProps = {
 
 const ActivityDetails = (props: ActivityDetailsProps) => {
   const [activityScore, setActivityScore] = useState<number>(0)
+  const startDate: Date = new Date(props.startDate ?? 0)
+  const endDate: Date = new Date(props.endDate ?? 0)
 
   useEffect(() => {
     if (props.type === 'EXPEDITION') {
@@ -73,11 +75,11 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
               />
               <p>
                 <span>Data otwarcia:</span> <br />
-                {props.startDate}
+                {props.startDate !== 0 ? startDate.toLocaleString('en-GB') : 'nie określono'}
               </p>
               <p>
                 <span>Data zakończenia:</span> <br />
-                {props.endDate}
+                {props.endDate !== 0 ? endDate.toLocaleString('en-GB') : 'nie określono'}
               </p>
             </div>
           </div>
@@ -87,14 +89,7 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
           </div>
           <div className={styles.modalTaskRequirements}>
             <div className={styles.mainFlexContainer}>
-              {/* <div className={styles.firstRow}> */}
-              <div className={styles.imgSection}>
-                {/* <img src='/icons/Thriller.png' alt='Hazard icon' /> */}
-                {/* <div> */}
-                {/*  <span>Hazard</span> */}
-                {/*  <p className={`${!props.isWager ?? styles.hazardText}`}>{props.isWager ? 'Tak' : 'Nie'}</p> */}
-                {/* </div> */}
-              </div>
+              <div className={styles.imgSection} />
               <div className={styles.imgSection}>
                 <img src='/icons/Hashtag.png' alt='Hashtag icon' />
                 <div>
@@ -104,8 +99,6 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
                   </p>
                 </div>
               </div>
-              {/* </div> */}
-              {/* <div className={styles.secondRow}> */}
               <div className={styles.imgSection}>
                 <img src='/icons/Time.png' alt='Time icon' />
                 <div>
@@ -120,7 +113,6 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
                   <p>{props.points ?? 'zadanie jest niepunktowane'}</p>
                 </div>
               </div>
-              {/* </div> */}
             </div>
             <div className={activityScore > 0 ? styles.resultFieldCompleted : styles.resultField}>
               <span>Twój wynik:</span>

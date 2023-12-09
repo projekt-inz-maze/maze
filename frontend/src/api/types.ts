@@ -54,12 +54,16 @@ export type ActivityResponse = {
   isCompleted: boolean
   wager: null
   timeLimit: number
+  requirements: {
+    isBlocked: boolean
+    requirements: Requirement[]
+  }
 }
 
 export type Requirement = {
   id: number
   name: string
-  value: unknown
+  value: number
   type: string
   selected: boolean
 }

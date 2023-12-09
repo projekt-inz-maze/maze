@@ -11,6 +11,7 @@ type AuctionProps = {
   showDetails: boolean
   onCloseDetails: () => void
   points: number
+  endDate: number
 }
 
 const Auction = (props: AuctionProps) => {
@@ -54,7 +55,13 @@ const Auction = (props: AuctionProps) => {
           </Modal.Title>
           <div className={styles.dateInfo}>
             <img src='/icons/Finish.png' alt='Finish icon' style={{ width: '30px', height: '30px' }} />
-            <p>{date.toLocaleString()}</p>
+            <p>
+              {auction?.endDateEpochSeconds !== 0
+                ? date.toLocaleString('en-GB')
+                : props.endDate !== 0
+                ? new Date(props.endDate).toLocaleString('en-GB')
+                : 'nie określono'}
+            </p>
           </div>
           <button type='button' className={styles.customButtonClose} onClick={props.onCloseDetails}>
             {/* Close button content */}

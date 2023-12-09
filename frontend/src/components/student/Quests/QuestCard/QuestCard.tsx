@@ -49,8 +49,12 @@ const QuestCard = (props: QuestCardProps) => {
           isActivityCompleted={props.isActivityCompleted}
           name={props.activity.title}
           type={props.activity.type}
-          startDate='20:00, 10.01.2024'
-          endDate='22:00, 12.01.2024'
+          startDate={
+            props.activity.requirements.requirements[0].value ? props.activity.requirements.requirements[0].value : 0
+          }
+          endDate={
+            props.activity.requirements.requirements[1].value ? props.activity.requirements.requirements[1].value : 0
+          }
           description={props.activity.description}
           numberOfAttempts={props.isActivityCompleted ? 1 : 0}
           maxNumberOfAttempts={1}
@@ -67,8 +71,12 @@ const QuestCard = (props: QuestCardProps) => {
           isActivityCompleted={false}
           name={props.activity.title}
           type={props.activity.type}
-          startDate='20:00, 10.01.2024'
-          endDate='22:00, 12.01.2024'
+          startDate={
+            props.activity.requirements.requirements[0].value ? props.activity.requirements.requirements[0].value : 0
+          }
+          endDate={
+            props.activity.requirements.requirements[1].value ? props.activity.requirements.requirements[1].value : 0
+          }
           description={props.activity.description}
           numberOfAttempts={0}
           maxNumberOfAttempts={1}
@@ -82,6 +90,9 @@ const QuestCard = (props: QuestCardProps) => {
           showDetails={showModal}
           onCloseDetails={() => setShowModal(false)}
           points={props.activity.points}
+          endDate={
+            props.activity.requirements.requirements[1].value ? props.activity.requirements.requirements[1].value : 0
+          }
         />
       )}
       {props.activity.type === 'SUBMIT' && (

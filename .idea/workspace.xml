@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-171] fix: change file services to correctly display attached files">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-175] fix: startDate and endDate now render correctly for activities">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.module.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/Auction/Auction.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/Auction/Auction.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/Auction/Auction.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/Auction/Auction.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="MAZE-169" />
+        <entry key="$PROJECT_DIR$" value="development" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -48,7 +51,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "MAZE-171",
+    "git-widget-placeholder": "MAZE-175",
     "last_opened_file_path": "/home/jkbstepien/projects/work/frontend-prozodia",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -482,7 +485,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-159] add endpoint to handle submit task results" />
     <MESSAGE value="[MAZE-168] add modal for adding activities in grading section" />
     <MESSAGE value="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir" />
     <MESSAGE value="[MAZE-169] style: remove comments in navbar" />
@@ -507,6 +509,7 @@
     <MESSAGE value="[MAZE-169] fix: missing bracket" />
     <MESSAGE value="[MAZE-169] feat: add question counter" />
     <MESSAGE value="[MAZE-171] fix: change file services to correctly display attached files" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-171] fix: change file services to correctly display attached files" />
+    <MESSAGE value="[MAZE-175] fix: startDate and endDate now render correctly for activities" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-175] fix: startDate and endDate now render correctly for activities" />
   </component>
 </project>
