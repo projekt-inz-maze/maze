@@ -6,12 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-175] fix: startDate and endDate now render correctly for activities">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/Auction/Auction.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/Auction/Auction.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/Auction/Auction.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/Auction/Auction.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/map/chapter_img_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/map/chapter_img_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/map/chapter_img_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/map/chapter_img_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/ChapterMap/ChapterMap.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +27,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="development" />
+        <entry key="$PROJECT_DIR$" value="MAZE-175" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,7 +49,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "MAZE-175",
+    "git-widget-placeholder": "MAZE-176",
     "last_opened_file_path": "/home/jkbstepien/projects/work/frontend-prozodia",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -440,7 +438,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702034721036</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="[MAZE-175] fix: startDate and endDate now render correctly for activities">
+      <option name="closed" value="true" />
+      <created>1702141366320</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1702141366320</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
