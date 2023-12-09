@@ -22,7 +22,7 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CourseDTO>> getCourserForUser() {
+    public ResponseEntity<List<CourseDTO>> getCoursesForUser() {
         return ResponseEntity.ok().body(courseService.getCoursesForUser());
     }
 
@@ -32,7 +32,7 @@ public class CourseController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/edit")
+    @PutMapping("/edit")
     ResponseEntity<?> editCourse(@RequestBody CourseDTO dto) throws RequestValidationException {
         return ResponseEntity.ok().body(courseService.editCourse(dto));
     }
