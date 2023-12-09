@@ -42,7 +42,7 @@ public class FileController {
     }
 
     @PostMapping(path = "/add", consumes = {MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> addFileForActivity(@RequestBody ActivityFileDTO dto) throws EntityNotFoundException, IOException {
+    public ResponseEntity<?> addFileForActivity(@ModelAttribute ActivityFileDTO dto) throws EntityNotFoundException, IOException {
         fileService.addFile(dto);
         return ResponseEntity.ok().build();
     }
