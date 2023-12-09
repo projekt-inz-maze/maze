@@ -1,0 +1,30 @@
+.addFileForm {
+  width: 80%;
+
+  input {
+    width: 300px;
+  }
+}
+
+.acceptButton,
+.rejectButton {
+  padding: 0.5em 1em;
+  color: black;
+  border: none;
+  font-weight: bold;
+  min-width: 100px;
+}
+
+.acceptButton:hover,
+.rejectButton:hover {
+  transform: scale(1.01);
+  opacity: 0.8;
+}
+
+.acceptButton {
+  background-color: #FFB21C;
+}
+
+.rejectButton {
+  background-color: #E8E8E8;
+}

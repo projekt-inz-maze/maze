@@ -56,8 +56,6 @@ const GradeFileTask = (props: GradeFileTaskProps) => {
     })
   }
 
-  console.log(props.activity)
-
   return (
     <>
       {props.activity ? (

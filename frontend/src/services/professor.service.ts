@@ -11,7 +11,8 @@ import {
   DELETE_USER_PROFESSOR,
   GET_PROFESSOR_EMAILS,
   PUT_HERO,
-  GET_FILE_LOG
+  GET_FILE_LOG,
+  POST_TASK_FILE_RESULT_FILE
 } from './urls'
 import { parseJwt } from '../utils/Api'
 import {
@@ -126,6 +127,10 @@ class ProfessorService {
     return axiosApiGet(GET_FILE_LOG).catch((error) => {
       throw error
     })
+  }
+
+  addAttachmentFileTask(body: any) {
+    return axiosApiMultipartPost(POST_TASK_FILE_RESULT_FILE, body)
   }
 }
 

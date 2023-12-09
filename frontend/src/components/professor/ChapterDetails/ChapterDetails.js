@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { faArrowDown, faArrowUp, faImage, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faArrowDown, faArrowUp, faPaperclip, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   Accordion,
@@ -20,6 +20,7 @@ import { connect } from 'react-redux'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import AddActivityModal from './AddActivityModal'
+import AddPhotoModal from './AddPhotoModal/AddPhotoModal'
 import { ActivitiesCard, ButtonsCol, CustomTooltip, MapCard, SummaryCard, TableRow } from './ChapterDetailsStyles'
 import DeletionModal from './DeletionModal'
 import EditActivityModal from './EditActivityModal'
@@ -49,6 +50,7 @@ function ChapterDetails(props) {
   const [isDeleteActivityModalOpen, setIsDeleteActivityModalOpen] = useState(false)
   const [isAddActivityModalOpen, setIsAddActivityModalOpen] = useState(false)
   const [shouldLoadEditChapterModal, setShouldLoadEditChapterModal] = useState(false)
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false)
 
   const [chapterDetails, setChapterDetails] = useState(undefined)
   const [mapContainerSize, setMapContainerSize] = useState({ x: 0, y: 0 })
@@ -142,6 +144,15 @@ function ChapterDetails(props) {
       activityName: activity.title
     })
     setIsDeleteActivityModalOpen(true)
+  }
+
+  const startAddingPhoto = (activity) => {
+    setChosenActivityData({
+      activityId: activity.id,
+      activityType: getActivityTypeName(activity.type),
+      activityName: activity.title
+    })
+    setIsPhotoModalOpen(true)
   }
 
   const deleteChapter = () => {
@@ -379,12 +390,12 @@ function ChapterDetails(props) {
                             <td style={{ minWidth: '70px' }}>Pkt: {activity.points ?? '-'}</td>
                             <td>
                               <FontAwesomeIcon
-                                icon={faImage}
+                                icon={faPaperclip}
                                 size='lg'
                                 style={{ padding: '0.25em' }}
                                 onClick={(e) => {
                                   e.stopPropagation()
-                                  console.log('add photo')
+                                  startAddingPhoto(activity)
                                 }}
                               />
                             </td>
@@ -424,7 +435,8 @@ function ChapterDetails(props) {
               <Button
                 style={{
                   backgroundColor: props.theme.warning,
-                  borderColor: props.theme.warning
+                  borderColor: props.theme.warning,
+                  color: 'black'
                 }}
               >
                 Wyjdź
@@ -454,6 +466,13 @@ function ChapterDetails(props) {
           </ButtonsCol>
         </Col>
       </Row>
+
+      <AddPhotoModal
+        showModal={isPhotoModalOpen}
+        setShowModal={setIsPhotoModalOpen}
+        activityId={chosenActivityData?.activityId}
+        activityName={chosenActivityData?.activityName}
+      />
 
       <DeletionModal
         showModal={isDeletionModalOpen}

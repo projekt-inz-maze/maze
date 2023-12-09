@@ -195,3 +195,10 @@ export type QuizQuestion = {
   question: string
   answers: QuizAnswer[]
 }
+
+export type SendFileRequest = {
+  fileTaskId: string
+  openAnswer: string
+  file: any
+  fileName: string
+}
