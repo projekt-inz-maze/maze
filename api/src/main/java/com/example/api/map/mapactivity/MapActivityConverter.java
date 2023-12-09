@@ -53,7 +53,6 @@ public class MapActivityConverter {
                     getRequirements(activity));
             default -> throw new IllegalStateException("Invalid activity type");
         };
-
     }
 
     private Boolean isActivityCompleted(Long activityId, User user) {

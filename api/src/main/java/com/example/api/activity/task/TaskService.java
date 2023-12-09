@@ -10,8 +10,6 @@ import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
 import com.example.api.activity.task.dto.response.ActivitiesResponse;
 import com.example.api.activity.task.dto.response.ActivityToEvaluateResponse;
 import com.example.api.activity.task.dto.response.util.FileResponse;
-import com.example.api.activity.task.filetask.FileTaskRepository;
-import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.chapter.Chapter;
 import com.example.api.chapter.ChapterRepository;
 import com.example.api.chapter.requirement.RequirementDTO;
@@ -139,6 +137,7 @@ public class TaskService {
                     .withUserTitle(result.getSubmittedTitle())
                     .withUserContent(result.getSubmittedContent())
                     .withRemaining(num - 1)
+                    .withFile(result.getFiles().stream().map(FileResponse::new).toList())
                     .build();
         }).orElse(null);
     }

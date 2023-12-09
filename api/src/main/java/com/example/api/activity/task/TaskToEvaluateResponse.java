@@ -31,7 +31,7 @@ public class TaskToEvaluateResponse {
     private Optional<List<FileResponse>> file;
     private Double maxPoints;
     private Long fileTaskId;
-    private Long activtyId;
+    private Long activityId;
     private ActivityType activityType;
     private Long remaining;
 

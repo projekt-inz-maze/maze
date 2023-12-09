@@ -2,14 +2,18 @@ package com.example.api.activity.submittask;
 
 import com.example.api.activity.CreateActivityChapterForm;
 import com.example.api.activity.submittask.result.SubmitTaskResultDTO;
+import com.example.api.activity.submittask.result.SubmitTaskResultWithFileDTO;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +35,11 @@ public class SubmitTaskController {
 
     @PostMapping("/result")
     public ResponseEntity<Long> addResult(@RequestBody SubmitTaskResultDTO dto) throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(submitTaskService.createResultForSubmitTask(dto));
+    }
+
+    @PostMapping(path="/add-result", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Long> saveFileTaskResult(@ModelAttribute SubmitTaskResultWithFileDTO dto) throws WrongUserTypeException, EntityNotFoundException, IOException {
         return ResponseEntity.ok().body(submitTaskService.createResultForSubmitTask(dto));
     }
 

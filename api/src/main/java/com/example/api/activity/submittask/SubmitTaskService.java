@@ -4,6 +4,7 @@ import com.example.api.activity.CreateActivityChapterForm;
 import com.example.api.activity.submittask.result.SubmitTaskResult;
 import com.example.api.activity.submittask.result.SubmitTaskResultDTO;
 import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
+import com.example.api.activity.submittask.result.SubmitTaskResultWithFileDTO;
 import com.example.api.activity.task.filetask.CreateFileTaskForm;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.chapter.Chapter;
@@ -16,6 +17,8 @@ import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.User;
 import com.example.api.user.service.UserService;
+import com.example.api.util.model.File;
+import com.example.api.util.repository.FileRepository;
 import com.example.api.validator.ChapterValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -39,6 +43,7 @@ public class SubmitTaskService {
     private final RequirementService requirementService;
     private final UserService userService;
     private final SubmitTaskResultRepository submitTaskResultRepository;
+    private final FileRepository fileRepository;
 
     public Long createSubmitTask(CreateActivityChapterForm chapterForm) throws RequestValidationException {
         log.info("Starting the creation of submit task");
@@ -70,6 +75,27 @@ public class SubmitTaskService {
         submitTaskResultRepository.save(result);
         return result.getId();
     }
+
+    public Long createResultForSubmitTask(SubmitTaskResultWithFileDTO dto) throws WrongUserTypeException, EntityNotFoundException, IOException {
+        User student = userService.getCurrentUserAndValidateStudentAccount();
+        SubmitTask task = submitTaskRepository.findById(dto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Activity not found"));
+
+        CourseMember member = student.getCourseMember(task.getCourse(), true);
+
+        SubmitTaskResult result = new SubmitTaskResult(dto, member, task);
+
+        if (dto.getFile() != null) {
+            File file = new File(null, dto.getFileName(), result.getCourse(), dto.getFile().getBytes());
+            fileRepository.save(file);
+            result.getFiles().add(file);
+        }
+
+        submitTaskResultRepository.save(result);
+
+        return result.getId();
+    }
+
 
     public void rejectResult(Long id) {
         SubmitTaskResult result = submitTaskResultRepository.findById(id).orElseThrow(() -> new javax.persistence.EntityNotFoundException("Result not found"));

@@ -27,7 +27,7 @@ public class FileController {
     private final FileService fileService;
 
     @GetMapping("/chapter/images")
-    public ResponseEntity<List<ChapterImageResponse>> getImagesForChapter() throws EntityNotFoundException {
+    public ResponseEntity<List<ChapterImageResponse>> getImagesForChapter() {
         return ResponseEntity.ok().body(fileService.getImagesForChapter());
     }
 
