@@ -53,16 +53,21 @@ const AddPhotoModal = (props: AddPhotoModalProps) => {
 
   const handleAddPhoto = async () => {
     // TODO: finish this
-    const request: SendFileRequest = {
-      fileTaskId: props.activityId.toString() || '0',
-      openAnswer: 'openAnswer',
-      file: fileBlob,
-      fileName
-    }
+    // const request: SendFileRequest = {
+    //   fileTaskId: props.activityId.toString() || '0',
+    //   openAnswer: 'openAnswer',
+    //   file: fileBlob,
+    //   fileName
+    // }
     // const preparedRequest = prepareRequest(request)
     // // console.log('request', request)
     // // console.log('prepared', preparedRequest)
     // await sendFile(preparedRequest)
+    const request = {
+      activityId: props.activityId,
+      file: fileBlob,
+      fileName
+    }
     await ProfessorService.addAttachmentFileTask(request)
     props.setShowModal(false)
   }

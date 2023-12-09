@@ -144,6 +144,7 @@ export const GET_MAP = `${BASE_URL}/map`
 
 // File Controller
 export const GET_FILE = `${BASE_URL}/file`
+export const ADD_FILE = `${GET_FILE}/add`
 export const GET_FILE_CHAPTER_IMAGES = `${GET_FILE}/chapter/images`
 export const GET_FILE_LOG = `${GET_FILE}/log`
 
