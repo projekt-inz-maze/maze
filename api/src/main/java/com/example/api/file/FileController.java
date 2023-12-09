@@ -7,7 +7,6 @@ import com.example.api.util.RequestInterceptor;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,7 +41,7 @@ public class FileController {
         return ResponseEntity.ok().body(new ByteArrayResource(Files.readAllBytes(file.toPath())));
     }
 
-    @PostMapping(path = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(path = "/add", consumes = {MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> addFileForActivity(@RequestBody ActivityFileDTO dto) throws EntityNotFoundException, IOException {
         fileService.addFile(dto);
         return ResponseEntity.ok().build();
