@@ -2,7 +2,7 @@ package com.example.api.activity.task.filetask;
 
 import com.example.api.activity.auction.AuctionService;
 import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
-import com.example.api.activity.task.dto.response.util.FileResponse;
+import com.example.api.file.FileResponse;
 import com.example.api.course.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
@@ -47,8 +47,8 @@ public class FileTaskService {
         return fileTaskRepository.save(fileTask);
     }
 
-    public FileTaskInfoResponse getFileTaskInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
-        FileTaskInfoResponse result = new FileTaskInfoResponse();
+    public FileTaskDetailsResponse getFileTaskInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
+        FileTaskDetailsResponse result = new FileTaskDetailsResponse();
         FileTask fileTask = fileTaskRepository.findFileTaskById(id);
         activityValidator.validateActivityIsNotNull(fileTask, id);
         result.setFileTaskId(fileTask.getId());
@@ -69,6 +69,12 @@ public class FileTaskService {
                 .map(file -> new FileResponse(file.getId(), file.getName()))
                 .toList();
         result.setTaskFiles(fileResponseList);
+
+        List<FileResponse> filesList = fileTask.getFiles()
+                .stream()
+                .map(file -> new FileResponse(file.getId(), file.getName()))
+                .toList();
+        result.setFiles(filesList);
 
         ProfessorFeedback feedback = professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(fileTaskResult);
         if (feedback == null) {

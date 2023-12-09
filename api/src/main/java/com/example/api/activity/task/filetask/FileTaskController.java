@@ -1,10 +1,8 @@
 package com.example.api.activity.task.filetask;
 
-import com.example.api.activity.auction.CreateAuctionDTO;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.util.message.MessageManager;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,7 @@ public class FileTaskController {
     private final FileTaskService fileTaskService;
 
     @GetMapping
-    public ResponseEntity<FileTaskInfoResponse> getFileTaskById(@RequestParam Long fileTaskId)
+    public ResponseEntity<FileTaskDetailsResponse> getFileTaskById(@RequestParam Long fileTaskId)
             throws EntityNotFoundException, WrongUserTypeException {
         return ResponseEntity.ok().body(fileTaskService.getFileTaskInfo(fileTaskId));
     }

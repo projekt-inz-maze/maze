@@ -3,7 +3,7 @@ package com.example.api.user.model;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.course.StudentNotEnrolledException;
-import com.example.api.personalityquiz.PersonalityType;
+import com.example.api.personality.PersonalityType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

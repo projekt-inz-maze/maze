@@ -3,7 +3,7 @@ package com.example.api.activity.submittask.result;
 import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.submittask.SubmitTask;
 import com.example.api.course.coursemember.CourseMember;
-import com.example.api.util.model.File;
+import com.example.api.file.File;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.api.personalityquiz;
+package com.example.api.personality;
 
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.user.model.User;
