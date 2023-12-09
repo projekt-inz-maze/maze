@@ -22,7 +22,6 @@ public class GraphTaskResponse {
     private Long timeToSolveMillis;
     private List<FileResponse> files;
 
-
     public GraphTaskResponse(GraphTask graphTask) {
         this.id = graphTask.getId();
         this.title = graphTask.getTitle();
@@ -34,6 +33,7 @@ public class GraphTaskResponse {
         this.requiredKnowledge = graphTask.getRequiredKnowledge();
         this.maxPoints = graphTask.getMaxPoints();
         this.timeToSolveMillis = graphTask.getTimeToSolveMillis();
-        this.files = graphTask.getFiles().stream().map(file -> new FileResponse(file.getId(), file.getName())).toList();
+        this.files = graphTask
+                .getFiles().stream().map(file -> new FileResponse(file.getId(), file.getName())).toList();
     }
 }
