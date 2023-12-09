@@ -18,7 +18,7 @@ public class SurveyController {
     private final SurveyService surveyService;
 
     @GetMapping
-    ResponseEntity<SurveyInfoResponse> getSurveyInfo(@RequestParam Long surveyId)
+    ResponseEntity<SurveyDetailsResponse> getSurveyInfo(@RequestParam Long surveyId)
             throws EntityNotFoundException, WrongUserTypeException {
         return ResponseEntity.ok().body(surveyService.getSurveyInfo(surveyId));
     }
