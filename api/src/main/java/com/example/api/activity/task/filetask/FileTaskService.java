@@ -47,8 +47,8 @@ public class FileTaskService {
         return fileTaskRepository.save(fileTask);
     }
 
-    public FileTaskInfoResponse getFileTaskInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
-        FileTaskInfoResponse result = new FileTaskInfoResponse();
+    public FileTaskDetailsResponse getFileTaskInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
+        FileTaskDetailsResponse result = new FileTaskDetailsResponse();
         FileTask fileTask = fileTaskRepository.findFileTaskById(id);
         activityValidator.validateActivityIsNotNull(fileTask, id);
         result.setFileTaskId(fileTask.getId());

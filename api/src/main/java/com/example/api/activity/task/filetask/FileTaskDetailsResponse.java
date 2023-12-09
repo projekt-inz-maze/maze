@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FileTaskInfoResponse {
+public class FileTaskDetailsResponse {
     private Long fileTaskId;
     private String name;
     private String description;
