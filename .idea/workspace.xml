@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-178] feat: new view for info task">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/InfoTask/InfoTask.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/InfoTask/InfoTask.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/InfoTask/Information.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/InfoTask/Information.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/routes/modules/studentRoutes/InformationTaskRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/modules/studentRoutes/InformationTaskRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/Profile/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Profile/Profile.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="MAZE-177-Poprawa-wy-wietlania-informacji-w-profilu-studenta" />
+        <entry key="$PROJECT_DIR$" value="MAZE-178" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -55,7 +46,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "MAZE-178",
+    "git-widget-placeholder": "MAZE-180",
     "last_opened_file_path": "/home/jkbstepien/projects/work/frontend-prozodia",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
