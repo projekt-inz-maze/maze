@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { Button, Modal } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import styles from './ActivityDetails.module.scss'
-import ExpeditionService from '../../../services/expedition.service'
 import { getActivityTypeName } from '../../../utils/constants'
 
 type ActivityDetailsProps = {
-  activityId: number
   showDetails: boolean
   onCloseDetails: () => void
   onStartActivity: () => void
@@ -21,25 +19,26 @@ type ActivityDetailsProps = {
   maxNumberOfAttempts: number
   timeLimit: number
   points: number
+  awardedPoints: number
 }
 
 const ActivityDetails = (props: ActivityDetailsProps) => {
-  const [activityScore, setActivityScore] = useState<number>(0)
+  // const [activityScore, setActivityScore] = useState<number>(0)
   const startDate: Date = new Date(props.startDate ?? 0)
   const endDate: Date = new Date(props.endDate ?? 0)
 
-  useEffect(() => {
-    if (props.type === 'EXPEDITION') {
-      // TODO: Fix this after fetching results from different activities is ready
-      ExpeditionService.getExpeditionScore(props.activityId)
-        .then((response) => {
-          setActivityScore(response)
-        })
-        .catch(() => {
-          setActivityScore(0)
-        })
-    }
-  }, [props.activityId])
+  // useEffect(() => {
+  //   if (props.type === 'EXPEDITION') {
+  //     // TODO: Fix this after fetching results from different activities is ready
+  //     ExpeditionService.getExpeditionScore(props.activityId)
+  //       .then((response) => {
+  //         setActivityScore(response)
+  //       })
+  //       .catch(() => {
+  //         setActivityScore(0)
+  //       })
+  //   }
+  // }, [props.activityId])
 
   return (
     <>
@@ -114,9 +113,9 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
                 </div>
               </div>
             </div>
-            <div className={activityScore > 0 ? styles.resultFieldCompleted : styles.resultField}>
+            <div className={props.awardedPoints > 0 ? styles.resultFieldCompleted : styles.resultField}>
               <span>Twój wynik:</span>
-              <p>{activityScore ? `${activityScore}/${props.points}` : 'nie ukończono'}</p>
+              <p>{props.awardedPoints > 0 ? `${props.awardedPoints}/${props.points}` : 'nie ukończono'}</p>
             </div>
           </div>
         </Modal.Body>
@@ -135,4 +134,5 @@ function mapStateToProps(state: { theme: any }) {
 
   return { theme }
 }
+
 export default connect(mapStateToProps)(ActivityDetails)
