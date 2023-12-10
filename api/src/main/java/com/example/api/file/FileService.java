@@ -9,11 +9,13 @@ import com.example.api.file.image.ImageRepository;
 import com.example.api.file.image.ImageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,5 +50,10 @@ public class FileService {
         File file = new File(null, dto.getFileName(), activity.getCourse(), dto.getFile().getBytes());
         fileRepository.save(file);
         activityService.addFile(activity, file);
+    }
+
+    public ByteArrayResource getFileById(Long fileId) throws EntityNotFoundException {
+        File file = Optional.ofNullable(fileRepository.findFileById(fileId)).orElseThrow(() -> new EntityNotFoundException("File not found"));
+        return new ByteArrayResource(file.getFile());
     }
 }

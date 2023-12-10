@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,18 +58,6 @@ public class FileTaskService {
 
         User student = authService.getCurrentUser();
         userValidator.validateStudentAccount(student);
-        FileTaskResult fileTaskResult = fileTaskResultRepository.findFileTaskResultByFileTaskAndUser(fileTask, student);
-
-        if (fileTaskResult == null){
-            log.debug("File task result for {} and file task with id {} does not exist", student.getEmail(), fileTask.getId());
-            return result;
-        }
-        result.setAnswer(fileTaskResult.getAnswer());
-        List<FileResponse> fileResponseList = fileTaskResult.getFiles()
-                .stream()
-                .map(file -> new FileResponse(file.getId(), file.getName()))
-                .toList();
-        result.setTaskFiles(fileResponseList);
 
         List<FileResponse> filesList = fileTask.getFiles()
                 .stream()
@@ -76,16 +65,32 @@ public class FileTaskService {
                 .toList();
         result.setFiles(filesList);
 
-        ProfessorFeedback feedback = professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(fileTaskResult);
-        if (feedback == null) {
-            log.debug("Feedback for file task result with id {} does not exist", fileTaskResult.getId());
-            return result;
+        Optional<FileTaskResult> maybeFileTaskResult =
+                Optional.ofNullable(fileTaskResultRepository.findFileTaskResultByFileTaskAndUser(fileTask, student));
+
+        if (maybeFileTaskResult.isPresent()) {
+            FileTaskResult fileTaskResult = maybeFileTaskResult.get();
+            result.setAnswer(fileTaskResult.getAnswer());
+            List<FileResponse> fileResponseList = fileTaskResult.getFiles()
+                    .stream()
+                    .map(file -> new FileResponse(file.getId(), file.getName()))
+                    .toList();
+            result.setTaskFiles(fileResponseList);
+
+            ProfessorFeedback feedback = professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(fileTaskResult);
+            if (feedback == null) {
+                log.debug("Feedback for file task result with id {} does not exist", fileTaskResult.getId());
+                return result;
+            }
+            result.setPoints(feedback.getPoints());
+            result.setRemarks(feedback.getContent());
+            if (feedback.getFeedbackFile() != null) {
+                result.setFeedbackFile(new FileResponse(feedback.getFeedbackFile()));
+            }
+        } else {
+            log.debug("File task result for {} and file task with id {} does not exist", student.getEmail(), fileTask.getId());
         }
-        result.setPoints(feedback.getPoints());
-        result.setRemarks(feedback.getContent());
-        if (feedback.getFeedbackFile() != null) {
-            result.setFeedbackFile(new FileResponse(feedback.getFeedbackFile()));
-        }
+
         return result;
     }
 
