@@ -19,21 +19,12 @@ public interface GraphTaskResultRepository extends JpaRepository<GraphTaskResult
     @Query("SELECT gtr FROM GraphTaskResult gtr WHERE gtr.activity = ?1 AND gtr.member.user = ?2")
     GraphTaskResult findGraphTaskResultByGraphTaskAndUser(GraphTask task, User user);
 
-    @Query("SELECT gtr FROM GraphTaskResult gtr WHERE gtr.activity.id = ?1 AND gtr.member.user = ?2")
-    GraphTaskResult findGraphTaskResultByGraphTaskIdAndUser(Long taskId, User user);
-
     boolean existsByActivityAndMember(Activity task, CourseMember member);
 
     List<GraphTaskResult> findAllByMember(CourseMember courseMember);
 
     @Query("SELECT gtr FROM GraphTaskResult gtr WHERE gtr.member.user = ?1 AND gtr.course = ?2")
-
     List<GraphTaskResult> findAllByUserAndCourse(User user, Course course);
-
-    List<GraphTaskResult> findAllByActivity(Activity graphTask);
-
-    @Query("SELECT gtr FROM GraphTaskResult gtr WHERE gtr.activity.id = ?1")
-    List<GraphTaskResult> findAllByGraphTaskId(Long graphTaskId);
 
     Long countAllByMemberAndSendDateMillisNotNull(CourseMember member);
 }

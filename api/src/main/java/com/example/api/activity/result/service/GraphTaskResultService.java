@@ -187,8 +187,7 @@ public class GraphTaskResultService {
     }
 
     public GraphTaskResult getGraphTaskResultWithGraphTaskAndUser(Long graphTaskId, User user) throws EntityNotFoundException {
-        GraphTaskResult result = (GraphTaskResult) taskResultRepository.findByActivity_IdAndMember_User(graphTaskId, user);//graphTaskResultRepository.findGraphTaskResultByGraphTaskIdAndUser(graphTaskId, user);
-        resultValidator.validateResultIsNotNull(result, graphTaskId, user.getEmail());
-        return result;
+        return (GraphTaskResult) taskResultRepository.findByActivity_IdAndMember_User(graphTaskId, user)
+                .orElseThrow(() -> new EntityNotFoundException("GraphTaskResult not found"));
     }
 }

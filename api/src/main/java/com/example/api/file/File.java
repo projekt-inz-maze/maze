@@ -1,6 +1,7 @@
 package com.example.api.file;
 
 import com.example.api.course.Course;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class File {
     private String name;
 
     @ManyToOne
+    @JsonBackReference
     private Course course;
 
     @Lob
