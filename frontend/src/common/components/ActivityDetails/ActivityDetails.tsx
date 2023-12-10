@@ -5,13 +5,13 @@ import { connect } from 'react-redux'
 
 import styles from './ActivityDetails.module.scss'
 import ExpeditionService from '../../../services/expedition.service'
+import { getActivityTypeName } from '../../../utils/constants'
 
 type ActivityDetailsProps = {
   activityId: number
   showDetails: boolean
   onCloseDetails: () => void
   onStartActivity: () => void
-  isActivityCompleted: boolean
   name: string
   type: string
   startDate: number
@@ -64,7 +64,7 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
                 <span>Nazwa:</span> {props.name}
               </p>
               <p>
-                <span>Typ:</span> {props.type}
+                <span>Typ:</span> {getActivityTypeName(props.type)}
               </p>
             </div>
             <div className={styles.dateInfo}>
@@ -121,21 +121,9 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
           </div>
         </Modal.Body>
         <Modal.Footer className={styles.modalFooter}>
-          {props.isActivityCompleted ? (
-            <Button variant='primary' onClick={props.onCloseDetails} className={styles.startActivityButton}>
-              Powrót do mapy
-            </Button>
-          ) : (
-            <Button
-              variant='primary'
-              onClick={props.onStartActivity}
-              className={`${styles.startActivityButton} ${
-                props.maxNumberOfAttempts - props.numberOfAttempts ? '' : 'disabled'
-              }`}
-            >
-              Rozpocznij aktywność
-            </Button>
-          )}
+          <Button variant='primary' onClick={props.onStartActivity} className={`${styles.startActivityButton}`}>
+            Rozpocznij aktywność
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

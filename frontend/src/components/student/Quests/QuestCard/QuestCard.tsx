@@ -46,7 +46,6 @@ const QuestCard = (props: QuestCardProps) => {
           showDetails={showModal}
           onCloseDetails={() => setShowModal(false)}
           onStartActivity={handleStartActivity}
-          isActivityCompleted={props.isActivityCompleted}
           name={props.activity.title}
           type={props.activity.type}
           startDate={
@@ -68,7 +67,6 @@ const QuestCard = (props: QuestCardProps) => {
           showDetails={showModal}
           onCloseDetails={() => setShowModal(false)}
           onStartActivity={handleStartActivity}
-          isActivityCompleted={false}
           name={props.activity.title}
           type={props.activity.type}
           startDate={
