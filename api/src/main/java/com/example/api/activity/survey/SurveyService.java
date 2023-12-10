@@ -40,14 +40,14 @@ public class SurveyService {
         return surveyRepository.save(survey);
     }
 
-    public SurveyInfoResponse getSurveyInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
+    public SurveyDetailsResponse getSurveyInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
         User student = authService.getCurrentUser();
         userValidator.validateStudentAccount(student);
         Survey survey = surveyRepository.findSurveyById(id);
         activityValidator.validateActivityIsNotNull(survey, id);
         log.info("Fetching survey info");
 
-        SurveyInfoResponse response = new SurveyInfoResponse(survey);
+        SurveyDetailsResponse response = new SurveyDetailsResponse(survey);
         SurveyResult feedback = surveyResultRepository.findSurveyResultBySurveyAndUser(survey, student);
         if (feedback != null) {
             response.setFeedback(new SurveyResultInfoResponse(feedback));

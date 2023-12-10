@@ -4,6 +4,7 @@ import com.example.api.course.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.chapter.Chapter;
+import com.example.api.file.FileResponse;
 import com.example.api.user.model.User;
 import com.example.api.util.model.Url;
 import com.example.api.chapter.ChapterRepository;
@@ -47,7 +48,11 @@ public class InfoService {
                 .stream()
                 .map(Url::getUrl)
                 .toList();
-        return new InfoResponse(info.getTitle(), info.getDescription(), urls, info.getContent());
+        return new InfoResponse(info.getTitle(),
+                info.getDescription(),
+                urls,
+                info.getContent(),
+                info.getFiles().stream().map(file -> new FileResponse(file.getId(), file.getName())).toList());
     }
 
     public void createInfo(CreateInfoChapterForm chapterForm) throws RequestValidationException {

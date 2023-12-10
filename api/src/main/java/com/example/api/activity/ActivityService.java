@@ -1,30 +1,32 @@
 package com.example.api.activity;
 
-import com.example.api.activity.auction.AuctionRepository;
 import com.example.api.activity.info.EditInfoForm;
 import com.example.api.activity.info.Info;
+import com.example.api.activity.info.InfoRepository;
+import com.example.api.activity.info.InfoService;
 import com.example.api.activity.survey.EditSurveyForm;
 import com.example.api.activity.survey.Survey;
-import com.example.api.activity.task.TaskRepository;
+import com.example.api.activity.survey.SurveyRepository;
+import com.example.api.activity.survey.SurveyService;
 import com.example.api.activity.task.filetask.EditFileTaskForm;
 import com.example.api.activity.task.filetask.FileTask;
-import com.example.api.activity.task.graphtask.*;
+import com.example.api.activity.task.filetask.FileTaskRepository;
 import com.example.api.activity.task.filetask.FileTaskService;
-import com.example.api.activity.info.InfoService;
-import com.example.api.activity.survey.SurveyService;
+import com.example.api.activity.task.graphtask.EditGraphTaskForm;
+import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.activity.task.graphtask.GraphTaskRepository;
+import com.example.api.activity.task.graphtask.GraphTaskService;
+import com.example.api.activity.validator.ActivityValidator;
+import com.example.api.chapter.Chapter;
+import com.example.api.chapter.ChapterRepository;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.chapter.Chapter;
-import com.example.api.user.model.User;
-import com.example.api.activity.task.filetask.FileTaskRepository;
-import com.example.api.activity.info.InfoRepository;
-import com.example.api.activity.survey.SurveyRepository;
-import com.example.api.chapter.ChapterRepository;
+import com.example.api.file.File;
 import com.example.api.security.LoggedInUserService;
+import com.example.api.user.model.User;
 import com.example.api.validator.ChapterValidator;
 import com.example.api.validator.UserValidator;
-import com.example.api.activity.validator.ActivityValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,10 +35,7 @@ import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
-
-import static java.util.Optional.ofNullable;
 
 @Service
 @RequiredArgsConstructor
@@ -56,8 +55,7 @@ public class ActivityService {
     private final SurveyService surveyService;
     private final ChapterRepository chapterRepository;
     private final ChapterValidator chapterValidator;
-    private final TaskRepository taskRepository;
-    private final AuctionRepository auctionRepository;
+    private final ActivityRepository activityRepository;
 
     public EditActivityForm getActivityEditInfo(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
         User professor = authService.getCurrentUser();
@@ -86,17 +84,6 @@ public class ActivityService {
             case INFO -> infoService.editInfo((Info) activity, (EditInfoForm) form);
             case SURVEY -> surveyService.editSurvey((Survey) activity, (EditSurveyForm) form);
         }
-    }
-
-    private List<? extends Activity> getAllActivities() {
-        List<GraphTask> graphTasks = graphTaskRepository.findAll();
-        List<FileTask> fileTasks = fileTaskRepository.findAll();
-        List<Survey> surveys = surveyRepository.findAll();
-        List<Info> infos = infoRepository.findAll();
-
-        return Stream.of(graphTasks, fileTasks, surveys, infos)
-                .flatMap(Collection::stream)
-                .toList();
     }
 
     private EditActivityForm toEditActivityForm(Activity activity) {
@@ -151,34 +138,13 @@ public class ActivityService {
         }
     }
 
-    public Optional<Activity> getGradedActivity(Long activityId) {
-
-        Optional<Activity> task = taskRepository.findById(activityId).map(t -> t);
-
-        if (task.isPresent()) {
-            return task;
-        } else {
-            Optional<Activity> activity = ofNullable(surveyRepository.findSurveyById(activityId));
-            if (activity.isPresent()) {
-                return activity;
-            } else {
-            log.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa");
-                return auctionRepository.findById(activityId).map(auction -> (Activity) auction);
-            }
-        }
-    }
     public Activity getActivity(Long activityId) throws EntityNotFoundException {
-        Optional<Activity> gradedActivity = getGradedActivity(activityId);
+        return activityRepository.findById(activityId)
+                .orElseThrow(() -> new EntityNotFoundException("Activity not found"));
+    }
 
-        if (gradedActivity.isPresent()) {
-            return gradedActivity.get();
-        }
-
-        Info info = infoRepository.findInfoById(activityId);
-        if (info != null) {
-            return info;
-        }
-
-        throw new EntityNotFoundException("Activity not found");
+    public void addFile(Activity activity, File file) {
+        activity.addFile(file);
+        activityRepository.save(activity);
     }
 }

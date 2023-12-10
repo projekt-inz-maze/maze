@@ -3,8 +3,7 @@ package com.example.api.activity.task;
 
 import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.model.ActivityResult;
-import com.example.api.activity.submittask.result.SubmitTaskResult;
-import com.example.api.activity.task.dto.response.util.FileResponse;
+import com.example.api.file.FileResponse;
 import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;

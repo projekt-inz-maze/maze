@@ -1,4 +1,4 @@
-package com.example.api.util.model;
+package com.example.api.file;
 
 import com.example.api.course.Course;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,6 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @JsonIgnoreProperties(value = { "course" })
+@Inheritance
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

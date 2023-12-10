@@ -21,7 +21,7 @@ import com.example.api.chapter.Chapter;
 import com.example.api.question.Difficulty;
 import com.example.api.question.QuestionType;
 import com.example.api.user.model.User;
-import com.example.api.util.model.File;
+import com.example.api.file.File;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

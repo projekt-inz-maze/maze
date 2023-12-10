@@ -1,6 +1,5 @@
-package com.example.api.util.dto.response;
+package com.example.api.file.image;
 
-import com.example.api.util.model.ImageType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

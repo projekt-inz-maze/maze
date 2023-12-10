@@ -2,7 +2,7 @@ package com.example.api.user.model;
 
 import com.example.api.course.Course;
 import com.example.api.user.hero.HeroType;
-import com.example.api.util.model.Image;
+import com.example.api.file.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

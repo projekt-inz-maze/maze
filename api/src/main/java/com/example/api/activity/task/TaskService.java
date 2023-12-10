@@ -9,7 +9,7 @@ import com.example.api.activity.submittask.result.SubmitTaskResult;
 import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
 import com.example.api.activity.task.dto.response.ActivitiesResponse;
 import com.example.api.activity.task.dto.response.ActivityToEvaluateResponse;
-import com.example.api.activity.task.dto.response.util.FileResponse;
+import com.example.api.file.FileResponse;
 import com.example.api.chapter.Chapter;
 import com.example.api.chapter.ChapterRepository;
 import com.example.api.chapter.requirement.RequirementDTO;

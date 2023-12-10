@@ -1,6 +1,7 @@
 package com.example.api.activity.task.graphtask;
 
 import com.example.api.chapter.requirement.model.Requirement;
+import com.example.api.file.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class GraphTaskResponse {
     private String requiredKnowledge;
     private Double maxPoints;
     private Long timeToSolveMillis;
+    private List<FileResponse> files;
 
     public GraphTaskResponse(GraphTask graphTask) {
         this.id = graphTask.getId();
@@ -31,5 +33,7 @@ public class GraphTaskResponse {
         this.requiredKnowledge = graphTask.getRequiredKnowledge();
         this.maxPoints = graphTask.getMaxPoints();
         this.timeToSolveMillis = graphTask.getTimeToSolveMillis();
+        this.files = graphTask
+                .getFiles().stream().map(file -> new FileResponse(file.getId(), file.getName())).toList();
     }
 }

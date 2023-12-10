@@ -6,12 +6,13 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.file.FileService;
 import com.example.api.user.model.User;
-import com.example.api.util.model.File;
+import com.example.api.file.File;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.task.filetask.FileTaskRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.util.repository.FileRepository;
+import com.example.api.file.FileRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
@@ -36,6 +37,7 @@ public class FileTaskResultService {
     private final UserValidator userValidator;
     private final LoggedInUserService authService;
     private final ActivityValidator activityValidator;
+    private final FileService fileService;
 
     public FileTaskResult saveFileTaskResult(FileTaskResult result) {
         return fileTaskResultRepository.save(result);
@@ -90,9 +92,7 @@ public class FileTaskResultService {
     }
 
     public ByteArrayResource getFileById(Long fileId) throws EntityNotFoundException {
-        File file = fileRepository.findFileById(fileId);
-        activityValidator.validateFileIsNotNull(file, fileId);
-        return new ByteArrayResource(file.getFile());
+        return fileService.getFileById(fileId);
     }
 
     public List<FileTaskResult> getAllFileTaskResultsForStudent(User student, Course course) {
