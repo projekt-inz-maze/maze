@@ -5,13 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-180] feat: add answerPoints to ActivityDetails.tsx">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.module.scss" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/FileTask/FileTask.module.scss" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/FileTask/FileTask.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/ExpeditionTask/ExpeditionSummary/ExpeditionSummary.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/ExpeditionTask/ExpeditionSummary/ExpeditionSummary.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard/QuestCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/FeedbackFileService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/FeedbackFileService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/FileService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/FileService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -504,7 +505,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702242716118</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="[MAZE-180] feat: add answerPoints to ActivityDetails.tsx">
+      <option name="closed" value="true" />
+      <created>1702243401086</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1702243401086</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

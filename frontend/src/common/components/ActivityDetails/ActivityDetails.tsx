@@ -23,22 +23,8 @@ type ActivityDetailsProps = {
 }
 
 const ActivityDetails = (props: ActivityDetailsProps) => {
-  // const [activityScore, setActivityScore] = useState<number>(0)
   const startDate: Date = new Date(props.startDate ?? 0)
   const endDate: Date = new Date(props.endDate ?? 0)
-
-  // useEffect(() => {
-  //   if (props.type === 'EXPEDITION') {
-  //     // TODO: Fix this after fetching results from different activities is ready
-  //     ExpeditionService.getExpeditionScore(props.activityId)
-  //       .then((response) => {
-  //         setActivityScore(response)
-  //       })
-  //       .catch(() => {
-  //         setActivityScore(0)
-  //       })
-  //   }
-  // }, [props.activityId])
 
   return (
     <>
