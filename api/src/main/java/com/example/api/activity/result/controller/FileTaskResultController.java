@@ -20,7 +20,11 @@ import java.io.IOException;
 public class FileTaskResultController {
     private final FileTaskResultService fileTaskResultService;
 
-
+    @PostMapping(path="/file/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Long> saveFileTaskResult(@ModelAttribute SaveFileToFileTaskResultForm form)
+            throws EntityNotFoundException, WrongUserTypeException, IOException {
+        return ResponseEntity.ok().body(fileTaskResultService.saveFileToFileTaskResult(form));
+    }
 
     @DeleteMapping("/file/delete")
     public ResponseEntity<Long> deleteFileFromFileTask(@RequestParam Long fileTaskId, @RequestParam int index)
