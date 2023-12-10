@@ -145,13 +145,13 @@ export type ActivityResponseInfo = {
   userAnswer: string
   userTitle: string
   userContent: string
-  file: File[]
+  file: AttachedFile[]
   maxPoints: number
   fileTaskId: number
   remaining: number
 }
 
-export type File = {
+export type AttachedFile = {
   id: number
   name: string
 }
@@ -180,10 +180,10 @@ export type GradeTaskResponse = {
   taskName: string
   description: string
   answer: string
-  taskFiles: File[]
+  taskFiles: AttachedFile[]
   points: number
   remarks: string
-  feedbackFile: File
+  feedbackFile: AttachedFile
 }
 
 export type PersonalityType = 'SOCIALIZER' | 'KILLER' | 'ACHIEVER' | 'EXPLORER'
