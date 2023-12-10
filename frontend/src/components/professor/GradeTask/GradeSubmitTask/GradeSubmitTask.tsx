@@ -41,7 +41,12 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
         setJsonResult(response.data)
       }
 
-      setIsAddActivityModalOpen(true)
+      if (accepted) {
+        setIsAddActivityModalOpen(true)
+      } else {
+        setIsAddActivityModalOpen(false)
+        props.onCloseDetails()
+      }
     } catch (error) {
       console.error('Error submitting task:', error)
     }
@@ -123,7 +128,13 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
       ) : (
         <></>
       )}
-      <Modal show={isAddActivityModalOpen} onHide={() => setIsAddActivityModalOpen(false)} size='xl' centered>
+      <Modal
+        show={isAddActivityModalOpen}
+        onHide={() => setIsAddActivityModalOpen(false)}
+        size='xl'
+        centered
+        fullscreen
+      >
         <Modal.Header style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Dodawanie nowej aktywności</Modal.Header>
         <Modal.Body className={styles.editorContainer}>
           <label htmlFor='chapterId' className={styles.chapterForm}>

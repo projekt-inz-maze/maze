@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-174] refactor: remove comments in code">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-174] refactor: changes in GradeFileTask.tsx">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/combatTask.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/combatTask.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -478,7 +479,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702145056564</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="[MAZE-174] feat: download file from activity details">
+      <option name="closed" value="true" />
+      <created>1702232950233</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1702232950233</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -523,8 +532,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-169] refactor: correct styling of testButton" />
-    <MESSAGE value="[MAZE-169] feat: add modal for test introduction" />
     <MESSAGE value="[MAZE-169] refactor: fix typo" />
     <MESSAGE value="[MAZE-169] feat: add new api to handle personality quiz&#10;&#10;- add two endpoints to apiPersonality.ts&#10;- refactored StudentSettings, modal with quiz is now isolated component" />
     <MESSAGE value="[MAZE-169] feat: display quiz content downloaded from api" />
@@ -548,6 +555,8 @@
     <MESSAGE value="[MAZE-174] refactor: cleanup of ChapterDetails.js, new temporary layout" />
     <MESSAGE value="[MAZE-176] feat: /files/add finally works" />
     <MESSAGE value="[MAZE-174] refactor: remove comments in code" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-174] refactor: remove comments in code" />
+    <MESSAGE value="[MAZE-174] feat: download file from activity details" />
+    <MESSAGE value="[MAZE-174] refactor: changes in GradeFileTask.tsx" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-174] refactor: changes in GradeFileTask.tsx" />
   </component>
 </project>

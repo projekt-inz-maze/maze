@@ -5,7 +5,6 @@ import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import styles from './GradeFileTask.module.scss'
 import { useGradeTaskMutation } from '../../../../api/apiGrades'
 import { ActivityResponseInfo, GradeTaskRequest } from '../../../../api/types'
-import ProfessorService from '../../../../services/professor.service'
 import { Activity, getActivityTypeName } from '../../../../utils/constants'
 import { ProfessorFileService } from '../../ActivityAssessmentDetails/ProfessorFileService'
 import ActivityAssessmentStudentFileService from '../../ActivityAssessmentDetails/StudentFileService'
@@ -55,26 +54,26 @@ const GradeFileTask = (props: GradeFileTaskProps) => {
     }
     // 09.12.2023: Ten endpoint postanowił nagle się zepsuć.
     // Pliki są przerąbane kolego. https://github.com/axios/axios/issues/4406
-    ProfessorService.sendTaskEvaluation(
-      requestBody.fileTaskResultId,
-      requestBody.content,
-      requestBody.points,
-      requestBody.file,
-      requestBody.fileName
-    ).then(() => {
-      setTimeout(() => props.onCloseDetails(), 200)
-      setRemarks('')
-      setGradeValue(0)
-      setFileName('')
-      setFileBlob(null)
-    })
-    // await gradeTask(prepareRequest(requestBody)).then(() => {
+    // ProfessorService.sendTaskEvaluation(
+    //   requestBody.fileTaskResultId,
+    //   requestBody.content,
+    //   requestBody.points,
+    //   requestBody.file,
+    //   requestBody.fileName
+    // ).then(() => {
     //   setTimeout(() => props.onCloseDetails(), 200)
     //   setRemarks('')
     //   setGradeValue(0)
     //   setFileName('')
     //   setFileBlob(null)
     // })
+    await gradeTask(prepareRequest(requestBody)).then(() => {
+      setTimeout(() => props.onCloseDetails(), 200)
+      setRemarks('')
+      setGradeValue(0)
+      setFileName('')
+      setFileBlob(null)
+    })
   }
 
   return (
