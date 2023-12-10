@@ -7,7 +7,7 @@ import { useGradeTaskMutation } from '../../../../api/apiGrades'
 import { ActivityResponseInfo, GradeTaskRequest } from '../../../../api/types'
 import { Activity, getActivityTypeName } from '../../../../utils/constants'
 import { ProfessorFileService } from '../../ActivityAssessmentDetails/ProfessorFileService'
-import ActivityAssessmentStudentFileService from '../../ActivityAssessmentDetails/StudentFileService'
+import StudentFileService from '../../ActivityAssessmentDetails/StudentFileService'
 
 type GradeFileTaskProps = {
   showDetails: boolean
@@ -115,7 +115,7 @@ const GradeFileTask = (props: GradeFileTaskProps) => {
               <p>{props.activity.activityDetails}</p>
               <span>Odpowiedź:</span>
               <p>{props.activity.userAnswer}</p>
-              <ActivityAssessmentStudentFileService activity={props.activity} />
+              <StudentFileService activity={props.activity} />
             </div>
             <Form className={styles.formContainer}>
               <Row>

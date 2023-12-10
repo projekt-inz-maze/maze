@@ -4,9 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-175] fix: startDate and endDate now render correctly for activities">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-178] feat: new view for info task">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/InfoTask/InfoTask.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/InfoTask/InfoTask.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/Profile/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Profile/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/ActivityAssessmentDetails/ActivityAssessmentDetails.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeSubmitTask/GradeSubmitTask.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/InfoTask/Information.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/InfoTask/Information.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/modules/studentRoutes/InformationTaskRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/modules/studentRoutes/InformationTaskRoutes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +33,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="MAZE-175" />
+        <entry key="$PROJECT_DIR$" value="MAZE-177-Poprawa-wy-wietlania-informacji-w-profilu-studenta" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -46,7 +55,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "MAZE-177-Poprawa-wy-wietlania-informacji-w-profilu-studenta",
+    "git-widget-placeholder": "MAZE-178",
     "last_opened_file_path": "/home/jkbstepien/projects/work/frontend-prozodia",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -443,7 +452,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702141366320</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="[MAZE-177] fix: correct user data displayed in table">
+      <option name="closed" value="true" />
+      <created>1702206524864</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1702206524864</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -488,8 +505,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-168] add modal for adding activities in grading section" />
-    <MESSAGE value="[MAZE-169] refactor: change settings display&#10;&#10;- remove `settings` from navbar subtitles&#10;- add new route for user settings&#10;- rename `Settings` folder in professor dir" />
     <MESSAGE value="[MAZE-169] style: remove comments in navbar" />
     <MESSAGE value="[MAZE-169] feat: add initial view of StudentSettings" />
     <MESSAGE value="[MAZE-169] refactor: correct styling of testButton" />
@@ -513,6 +528,8 @@
     <MESSAGE value="[MAZE-169] feat: add question counter" />
     <MESSAGE value="[MAZE-171] fix: change file services to correctly display attached files" />
     <MESSAGE value="[MAZE-175] fix: startDate and endDate now render correctly for activities" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-175] fix: startDate and endDate now render correctly for activities" />
+    <MESSAGE value="[MAZE-177] fix: correct user data displayed in table" />
+    <MESSAGE value="[MAZE-178] feat: new view for info task" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-178] feat: new view for info task" />
   </component>
 </project>

@@ -18,6 +18,7 @@ import ImagesGallery from '../../../general/ImagesGallery/ImagesGallery'
 import Loader from '../../../general/Loader/Loader'
 import { CustomCard } from '../../GameCardPage/GameCardStyles'
 
+// Old view
 function Information(props) {
   const isMobileDisplay = isMobileView()
 
@@ -52,7 +53,7 @@ function Information(props) {
           <tr>
             <td>Ikonka aktywności:</td>
             <td>
-              <img height={45} src={getActivityImg(Activity.INFO)} alt="info-task-icon" />
+              <img height={45} src={getActivityImg(Activity.INFO)} alt='info-task-icon' />
             </td>
           </tr>
           {tableElements.map((element, index) => (
@@ -84,10 +85,10 @@ function Information(props) {
   return (
     <Content style={{ marginBottom: isMobileDisplay ? '85px' : 'auto' }}>
       <Row className={`m-0 ${isMobileDisplay ? 'h-auto' : 'vh-100'}`}>
-        <Col md={6} className="py-2 vh-100">
-          <Row className="m-0 w-100 pb-2" style={{ height: isMobileDisplay ? 'auto' : '25%' }}>
+        <Col md={6} className='py-2 vh-100'>
+          <Row className='m-0 w-100 pb-2' style={{ height: isMobileDisplay ? 'auto' : '25%' }}>
             <CustomCard
-              className="p-0"
+              className='p-0'
               $fontColor={props.theme.font}
               $background={props.theme.primary}
               $bodyColor={props.theme.secondary}
@@ -98,9 +99,9 @@ function Information(props) {
               <Card.Body>{activityInfoCardBody}</Card.Body>
             </CustomCard>
           </Row>
-          <Row className="m-0 w-100 mt-3" style={{ height: isMobileDisplay ? 'auto' : '65%' }}>
+          <Row className='m-0 w-100 mt-3' style={{ height: isMobileDisplay ? 'auto' : '65%' }}>
             <CustomCard
-              className="p-0"
+              className='p-0'
               $fontColor={props.theme.font}
               $background={props.theme.primary}
               $bodyColor={props.theme.secondary}
@@ -108,7 +109,7 @@ function Information(props) {
               <CardHeader>
                 <h5>Wytyczne</h5>
               </CardHeader>
-              <Card.Body className="overflow-auto" style={{ height: '70vh' }}>
+              <Card.Body className='overflow-auto' style={{ height: '70vh' }}>
                 {information === undefined ? (
                   <Loader />
                 ) : information == null ? (
@@ -121,15 +122,15 @@ function Information(props) {
             <GoBackButton goTo={StudentRoutes.GAME_MAP.MAIN} />
           </Row>
         </Col>
-        <Col md={6} className="py-2">
+        <Col md={6} className='py-2'>
           <CustomCard
             $fontColor={props.theme.font}
             $background={props.theme.primary}
             $bodyColor={props.theme.secondary}
-            className="p-0"
+            className='p-0'
             style={{ maxHeight: '98.3vh', overflowY: 'auto' }}
           >
-            <CardHeader className="position-sticky top-0" style={{ zIndex: 2 }}>
+            <CardHeader className='position-sticky top-0' style={{ zIndex: 2 }}>
               <h5>Galeria zdjęć</h5>
             </CardHeader>
             <Card.Body ref={gridCardRef}>{imagesGridLayout}</Card.Body>
@@ -141,7 +142,7 @@ function Information(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }

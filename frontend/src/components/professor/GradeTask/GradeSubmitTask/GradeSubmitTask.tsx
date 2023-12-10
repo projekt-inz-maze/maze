@@ -11,7 +11,7 @@ import { useGradeSubmitTaskMutation } from '../../../../api/apiGrades'
 import { ActivityResponseInfo } from '../../../../api/types'
 import CombatTaskService from '../../../../services/combatTask.service'
 import { Activity, getActivityTypeName } from '../../../../utils/constants'
-import ActivityAssessmentStudentFileService from '../../ActivityAssessmentDetails/StudentFileService'
+import StudentFileService from '../../ActivityAssessmentDetails/StudentFileService'
 
 type GradeSubmitTaskProps = {
   showDetails: boolean
@@ -108,7 +108,7 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
             </div>
             <div className={styles.modalTaskDescription}>
               <p>{`${props.activity.userTitle} - ${props.activity.userContent}`}</p>
-              <ActivityAssessmentStudentFileService activity={props.activity} />
+              <StudentFileService activity={props.activity} />
             </div>
           </Modal.Body>
           <Modal.Footer className={styles.modalFooter}>

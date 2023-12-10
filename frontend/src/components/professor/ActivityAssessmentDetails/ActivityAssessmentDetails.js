@@ -14,7 +14,7 @@ import {
   RemarksTextArea
 } from './ActivityAssesmentDetailsStyles'
 import { ProfessorFileService } from './ProfessorFileService'
-import ActivityAssessmentStudentFileService from './StudentFileService'
+import StudentFileService from './StudentFileService'
 import { SET_ASSESSMENT_NUMBERS } from '../../../actions/types'
 import { TeacherRoutes } from '../../../routes/PageRoutes'
 import ProfessorService from '../../../services/professor.service'
@@ -124,7 +124,7 @@ function ActivityAssessmentDetails(props) {
       <Col>
         <h4>Odpowiedź:</h4>
         <p>{activityResponseInfo.userAnswer}</p>
-        <ActivityAssessmentStudentFileService activityResponseInfo={activityResponseInfo} />
+        <StudentFileService activityResponseInfo={activityResponseInfo} />
       </Col>
     )
   }
