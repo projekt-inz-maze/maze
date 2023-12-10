@@ -122,14 +122,9 @@ const CourseList = (props: CourseListProps) => {
                 ))
               ) : (
                 <>
-                  <p className='text-white'>No courses found. Displaying mock card</p>
-                  <CourseCard
-                    key={1}
-                    course={{ id: 1, name: 'Mock course', description: 'Mock description' }}
-                    role={role}
-                    onEnterCourse={() => handleClick(1)}
-                    onDeleteCourse={() => handleDeleteCourse(1)}
-                  />
+                  <p className='text-white'>
+                    <span>No courses found.</span>
+                  </p>
                 </>
               )}
             </Stack>

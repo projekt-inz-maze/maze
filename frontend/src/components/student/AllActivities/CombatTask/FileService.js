@@ -1,13 +1,12 @@
-import React, { useEffect, useTransition, useRef } from 'react'
+import React, { useEffect, useRef, useTransition } from 'react'
 
 import { faDownload, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import download from 'downloadjs'
-import { Button, Col, Row, Spinner } from 'react-bootstrap'
+import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import CombatTaskService from '../../../../services/combatTask.service'
-import { SmallDivider } from '../ExpeditionTask/ActivityInfo/ActivityInfoStyles'
 
 function FileService(props) {
   const { task, setFile, setFileName, setIsFetching, isFetching, isReviewed } = props
@@ -45,20 +44,33 @@ function FileService(props) {
 
   return (
     <>
-      <strong>Załączone pliki studenta:</strong>
+      {!isReviewed && (
+        <Form.Group>
+          <Form.Label>
+            <span>Załącz plik:</span>
+          </Form.Label>
+          <Form.Control
+            ref={fileInput}
+            type='file'
+            className='mb-2 mt-1'
+            onChange={saveFile}
+            style={{ width: '250px' }}
+          />
+        </Form.Group>
+      )}
       {!task || task.taskFiles?.length === 0 ? (
         <p>Brak dodanych plików</p>
       ) : (
         task.taskFiles?.map((file, idx) => (
           <Row key={idx} className='mt-4'>
-            <Col>{file.name}</Col>
             <Col>
+              <span style={{ fontWeight: 'normal', marginRight: '2em' }}>{file.name}</span>
               <Button
                 style={{ backgroundColor: props.theme.danger, borderColor: props.theme.danger }}
                 disabled={isReviewed}
                 onClick={() => remove(idx)}
               >
-                {isRemoving ? <Spinner animation="border" size="sm" /> : <FontAwesomeIcon icon={faTrash} />}
+                {isRemoving ? <Spinner animation='border' size='sm' /> : <FontAwesomeIcon icon={faTrash} />}
               </Button>
               <Button
                 style={{ backgroundColor: props.theme.warning, borderColor: props.theme.warning }}
@@ -71,21 +83,14 @@ function FileService(props) {
           </Row>
         ))
       )}
-      {!isReviewed && (
-        <>
-          <SmallDivider $background={props.theme.warning} />
-          <strong>Dodaj pliki:</strong>
-          <br />
-          <input ref={fileInput} type='file' className='mb-5 mt-3' onChange={saveFile} />
-        </>
-      )}
     </>
   )
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }
+
 export default connect(mapStateToProps)(FileService)

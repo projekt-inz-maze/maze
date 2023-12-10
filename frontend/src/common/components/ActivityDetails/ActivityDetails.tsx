@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { Button, Modal } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import styles from './ActivityDetails.module.scss'
-import ExpeditionService from '../../../services/expedition.service'
+import { getActivityTypeName } from '../../../utils/constants'
 
 type ActivityDetailsProps = {
-  activityId: number
   showDetails: boolean
   onCloseDetails: () => void
   onStartActivity: () => void
-  isActivityCompleted: boolean
   name: string
   type: string
   startDate: number
@@ -21,25 +19,12 @@ type ActivityDetailsProps = {
   maxNumberOfAttempts: number
   timeLimit: number
   points: number
+  awardedPoints: number
 }
 
 const ActivityDetails = (props: ActivityDetailsProps) => {
-  const [activityScore, setActivityScore] = useState<number>(0)
   const startDate: Date = new Date(props.startDate ?? 0)
   const endDate: Date = new Date(props.endDate ?? 0)
-
-  useEffect(() => {
-    if (props.type === 'EXPEDITION') {
-      // TODO: Fix this after fetching results from different activities is ready
-      ExpeditionService.getExpeditionScore(props.activityId)
-        .then((response) => {
-          setActivityScore(response)
-        })
-        .catch(() => {
-          setActivityScore(0)
-        })
-    }
-  }, [props.activityId])
 
   return (
     <>
@@ -64,7 +49,7 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
                 <span>Nazwa:</span> {props.name}
               </p>
               <p>
-                <span>Typ:</span> {props.type}
+                <span>Typ:</span> {getActivityTypeName(props.type)}
               </p>
             </div>
             <div className={styles.dateInfo}>
@@ -114,28 +99,16 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
                 </div>
               </div>
             </div>
-            <div className={activityScore > 0 ? styles.resultFieldCompleted : styles.resultField}>
+            <div className={props.awardedPoints > 0 ? styles.resultFieldCompleted : styles.resultField}>
               <span>Twój wynik:</span>
-              <p>{activityScore ? `${activityScore}/${props.points}` : 'nie ukończono'}</p>
+              <p>{props.awardedPoints > 0 ? `${props.awardedPoints}/${props.points}` : 'nie ukończono'}</p>
             </div>
           </div>
         </Modal.Body>
         <Modal.Footer className={styles.modalFooter}>
-          {props.isActivityCompleted ? (
-            <Button variant='primary' onClick={props.onCloseDetails} className={styles.startActivityButton}>
-              Powrót do mapy
-            </Button>
-          ) : (
-            <Button
-              variant='primary'
-              onClick={props.onStartActivity}
-              className={`${styles.startActivityButton} ${
-                props.maxNumberOfAttempts - props.numberOfAttempts ? '' : 'disabled'
-              }`}
-            >
-              Rozpocznij aktywność
-            </Button>
-          )}
+          <Button variant='primary' onClick={props.onStartActivity} className={`${styles.startActivityButton}`}>
+            Rozpocznij aktywność
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
@@ -147,4 +120,5 @@ function mapStateToProps(state: { theme: any }) {
 
   return { theme }
 }
+
 export default connect(mapStateToProps)(ActivityDetails)

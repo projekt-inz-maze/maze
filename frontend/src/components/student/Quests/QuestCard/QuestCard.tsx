@@ -42,11 +42,9 @@ const QuestCard = (props: QuestCardProps) => {
     <>
       {props.activity.type !== 'AUCTION' && props.activity.type !== 'SUBMIT' && props.activity.type !== 'INFO' && (
         <ActivityDetails
-          activityId={props.activity.id}
           showDetails={showModal}
           onCloseDetails={() => setShowModal(false)}
           onStartActivity={handleStartActivity}
-          isActivityCompleted={props.isActivityCompleted}
           name={props.activity.title}
           type={props.activity.type}
           startDate={
@@ -60,15 +58,14 @@ const QuestCard = (props: QuestCardProps) => {
           maxNumberOfAttempts={1}
           timeLimit={convertMilisecondsToMinutes(props.activity.timeLimit)}
           points={props.activity.points}
+          awardedPoints={props.activity.awardedPoints || 0}
         />
       )}
       {props.activity.type === 'INFO' && (
         <ActivityDetails
-          activityId={props.activity.id}
           showDetails={showModal}
           onCloseDetails={() => setShowModal(false)}
           onStartActivity={handleStartActivity}
-          isActivityCompleted={false}
           name={props.activity.title}
           type={props.activity.type}
           startDate={
@@ -82,6 +79,7 @@ const QuestCard = (props: QuestCardProps) => {
           maxNumberOfAttempts={1}
           timeLimit={convertMilisecondsToMinutes(props.activity.timeLimit)}
           points={props.activity.points}
+          awardedPoints={props.activity.awardedPoints || 0}
         />
       )}
       {props.activity.type === 'AUCTION' && (

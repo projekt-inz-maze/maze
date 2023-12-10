@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import { Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -25,7 +24,6 @@ function ExpeditionSummary(props) {
   const [showModal, setShowModal] = useState(true)
 
   useEffect(() => {
-    console.log(expeditionId)
     ExpeditionService.getExpeditionScore(expeditionId)
       .then((response) => {
         setActivityScore(response || -1)
@@ -121,6 +119,7 @@ function ExpeditionSummary(props) {
           maxNumberOfAttempts={1}
           timeLimit={999}
           points={maxPointsClosed + maxPointsOpen}
+          awardedPoints={1}
           result={activityScore}
         />
       )}
@@ -133,4 +132,5 @@ function mapStateToProps(state) {
 
   return { theme }
 }
+
 export default connect(mapStateToProps)(ExpeditionSummary)
