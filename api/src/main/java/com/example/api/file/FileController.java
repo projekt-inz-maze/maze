@@ -34,6 +34,11 @@ public class FileController {
         return ResponseEntity.ok().body(fileService.getImage(id));
     }
 
+    @GetMapping("/download")
+    ResponseEntity<ByteArrayResource> getFileById(@RequestParam Long id) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(fileService.getFileById(id));
+    }
+
     @GetMapping("/log")
     public ResponseEntity<ByteArrayResource> getLogFile() throws IOException {
         File file = new File(RequestInterceptor.REQUEST_LOGGING_FILE_PATH);
