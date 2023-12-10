@@ -5,9 +5,8 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from './PersonalityQuizResults.module.scss'
 import { useGetPersonalityQuery } from '../../../../api/apiPersonality'
-import { getPersonalityName, personalityQuizIntro } from '../../../../utils/constants'
+import { getPersonalityImage, getPersonalityName, personalityQuizIntro } from '../../../../utils/constants'
 import { getMaxValuePersonalityType } from '../../../../utils/formatters'
-import AchieverImg from '../../../../utils/resources/achiever_type.png'
 
 const emptyPersonality = {
   id: 'KILLER',
@@ -50,7 +49,7 @@ const PersonalityQuizResults = () => {
         <Container>
           <Row>
             <Col>
-              <img src={AchieverImg} alt='Hero img' className='img-fluid' />
+              <img src={getPersonalityImage(dominantPersonality)} alt='Hero img' className='img-fluid' />
             </Col>
             <Col className={styles.resultsContainer}>
               <Row>

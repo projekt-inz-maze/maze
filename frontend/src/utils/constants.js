@@ -1,15 +1,20 @@
 import moment from 'moment'
 
+import heroImg from './resources/achiever_type.png'
+import achieverImg from './resources/achieverImg.png'
 import AuctionImg from './resources/activities/auctionTaskIcon.png'
 import TaskImg from './resources/activities/fileTaskIcon.png'
 import ExpeditionImg from './resources/activities/graphTaskIcon.png'
 import InformationImg from './resources/activities/infoTaskIcon.png'
 import SubmitImg from './resources/activities/submitTaskIcon.png'
 import SurveyImg from './resources/activities/surveyTaskIcon.png'
+import explorerImg from './resources/explorerImg.png'
 import priestImg from './resources/heroes/pope.png'
 import rogueImg from './resources/heroes/rogue.png'
 import warriorImg from './resources/heroes/warrior.png'
 import wizardImg from './resources/heroes/wizard.png'
+import killerImg from './resources/killerImg.png'
+import socializerImg from './resources/socializerImg.png'
 import warrior1 from './resources/warrior/0.png'
 import warrior2 from './resources/warrior/1.png'
 import warrior11 from './resources/warrior/10.png'
@@ -88,6 +93,21 @@ export const getPersonalityName = (personality) => {
     case PersonalityName.KILLER:
       return 'ZABÓJCA'
     default:
+  }
+}
+
+export const getPersonalityImage = (personality) => {
+  switch (personality) {
+    case PersonalityName.ACHIEVER:
+      return achieverImg
+    case PersonalityName.EXPLORER:
+      return explorerImg
+    case PersonalityName.SOCIALIZER:
+      return socializerImg
+    case PersonalityName.KILLER:
+      return killerImg
+    default:
+      return heroImg
   }
 }
 

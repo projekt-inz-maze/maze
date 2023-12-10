@@ -59,13 +59,13 @@ export const studentSubtitles = [
     icon: faHouse,
     navigateTo: StudentRoutes.GAME_CARD
   },
+  // {
+  //   name: 'Mapa gry (stara)',
+  //   icon: faChessBoard,
+  //   navigateTo: StudentRoutes.GAME_MAP.MAIN
+  // },
   {
     name: 'Mapa gry',
-    icon: faChessBoard,
-    navigateTo: StudentRoutes.GAME_MAP.MAIN
-  },
-  {
-    name: 'Mapa gry (nowa)',
     icon: faChessBoard,
     navigateTo: StudentRoutes.NEW_GAME_MAP.MAIN
   },
