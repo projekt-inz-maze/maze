@@ -1,7 +1,7 @@
 package com.example.api.activity.result.model;
 
 import com.example.api.activity.task.filetask.FileTask;
-import com.example.api.util.model.File;
+import com.example.api.file.File;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

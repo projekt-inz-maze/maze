@@ -2,7 +2,7 @@ package com.example.api.activity.task.filetask;
 
 import com.example.api.activity.auction.AuctionService;
 import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
-import com.example.api.activity.task.dto.response.util.FileResponse;
+import com.example.api.file.FileResponse;
 import com.example.api.course.Course;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +48,8 @@ public class FileTaskService {
         return fileTaskRepository.save(fileTask);
     }
 
-    public FileTaskInfoResponse getFileTaskInfo(Long id) throws EntityNotFoundException, WrongUserTypeException {
-        FileTaskInfoResponse result = new FileTaskInfoResponse();
+    public FileTaskDetailsResponse getFileTaskDetails(Long id) throws EntityNotFoundException, WrongUserTypeException {
+        FileTaskDetailsResponse result = new FileTaskDetailsResponse();
         FileTask fileTask = fileTaskRepository.findFileTaskById(id);
         activityValidator.validateActivityIsNotNull(fileTask, id);
         result.setFileTaskId(fileTask.getId());
@@ -57,29 +58,39 @@ public class FileTaskService {
 
         User student = authService.getCurrentUser();
         userValidator.validateStudentAccount(student);
-        FileTaskResult fileTaskResult = fileTaskResultRepository.findFileTaskResultByFileTaskAndUser(fileTask, student);
 
-        if (fileTaskResult == null){
-            log.debug("File task result for {} and file task with id {} does not exist", student.getEmail(), fileTask.getId());
-            return result;
-        }
-        result.setAnswer(fileTaskResult.getAnswer());
-        List<FileResponse> fileResponseList = fileTaskResult.getFiles()
+        List<FileResponse> filesList = fileTask.getFiles()
                 .stream()
                 .map(file -> new FileResponse(file.getId(), file.getName()))
                 .toList();
-        result.setTaskFiles(fileResponseList);
+        result.setFiles(filesList);
 
-        ProfessorFeedback feedback = professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(fileTaskResult);
-        if (feedback == null) {
-            log.debug("Feedback for file task result with id {} does not exist", fileTaskResult.getId());
-            return result;
+        Optional<FileTaskResult> maybeFileTaskResult =
+                Optional.ofNullable(fileTaskResultRepository.findFileTaskResultByFileTaskAndUser(fileTask, student));
+
+        if (maybeFileTaskResult.isPresent()) {
+            FileTaskResult fileTaskResult = maybeFileTaskResult.get();
+            result.setAnswer(fileTaskResult.getAnswer());
+            List<FileResponse> fileResponseList = fileTaskResult.getFiles()
+                    .stream()
+                    .map(file -> new FileResponse(file.getId(), file.getName()))
+                    .toList();
+            result.setTaskFiles(fileResponseList);
+
+            ProfessorFeedback feedback = professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(fileTaskResult);
+            if (feedback == null) {
+                log.debug("Feedback for file task result with id {} does not exist", fileTaskResult.getId());
+                return result;
+            }
+            result.setPoints(feedback.getPoints());
+            result.setRemarks(feedback.getContent());
+            if (feedback.getFeedbackFile() != null) {
+                result.setFeedbackFile(new FileResponse(feedback.getFeedbackFile()));
+            }
+        } else {
+            log.debug("File task result for {} and file task with id {} does not exist", student.getEmail(), fileTask.getId());
         }
-        result.setPoints(feedback.getPoints());
-        result.setRemarks(feedback.getContent());
-        if (feedback.getFeedbackFile() != null) {
-            result.setFeedbackFile(new FileResponse(feedback.getFeedbackFile()));
-        }
+
         return result;
     }
 

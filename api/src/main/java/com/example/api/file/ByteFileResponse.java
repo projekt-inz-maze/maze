@@ -1,6 +1,5 @@
-package com.example.api.util.dto.response;
+package com.example.api.file;
 
-import com.example.api.util.model.File;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

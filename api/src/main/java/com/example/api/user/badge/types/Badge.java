@@ -8,7 +8,7 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.util.model.Image;
+import com.example.api.file.image.Image;
 import com.example.api.validator.BadgeValidator;
 import com.example.api.user.badge.BadgeVisitor;
 import lombok.AllArgsConstructor;

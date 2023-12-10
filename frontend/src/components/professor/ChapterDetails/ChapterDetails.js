@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState, useLayoutEffect } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { faArrowDown, faArrowUp, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faArrowDown, faArrowUp, faPaperclip, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
+  Accordion,
   Button,
   Card,
   Col,
@@ -19,6 +20,7 @@ import { connect } from 'react-redux'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import AddActivityModal from './AddActivityModal'
+import AddPhotoModal from './AddPhotoModal/AddPhotoModal'
 import { ActivitiesCard, ButtonsCol, CustomTooltip, MapCard, SummaryCard, TableRow } from './ChapterDetailsStyles'
 import DeletionModal from './DeletionModal'
 import EditActivityModal from './EditActivityModal'
@@ -29,30 +31,34 @@ import { ERROR_OCCURRED, getActivityImg, getActivityTypeName } from '../../../ut
 import { isMobileView } from '../../../utils/mobileHelper'
 import { successToast } from '../../../utils/toasts'
 import Loader from '../../general/Loader/Loader'
-import GameCard from '../../student/GameCardPage/GameCard'
 import ChapterMap from '../../student/GameMapPage/Map/ChapterMap'
 import ChapterModal from '../GameManagement/ChapterModal/ChapterModal'
 
 function ChapterDetails(props) {
   const { id: chapterId } = useParams()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const mapCardBody = useRef()
+
   const [openActivitiesDetailsList, setOpenActivitiesDetailsList] = useState(false)
+
   const [isDeletionModalOpen, setDeletionModalOpen] = useState(false)
   const [isEditChapterModalOpen, setEditChapterModalOpen] = useState(false)
   const [chosenActivityData, setChosenActivityData] = useState(null)
   const [isEditActivityModalOpen, setIsEditActivityModalOpen] = useState(false)
   const [isDeleteActivityModalOpen, setIsDeleteActivityModalOpen] = useState(false)
-  const [chapterDetails, setChapterDetails] = useState(undefined)
   const [isAddActivityModalOpen, setIsAddActivityModalOpen] = useState(false)
-  const [mapContainerSize, setMapContainerSize] = useState({ x: 0, y: 0 })
   const [shouldLoadEditChapterModal, setShouldLoadEditChapterModal] = useState(false)
-  const [deleteChapterError, setDeleteChapterError] = useState(undefined)
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false)
+
+  const [chapterDetails, setChapterDetails] = useState(undefined)
+  const [mapContainerSize, setMapContainerSize] = useState({ x: 0, y: 0 })
+
   const [reloadMapNeeded, setReloadMapNeeded] = useState(false)
+
   const [deleteActivityError, setDeleteActivityError] = useState(undefined)
-
-  const mapCardBody = useRef()
-
-  const navigate = useNavigate()
-  const location = useLocation()
+  const [deleteChapterError, setDeleteChapterError] = useState(undefined)
 
   useLayoutEffect(() => {
     setMapContainerSize({
@@ -99,7 +105,12 @@ function ChapterDetails(props) {
 
   const getActivityInfo = useCallback((activityId) => {
     ActivityService.getActivityInfo(activityId)
-      .then((response) => setChosenActivityData((prevState) => ({ ...prevState, jsonConfig: response.activityBody })))
+      .then((response) =>
+        setChosenActivityData((prevState) => ({
+          ...prevState,
+          jsonConfig: response.activityBody
+        }))
+      )
       .catch(() => {
         setChosenActivityData((prevState) => ({ ...prevState, jsonConfig: null }))
       })
@@ -133,6 +144,15 @@ function ChapterDetails(props) {
       activityName: activity.title
     })
     setIsDeleteActivityModalOpen(true)
+  }
+
+  const startAddingPhoto = (activity) => {
+    setChosenActivityData({
+      activityId: activity.id,
+      activityType: getActivityTypeName(activity.type),
+      activityName: activity.title
+    })
+    setIsPhotoModalOpen(true)
   }
 
   const deleteChapter = () => {
@@ -172,74 +192,140 @@ function ChapterDetails(props) {
       <Row className='px-0 m-0'>
         <Col className='m-0 h-100' md={6}>
           <Col md={12}>
-            <MapCard
-              $bodyColor={props.theme.secondary}
-              $headerColor={props.theme.primary}
-              $fontColor={props.theme.font}
-              className='mt-2'
-            >
-              <Card.Header>Mapa rozdziału</Card.Header>
-              <Card.Body ref={mapCardBody}>
-                <ChapterMap chapterId={chapterId} marginNeeded parentSize={mapContainerSize} reload={reloadMapNeeded} />
-              </Card.Body>
-            </MapCard>
+            <Accordion style={{ paddingTop: '2em' }} onClick={() => setReloadMapNeeded(true)}>
+              <Accordion.Item eventKey='0'>
+                <Accordion.Header>
+                  <span style={{ fontWeight: 'bold', color: '#071542' }}>Mapa rozdziału</span>
+                </Accordion.Header>
+                <Accordion.Body>
+                  <MapCard
+                    $bodyColor={props.theme.secondary}
+                    $headerColor={props.theme.primary}
+                    $fontColor={props.theme.font}
+                    className='mt-2'
+                  >
+                    <Card.Body ref={mapCardBody}>
+                      <ChapterMap
+                        chapterId={chapterId}
+                        marginNeeded
+                        parentSize={mapContainerSize}
+                        reload={reloadMapNeeded}
+                      />
+                    </Card.Body>
+                  </MapCard>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </Col>
           <Col md={12} style={{ height: '25%' }}>
-            <SummaryCard
-              $bodyColor={props.theme.secondary}
-              $headerColor={props.theme.primary}
-              $fontColor={props.theme.font}
-              className='h-100'
-            >
-              <Card.Header>Podsumowanie rozdziału</Card.Header>
-              <Card.Body className='p-0'>
-                {chapterDetails === undefined ? (
-                  <Loader />
-                ) : chapterDetails == null ? (
-                  <p>{ERROR_OCCURRED}</p>
-                ) : (
-                  <ListGroup>
-                    <ListGroupItem>Nazwa rozdziału: {chapterDetails.name}</ListGroupItem>
-                    <ListGroupItem>
-                      <Row className='d-flex align-items-center'>
-                        <Col xs={10}>Liczba dodanych aktywności: {chapterDetails.noActivities}</Col>
-                        <Col xs={2} className='text-end'>
-                          <FontAwesomeIcon
-                            icon={openActivitiesDetailsList ? faArrowUp : faArrowDown}
-                            onClick={() => setOpenActivitiesDetailsList(!openActivitiesDetailsList)}
-                            aria-controls='activities'
-                            aria-expanded={openActivitiesDetailsList}
-                          />
-                        </Col>
-                      </Row>
-                      <Collapse in={openActivitiesDetailsList}>
-                        <div id='activities'>
-                          <div>Ekspedycje: {chapterDetails.noGraphTasks}</div>
-                          <div>Zadania bojowe: {chapterDetails.noFileTasks}</div>
-                          <div>Wytyczne: {chapterDetails.noInfoTasks}</div>
-                          <div>Wywiady: {chapterDetails.noSurveyTasks}</div>
-                        </div>
-                      </Collapse>
-                    </ListGroupItem>
-                    <ListGroupItem>
-                      Suma punktów możliwych do zdobycia w rozdziale: {chapterDetails.maxPoints}
-                    </ListGroupItem>
-                    <ListGroupItem>Aktualny rozmiar mapy: {chapterDetails.mapSize}</ListGroupItem>
-                  </ListGroup>
-                )}
-              </Card.Body>
-            </SummaryCard>
+            <Accordion style={{ paddingTop: '1em' }}>
+              <Accordion.Item eventKey='0'>
+                <Accordion.Header>
+                  <span style={{ fontWeight: 'bold', color: '#071542' }}>Podsumowanie rozdziału</span>
+                </Accordion.Header>
+                <Accordion.Body>
+                  <SummaryCard
+                    $bodyColor={props.theme.secondary}
+                    $headerColor={props.theme.primary}
+                    $fontColor={props.theme.font}
+                    className='h-100'
+                  >
+                    <Card.Body className='p-0'>
+                      {chapterDetails === undefined ? (
+                        <Loader />
+                      ) : chapterDetails == null ? (
+                        <p>{ERROR_OCCURRED}</p>
+                      ) : (
+                        <ListGroup>
+                          <ListGroupItem>
+                            <span style={{ fontWeight: 'bold' }}>Nazwa rozdziału: </span>
+                            {chapterDetails.name}
+                          </ListGroupItem>
+                          <ListGroupItem>
+                            <Row className='d-flex align-items-center'>
+                              <Col xs={10}>
+                                <span style={{ fontWeight: 'bold' }}>Liczba dodanych aktywności: </span>
+                                {chapterDetails.noActivities}
+                              </Col>
+                              <Col xs={2} className='text-end'>
+                                <FontAwesomeIcon
+                                  icon={openActivitiesDetailsList ? faArrowUp : faArrowDown}
+                                  onClick={() => setOpenActivitiesDetailsList(!openActivitiesDetailsList)}
+                                  aria-controls='activities'
+                                  aria-expanded={openActivitiesDetailsList}
+                                />
+                              </Col>
+                            </Row>
+                            <Collapse in={openActivitiesDetailsList}>
+                              <div id='activities'>
+                                <div>
+                                  <span style={{ fontWeight: 'bold' }}>Ekspedycje: </span>
+                                  {chapterDetails.noGraphTasks}
+                                </div>
+                                <div>
+                                  <span style={{ fontWeight: 'bold' }}>Zadania bojowe: </span>
+                                  {chapterDetails.noFileTasks}
+                                </div>
+                                <div>
+                                  <span style={{ fontWeight: 'bold' }}>Wytyczne: </span>
+                                  {chapterDetails.noInfoTasks}
+                                </div>
+                                <div>
+                                  <span style={{ fontWeight: 'bold' }}>Wywiady: </span>
+                                  {chapterDetails.noSurveyTasks}
+                                </div>
+                              </div>
+                            </Collapse>
+                          </ListGroupItem>
+                          <ListGroupItem>
+                            <span style={{ fontWeight: 'bold' }}>Suma punktów możliwych do zdobycia w rozdziale: </span>
+                            {chapterDetails.maxPoints}
+                          </ListGroupItem>
+                          <ListGroupItem>
+                            <span style={{ fontWeight: 'bold' }}>Aktualny rozmiar mapy: </span> {chapterDetails.mapSize}
+                          </ListGroupItem>
+                        </ListGroup>
+                      )}
+                    </Card.Body>
+                  </SummaryCard>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </Col>
           <Col md={12} style={{ height: '20%' }} className='my-2'>
-            <GameCard
-              onButtonClick={goToRequirements}
-              headerText='Wymagania'
-              content={
-                <p className='text-center'>
-                  Edycja wymagań rozdziału, które musi spełnić student, aby zobaczyć rozdział na mapie gry.
-                </p>
-              }
-            />
+            <Accordion defaultActiveKey='0' style={{ paddingTop: '1em' }}>
+              <Accordion.Item eventKey='0'>
+                <Accordion.Header>
+                  <span style={{ fontWeight: 'bold', color: '#071542' }}>Wymagania </span>
+                </Accordion.Header>
+                <Accordion.Body
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <p className='text-center'>
+                    Edycja wymagań rozdziału, które musi spełnić student, aby zobaczyć rozdział na mapie gry.
+                  </p>
+                  <Button
+                    type='button'
+                    onClick={goToRequirements}
+                    style={{
+                      width: '200px',
+                      margin: '0.5em',
+                      backgroundColor: '#FFB21C',
+                      color: 'black',
+                      border: 'none',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Przejdź do wymagań
+                  </Button>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </Col>
         </Col>
         <Col className='m-0' md={6}>
@@ -248,8 +334,7 @@ function ChapterDetails(props) {
               $bodyColor={props.theme.secondary}
               $headerColor={props.theme.primary}
               $fontColor={props.theme.font}
-              style={{ height: '96.5%' }}
-              className='mt-2'
+              style={{ paddingTop: '2em', borderWidth: '0', margin: 'O !important' }}
             >
               <Card.Header>Lista aktywności</Card.Header>
               <Card.Body className='p-0 mx-100' style={{ overflow: 'auto' }}>
@@ -289,17 +374,36 @@ function ChapterDetails(props) {
                             style={{ opacity: activity.isActivityBlocked ? 0.4 : 1 }}
                           >
                             <td>
-                              <img src={getActivityImg(activity.type)} width={32} height={32} alt='activity img' />
+                              <img
+                                src={getActivityImg(activity.type)}
+                                width={32}
+                                height={32}
+                                alt='activity img'
+                                style={{ padding: '0.2em' }}
+                              />
                             </td>
                             <td>{getActivityTypeName(activity.type)}</td>
                             <td>{activity.title}</td>
                             <td>
                               ({activity.posX}, {activity.posY})
                             </td>
-                            <td>Pkt: {activity.points ?? '-'}</td>
+                            <td style={{ minWidth: '70px' }}>Pkt: {activity.points ?? '-'}</td>
+                            <td>
+                              <FontAwesomeIcon
+                                icon={faPaperclip}
+                                size='lg'
+                                style={{ padding: '0.25em' }}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  startAddingPhoto(activity)
+                                }}
+                              />
+                            </td>
                             <td>
                               <FontAwesomeIcon
                                 icon={faPenToSquare}
+                                size='lg'
+                                style={{ padding: '0.25em' }}
                                 onClick={(e) => {
                                   e.stopPropagation()
                                   startActivityEdition(activity)
@@ -309,6 +413,8 @@ function ChapterDetails(props) {
                             <td>
                               <FontAwesomeIcon
                                 icon={faTrash}
+                                size='lg'
+                                style={{ padding: '0.25em' }}
                                 onClick={(e) => {
                                   e.stopPropagation()
                                   startActivityDeletion(activity)
@@ -326,7 +432,15 @@ function ChapterDetails(props) {
           </Col>
           <ButtonsCol md={12}>
             <Link to={TeacherRoutes.GAME_MANAGEMENT.MAIN}>
-              <Button style={{ backgroundColor: props.theme.warning, borderColor: props.theme.warning }}>Wyjdź</Button>
+              <Button
+                style={{
+                  backgroundColor: props.theme.warning,
+                  borderColor: props.theme.warning,
+                  color: 'black'
+                }}
+              >
+                Wyjdź
+              </Button>
             </Link>
             <Button
               style={{ backgroundColor: props.theme.secondary, borderColor: props.theme.secondary }}
@@ -352,6 +466,13 @@ function ChapterDetails(props) {
           </ButtonsCol>
         </Col>
       </Row>
+
+      <AddPhotoModal
+        showModal={isPhotoModalOpen}
+        setShowModal={setIsPhotoModalOpen}
+        activityId={chosenActivityData?.activityId}
+        activityName={chosenActivityData?.activityName}
+      />
 
       <DeletionModal
         showModal={isDeletionModalOpen}
@@ -429,4 +550,5 @@ function mapStateToProps(state) {
 
   return { theme }
 }
+
 export default connect(mapStateToProps)(ChapterDetails)

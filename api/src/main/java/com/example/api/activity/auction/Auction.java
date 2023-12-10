@@ -6,6 +6,7 @@ import com.example.api.activity.auction.bid.Bid;
 import com.example.api.activity.task.Task;
 import com.example.api.chapter.requirement.model.Requirement;
 import com.example.api.course.Course;
+import com.example.api.file.File;
 import com.example.api.user.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +56,7 @@ public class Auction extends Activity {
                 posY,
                 experience,
                 creationTime,
+                new LinkedList<>(),
                 requirements,
                 isBlocked,
                 professor,

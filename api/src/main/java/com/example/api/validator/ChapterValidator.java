@@ -11,7 +11,7 @@ import com.example.api.chapter.Chapter;
 import com.example.api.chapter.ChapterRepository;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.util.repository.FileRepository;
+import com.example.api.file.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

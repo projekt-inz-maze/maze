@@ -1,4 +1,4 @@
-package com.example.api.util.model;
+package com.example.api.file.image;
 
 public enum ImageType {
     CHAPTER("CHAPTER"),

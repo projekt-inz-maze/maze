@@ -1,7 +1,5 @@
-package com.example.api.util.repository;
+package com.example.api.file.image;
 
-import com.example.api.util.model.Image;
-import com.example.api.util.model.ImageType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
