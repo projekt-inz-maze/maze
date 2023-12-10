@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap'
 
 import styles from './AttachedFiles.module.scss'
 import { AttachedFile } from '../../../../api/types'
+import CombatTaskService from '../../../../services/combatTask.service'
 import { axiosApiGet } from '../../../../utils/axios'
 
 type AttachedFilesProps = {
@@ -13,11 +14,9 @@ type AttachedFilesProps = {
 
 const AttachedFiles = (props: AttachedFilesProps) => {
   const downloadFile = (fileNumber: number) => {
-    // const fileId = props.files[fileNumber].id
-    // axiosApiGet(`http://localhost:8080/api/file?id=${fileId}`)
-    axiosApiGet('http://localhost:8080/api/file?id=1').then((file) => {
-      // download(file, props.files[fileNumber].name)
-      download(file, 'file.png')
+    const fileId = props.files[fileNumber].id
+    CombatTaskService.getCombatFile(fileId).then((file) => {
+      download(file, props.files[fileNumber].name)
     })
   }
 

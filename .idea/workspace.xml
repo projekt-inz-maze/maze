@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-174] refactor: remove comments in code">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/professor/GradeTask/GradeFileTask/GradeFileTask.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/urls.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/urls.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/AttachedFiles/AttachedFiles.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/services/combatTask.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/combatTask.service.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
