@@ -4,11 +4,9 @@ import com.example.api.activity.ActivityType;
 import com.example.api.chapter.requirement.RequirementResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public abstract class MapActivity {
     private Long id;
     private Integer posX;
