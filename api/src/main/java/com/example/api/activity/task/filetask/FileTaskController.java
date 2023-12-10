@@ -19,7 +19,7 @@ public class FileTaskController {
     @GetMapping
     public ResponseEntity<FileTaskDetailsResponse> getFileTaskById(@RequestParam Long fileTaskId)
             throws EntityNotFoundException, WrongUserTypeException {
-        return ResponseEntity.ok().body(fileTaskService.getFileTaskInfo(fileTaskId));
+        return ResponseEntity.ok().body(fileTaskService.getFileTaskDetails(fileTaskId));
     }
 
     @GetMapping("/create")
