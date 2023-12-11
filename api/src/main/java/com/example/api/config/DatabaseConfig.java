@@ -72,6 +72,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Configuration
 @AllArgsConstructor
@@ -89,6 +91,8 @@ public class DatabaseConfig {
     private final HeroRepository heroRepository;
     private final CourseRepository courseRepository;
     private final CourseMemberRepository courseMemberRepository;
+    private final long week = TimeUnit.DAYS.toMillis(7);
+    private final PasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
 
     @Bean
     public CommandLineRunner commandLineRunner(UserService userService, CourseMemberService courseMemberService, ProfessorFeedbackService professorFeedbackService,
@@ -101,13 +105,97 @@ public class DatabaseConfig {
                                                SurveyService surveyService, BadgeService badgeService){
         return args -> {
 
+            Course testCourse = new Course(null,
+                    "Sieci komputerowe",
+                    "Kurs sieci komputerowych w semestrz zimowym 2023",
+                    false,
+                    null);
+            courseRepository.save(testCourse);
+
+            Hero testPriest = new Priest(HeroType.PRIEST, week, testCourse);
+            Hero testRogue = new Rogue(HeroType.ROGUE, week, testCourse);
+            Hero testWarrior = new Warrior(HeroType.WARRIOR, week, testCourse);
+            Hero testWizard = new Wizard(HeroType.WIZARD, week, testCourse);
+            List<Hero> testHeroes = List.of(testPriest, testRogue, testWarrior, testWizard);
+            heroRepository.saveAll(testHeroes);
+
+            List<User> studentsMon13 = createTestUsers("pon13");
+            List<User> studentsMon15 = createTestUsers("pon15");
+            //List<User> studentsFri15 = createTestUsers("pt15");
+            //List<User> studentsFri16 = createTestUsers("pt16");
+            //List<User> studentsFri18 = createTestUsers("pt18");
+
+            User szielinski = new User("szielinski@agh.edu.pl",
+                    "Sławomir",
+                    "Zieliński",
+                    AccountType.PROFESSOR);
+            szielinski.setPassword(passwordEncoder.encode("12345"));
+            userRepository.save(szielinski);
+
+            Group groupMon13 = createGroup("pn-1300", studentsMon13, testCourse, groupService);
+            Group groupMon15 = createGroup("pn-1500", studentsMon15, testCourse, groupService);
+//            Group groupFri15 = createGroup("pt-1500", studentsFri15, testCourse, groupService);
+//            Group groupFri16 = createGroup("pt-1640", studentsFri16, testCourse, groupService);
+//            Group groupFri18 = createGroup("pt-1820", studentsFri18, testCourse, groupService);
+
+            Random rand = new Random();
+            User student;
+
+            for (int i = 0; i < studentsMon13.size(); i++) {
+                student = studentsMon13.get(i);
+                addToGroup(student, groupMon13, testHeroes.get(rand.nextInt(testHeroes.size())));
+            }
+
+            for (int i = 0; i < studentsMon15.size(); i++) {
+                student = studentsMon15.get(i);
+                addToGroup(student, groupMon15, testHeroes.get(rand.nextInt(testHeroes.size())));
+            }
+
+//            for (int i = 0; i < studentsFri15.size(); i++) {
+//                student = studentsFri15.get(i);
+//                addToGroup(student, groupFri15, testHeroes.get(rand.nextInt(testHeroes.size())));
+//            }
+//
+//            for (int i = 0; i < studentsFri16.size(); i++) {
+//                student = studentsFri16.get(i);
+//                addToGroup(student, groupFri16, testHeroes.get(rand.nextInt(testHeroes.size())));
+//            }
+//
+//            for (int i = 0; i < studentsFri18.size(); i++) {
+//                student = studentsFri18.get(i);
+//                addToGroup(student, groupFri18, testHeroes.get(rand.nextInt(testHeroes.size())));
+//            }
+
+            szielinski.getCourses().add(testCourse);
+            testCourse.setOwner(szielinski);
+
+            userRepository.save(szielinski);
+            courseRepository.save(testCourse);
+
+            List<Group> testGroups = new ArrayList<>();
+            testGroups.add(groupMon13);
+            testGroups.add(groupMon15);
+//            testGroups.add(groupFri15);
+//            testGroups.add(groupFri16);
+//            testGroups.add(groupFri18);
+
+            testCourse.setGroups(testGroups);
+            courseRepository.save(testCourse);
+            initAllRanks(testCourse);
+            initBadges(testCourse);
+
+
+            /////////////////////////////////////////////////
+             //////////// PREVIOUS CONFIGURATION ////////////
+            ///////////////////////////////////////////////
+
+
             Course course1 = new Course(null, "course1", "description for course1", false, null);
             Course course2 = new Course(null, "course2", "description for course1", false, null);
             courseRepository.save(course1);
             courseRepository.save(course2);
 
             // HEROES
-            long week = TimeUnit.DAYS.toMillis(7);
             Hero priest = new Priest(HeroType.PRIEST, week, course1);
             Hero priest2 = new Priest(HeroType.PRIEST, week, course2);
             Hero rogue = new Rogue(HeroType.ROGUE, week, course1);
@@ -142,16 +230,13 @@ public class DatabaseConfig {
 
             userRepository.saveAll(students2);
 
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-
             User professor1 = new User("bmaj@agh.edu.pl",
                     "Bernard",
                     "Maj",
                     AccountType.PROFESSOR);
             professor1.setPassword(passwordEncoder.encode("12345"));
 
-            User professor2 = new User("szielinski@agh.edu.pl",
+            User professor2 = new User("notszielinski@agh.edu.pl",
                     "Sławomir",
                     "Zieliński",
                     AccountType.PROFESSOR);
@@ -161,19 +246,9 @@ public class DatabaseConfig {
             userRepository.saveAll(List.of(professor1, professor2));
 
 
-            Group group = new Group();
-            group.setInvitationCode("1111");
-            group.setName("pn-1440-A");
-            group.setUsers(students1);
-            group.setCourse(course1);
-            groupService.saveGroup(group);
+            Group group = createGroup("pn-1440-A", students1, course1, groupService);
 
-            Group group1 = new Group();
-            group1.setInvitationCode("2222");
-            group1.setName("pn-1440-B");
-            group1.setUsers(students2);
-            group1.setCourse(course1);
-            groupService.saveGroup(group1);
+            Group group1 = createGroup("pn-1440-B", students2, course1, groupService);
 
             Group group1course2 = new Group();
             group1course2.setInvitationCode("3333");
@@ -487,6 +562,16 @@ public class DatabaseConfig {
         };
     }
 
+    private static Group createGroup(String name, List<User> students, Course course, GroupService groupService) {
+        Group group = new Group();
+        group.setInvitationCode(name);
+        group.setName(name);
+        group.setUsers(students);
+        group.setCourse(course);
+        groupService.saveGroup(group);
+        return group;
+    }
+
     private void addToGroup(User user, Group group, Hero hero) {
         UserHero userHero = userHero(hero, group.getCourse());
         CourseMember cm = new CourseMember(user, group, userHero);
@@ -545,6 +630,15 @@ public class DatabaseConfig {
 
         requirementRepository.saveAll(requirements);
         return requirements;
+    }
+
+    private List<User> createTestUsers(String prefix) {
+        List<User> students = IntStream.range(1, 16)
+                .mapToObj(no -> createStudent(prefix + no, "Student", String.valueOf(no), no))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        userRepository.saveAll(students);
+        return students;
     }
 
     private void initAllRanks(Course course) throws IOException {
@@ -884,7 +978,6 @@ public class DatabaseConfig {
                                String name,
                                String lastName,
                                Integer indexNumber) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User student = new User(email,
                 name,
                 lastName,
