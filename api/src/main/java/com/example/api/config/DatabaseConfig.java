@@ -105,84 +105,85 @@ public class DatabaseConfig {
                                                SurveyService surveyService, BadgeService badgeService){
         return args -> {
 
-            Course testCourse = new Course(null,
-                    "Sieci komputerowe",
-                    "Kurs sieci komputerowych w semestrz zimowym 2023",
-                    false,
-                    null);
-            courseRepository.save(testCourse);
-
-            Hero testPriest = new Priest(HeroType.PRIEST, week, testCourse);
-            Hero testRogue = new Rogue(HeroType.ROGUE, week, testCourse);
-            Hero testWarrior = new Warrior(HeroType.WARRIOR, week, testCourse);
-            Hero testWizard = new Wizard(HeroType.WIZARD, week, testCourse);
-            List<Hero> testHeroes = List.of(testPriest, testRogue, testWarrior, testWizard);
-            heroRepository.saveAll(testHeroes);
-
-            List<User> studentsMon13 = createTestUsers("pon13");
-            List<User> studentsMon15 = createTestUsers("pon15");
-            //List<User> studentsFri15 = createTestUsers("pt15");
-            //List<User> studentsFri16 = createTestUsers("pt16");
-            //List<User> studentsFri18 = createTestUsers("pt18");
-
-            User szielinski = new User("szielinski@agh.edu.pl",
-                    "Sławomir",
-                    "Zieliński",
-                    AccountType.PROFESSOR);
-            szielinski.setPassword(passwordEncoder.encode("12345"));
-            userRepository.save(szielinski);
-
-            Group groupMon13 = createGroup("pn-1300", studentsMon13, testCourse, groupService);
-            Group groupMon15 = createGroup("pn-1500", studentsMon15, testCourse, groupService);
-//            Group groupFri15 = createGroup("pt-1500", studentsFri15, testCourse, groupService);
-//            Group groupFri16 = createGroup("pt-1640", studentsFri16, testCourse, groupService);
-//            Group groupFri18 = createGroup("pt-1820", studentsFri18, testCourse, groupService);
-
-            Random rand = new Random();
-            User student;
-
-            for (int i = 0; i < studentsMon13.size(); i++) {
-                student = studentsMon13.get(i);
-                addToGroup(student, groupMon13, testHeroes.get(rand.nextInt(testHeroes.size())));
-            }
-
-            for (int i = 0; i < studentsMon15.size(); i++) {
-                student = studentsMon15.get(i);
-                addToGroup(student, groupMon15, testHeroes.get(rand.nextInt(testHeroes.size())));
-            }
-
-//            for (int i = 0; i < studentsFri15.size(); i++) {
-//                student = studentsFri15.get(i);
-//                addToGroup(student, groupFri15, testHeroes.get(rand.nextInt(testHeroes.size())));
+//            Course testCourse = new Course(null,
+//                    "Sieci komputerowe",
+//                    "Kurs sieci komputerowych w semestrz zimowym 2023",
+//                    false,
+//                    null);
+//            courseRepository.save(testCourse);
+//
+//            Hero testPriest = new Priest(HeroType.PRIEST, week, testCourse);
+//            Hero testRogue = new Rogue(HeroType.ROGUE, week, testCourse);
+//            Hero testWarrior = new Warrior(HeroType.WARRIOR, week, testCourse);
+//            Hero testWizard = new Wizard(HeroType.WIZARD, week, testCourse);
+//            List<Hero> testHeroes = List.of(testPriest, testRogue, testWarrior, testWizard);
+//            heroRepository.saveAll(testHeroes);
+//
+//            List<User> studentsMon13 = createTestUsers("pon13");
+//            List<User> studentsMon15 = createTestUsers("pon15");
+//            //List<User> studentsFri15 = createTestUsers("pt15");
+//            //List<User> studentsFri16 = createTestUsers("pt16");
+//            //List<User> studentsFri18 = createTestUsers("pt18");
+//
+//            User szielinski = new User("szielinski@agh.edu.pl",
+//                    "Sławomir",
+//                    "Zieliński",
+//                    AccountType.PROFESSOR);
+//            szielinski.setPassword(passwordEncoder.encode("12345"));
+//            userRepository.save(szielinski);
+//
+//            Group groupMon13 = createGroup("pn-1300", studentsMon13, testCourse, groupService);
+//            Group groupMon15 = createGroup("pn-1500", studentsMon15, testCourse, groupService);
+////            Group groupFri15 = createGroup("pt-1500", studentsFri15, testCourse, groupService);
+////            Group groupFri16 = createGroup("pt-1640", studentsFri16, testCourse, groupService);
+////            Group groupFri18 = createGroup("pt-1820", studentsFri18, testCourse, groupService);
+//
+//            Random rand = new Random();
+//            User student;
+//
+//            for (int i = 0; i < studentsMon13.size(); i++) {
+//                student = studentsMon13.get(i);
+//                addToGroup(student, groupMon13, testHeroes.get(rand.nextInt(testHeroes.size())));
 //            }
 //
-//            for (int i = 0; i < studentsFri16.size(); i++) {
-//                student = studentsFri16.get(i);
-//                addToGroup(student, groupFri16, testHeroes.get(rand.nextInt(testHeroes.size())));
+//            for (int i = 0; i < studentsMon15.size(); i++) {
+//                student = studentsMon15.get(i);
+//                addToGroup(student, groupMon15, testHeroes.get(rand.nextInt(testHeroes.size())));
 //            }
 //
-//            for (int i = 0; i < studentsFri18.size(); i++) {
-//                student = studentsFri18.get(i);
-//                addToGroup(student, groupFri18, testHeroes.get(rand.nextInt(testHeroes.size())));
-//            }
-
-            szielinski.getCourses().add(testCourse);
-            testCourse.setOwner(szielinski);
-
-            userRepository.save(szielinski);
-            courseRepository.save(testCourse);
-
-            List<Group> testGroups = new ArrayList<>();
-            testGroups.add(groupMon13);
-            testGroups.add(groupMon15);
-//            testGroups.add(groupFri15);
-//            testGroups.add(groupFri16);
-//            testGroups.add(groupFri18);
-
-            testCourse.setGroups(testGroups);
-            courseRepository.save(testCourse);
-            initAllRanks(testCourse);
-            initBadges(testCourse);
+////            for (int i = 0; i < studentsFri15.size(); i++) {
+////                student = studentsFri15.get(i);
+////                addToGroup(student, groupFri15, testHeroes.get(rand.nextInt(testHeroes.size())));
+////            }
+////
+////            for (int i = 0; i < studentsFri16.size(); i++) {
+////                student = studentsFri16.get(i);
+////                addToGroup(student, groupFri16, testHeroes.get(rand.nextInt(testHeroes.size())));
+////            }
+////
+////            for (int i = 0; i < studentsFri18.size(); i++) {
+////                student = studentsFri18.get(i);
+////                addToGroup(student, groupFri18, testHeroes.get(rand.nextInt(testHeroes.size())));
+////            }
+//
+//            szielinski.getCourses().add(testCourse);
+//            testCourse.setOwner(szielinski);
+//
+//            userRepository.save(szielinski);
+//            courseRepository.save(testCourse);
+//
+//            List<Group> testGroups = new ArrayList<>();
+//            testGroups.add(groupMon13);
+//            testGroups.add(groupMon15);
+////            testGroups.add(groupFri15);
+////            testGroups.add(groupFri16);
+////            testGroups.add(groupFri18);
+//
+//            testCourse.setGroups(testGroups);
+//            courseRepository.save(testCourse);
+//
+//            initAllRanks(testCourse);
+//            initBadges(testCourse);
 
 
             /////////////////////////////////////////////////
@@ -192,16 +193,23 @@ public class DatabaseConfig {
 
             Course course1 = new Course(null, "course1", "description for course1", false, null);
             Course course2 = new Course(null, "course2", "description for course1", false, null);
+            Course course3 = new Course(null, "Sieci komputerowe", "Kurs przedmiotu sieci komputerowe", false, null);
             courseRepository.save(course1);
             courseRepository.save(course2);
+            courseRepository.save(course3);
 
             // HEROES
             Hero priest = new Priest(HeroType.PRIEST, week, course1);
+            Hero priest3 = new Priest(HeroType.PRIEST, week, course3);
             Hero priest2 = new Priest(HeroType.PRIEST, week, course2);
             Hero rogue = new Rogue(HeroType.ROGUE, week, course1);
+            Hero rogue3 = new Rogue(HeroType.ROGUE, week, course3);
             Hero warrior = new Warrior(HeroType.WARRIOR, week, course1);
+            Hero warrior3 = new Warrior(HeroType.WARRIOR, week, course3);
             Hero wizard = new Wizard(HeroType.WIZARD, week, course1);
+            Hero wizard3 = new Wizard(HeroType.WIZARD, week, course3);
             heroRepository.saveAll(List.of(priest, rogue, wizard, warrior, priest2));
+            heroRepository.saveAll(List.of(priest3, rogue3, wizard3, warrior3));
 
             // USERS & GROUPS
             List<User> students1 = Collections.synchronizedList(new ArrayList<>());
@@ -230,13 +238,53 @@ public class DatabaseConfig {
 
             userRepository.saveAll(students2);
 
+            List<User> students3 = Collections.synchronizedList(new ArrayList<>());
+            List<User> students4 = Collections.synchronizedList(new ArrayList<>());
+            students4.add(createStudent(  "pon131@student.agh.edu.pl", "student", "1", 11));
+            students4.add(createStudent(  "pon132@student.agh.edu.pl", "student", "2", 12));
+            students4.add(createStudent(  "pon133@student.agh.edu.pl", "student", "3", 13));
+            students4.add(createStudent(  "pon134@student.agh.edu.pl", "student", "4", 14));
+            students4.add(createStudent(  "pon135@student.agh.edu.pl", "student", "5", 15));
+            students4.add(createStudent(  "pon136@student.agh.edu.pl", "student", "6", 16));
+            students4.add(createStudent(  "pon137@student.agh.edu.pl", "student", "7", 17));
+            students3.add(createStudent(  "pon138@student.agh.edu.pl", "student", "8", 18));
+            students3.add(createStudent(  "pon139@student.agh.edu.pl", "student", "9", 19));
+            students3.add(createStudent(  "pon1310@student.agh.edu.pl", "student", "10", 110));
+            students3.add(createStudent(  "pon1311@student.agh.edu.pl", "student", "11", 111));
+            students3.add(createStudent(  "pon1312@student.agh.edu.pl", "student", "12", 112));
+            students3.add(createStudent(  "pon1313@student.agh.edu.pl", "student", "13", 113));
+            students3.add(createStudent(  "pon1314@student.agh.edu.pl", "student", "14", 114));
+            students3.add(createStudent(  "pon1315@student.agh.edu.pl", "student", "15", 115));
+            userRepository.saveAll(students3);
+            userRepository.saveAll(students4);
+
+            List<User> students5 = Collections.synchronizedList(new ArrayList<>());
+            List<User> students6 = Collections.synchronizedList(new ArrayList<>());
+            students5.add(createStudent(  "pon151@student.agh.edu.pl", "student", "1", 21));
+            students5.add(createStudent(  "pon152@student.agh.edu.pl", "student", "2", 22));
+            students5.add(createStudent(  "pon153@student.agh.edu.pl", "student", "3", 23));
+            students5.add(createStudent(  "pon154@student.agh.edu.pl", "student", "4", 24));
+            students5.add(createStudent(  "pon155@student.agh.edu.pl", "student", "5", 25));
+            students5.add(createStudent(  "pon156@student.agh.edu.pl", "student", "6", 26));
+            students5.add(createStudent(  "pon157@student.agh.edu.pl", "student", "7", 27));
+            students6.add(createStudent(  "pon158@student.agh.edu.pl", "student", "8", 28));
+            students6.add(createStudent(  "pon159@student.agh.edu.pl", "student", "9", 29));
+            students6.add(createStudent(  "pon1510@student.agh.edu.pl", "student", "10", 210));
+            students6.add(createStudent(  "pon1511@student.agh.edu.pl", "student", "11", 211));
+            students6.add(createStudent(  "pon1512@student.agh.edu.pl", "student", "12", 212));
+            students6.add(createStudent(  "pon1513@student.agh.edu.pl", "student", "13", 213));
+            students6.add(createStudent(  "pon1514@student.agh.edu.pl", "student", "14", 214));
+            students6.add(createStudent(  "pon1515@student.agh.edu.pl", "student", "15", 215));
+            userRepository.saveAll(students5);
+            userRepository.saveAll(students6);
+
             User professor1 = new User("bmaj@agh.edu.pl",
                     "Bernard",
                     "Maj",
                     AccountType.PROFESSOR);
             professor1.setPassword(passwordEncoder.encode("12345"));
 
-            User professor2 = new User("notszielinski@agh.edu.pl",
+            User professor2 = new User("szielinski@agh.edu.pl",
                     "Sławomir",
                     "Zieliński",
                     AccountType.PROFESSOR);
@@ -249,6 +297,12 @@ public class DatabaseConfig {
             Group group = createGroup("pn-1440-A", students1, course1, groupService);
 
             Group group1 = createGroup("pn-1440-B", students2, course1, groupService);
+
+            Group group3 = createGroup("pn-1300a", students3, course3, groupService);
+            Group group4 = createGroup("pn-1300b", students4, course3, groupService);
+
+            Group group5 = createGroup("pn-1500a", students5, course3, groupService);
+            Group group6 = createGroup("pn-1500b", students6, course3, groupService);
 
             Group group1course2 = new Group();
             group1course2.setInvitationCode("3333");
@@ -276,23 +330,65 @@ public class DatabaseConfig {
             addToGroup(students2.get(6), group1, wizard);
             addToGroup(students2.get(7), group1, warrior);
 
+            addToGroup(students3.get(0), group3, priest);
+            addToGroup(students3.get(1), group3, rogue);
+            addToGroup(students3.get(2), group3, wizard);
+            addToGroup(students3.get(3), group3, warrior);
+            addToGroup(students3.get(4), group3, priest);
+            addToGroup(students3.get(5), group3, rogue);
+            addToGroup(students3.get(6), group3, wizard);
+            addToGroup(students3.get(7), group3, warrior);
+
+            addToGroup(students4.get(0), group4, priest);
+            addToGroup(students4.get(1), group4, rogue);
+            addToGroup(students4.get(2), group4, wizard);
+            addToGroup(students4.get(3), group4, warrior);
+            addToGroup(students4.get(4), group4, priest);
+            addToGroup(students4.get(5), group4, rogue);
+            addToGroup(students4.get(6), group4, wizard);
+
+            addToGroup(students5.get(0), group5, priest);
+            addToGroup(students5.get(1), group5, rogue);
+            addToGroup(students5.get(2), group5, wizard);
+            addToGroup(students5.get(3), group5, warrior);
+            addToGroup(students5.get(4), group5, priest);
+            addToGroup(students5.get(5), group5, rogue);
+            addToGroup(students5.get(6), group5, wizard);
+            addToGroup(students5.get(7), group5, warrior);
+
+            addToGroup(students6.get(0), group6, priest);
+            addToGroup(students6.get(1), group6, rogue);
+            addToGroup(students6.get(2), group6, wizard);
+            addToGroup(students6.get(3), group6, warrior);
+            addToGroup(students6.get(4), group6, priest);
+            addToGroup(students6.get(5), group6, rogue);
+            addToGroup(students6.get(6), group6, wizard);
+
             professor1.getCourses().add(course1);
             course1.setOwner(professor1);
 
-            professor2.getCourses().add(course2);
-            course2.setOwner(professor2);
+            professor2.getCourses().add(course3);
+            course3.setOwner(professor2);
 
             userRepository.save(professor1);
             courseRepository.save(course1);
 
             userRepository.save(professor2);
-            courseRepository.save(course2);
+            courseRepository.save(course3);
 
             List<Group> groups = new ArrayList<>();
             groups.add(group);
             groups.add(group1);
             course1.setGroups(groups);
             courseRepository.save(course1);
+
+            List<Group> groups3 = new ArrayList<>();
+            groups.add(group3);
+            groups.add(group4);
+            groups.add(group5);
+            groups.add(group6);
+            course3.setGroups(groups3);
+            courseRepository.save(course3);
 
             course2.setGroups(List.of(group1course2));
             courseRepository.save(course2);
@@ -558,7 +654,9 @@ public class DatabaseConfig {
 
             initAllRanks(course1);
             initAllRanks(course2);
+            initAllRanks(course3);
             initBadges(course1);
+            initBadges(course3);
         };
     }
 
@@ -633,9 +731,11 @@ public class DatabaseConfig {
     }
 
     private List<User> createTestUsers(String prefix) {
-        List<User> students = IntStream.range(1, 16)
-                .mapToObj(no -> createStudent(prefix + no, "Student", String.valueOf(no), no))
-                .collect(Collectors.toCollection(ArrayList::new));
+        List<User> students = new ArrayList<User>();
+        for (int i = 0; i < 15; i++) {
+            User student = createStudent(prefix + i, "Student", String.valueOf(i), i);
+            students.add(student);
+        }
 
         userRepository.saveAll(students);
         return students;
@@ -984,6 +1084,7 @@ public class DatabaseConfig {
                 AccountType.STUDENT);
         student.setPassword(passwordEncoder.encode("12345"));
         student.setIndexNumber(indexNumber);
+        student.setPersonality(new HashMap<>());
         return student;
     }
 
