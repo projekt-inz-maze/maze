@@ -5,6 +5,7 @@ import { Card, Dropdown } from 'react-bootstrap'
 import 'holderjs'
 import style from './CourseCard.module.scss'
 import { Course } from '../../../api/types'
+import { getBackgroundImage } from '../../../utils/constants'
 import { Role } from '../../../utils/userRole'
 import CustomDropdownToggle from '../CustomDropdownToggle/CustomDropdownToggle'
 
@@ -28,7 +29,8 @@ type CourseCardProps = {
 }
 
 const CourseCard = (props: CourseCardProps) => {
-  const cardImg = getRandomImageURL()
+  const cardImg = getBackgroundImage(props.course.id)
+
   return (
     <>
       <Card style={{ width: '14rem' }} className={style.mainCard}>

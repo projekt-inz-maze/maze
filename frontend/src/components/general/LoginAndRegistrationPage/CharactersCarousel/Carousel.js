@@ -4,10 +4,10 @@ import { Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import { CarouselItem, CustomCarousel } from './CarouselStyle'
-import priest from '../../../../utils/resources/heroes/pope-big.png'
-import rogue from '../../../../utils/resources/heroes/rogue-big.png'
-import warrior from '../../../../utils/resources/heroes/warrior-big.png'
-import wizard from '../../../../utils/resources/heroes/wizard-big.png'
+import wizard from '../../../../utils/resources/newHeroes/mage.png'
+import priest from '../../../../utils/resources/newHeroes/priest.png'
+import rogue from '../../../../utils/resources/newHeroes/rouge.png'
+import warrior from '../../../../utils/resources/newHeroes/warrior.png'
 // import gameMapExample from '../../../../storage/resources/game_example.png'
 
 function Carousel(props) {
@@ -15,7 +15,7 @@ function Carousel(props) {
 
   const ItemsList = images.map((image, index) => (
     <CarouselItem key={index}>
-      <img src={image} alt={`slide ${  index}`} height="100%" />
+      <img src={image} alt={`slide ${index}`} height='100%' />
     </CarouselItem>
   ))
 
@@ -29,7 +29,7 @@ function Carousel(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }

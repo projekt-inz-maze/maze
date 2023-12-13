@@ -1,5 +1,3 @@
-export const BASE_URL = 'http://localhost:8080/api'
-
 /* Rule of naming URLs:
  *  METHOD_URL_FULL_PATH (excluding keywords like "set", "get", "put", "post", "add")
  * @examples:
@@ -12,6 +10,8 @@ export const BASE_URL = 'http://localhost:8080/api'
  * */
 
 // User Controller
+import { BASE_URL } from '../api/api'
+
 export const POST_LOGIN = `${BASE_URL}/login`
 export const PUT_PASSWORD_EDITION = `${BASE_URL}/password-edition`
 export const POST_USER_INDEX = `${BASE_URL}/user/index/set`

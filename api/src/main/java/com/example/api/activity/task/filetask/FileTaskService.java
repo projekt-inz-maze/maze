@@ -54,7 +54,7 @@ public class FileTaskService {
         activityValidator.validateActivityIsNotNull(fileTask, id);
         result.setFileTaskId(fileTask.getId());
         result.setName(fileTask.getTitle());
-        result.setDescription(fileTask.getDescription());
+        result.setDescription(fileTask.getRequiredKnowledge());
 
         User student = authService.getCurrentUser();
         userValidator.validateStudentAccount(student);

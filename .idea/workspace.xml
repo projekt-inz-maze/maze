@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-180] feat: add style for fileTask">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="fix: move BASE_URL to api.ts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/CourseCard/CourseCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/CourseCard/CourseCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/general/LoginAndRegistrationPage/CharactersCarousel/Carousel.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/general/LoginAndRegistrationPage/CharactersCarousel/Carousel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameCardPage/GameCardView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/GameCardPage/GameCardView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameCardPage/gameCardContents.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/GameCardPage/gameCardContents.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/constants.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +27,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="MAZE-180" />
+        <entry key="$PROJECT_DIR$" value="development" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,34 +44,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "MAZE-182",
-    "last_opened_file_path": "/home/jkbstepien/projects/work/frontend-prozodia",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "/home/jkbstepien/projects/university/maze/frontend/node_modules/prettier",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/home/jkbstepien/projects/university/maze/frontend/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;MAZE-183&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jkbstepien/projects/work/frontend-prozodia&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/jkbstepien/projects/university/maze/frontend/node_modules/prettier&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/jkbstepien/projects/university/maze/frontend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src/utils/resources" />
+      <recent name="$PROJECT_DIR$/frontend/public" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/StudentSettings" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit" />
-      <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard" />
-      <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -115,6 +117,9 @@
       <workItem from="1701947303810" duration="44000" />
       <workItem from="1701947357758" duration="20808000" />
       <workItem from="1702024615297" duration="7706000" />
+      <workItem from="1702460122677" duration="1733000" />
+      <workItem from="1702463090202" duration="11000" />
+      <workItem from="1702477153194" duration="4489000" />
     </task>
     <task id="LOCAL-00002" summary="[MAZE-111] src: removed slider from `BadgesPage`">
       <option name="closed" value="true" />
@@ -500,13 +505,13 @@
       <option name="project" value="LOCAL" />
       <updated>1702243401086</updated>
     </task>
-    <task id="LOCAL-00050" summary="[MAZE-180] feat: add style for fileTask">
+    <task id="LOCAL-00050" summary="fix: move BASE_URL to api.ts">
       <option name="closed" value="true" />
-      <created>1702249055803</created>
+      <created>1702297145860</created>
       <option name="number" value="00050" />
       <option name="presentableId" value="LOCAL-00050" />
       <option name="project" value="LOCAL" />
-      <updated>1702249055803</updated>
+      <updated>1702297145861</updated>
     </task>
     <option name="localTasksCounter" value="51" />
     <servers />
@@ -577,7 +582,7 @@
     <MESSAGE value="[MAZE-180] feat: add emblems for different personalities" />
     <MESSAGE value="[MAZE-180] feat: correct styling of result img" />
     <MESSAGE value="[MAZE-180] feat: add answerPoints to ActivityDetails.tsx" />
-    <MESSAGE value="[MAZE-180] feat: add style for fileTask" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-180] feat: add style for fileTask" />
+    <MESSAGE value="fix: move BASE_URL to api.ts" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: move BASE_URL to api.ts" />
   </component>
 </project>

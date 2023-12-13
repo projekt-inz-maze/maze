@@ -14,6 +14,10 @@ import rogueImg from './resources/heroes/rogue.png'
 import warriorImg from './resources/heroes/warrior.png'
 import wizardImg from './resources/heroes/wizard.png'
 import killerImg from './resources/killerImg.png'
+import newMage from './resources/newHeroes/mage.png'
+import newPriest from './resources/newHeroes/priest.png'
+import newRogue from './resources/newHeroes/rouge.png'
+import newWarrior from './resources/newHeroes/warrior.png'
 import socializerImg from './resources/socializerImg.png'
 import warrior1 from './resources/warrior/0.png'
 import warrior2 from './resources/warrior/1.png'
@@ -58,6 +62,8 @@ export const GRAPH_NODE_BASIC_SIZE = 20
 export const GRAPH_NODE_SPECIAL_SIZE = 40
 
 export const base64Header = 'data:image/jpeg;base64,'
+
+export const getBackgroundImage = (id) => `/backgrounds/bg_${id % 11}.png`
 
 export const Activity = {
   EXPEDITION: 'EXPEDITION',
@@ -218,10 +224,10 @@ export const HeroDescriptions = {
 }
 
 export const HeroImg = {
-  WARRIOR: warriorImg,
-  WIZARD: wizardImg,
-  PRIEST: priestImg,
-  ROGUE: rogueImg
+  WARRIOR: newWarrior,
+  WIZARD: newMage,
+  PRIEST: newPriest,
+  ROGUE: newRogue
 }
 
 export const HeroDataset = {
