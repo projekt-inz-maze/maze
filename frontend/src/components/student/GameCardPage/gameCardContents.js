@@ -26,12 +26,12 @@ export function GradesStatsContent(props) {
   const percentageValue = allPoints && maxPoints ? Math.round(100 * (allPoints / maxPoints)) : 0
 
   return (
-    <Row className="h-100 d-flex justify-content-center align-items-center">
+    <Row className='h-100 d-flex justify-content-center align-items-center'>
       <Col md={7}>
-        <p>Średni wynik z ekspedycji: {avgGraphTask ?? 0}%</p>
-        <p>Średni wynik z zadań bojowych: {avgFileTask ?? 0}%</p>
-        <p>Ilość wykonanych sondaży: {surveysNumber}</p>
-        <p>Punkty zdobyte w ekspedycjach: {graphTaskPoints}</p>
+        <p className='pb-1'>Średni wynik z ekspedycji: {avgGraphTask ?? 0}%</p>
+        <p className='pb-1'>Średni wynik z zadań bojowych: {avgFileTask ?? 0}%</p>
+        <p className='pb-1'>Ilość wykonanych sondaży: {surveysNumber}</p>
+        <p className='pb-1'>Punkty zdobyte w ekspedycjach: {graphTaskPoints}</p>
         <p>Punkty zdobyte w zadaniach bojowych: {fileTaskPoints}</p>
       </Col>
       <Col md={5}>
@@ -69,30 +69,21 @@ export function LastActivitiesContent(props) {
 }
 
 export function HeroStatsContent(props) {
-  const {
-    heroType = '',
-    experiencePoints = 0,
-    nextLvlPoints = 0,
-    rankName = '',
-    badgesNumber = 0,
-    completedActivities = 0
-  } = props.stats
-
   return (
     <Row
       className={`h-100 d-flex justify-content-center align-items-center ${
         isMobileView() ? 'flex-column' : 'flex-row'
       }`}
     >
-      <Col md={6} className="h-100">
-        <img style={{ maxWidth: '100%' }} height="90%" src={HeroImg[heroType]} alt="Your hero" />
+      <Col md={4} className='h-100'>
+        <img style={{ maxWidth: '100%' }} height='90%' src={HeroImg[props.heroType]} alt='Your hero' />
       </Col>
-      <Col md={6}>
-        <p>Punkty doświadczenia: {experiencePoints}</p>
-        <p>Punkty do kolejnej rangi: {nextLvlPoints}</p>
-        <p>Ranga: {rankName}</p>
-        <p>Zdobytych medali: {badgesNumber}</p>
-        <p>Wykonanych aktywności: {completedActivities}</p>
+      <Col md={7}>
+        <p className='pb-1'>Punkty doświadczenia: {props.stats.experiencePoints}</p>
+        <p className='pb-1'>Punkty do kolejnej rangi: {props.stats.nextLvlPoints}</p>
+        <p className='pb-1'>Ranga: {props.stats.rankName}</p>
+        <p className='pb-1'>Zdobytych medali: {props.stats.badgesNumber}</p>
+        <p>Wykonanych aktywności: {props.stats.completedActivities}</p>
       </Col>
     </Row>
   )
@@ -135,12 +126,12 @@ export function PersonalRankingInfoContent(props) {
   const { data, options } = getChartInfo()
 
   return (
-    <Row className="h-100 d-flex justify-content-center align-items-center">
+    <Row className='h-100 d-flex justify-content-center align-items-center'>
       <ChartCol md={12}>
         {chartType === 'BAR' ? <Bar data={data} options={options} /> : <Pie data={data} options={options} />}
       </ChartCol>
       <Col md={12}>
-        <p className="text-center w-100">{rankComment}</p>
+        <p className='text-center w-100'>{rankComment}</p>
       </Col>
     </Row>
   )

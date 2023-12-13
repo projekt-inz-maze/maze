@@ -13,7 +13,6 @@ import {
 import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
-import { isMobileView } from '../../../utils/mobileHelper'
 import Loader from '../../general/Loader/Loader'
 
 function GameCardView(props) {
@@ -43,7 +42,8 @@ function GameCardView(props) {
                 headerText='Statystyki bohatera'
                 content={
                   <HeroStatsContent
-                    stats={{ ...dashboardStats.heroStats, heroType: dashboardStats.heroTypeStatsDTO.heroType }}
+                    stats={dashboardStats.heroStatsDTO}
+                    heroType={dashboardStats.heroTypeStatsDTO.heroType}
                   />
                 }
               />
@@ -61,7 +61,10 @@ function GameCardView(props) {
                 headerText='Miejsce w rankingu'
                 content={
                   <PersonalRankingInfoContent
-                    stats={{ ...dashboardStats.heroTypeStatsDTO, userPoints: dashboardStats.generalStats.allPoints }}
+                    stats={{
+                      ...dashboardStats.heroTypeStatsDTO,
+                      userPoints: dashboardStats.generalStats.allPoints
+                    }}
                   />
                 }
               />
@@ -84,4 +87,5 @@ function mapStateToProps(state) {
 
   return { theme }
 }
+
 export default connect(mapStateToProps)(GameCardView)
