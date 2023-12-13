@@ -5,6 +5,7 @@ import {
   POST_TASK_FILE_CREATE,
   POST_TASK_FILE_RESULT_FILE
 } from './urls'
+import { BASE_URL } from '../api/api'
 import { axiosApiDelete, axiosApiDownloadFile, axiosApiGet, axiosApiMultipartPost, axiosApiPost } from '../utils/axios'
 
 class CombatTaskService {
@@ -17,7 +18,7 @@ class CombatTaskService {
   }
 
   getCombatFile(fileApiId) {
-    return axiosApiDownloadFile('http://localhost:8080/api/file/download', {
+    return axiosApiDownloadFile(`${BASE_URL}/file/download`, {
       id: fileApiId
     }).catch(() => {})
   }

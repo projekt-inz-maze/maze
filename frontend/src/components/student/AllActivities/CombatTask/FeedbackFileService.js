@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import CombatTaskService from '../../../../services/combatTask.service'
 
 function FeedbackFileService(props) {
-  const {feedbackFile} = props
+  const { feedbackFile } = props
   const downloadFile = () => {
     const fileId = feedbackFile.id
     CombatTaskService.getCombatFile(fileId).then((file) => {
@@ -16,16 +16,16 @@ function FeedbackFileService(props) {
   }
 
   return (
-    <Col className="text-center">
+    <Col>
       <strong>Załączony plik prowadzącego:</strong>
       {!feedbackFile ? (
         <p>Brak pliku</p>
       ) : (
-        <Row className='mt-4'>
-          <Col>{feedbackFile.name}</Col>
+        <Row className='mt-1'>
           <Col>
+            {feedbackFile.name}
             <Button
-              style={{ backgroundColor: props.theme.success, borderColor: props.theme.success }}
+              style={{ backgroundColor: props.theme.warning, borderColor: props.theme.warning }}
               className='ms-2'
               onClick={downloadFile}
             >
@@ -39,7 +39,7 @@ function FeedbackFileService(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }

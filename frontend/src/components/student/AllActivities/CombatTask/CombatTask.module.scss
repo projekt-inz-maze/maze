@@ -1,3 +1,13 @@
+p {
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0.5em;
+}
+
+span {
+  font-weight: bold;
+}
+
 .modalContainer {
   font-family: 'Poppins', sans-serif;
 
@@ -42,12 +52,55 @@
     align-items: center;
   }
 
+  .modalTaskDescription {
+    padding: 0.5em 0.75em;
+
+    .sectionP {
+      padding-top: 1em !important;
+    }
+
+    .lastP {
+      padding-bottom: 1em !important;
+    }
+  }
+
+  .grade {
+    margin-top: 2em;
+    padding: 0.5em 0.75em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .resultFieldCompleted {
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      border-radius: 5px;
+      padding: 1em 1em;
+      margin: 0 3em;
+      min-width: 150px;
+    }
+
+    .resultFieldCompleted {
+      border: 2px solid #34A5BE;
+      background-color: #E0F4F9;
+    }
+
+    .sectionP {
+      padding-top: 1em !important;
+    }
+
+    .lastP {
+      padding-bottom: 1em !important;
+    }
+  }
+
   // Override the default modal styles (border top)
   .modalFooter {
     border-top: none !important;
     padding: 2em;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -85,7 +138,6 @@
     justify-content: center;
     align-items: flex-start;
     font-size: 1.3rem;
-    padding-left: 0.75em;
 
     .typeInfo {
       padding-bottom: 0.25em !important;

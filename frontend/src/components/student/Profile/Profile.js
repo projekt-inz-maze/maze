@@ -53,8 +53,7 @@ function Profile(props) {
       { text: 'Imię', value: user.firstName },
       { text: 'Nazwisko', value: user.lastName },
       { text: 'Email', value: user.email },
-      { text: 'Numer indeksu', value: user.indexNumber },
-      { text: 'Grupa zajęciowa', value: userData.name }
+      { text: 'Numer indeksu', value: user.indexNumber }
     ]
     return (
       <Table>

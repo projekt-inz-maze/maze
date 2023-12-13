@@ -16,4 +16,10 @@ span {
 
 .downloadButton {
   margin-left: 1em;
+  border: none;
+}
+
+.downloadButton:hover {
+  opacity: 0.8;
+  transform: scale(1.01);
 }

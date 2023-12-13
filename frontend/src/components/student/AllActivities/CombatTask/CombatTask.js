@@ -1,39 +1,51 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { faHourglass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { debounce } from 'lodash'
 import { Fade } from 'react-awesome-reveal'
-import { Spinner, Row, Col } from 'react-bootstrap'
+import { Button, Col, Container, Form, Modal, Row, Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
+import styles from './CombatTask.module.scss'
 import { SendTaskButton } from './CombatTaskStyles'
 import FeedbackFileService from './FeedbackFileService'
 import FileService from './FileService'
 import { StudentRoutes } from '../../../../routes/PageRoutes'
 import CombatTaskService from '../../../../services/combatTask.service'
-import { Activity, ERROR_OCCURRED } from '../../../../utils/constants'
+import { Activity } from '../../../../utils/constants'
 import { isMobileView } from '../../../../utils/mobileHelper'
-import { Content } from '../../../App/AppGeneralStyles'
 import GoBackButton from '../../../general/GoBackButton/GoBackButton'
-import Loader from '../../../general/Loader/Loader'
-import { Header, VerticalSpacer, HorizontalSpacer, ActivityDetails } from '../../../general/TaskSharedComponents'
+import { ActivityDetails, Header, HorizontalSpacer, VerticalSpacer } from '../../../general/TaskSharedComponents'
 import { RemarksTextArea } from '../../../professor/ActivityAssessmentDetails/ActivityAssesmentDetailsStyles'
 import AttachedFiles from '../AttachedFiles/AttachedFiles'
 
 const FIELD_DELAY = 600
+const emptyTask = {
+  name: '',
+  description: '',
+  answer: '',
+  taskFiles: [],
+  files: [],
+  feedbackFile: {
+    id: 1,
+    name: ''
+  },
+  fileTaskId: 1
+}
 
 function CombatTask(props) {
   const isMobileDisplay = isMobileView()
 
+  const navigate = useNavigate()
   const location = useLocation()
   const { activityId: taskState } = location.state
 
   const MD_WHEN_TASK_NOT_SENT = 12
   const MD_WHEN_TASK_SENT = 6
 
-  const [task, setTask] = useState(undefined)
+  const [task, setTask] = useState(emptyTask)
   const [fileBlob, setFileBlob] = useState()
   const [fileName, setFileName] = useState()
   const [answer, setAnswer] = useState('')
@@ -68,6 +80,7 @@ function CombatTask(props) {
     CombatTaskService.saveCombatTaskAnswer(taskState, answer, fileName, fileBlob)
       .then(() => {
         resetStates()
+        setTimeout(() => navigate('/courses'), 1000)
       })
       .catch((error) => {
         // if there is an error from the 5XX group, the object can be added anyway, so we do resetState,
@@ -215,9 +228,65 @@ function CombatTask(props) {
   )
 
   return (
-    <Content style={{ color: props.theme.font }}>
-      {task === undefined ? <Loader /> : task == null ? ERROR_OCCURRED : contentBody()}
-    </Content>
+    <Container fluid>
+      <Modal show size='xl' centered fullscreen className={styles.modalContainer}>
+        <Modal.Header className={styles.modalHeader}>
+          <Modal.Title className={styles.modalTitle}>{`Zadanie bojowe: ${task.name}`}</Modal.Title>
+          <button type='button' className={styles.customButtonClose} onClick={() => navigate('/courses')}>
+            {/* Close button content */}
+            <span>&times;</span>
+          </button>
+        </Modal.Header>
+        <Modal.Body>
+          <div className={styles.modalTaskDescription}>
+            <p>
+              <span>Treść:</span>
+            </p>
+            <p className={`text-justify ${styles.lastP}`}>{task.description ?? 'treść oczywista :))'}</p>
+            <AttachedFiles files={task.files} />
+            <Form.Group className='mb-3' controlId='exampleForm.ControlTextarea1'>
+              <Form.Control
+                as='textarea'
+                rows={3}
+                placeholder={`${task.answer ? `Udzieliłeś odpowiedzi: ${task.answer}` : 'Twoja odpowiedź'}`}
+                disabled={task.answer}
+                ref={textAreaRef}
+                onChange={handleAnswerChange}
+                className='mt-3'
+              />
+            </Form.Group>
+            <FileService
+              task={task}
+              setFile={setFileBlob}
+              setFileName={setFileName}
+              setIsFetching={setIsFetching}
+              isFetching={isFetching}
+              isReviewed={isReviewed()}
+            />
+          </div>
+          <div className={styles.grade}>
+            {isReviewed() && (
+              <div className={styles.resultFieldCompleted}>
+                <span>Zdobyte punkty:</span>
+                {task.points ? <p className={styles.lastP}>{task.points}pkt</p> : 'Zadanie niepunktowane'}
+                <span>Uwagi do zadania:</span>
+                {task.remarks ? <p className={styles.lastP}>{task.remarks}</p> : 'Brak uwag'}
+                <FeedbackFileService feedbackFile={task.feedbackFile} />
+              </div>
+            )}
+          </div>
+        </Modal.Body>
+        <Modal.Footer className={styles.modalFooter}>
+          <Button type='button' className={styles.rejectButton} onClick={() => navigate('/courses')}>
+            Powrót
+          </Button>
+          <Button className={`${styles.acceptButton} ${task.answer ? 'disabled' : ''}`} onClick={sendAnswer}>
+            <span>Wyślij</span>
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* {task === undefined ? <Loader /> : task == null ? ERROR_OCCURRED : contentBody()} */}
+    </Container>
   )
 }
 
@@ -226,4 +295,5 @@ function mapStateToProps(state) {
 
   return { theme }
 }
+
 export default connect(mapStateToProps)(CombatTask)

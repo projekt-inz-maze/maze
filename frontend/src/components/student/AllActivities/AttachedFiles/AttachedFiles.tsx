@@ -6,7 +6,6 @@ import { Button } from 'react-bootstrap'
 import styles from './AttachedFiles.module.scss'
 import { AttachedFile } from '../../../../api/types'
 import CombatTaskService from '../../../../services/combatTask.service'
-import { axiosApiGet } from '../../../../utils/axios'
 
 type AttachedFilesProps = {
   files: AttachedFile[]

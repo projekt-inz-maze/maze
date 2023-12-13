@@ -48,6 +48,7 @@ export type ActivityResponse = {
   type: string
   title: string
   points: number
+  awardedPoints: number
   creationTime: string
   description: string
   isFulfilled: boolean
