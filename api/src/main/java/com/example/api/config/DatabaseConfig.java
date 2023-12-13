@@ -191,9 +191,9 @@ public class DatabaseConfig {
             ///////////////////////////////////////////////
 
 
-            Course course1 = new Course(null, "course1", "description for course1", false, null);
-            Course course2 = new Course(null, "course2", "description for course1", false, null);
-            Course course3 = new Course(null, "Sieci komputerowe", "Kurs przedmiotu sieci komputerowe", false, null);
+            Course course1 = new Course(null, "course1", "description for course1", null);
+            Course course2 = new Course(null, "course2", "description for course1", null);
+            Course course3 = new Course(null, "Sieci komputerowe", "Kurs przedmiotu sieci komputerowe", null);
 
             courseRepository.save(course1);
             courseRepository.save(course2);
