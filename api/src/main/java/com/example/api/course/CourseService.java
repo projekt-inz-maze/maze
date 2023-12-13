@@ -39,7 +39,7 @@ public class CourseService {
         boolean courseWithSameName = courseRepository.existsCourseByName(form.getName());
         courseValidator.validatePotentialCourse(courseWithSameName, form);
 
-        Course course = new Course(null, form.getName(), form.getDescription(), false, professor);
+        Course course = new Course(null, form.getName(), form.getDescription(), professor);
         courseRepository.save(course);
 
         List<Hero> heroes = form.getHeroes()

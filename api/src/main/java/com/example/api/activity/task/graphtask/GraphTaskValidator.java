@@ -26,7 +26,7 @@ public class GraphTaskValidator {
     }
 
     public void validateCreateGraphTaskFormFields(CreateGraphTaskForm form) throws RequestValidationException {
-        if (Stream.of(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), form.getRequiredKnowledge(),
+        if (Stream.of(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), form.getTaskContent(),
                 form.getQuestions(), form.getTimeToSolve()).anyMatch(Objects::isNull)) {
             log.error("All CreateGraphTaskForm fields cannot be null");
             throw new RequestValidationException(ExceptionMessage.GRAPH_TASK_FORM_FIELDS_NOT_NULL);
@@ -104,7 +104,7 @@ public class GraphTaskValidator {
             log.error("Answers for question with type SINGLE_CHOICE or MULTIPLE_CHOICE cannot be null and must contain at least 2 elements");
             throw new RequestValidationException(ExceptionMessage.GRAPH_TASK_FIELDS_ANSWERS_SINGLE_MULTIPLE);
         }
-        if (questionForm.getAnswerForOpenedQuestion() != null && !questionForm.getAnswerForOpenedQuestion().equals("")) {
+        if (questionForm.getAnswerForOpenedQuestion() != null && !questionForm.getAnswerForOpenedQuestion().isEmpty()) {
             log.error("AnswerForOpenedQuestion for question type SINGLE_CHOICE or MULTIPLE_CHOICE must be null or empty string");
             throw new RequestValidationException(ExceptionMessage.GRAPH_TASK_FIELDS_ANSWER_SINGLE_MULTIPLE);
         }
@@ -133,18 +133,6 @@ public class GraphTaskValidator {
         } catch (IllegalArgumentException e) {
             log.error("Invalid difficulty. [EASY / MEDIUM / HARD]");
             throw new RequestValidationException(ExceptionMessage.INVALID_DIFFICULTY);
-        }
-    }
-
-    public void validateGraphTaskTitle(String title, List<GraphTask> graphTasks) throws RequestValidationException {
-        int idx = title.indexOf(";");
-        if (idx != -1) {
-            log.error("Title cannot have a semicolon!");
-            throw new RequestValidationException(ExceptionMessage.GRAPH_TASK_TITLE_CONTAINS_SEMICOLON);
-        }
-        if (graphTasks.stream().anyMatch(graphTask -> graphTask.getTitle().equals(title))) {
-            log.error("Graph task has to have unique title");
-            throw new RequestValidationException(ExceptionMessage.GRAPH_TASK_TITLE_NOT_UNIQUE);
         }
     }
 }

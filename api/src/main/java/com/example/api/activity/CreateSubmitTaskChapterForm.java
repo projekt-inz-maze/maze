@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateActivityChapterForm {
+public class CreateSubmitTaskChapterForm {
     @Schema(required = true) private Long chapterId;
     @Schema(required = true) private CreateSubmitTaskForm form;
 }

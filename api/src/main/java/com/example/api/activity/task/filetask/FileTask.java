@@ -25,7 +25,7 @@ public class FileTask extends Task {
 
     public FileTask(CreateFileTaskForm form, User professor, Course course) {
         super(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), professor,
-                form.getRequiredKnowledge(), form.getMaxPoints(), course);
+                form.getTaskContent(), form.getMaxPoints(), course);
         double experience = form.getMaxPoints() * 10;
         super.setExperience(experience);
     }

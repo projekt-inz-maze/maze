@@ -1,6 +1,6 @@
 package com.example.api.activity.submittask;
 
-import com.example.api.activity.CreateActivityChapterForm;
+import com.example.api.activity.CreateSubmitTaskChapterForm;
 import com.example.api.activity.submittask.result.SubmitTaskResult;
 import com.example.api.activity.submittask.result.SubmitTaskResultDTO;
 import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
@@ -45,7 +45,7 @@ public class SubmitTaskService {
     private final SubmitTaskResultRepository submitTaskResultRepository;
     private final FileRepository fileRepository;
 
-    public Long createSubmitTask(CreateActivityChapterForm chapterForm) throws RequestValidationException {
+    public Long createSubmitTask(CreateSubmitTaskChapterForm chapterForm) throws RequestValidationException {
         log.info("Starting the creation of submit task");
         CreateSubmitTaskForm form = chapterForm.getForm();
         Chapter chapter = chapterRepository.findChapterById(chapterForm.getChapterId());
@@ -110,7 +110,7 @@ public class SubmitTaskService {
 
         CreateFileTaskForm fileTask = CreateFileTaskForm.example();
         fileTask.setTitle(result.getSubmittedTitle());
-        fileTask.setRequiredKnowledge(result.getSubmittedContent());
+        fileTask.setTaskContent(result.getSubmittedContent());
         fileTask.setBasedOn(Optional.of(id));
 
         return fileTask;

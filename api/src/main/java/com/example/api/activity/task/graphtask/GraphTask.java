@@ -38,7 +38,7 @@ public class GraphTask extends Task {
                      double maxPoints,
                      Course course){
         super(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), professor,
-                form.getRequiredKnowledge(), maxPoints, course);
+                form.getTaskContent(), maxPoints, course);
         this.questions = questions;
         this.timeToSolveMillis = timeToSolveMillis;
         super.setExperience(maxPoints * 10);

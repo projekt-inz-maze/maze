@@ -30,7 +30,7 @@ public class GraphTaskResponse {
         this.posY = graphTask.getPosY();
         this.experience = graphTask.getExperience();
         this.requirements = graphTask.getRequirements();
-        this.requiredKnowledge = graphTask.getRequiredKnowledge();
+        this.requiredKnowledge = graphTask.getTaskContent();
         this.maxPoints = graphTask.getMaxPoints();
         this.timeToSolveMillis = graphTask.getTimeToSolveMillis();
         this.files = graphTask

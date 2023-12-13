@@ -194,6 +194,7 @@ public class DatabaseConfig {
             Course course1 = new Course(null, "course1", "description for course1", false, null);
             Course course2 = new Course(null, "course2", "description for course1", false, null);
             Course course3 = new Course(null, "Sieci komputerowe", "Kurs przedmiotu sieci komputerowe", false, null);
+
             courseRepository.save(course1);
             courseRepository.save(course2);
             courseRepository.save(course3);
@@ -405,7 +406,7 @@ public class DatabaseConfig {
             graphTask.setQuestions(questions);
             graphTask.setTitle("Dżungla kabli");
             graphTask.setDescription("Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!");
-            graphTask.setRequiredKnowledge("skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą");
+            graphTask.setTaskContent("skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą");
             graphTask.setMaxPoints(60.0);
             graphTask.setExperience(20D);
             graphTask.setTimeToSolveMillis(12 * 60 * 1000L);
@@ -426,7 +427,7 @@ public class DatabaseConfig {
             graphTaskTwo.setQuestions(questions2);
             graphTaskTwo.setTitle("Dżungla kabli II");
             graphTaskTwo.setDescription("Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!");
-            graphTaskTwo.setRequiredKnowledge("skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą");
+            graphTaskTwo.setTaskContent("skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą");
             graphTaskTwo.setMaxPoints(60.0);
             graphTaskTwo.setExperience(25D);
             graphTaskTwo.setTimeToSolveMillis(12 * 60 * 1000L);

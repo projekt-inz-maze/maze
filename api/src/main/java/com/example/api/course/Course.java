@@ -31,8 +31,6 @@ public class Course {
 
     private String description;
 
-    private Boolean isArchived;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
@@ -52,11 +50,10 @@ public class Course {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Chapter> chapters = new LinkedList<>();
 
-    public Course(Long id, String name, String description, Boolean isArchived, User owner) {
+    public Course(Long id, String name, String description, User owner) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.isArchived = isArchived;
         this.owner = owner;
     }
 
