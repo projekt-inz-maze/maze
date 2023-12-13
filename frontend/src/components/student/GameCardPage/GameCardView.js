@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import {Col, Container, Row} from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import GameCard from './GameCard'
@@ -34,13 +34,13 @@ function GameCardView(props) {
       {dashboardStats === undefined ? (
         <Loader />
       ) : dashboardStats == null ? (
-        <p className="text-danger">{ERROR_OCCURRED}</p>
+        <p className='text-danger'>{ERROR_OCCURRED}</p>
       ) : (
         <>
           <Row className='m-0 gy-2'>
             <Col md={5}>
               <GameCard
-                headerText="Statystyki bohatera"
+                headerText='Statystyki bohatera'
                 content={
                   <HeroStatsContent
                     stats={{ ...dashboardStats.heroStats, heroType: dashboardStats.heroTypeStatsDTO.heroType }}
@@ -50,7 +50,7 @@ function GameCardView(props) {
             </Col>
             <Col md={7}>
               <GameCard
-                headerText="Statystyki ocen"
+                headerText='Statystyki ocen'
                 content={<GradesStatsContent stats={dashboardStats.generalStats} />}
               />
             </Col>
@@ -58,7 +58,7 @@ function GameCardView(props) {
           <Row className='m-0 mb-5 m-md-0 pt-3'>
             <Col md={5}>
               <GameCard
-                headerText="Miejsce w rankingu"
+                headerText='Miejsce w rankingu'
                 content={
                   <PersonalRankingInfoContent
                     stats={{ ...dashboardStats.heroTypeStatsDTO, userPoints: dashboardStats.generalStats.allPoints }}
@@ -68,7 +68,7 @@ function GameCardView(props) {
             </Col>
             <Col md={7}>
               <GameCard
-                headerText="Ostatnio dodane aktywności"
+                headerText='Ostatnio dodane aktywności'
                 content={<LastActivitiesContent theme={props.theme} stats={dashboardStats.lastAddedActivities} />}
               />
             </Col>
@@ -80,7 +80,7 @@ function GameCardView(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }
