@@ -117,8 +117,5 @@ public class InfoService {
         updatedUrls.addAll(newUrls);
         info.getImageUrls().clear();
         info.getImageUrls().addAll(updatedUrls);
-
     }
-
-
 }
