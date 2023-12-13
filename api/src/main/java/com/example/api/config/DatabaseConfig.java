@@ -101,8 +101,8 @@ public class DatabaseConfig {
                                                SurveyService surveyService, BadgeService badgeService){
         return args -> {
 
-            Course course1 = new Course(null, "course1", "description for course1", false, null);
-            Course course2 = new Course(null, "course2", "description for course1", false, null);
+            Course course1 = new Course(null, "course1", "description for course1", null);
+            Course course2 = new Course(null, "course2", "description for course1", null);
             courseRepository.save(course1);
             courseRepository.save(course2);
 
