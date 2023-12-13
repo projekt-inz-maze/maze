@@ -17,8 +17,8 @@ import javax.persistence.Entity;
 public class Image extends File {
     private ImageType type;
 
-    public Image(String name, byte[] file, ImageType type, Course course) {
-        super(null, name, course, file);
+    public Image(String name, byte[] file, ImageType type) {
+        super(null, name, file);
         this.type = type;
     }
 }

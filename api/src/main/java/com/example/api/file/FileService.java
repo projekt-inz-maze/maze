@@ -47,7 +47,7 @@ public class FileService {
 
     public void addFile(ActivityFileDTO dto) throws EntityNotFoundException, IOException {
         Activity activity = activityService.getActivity(dto.getActivityId());
-        File file = new File(null, dto.getFileName(), activity.getCourse(), dto.getFile().getBytes());
+        File file = new File(null, dto.getFileName(), dto.getFile().getBytes());
         fileRepository.save(file);
         activityService.addFile(activity, file);
     }

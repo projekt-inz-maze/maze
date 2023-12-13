@@ -76,7 +76,7 @@ public class RankService {
         courseValidator.validateCurrentUserCanAccess(form.getCourseId());
         Course course = courseService.getCourse(form.getCourseId());
         MultipartFile multipartFile = form.getImage();
-        Image image = new Image(form.getName() + " image", multipartFile.getBytes(), ImageType.RANK, course);
+        Image image = new Image(form.getName() + " image", multipartFile.getBytes(), ImageType.RANK);
         imageRepository.save(image);
         Rank rank = new Rank(
                 null,

@@ -86,7 +86,7 @@ public class SubmitTaskService {
         SubmitTaskResult result = new SubmitTaskResult(dto, member, task);
 
         if (dto.getFile() != null) {
-            File file = new File(null, dto.getFileName(), result.getCourse(), dto.getFile().getBytes());
+            File file = new File(null, dto.getFileName(), dto.getFile().getBytes());
             fileRepository.save(file);
             result.getFiles().add(file);
         }

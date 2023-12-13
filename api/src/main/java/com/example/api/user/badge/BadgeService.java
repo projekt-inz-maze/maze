@@ -119,7 +119,7 @@ public class BadgeService {
         BadgeType type = form.getType();
         String title = form.getTitle();
         String description = form.getDescription();
-        Image image = new Image("badge", form.getImage().getBytes(), ImageType.BADGE, null);
+        Image image = new Image("badge", form.getImage().getBytes(), ImageType.BADGE);
         fileRepository.save(image);
         String value = form.getValue();
         Boolean forValue = form.getForValue();

@@ -79,7 +79,7 @@ public class FeedbackValidator {
 
         // Feedback file can be set only once
         if(feedback.getFeedbackFile() == null && form.getFile() != null) {
-            File file = new File(null, form.getFileName(), fileTaskResult.getCourse(), form.getFile().getBytes());
+            File file = new File(null, form.getFileName(), form.getFile().getBytes());
             fileRepository.save(file);
             feedback.setFeedbackFile(file);
         }
