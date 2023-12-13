@@ -25,7 +25,7 @@ import java.util.Optional;
 public abstract class Task extends Activity {
 
     @NotNull
-    private String requiredKnowledge;
+    private String taskContent;
 
     @OneToOne
     private Auction auction;
@@ -35,11 +35,11 @@ public abstract class Task extends Activity {
                 int posX,
                 int posY,
                 User professor,
-                String requiredKnowledge,
+                String taskContent,
                 Double maxPoints,
                 Course course){
         super(name, description, posX, posY, professor, course, maxPoints);
-        this.requiredKnowledge = requiredKnowledge;
+        this.taskContent = taskContent;
     }
 
     public Optional<Auction> getAuction() {

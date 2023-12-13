@@ -22,16 +22,16 @@ import lombok.Setter;
 })
 public abstract class CreateTaskForm extends CreateActivityForm {
     @Schema CreateAuctionDTO auction;
-    @Schema String requiredKnowledge;
+    @Schema String taskContent;
 
 
-    public CreateTaskForm(ActivityType activityType, String title, String description, Integer posX, Integer posY, String requiredKnowledge) {
+    public CreateTaskForm(ActivityType activityType, String title, String description, Integer posX, Integer posY, String taskContent) {
         super(activityType, title, description, posX, posY);
-        this.requiredKnowledge = requiredKnowledge;
+        this.taskContent = taskContent;
     }
 
     public  CreateTaskForm(Task task) {
      super(task);
-     this.requiredKnowledge = task.getRequiredKnowledge();
+     this.taskContent = task.getTaskContent();
     }
 }

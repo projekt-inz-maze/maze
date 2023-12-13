@@ -26,7 +26,7 @@ public class GraphTaskValidator {
     }
 
     public void validateCreateGraphTaskFormFields(CreateGraphTaskForm form) throws RequestValidationException {
-        if (Stream.of(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), form.getRequiredKnowledge(),
+        if (Stream.of(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), form.getTaskContent(),
                 form.getQuestions(), form.getTimeToSolve()).anyMatch(Objects::isNull)) {
             log.error("All CreateGraphTaskForm fields cannot be null");
             throw new RequestValidationException(ExceptionMessage.GRAPH_TASK_FORM_FIELDS_NOT_NULL);

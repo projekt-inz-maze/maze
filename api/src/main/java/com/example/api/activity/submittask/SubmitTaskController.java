@@ -1,6 +1,6 @@
 package com.example.api.activity.submittask;
 
-import com.example.api.activity.CreateActivityChapterForm;
+import com.example.api.activity.CreateSubmitTaskChapterForm;
 import com.example.api.activity.submittask.result.SubmitTaskResultDTO;
 import com.example.api.activity.submittask.result.SubmitTaskResultWithFileDTO;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -28,7 +28,7 @@ public class SubmitTaskController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Long> createSubmitTask(@RequestBody CreateActivityChapterForm form)
+    public ResponseEntity<Long> createSubmitTask(@RequestBody CreateSubmitTaskChapterForm form)
             throws RequestValidationException {
         return ResponseEntity.ok().body(submitTaskService.createSubmitTask(form));
     }

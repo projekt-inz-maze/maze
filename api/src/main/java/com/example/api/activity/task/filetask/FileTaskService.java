@@ -54,7 +54,7 @@ public class FileTaskService {
         activityValidator.validateActivityIsNotNull(fileTask, id);
         result.setFileTaskId(fileTask.getId());
         result.setName(fileTask.getTitle());
-        result.setDescription(fileTask.getRequiredKnowledge());
+        result.setDescription(fileTask.getTaskContent());
 
         User student = authService.getCurrentUser();
         userValidator.validateStudentAccount(student);
@@ -132,7 +132,7 @@ public class FileTaskService {
 
     public void editFileTask(FileTask fileTask, EditFileTaskForm form) {
         CreateFileTaskForm fileTaskForm = (CreateFileTaskForm) form.getActivityBody();
-        fileTask.setRequiredKnowledge(fileTaskForm.getRequiredKnowledge());
+        fileTask.setTaskContent(fileTaskForm.getTaskContent());
         editMaxPoints(fileTask, fileTaskForm.getMaxPoints());
     }
 

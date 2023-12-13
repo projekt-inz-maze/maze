@@ -169,7 +169,7 @@ public class GraphTaskService {
 
     public void editGraphTask(GraphTask graphTask, EditGraphTaskForm form) throws ParseException, RequestValidationException {
         CreateGraphTaskForm graphTaskForm = (CreateGraphTaskForm) form.getActivityBody();
-        graphTask.setRequiredKnowledge(graphTaskForm.getRequiredKnowledge());
+        graphTask.setTaskContent(graphTaskForm.getTaskContent());
 
         if (graphTaskForm.getTimeToSolve() == null) {
             graphTask.setTimeToSolveMillis(null);
