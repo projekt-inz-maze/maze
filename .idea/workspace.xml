@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-180] feat: add answerPoints to ActivityDetails.tsx">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/FileTask/FileTask.module.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/FileTask/FileTask.tsx" afterDir="false" />
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="fix: move BASE_URL to api.ts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/ActivityDetails/ActivityDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/FeedbackFileService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/FeedbackFileService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/FileService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/FileService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/CourseCard/CourseCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/CourseCard/CourseCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/general/LoginAndRegistrationPage/CharactersCarousel/Carousel.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/general/LoginAndRegistrationPage/CharactersCarousel/Carousel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/GameCardPage/GameCardView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/GameCardPage/GameCardView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/constants.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +27,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="MAZE-178" />
+        <entry key="$PROJECT_DIR$" value="development" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -52,7 +49,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;MAZE-180&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;MAZE-183&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/jkbstepien/projects/work/frontend-prozodia&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
@@ -70,11 +67,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/src/utils/resources" />
+      <recent name="$PROJECT_DIR$/frontend/public" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/PersonalityQuiz" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/StudentSettings" />
       <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit" />
-      <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard" />
-      <recent name="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestCard" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -120,14 +117,9 @@
       <workItem from="1701947303810" duration="44000" />
       <workItem from="1701947357758" duration="20808000" />
       <workItem from="1702024615297" duration="7706000" />
-    </task>
-    <task id="LOCAL-00001" summary="[MAZE-111] src: add routing for new map component, removed scrollbar from a few student views">
-      <option name="closed" value="true" />
-      <created>1694616862157</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1694616862157</updated>
+      <workItem from="1702460122677" duration="1733000" />
+      <workItem from="1702463090202" duration="11000" />
+      <workItem from="1702477153194" duration="4489000" />
     </task>
     <task id="LOCAL-00002" summary="[MAZE-111] src: removed slider from `BadgesPage`">
       <option name="closed" value="true" />
@@ -513,7 +505,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702243401086</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="fix: move BASE_URL to api.ts">
+      <option name="closed" value="true" />
+      <created>1702297145860</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1702297145861</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -558,7 +558,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-169] feat: add endpoint for getting user personality" />
     <MESSAGE value="[MAZE-169] refactor: put intro text to constants.js" />
     <MESSAGE value="[MAZE-169] feat: add correct flow of content in quiz modal" />
     <MESSAGE value="[MAZE-169] feat: add quiz form demo using Formik" />
@@ -583,6 +582,7 @@
     <MESSAGE value="[MAZE-180] feat: add emblems for different personalities" />
     <MESSAGE value="[MAZE-180] feat: correct styling of result img" />
     <MESSAGE value="[MAZE-180] feat: add answerPoints to ActivityDetails.tsx" />
-    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-180] feat: add answerPoints to ActivityDetails.tsx" />
+    <MESSAGE value="fix: move BASE_URL to api.ts" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: move BASE_URL to api.ts" />
   </component>
 </project>
