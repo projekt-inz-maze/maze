@@ -11,7 +11,7 @@ import warrior from '../../../../utils/resources/newHeroes/warrior.png'
 // import gameMapExample from '../../../../storage/resources/game_example.png'
 
 function Carousel(props) {
-  const images = [warrior, wizard, priest, rogue] // TODO: use list of images
+  const images = [warrior, wizard, priest, rogue]
 
   const ItemsList = images.map((image, index) => (
     <CarouselItem key={index}>
