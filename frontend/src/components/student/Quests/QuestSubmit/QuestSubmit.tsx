@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 
 import styles from './QuestSubmit.module.scss'
-import { useSubmitTaskMutation } from '../../../../api/apiAuctions'
-import { StudentSubmitRequest } from '../../../../api/types'
+import { POST_SUBMIT_TASK_FILE } from '../../../../services/urls'
+import { axiosApiMultipartPost } from '../../../../utils/axios'
 
 type StudentTaskModalProps = {
   activityId: number
@@ -13,10 +13,10 @@ type StudentTaskModalProps = {
 }
 
 const QuestSubmit = (props: StudentTaskModalProps) => {
-  const [submitTask] = useSubmitTaskMutation<StudentSubmitRequest>()
-
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
+  const [fileBlob, setFileBlob] = useState<Blob>()
+  const [fileName, setFileName] = useState<string>('')
 
   const onTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target?.value ?? '')
@@ -27,14 +27,26 @@ const QuestSubmit = (props: StudentTaskModalProps) => {
   }
 
   const handleSubmitTask = () => {
-    submitTask({
+    axiosApiMultipartPost(POST_SUBMIT_TASK_FILE, {
       id: props.activityId,
       title,
-      content
+      content,
+      file: fileBlob,
+      fileName
+    }).catch((error) => {
+      throw error
     })
     setTitle('')
     setContent('')
     props.onCloseDetails()
+  }
+
+  const saveFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const filename = event.target.value.split(/(\\|\/)/g).pop()
+    setFileName(filename || 'plik')
+    if (event.target.files) {
+      setFileBlob(event.target?.files[0])
+    }
   }
 
   return (
@@ -78,7 +90,7 @@ const QuestSubmit = (props: StudentTaskModalProps) => {
                   <Form.Label>
                     <span>Załączone pliki</span>
                   </Form.Label>
-                  <Form.Control type='file' />
+                  <Form.Control type='file' onChange={saveFile} />
                 </Form.Group>
               </Col>
             </Row>
