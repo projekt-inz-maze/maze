@@ -93,7 +93,9 @@ public class AuctionService {
         } else {
             resolveNoBids(auction);
         }
+
         auction.setResolved(true);
+        repository.save(auction);
     }
 
     private void resolveNoBids(Auction auction) {
