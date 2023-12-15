@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="fix: move BASE_URL to api.ts">
+    <list default="true" id="2d11757b-8247-45a1-b36c-0fde2173a71e" name="Changes" comment="[MAZE-185] fix: student can add files to submit task">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/general/LoginAndRegistrationPage/CharactersCarousel/Carousel.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/general/LoginAndRegistrationPage/CharactersCarousel/Carousel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit/QuestSubmit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestSubmit/QuestSubmit.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/urls.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/urls.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/common/components/Auction/Auction.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/common/components/Auction/Auction.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/CombatTask/CombatTask.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/InfoTask/InfoTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/InfoTask/InfoTask.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/SurveyTask/SurveyTask.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/AllActivities/SurveyTask/SurveyTask.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard/QuestBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/student/Quests/QuestBoard/QuestBoard.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +28,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="development" />
+        <entry key="$PROJECT_DIR$" value="MAZE-185" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -43,27 +45,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "MAZE-185",
-    "last_opened_file_path": "/home/jkbstepien/projects/work/frontend-prozodia",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "/home/jkbstepien/projects/university/maze/frontend/node_modules/prettier",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/home/jkbstepien/projects/university/maze/frontend/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;development&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jkbstepien/projects/work/frontend-prozodia&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/jkbstepien/projects/university/maze/frontend/node_modules/prettier&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/jkbstepien/projects/university/maze/frontend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/frontend/src/utils/resources" />
@@ -120,15 +122,8 @@
       <workItem from="1702463090202" duration="11000" />
       <workItem from="1702477153194" duration="4489000" />
       <workItem from="1702547413762" duration="1310000" />
-      <workItem from="1702565159759" duration="2656000" />
-    </task>
-    <task id="LOCAL-00002" summary="[MAZE-111] src: removed slider from `BadgesPage`">
-      <option name="closed" value="true" />
-      <created>1694616943504</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1694616943504</updated>
+      <workItem from="1702565159759" duration="6289000" />
+      <workItem from="1702631255689" duration="2248000" />
     </task>
     <task id="LOCAL-00003" summary="[MAZE-111] src: removed scrollbar from some professor views, add routes for map">
       <option name="closed" value="true" />
@@ -514,7 +509,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702297145861</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="[MAZE-185] fix: student can add files to submit task">
+      <option name="closed" value="true" />
+      <created>1702575825709</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1702575825709</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -559,7 +562,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[MAZE-169] refactor: put intro text to constants.js" />
     <MESSAGE value="[MAZE-169] feat: add correct flow of content in quiz modal" />
     <MESSAGE value="[MAZE-169] feat: add quiz form demo using Formik" />
     <MESSAGE value="[MAZE-169] feat: add selecting answers in quiz and non-styled results" />
@@ -584,6 +586,7 @@
     <MESSAGE value="[MAZE-180] feat: correct styling of result img" />
     <MESSAGE value="[MAZE-180] feat: add answerPoints to ActivityDetails.tsx" />
     <MESSAGE value="fix: move BASE_URL to api.ts" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: move BASE_URL to api.ts" />
+    <MESSAGE value="[MAZE-185] fix: student can add files to submit task" />
+    <option name="LAST_COMMIT_MESSAGE" value="[MAZE-185] fix: student can add files to submit task" />
   </component>
 </project>

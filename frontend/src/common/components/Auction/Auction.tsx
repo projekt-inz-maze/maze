@@ -20,7 +20,7 @@ const Auction = (props: AuctionProps) => {
 
   const [bidValue, setBidValue] = useState<number>(0)
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const date: Date = new Date(auction?.endDateEpochSeconds ?? 0)
+  const date: Date = new Date(auction?.endDateEpochSeconds ? auction?.endDateEpochSeconds * 1000 : 0)
 
   const handleSetBid = (bid: number) => {
     setErrorMessage('')

@@ -42,14 +42,16 @@ const QuestBoard = () => {
     <div style={{ height: '100%', position: 'relative' }}>
       <Row className='h-100'>
         <Stack direction='horizontal' gap={5} className={style.questStack}>
-          {activities.tasks.map((activity) => (
-            <QuestCard
-              key={activity.id}
-              activity={activity}
-              description={activity.title}
-              isActivityCompleted={activity?.isCompleted}
-            />
-          ))}
+          {activities.tasks
+            .filter((activity) => activity.isFulfilled)
+            .map((activity) => (
+              <QuestCard
+                key={activity.id}
+                activity={activity}
+                description={activity.title}
+                isActivityCompleted={activity?.isCompleted}
+              />
+            ))}
         </Stack>
       </Row>
     </div>

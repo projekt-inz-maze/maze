@@ -80,7 +80,7 @@ function CombatTask(props) {
     CombatTaskService.saveCombatTaskAnswer(taskState, answer, fileName, fileBlob)
       .then(() => {
         resetStates()
-        setTimeout(() => navigate('/courses'), 1000)
+        setTimeout(() => navigate(StudentRoutes.NEW_GAME_MAP.MAIN), 1000)
       })
       .catch((error) => {
         // if there is an error from the 5XX group, the object can be added anyway, so we do resetState,
@@ -232,7 +232,11 @@ function CombatTask(props) {
       <Modal show size='xl' centered fullscreen className={styles.modalContainer}>
         <Modal.Header className={styles.modalHeader}>
           <Modal.Title className={styles.modalTitle}>{`Zadanie bojowe: ${task.name}`}</Modal.Title>
-          <button type='button' className={styles.customButtonClose} onClick={() => navigate('/courses')}>
+          <button
+            type='button'
+            className={styles.customButtonClose}
+            onClick={() => navigate(StudentRoutes.NEW_GAME_MAP.MAIN)}
+          >
             {/* Close button content */}
             <span>&times;</span>
           </button>
@@ -277,7 +281,11 @@ function CombatTask(props) {
           </div>
         </Modal.Body>
         <Modal.Footer className={styles.modalFooter}>
-          <Button type='button' className={styles.rejectButton} onClick={() => navigate('/courses')}>
+          <Button
+            type='button'
+            className={styles.rejectButton}
+            onClick={() => navigate(StudentRoutes.NEW_GAME_MAP.MAIN)}
+          >
             Powrót
           </Button>
           <Button className={`${styles.acceptButton} ${task.answer ? 'disabled' : ''}`} onClick={sendAnswer}>
