@@ -52,8 +52,7 @@ public class TaskService {
         User professor = authService.getCurrentUser();
         Course course = courseService.getCourse(courseId);
         log.info("Fetching all activities that are needed to be evaluated for professor {}", professor.getEmail());
-        return
-        Stream.concat(fileTaskResultRepository.findAllByMember_CourseIsAndActivity_ProfessorIs(course, professor).stream(),
+        return Stream.concat(fileTaskResultRepository.findAllByMember_CourseIsAndActivity_ProfessorIs(course, professor).stream(),
                         submitTaskResultRepository.findAllByMember_CourseIsAndActivity_ProfessorIs(course, professor).stream())
                 .filter(result -> !result.isEvaluated())
                 .collect(Collectors.groupingBy(ActivityResult::getActivity))
@@ -67,7 +66,7 @@ public class TaskService {
 
     public TaskToEvaluateResponse getFirstAnswerToEvaluate(Long id) throws EntityNotFoundException {
         log.info("Fetching first activity that is needed to be evaluated for file task with id {}", id);
-        Activity task = activityRepository.findById(id).orElseThrow(() -> new javax.persistence.EntityNotFoundException("activty not found"));
+        Activity task = activityRepository.findById(id).orElseThrow(() -> new javax.persistence.EntityNotFoundException("activity not found"));
         switch (task.getActivityType()) {
             case TASK -> {
                 return getFirstAnswerToEvaluateForFileTask(task);
@@ -184,5 +183,37 @@ public class TaskService {
 
     public Activity getActivity(Long id) throws EntityNotFoundException {
         return activityRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Activity was not found"));
+    }
+
+    public List<TaskToEvaluateResponse> getAllAnswersToEvaluate(Long courseId) throws EntityNotFoundException {
+            User professor = authService.getCurrentUser();
+            Course course = courseService.getCourse(courseId);
+
+        return Stream.concat(fileTaskResultRepository.findAllByMember_CourseIsAndActivity_ProfessorIs(course, professor).stream(),
+                        submitTaskResultRepository.findAllByMember_CourseIsAndActivity_ProfessorIs(course, professor).stream())
+                .filter(result -> !result.isEvaluated())
+                .map(result -> {
+                    var builder = TaskToEvaluateResponse.builder()
+                            .from(result)
+                            .withUser(result.getMember().getUser())
+                            .withIsLate(false)
+                            .withRemaining(0L);
+
+
+                    if (result instanceof FileTaskResult) {
+                        builder.withUserAnswer( ((FileTaskResult) result).getAnswer())
+                                .withFile(((FileTaskResult) result).getFiles().stream().map(FileResponse::new).toList());
+                    }
+
+                    if (result instanceof SubmitTaskResult) {
+                        builder.withUserTitle( ((SubmitTaskResult) result).getSubmittedTitle())
+                                .withFile(((SubmitTaskResult) result).getFiles().stream().map(FileResponse::new).toList())
+                                .withUserContent(((SubmitTaskResult) result).getSubmittedContent());
+                    }
+
+                    return builder.build();
+                })
+                .toList();
+
     }
 }

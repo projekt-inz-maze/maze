@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Inheritance
+@Inheritance(strategy = InheritanceType.JOINED)
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

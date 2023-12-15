@@ -31,6 +31,12 @@ public class TaskController {
         return ResponseEntity.ok().body(taskService.getFirstAnswerToEvaluate(fileTaskId));
     }
 
+    @GetMapping("/evaluate/support")
+    ResponseEntity<List<TaskToEvaluateResponse>> getAllAnswerToEvaluate(@RequestParam Long courseId)
+            throws EntityNotFoundException {
+        return ResponseEntity.ok().body(taskService.getAllAnswersToEvaluate(courseId));
+    }
+
     @GetMapping("/activities")
     ResponseEntity<List<ActivitiesResponse>> getAllActivities(@RequestParam Long courseId) throws EntityNotFoundException {
         return ResponseEntity.ok().body(taskService.getAllActivities(courseId));
@@ -43,7 +49,7 @@ public class TaskController {
     }
 
     @PostMapping("/requirements/update")
-    ResponseEntity<?> updateRequirementForActivity(@RequestBody ActivityRequirementForm form) throws RequestValidationException, CannotEditRequirementsForAuctionedTaskException {
+    ResponseEntity<?> updateRequirementForActivity(@RequestBody ActivityRequirementForm form) throws RequestValidationException {
         taskService.updateRequirementForActivity(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
