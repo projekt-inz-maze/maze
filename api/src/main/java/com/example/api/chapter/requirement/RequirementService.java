@@ -101,8 +101,54 @@ public class RequirementService {
     }
 
     public List<Requirement> requirementsForAuctionTask(Auction auction, User winner) {
-        Requirement requirement = new StudentsRequirement(auction.getTitle(), true, List.of(winner));
-        requirementRepository.save(requirement);
-        return List.of(requirement);
+        Requirement dateFromRequirement = new DateFromRequirement(
+                MessageManager.DATE_FROM_REQ_NAME,
+                false,
+                null
+        );
+
+        Requirement dateToRequirement = new DateToRequirement(
+                MessageManager.DATE_TO_REQ_NAME,
+                false,
+                null
+        );
+
+        Requirement fileTasksRequirement = new FileTasksRequirement(
+                MessageManager.FILE_TASKS_REQ_NAME,
+                false,
+                new LinkedList<>()
+        );
+        Requirement graphTasksRequirement = new GraphTasksRequirement(
+                MessageManager.GRAPH_TASKS_REQ_NAME,
+                false,
+                new LinkedList<>()
+        );
+
+        Requirement groupsRequirement = new GroupsRequirement(
+                MessageManager.GROUPS_REQ_NAME,
+                false,
+                new LinkedList<>()
+        );
+
+        Requirement minPointsRequirement = new MinPointsRequirement(
+                MessageManager.MIN_POINTS_REQ_NAME,
+                false,
+                null
+        );
+
+        Requirement studentsRequirements =  new StudentsRequirement(auction.getTitle(), true, List.of(winner));
+
+        List<Requirement> requirements = List.of(
+                dateFromRequirement,
+                dateToRequirement,
+                minPointsRequirement,
+                groupsRequirement,
+                studentsRequirements,
+                graphTasksRequirement,
+                fileTasksRequirement
+        );
+
+        requirementRepository.saveAll(requirements);
+        return requirements;
     }
 }
