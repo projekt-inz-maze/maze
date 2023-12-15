@@ -92,7 +92,6 @@ public class SubmitTaskService {
         }
 
         submitTaskResultRepository.save(result);
-
         return result.getId();
     }
 
