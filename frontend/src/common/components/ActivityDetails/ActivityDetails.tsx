@@ -60,11 +60,15 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
               />
               <p>
                 <span>Data otwarcia:</span> <br />
-                {props.startDate !== 0 ? startDate.toLocaleString('en-GB') : 'nie określono'}
+                {props.startDate !== 0 && startDate.toString() !== 'Invalid Date'
+                  ? startDate.toLocaleString('en-GB')
+                  : 'nie określono'}
               </p>
               <p>
                 <span>Data zakończenia:</span> <br />
-                {props.endDate !== 0 ? endDate.toLocaleString('en-GB') : 'nie określono'}
+                {props.endDate !== 0 && endDate.toString() !== 'Invalid Date'
+                  ? endDate.toLocaleString('en-GB')
+                  : 'nie określono'}
               </p>
             </div>
           </div>

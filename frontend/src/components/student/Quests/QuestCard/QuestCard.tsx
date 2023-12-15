@@ -48,10 +48,10 @@ const QuestCard = (props: QuestCardProps) => {
           name={props.activity.title}
           type={props.activity.type}
           startDate={
-            props.activity.requirements.requirements[0].value ? props.activity.requirements.requirements[0].value : 0
+            props.activity.requirements.requirements[0]?.value ? props.activity.requirements.requirements[0].value : 0
           }
           endDate={
-            props.activity.requirements.requirements[1].value ? props.activity.requirements.requirements[1].value : 0
+            props.activity.requirements.requirements[1]?.value ? props.activity.requirements.requirements[1].value : 0
           }
           description={props.activity.description}
           numberOfAttempts={props.isActivityCompleted ? 1 : 0}
@@ -69,10 +69,10 @@ const QuestCard = (props: QuestCardProps) => {
           name={props.activity.title}
           type={props.activity.type}
           startDate={
-            props.activity.requirements.requirements[0].value ? props.activity.requirements.requirements[0].value : 0
+            props.activity.requirements.requirements[0]?.value ? props.activity.requirements.requirements[0].value : 0
           }
           endDate={
-            props.activity.requirements.requirements[1].value ? props.activity.requirements.requirements[1].value : 0
+            props.activity.requirements.requirements[1]?.value ? props.activity.requirements.requirements[1].value : 0
           }
           description={props.activity.description}
           numberOfAttempts={0}
@@ -89,7 +89,7 @@ const QuestCard = (props: QuestCardProps) => {
           onCloseDetails={() => setShowModal(false)}
           points={props.activity.points}
           endDate={
-            props.activity.requirements.requirements[1].value ? props.activity.requirements.requirements[1].value : 0
+            props.activity.requirements.requirements[1]?.value ? props.activity.requirements.requirements[1].value : 0
           }
         />
       )}
