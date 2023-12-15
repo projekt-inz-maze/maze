@@ -277,6 +277,68 @@ public class DatabaseConfig {
             userRepository.saveAll(students5);
             userRepository.saveAll(students6);
 
+            List<User> studentsFri15A = Collections.synchronizedList(new ArrayList<>());
+            List<User> studentsFri15B = Collections.synchronizedList(new ArrayList<>());
+            studentsFri15A.add(createStudent(  "pt151@student.agh.edu.pl", "student", "1", 31));
+            studentsFri15A.add(createStudent(  "pt152@student.agh.edu.pl", "student", "2", 32));
+            studentsFri15A.add(createStudent(  "pt153@student.agh.edu.pl", "student", "3", 33));
+            studentsFri15A.add(createStudent(  "pt154@student.agh.edu.pl", "student", "4", 34));
+            studentsFri15A.add(createStudent(  "pt155@student.agh.edu.pl", "student", "5", 35));
+            studentsFri15A.add(createStudent(  "pt156@student.agh.edu.pl", "student", "6", 36));
+            studentsFri15A.add(createStudent(  "pt157@student.agh.edu.pl", "student", "7", 37));
+            studentsFri15B.add(createStudent(  "pt158@student.agh.edu.pl", "student", "8", 38));
+            studentsFri15B.add(createStudent(  "pt159@student.agh.edu.pl", "student", "9", 39));
+            studentsFri15B.add(createStudent(  "pt1510@student.agh.edu.pl", "student", "10", 310));
+            studentsFri15B.add(createStudent(  "pt1511@student.agh.edu.pl", "student", "11", 311));
+            studentsFri15B.add(createStudent(  "pt1512@student.agh.edu.pl", "student", "12", 312));
+            studentsFri15B.add(createStudent(  "pt1513@student.agh.edu.pl", "student", "13", 313));
+            studentsFri15B.add(createStudent(  "pt1514@student.agh.edu.pl", "student", "14", 314));
+            studentsFri15B.add(createStudent(  "pt1515@student.agh.edu.pl", "student", "15", 315));
+            userRepository.saveAll(studentsFri15A);
+            userRepository.saveAll(studentsFri15B);
+
+            List<User> studentsFri16A = Collections.synchronizedList(new ArrayList<>());
+            List<User> studentsFri16B = Collections.synchronizedList(new ArrayList<>());
+            studentsFri16A.add(createStudent(  "pt161@student.agh.edu.pl", "student", "1", 41));
+            studentsFri16A.add(createStudent(  "pt162@student.agh.edu.pl", "student", "2", 42));
+            studentsFri16A.add(createStudent(  "pt163@student.agh.edu.pl", "student", "3", 43));
+            studentsFri16A.add(createStudent(  "pt164@student.agh.edu.pl", "student", "4", 44));
+            studentsFri16A.add(createStudent(  "pt165@student.agh.edu.pl", "student", "5", 45));
+            studentsFri16A.add(createStudent(  "pt166@student.agh.edu.pl", "student", "6", 46));
+            studentsFri16A.add(createStudent(  "pt167@student.agh.edu.pl", "student", "7", 47));
+            studentsFri16B.add(createStudent(  "pt168@student.agh.edu.pl", "student", "8", 48));
+            studentsFri16B.add(createStudent(  "pt169@student.agh.edu.pl", "student", "9", 49));
+            studentsFri16B.add(createStudent(  "pt1610@student.agh.edu.pl", "student", "10", 410));
+            studentsFri16B.add(createStudent(  "pt1611@student.agh.edu.pl", "student", "11", 411));
+            studentsFri16B.add(createStudent(  "pt1612@student.agh.edu.pl", "student", "12", 412));
+            studentsFri16B.add(createStudent(  "pt1613@student.agh.edu.pl", "student", "13", 413));
+            studentsFri16B.add(createStudent(  "pt1614@student.agh.edu.pl", "student", "14", 414));
+            studentsFri16B.add(createStudent(  "pt1615@student.agh.edu.pl", "student", "15", 415));
+            userRepository.saveAll(studentsFri16A);
+            userRepository.saveAll(studentsFri16B);
+
+
+            List<User> studentsFri18A = Collections.synchronizedList(new ArrayList<>());
+            List<User> studentsFri18B = Collections.synchronizedList(new ArrayList<>());
+            studentsFri18A.add(createStudent(  "pt181@student.agh.edu.pl", "student", "1", 51));
+            studentsFri18A.add(createStudent(  "pt182@student.agh.edu.pl", "student", "2", 52));
+            studentsFri18A.add(createStudent(  "pt183@student.agh.edu.pl", "student", "3", 53));
+            studentsFri18A.add(createStudent(  "pt184@student.agh.edu.pl", "student", "4", 54));
+            studentsFri18A.add(createStudent(  "pt185@student.agh.edu.pl", "student", "5", 55));
+            studentsFri18A.add(createStudent(  "pt186@student.agh.edu.pl", "student", "6", 56));
+            studentsFri18A.add(createStudent(  "pt187@student.agh.edu.pl", "student", "7", 57));
+            studentsFri18B.add(createStudent(  "pt188@student.agh.edu.pl", "student", "8", 58));
+            studentsFri18B.add(createStudent(  "pt189@student.agh.edu.pl", "student", "9", 59));
+            studentsFri18B.add(createStudent(  "pt1810@student.agh.edu.pl", "student", "10", 510));
+            studentsFri18B.add(createStudent(  "pt1811@student.agh.edu.pl", "student", "11", 511));
+            studentsFri18B.add(createStudent(  "pt1812@student.agh.edu.pl", "student", "12", 512));
+            studentsFri18B.add(createStudent(  "pt1813@student.agh.edu.pl", "student", "13", 513));
+            studentsFri18B.add(createStudent(  "pt1814@student.agh.edu.pl", "student", "14", 514));
+            studentsFri18B.add(createStudent(  "pt1815@student.agh.edu.pl", "student", "15", 515));
+            userRepository.saveAll(studentsFri18A);
+            userRepository.saveAll(studentsFri18B);
+
+
             User professor1 = new User("bmaj@agh.edu.pl",
                     "Bernard",
                     "Maj",
@@ -302,6 +364,18 @@ public class DatabaseConfig {
 
             Group group5 = createGroup("pn-1500a", students5, course3, groupService);
             Group group6 = createGroup("pn-1500b", students6, course3, groupService);
+
+
+            Group groupFri15A = createGroup("pt-1500a", studentsFri15A, course3, groupService);
+            Group groupFri15B = createGroup("pt-1500b", studentsFri15B, course3, groupService);
+
+
+            Group groupFri16A = createGroup("pt-1640a", studentsFri16A, course3, groupService);
+            Group groupFri16B = createGroup("pt-1640b", studentsFri16B, course3, groupService);
+
+
+            Group groupFri18A = createGroup("pt-1820a", studentsFri18A, course3, groupService);
+            Group groupFri18B = createGroup("pt-1820b", studentsFri18B, course3, groupService);
 
             Group group1course2 = new Group();
             group1course2.setInvitationCode("3333");
@@ -363,6 +437,56 @@ public class DatabaseConfig {
             addToGroup(students6.get(5), group6, rogue);
             addToGroup(students6.get(6), group6, wizard);
 
+
+            addToGroup(studentsFri15A.get(0), groupFri15A, priest);
+            addToGroup(studentsFri15A.get(1), groupFri15A, rogue);
+            addToGroup(studentsFri15A.get(2), groupFri15A, wizard);
+            addToGroup(studentsFri15A.get(3), groupFri15A, warrior);
+            addToGroup(studentsFri15A.get(4), groupFri15A, priest);
+            addToGroup(studentsFri15A.get(5), groupFri15A, rogue);
+            addToGroup(studentsFri15A.get(6), groupFri15A, wizard);
+            addToGroup(studentsFri15A.get(7), groupFri15A, warrior);
+            addToGroup(studentsFri15B.get(0), groupFri15B, priest);
+            addToGroup(studentsFri15B.get(1), groupFri15B, rogue);
+            addToGroup(studentsFri15B.get(2), groupFri15B, wizard);
+            addToGroup(studentsFri15B.get(3), groupFri15B, warrior);
+            addToGroup(studentsFri15B.get(4), groupFri15B, priest);
+            addToGroup(studentsFri15B.get(5), groupFri15B, rogue);
+            addToGroup(studentsFri15B.get(6), groupFri15B, wizard);
+
+            addToGroup(studentsFri16A.get(0), groupFri16A, priest);
+            addToGroup(studentsFri16A.get(1), groupFri16A, rogue);
+            addToGroup(studentsFri16A.get(2), groupFri16A, wizard);
+            addToGroup(studentsFri16A.get(3), groupFri16A, warrior);
+            addToGroup(studentsFri16A.get(4), groupFri16A, priest);
+            addToGroup(studentsFri16A.get(5), groupFri16A, rogue);
+            addToGroup(studentsFri16A.get(6), groupFri16A, wizard);
+            addToGroup(studentsFri16A.get(7), groupFri16A, warrior);
+            addToGroup(studentsFri16B.get(0), groupFri16B, priest);
+            addToGroup(studentsFri16B.get(1), groupFri16B, rogue);
+            addToGroup(studentsFri16B.get(2), groupFri16B, wizard);
+            addToGroup(studentsFri16B.get(3), groupFri16B, warrior);
+            addToGroup(studentsFri16B.get(4), groupFri16B, priest);
+            addToGroup(studentsFri16B.get(5), groupFri16B, rogue);
+            addToGroup(studentsFri16B.get(6), groupFri16B, wizard);
+
+            addToGroup(studentsFri18A.get(0), groupFri18A, priest);
+            addToGroup(studentsFri18A.get(1), groupFri18A, rogue);
+            addToGroup(studentsFri18A.get(2), groupFri18A, wizard);
+            addToGroup(studentsFri18A.get(3), groupFri18A, warrior);
+            addToGroup(studentsFri18A.get(4), groupFri18A, priest);
+            addToGroup(studentsFri18A.get(5), groupFri18A, rogue);
+            addToGroup(studentsFri18A.get(6), groupFri18A, wizard);
+            addToGroup(studentsFri18A.get(7), groupFri18A, warrior);
+            addToGroup(studentsFri18B.get(0), groupFri18B, priest);
+            addToGroup(studentsFri18B.get(1), groupFri18B, rogue);
+            addToGroup(studentsFri18B.get(2), groupFri18B, wizard);
+            addToGroup(studentsFri18B.get(3), groupFri18B, warrior);
+            addToGroup(studentsFri18B.get(4), groupFri18B, priest);
+            addToGroup(studentsFri18B.get(5), groupFri18B, rogue);
+            addToGroup(studentsFri18B.get(6), groupFri18B, wizard);
+
+
             professor1.getCourses().add(course1);
             course1.setOwner(professor1);
 
@@ -386,6 +510,12 @@ public class DatabaseConfig {
             groups.add(group4);
             groups.add(group5);
             groups.add(group6);
+            groups.add(groupFri15A);
+            groups.add(groupFri15B);
+            groups.add(groupFri16A);
+            groups.add(groupFri16A);
+            groups.add(groupFri18A);
+            groups.add(groupFri18B);
             course3.setGroups(groups3);
             courseRepository.save(course3);
 
