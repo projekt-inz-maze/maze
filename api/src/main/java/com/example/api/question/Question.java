@@ -46,9 +46,6 @@ public class Question {
     @Nullable
     private String answerForOpenedQuestion;
 
-    @ManyToOne
-    private Course course;
-
     public Question(QuestionType type,
                     String content,
                     String hint,
@@ -56,8 +53,7 @@ public class Question {
                     List<Option> options,
                     Double points,
                     List<Question> next,
-                    @Nullable String answerForOpenedQuestion,
-                    Course course) {
+                    @Nullable String answerForOpenedQuestion) {
         this.type = type;
         this.content = content;
         this.hint = hint;
@@ -66,7 +62,6 @@ public class Question {
         this.points = points;
         this.next = next;
         this.answerForOpenedQuestion = answerForOpenedQuestion;
-        this.course = course;
     }
 
     // Only for QuestionType.OPENED

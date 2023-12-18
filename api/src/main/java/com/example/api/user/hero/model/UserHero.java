@@ -17,7 +17,4 @@ public class UserHero {
     private Hero hero;
     private Integer timesSuperPowerUsedInResult;
     private Long lastSuperPowerUsageTimeMillis;
-
-    @ManyToOne
-    private Course course;
 }

@@ -14,6 +14,6 @@ import java.util.List;
 public interface AdditionalPointsRepository extends JpaRepository<AdditionalPoints, Long> {
     List<AdditionalPoints> findAllByMember(CourseMember member);
 
-    @Query("SELECT ap FROM AdditionalPoints ap WHERE ap.member.user = ?1 AND ap.course = ?2")
+    @Query("SELECT ap FROM AdditionalPoints ap WHERE ap.member.user = ?1 AND ap.member.course = ?2")
     List<AdditionalPoints> findAllByUserAndCourse(User user, Course course);
 }

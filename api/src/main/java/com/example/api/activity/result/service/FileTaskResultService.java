@@ -57,7 +57,6 @@ public class FileTaskResultService {
             result.setFileTask(fileTaskRepository.findFileTaskById(form.getFileTaskId()));
             result.setSendDateMillis(System.currentTimeMillis());
             result.setMember(user.getCourseMember(task.getCourse().getId(), true));
-            result.setCourse(task.getCourse());
             result.setEvaluated(false);
         }
 

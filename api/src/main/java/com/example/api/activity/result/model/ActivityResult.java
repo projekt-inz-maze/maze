@@ -26,9 +26,6 @@ public abstract class ActivityResult {
     @ManyToOne
     public CourseMember member;
 
-    @ManyToOne
-    protected Course course;
-
     protected Double points;
 
     @CreationTimestamp
@@ -47,20 +44,18 @@ public abstract class ActivityResult {
 
     public ActivityResult(Long id, Double points, Long sendDateMillis, Course course, CourseMember courseMember)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        this(points, sendDateMillis, course, courseMember);
+        this(points, sendDateMillis, courseMember);
         this.id = id;
     }
 
-    public ActivityResult(Double points, Long sendDateMillis, Course course, CourseMember courseMember) {
+    public ActivityResult(Double points, Long sendDateMillis, CourseMember courseMember) {
         this.sendDateMillis = sendDateMillis;
-        this.course = course;
         this.member = courseMember;
         this.setPoints(points);
     }
 
     public ActivityResult(CourseMember courseMember, Activity activity) {
         this.sendDateMillis = Instant.now().toEpochMilli();
-        this.course = courseMember.getCourse();
         this.member = courseMember;
         this.activity = activity;
         this.points = 0D;
