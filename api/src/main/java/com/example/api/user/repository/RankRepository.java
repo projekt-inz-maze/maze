@@ -12,5 +12,6 @@ import java.util.List;
 public interface RankRepository extends JpaRepository<Rank, Long> {
     Rank findRankById(Long id);
     List<Rank> findAllByCourseIs(Course course);
+    List<Rank> findAllByHeroTypeAndAndCourse_Id(HeroType type, Long courseId);
     List<Rank> findAllByCourseIsAndHeroTypeIs(Course course, HeroType heroType);
 }

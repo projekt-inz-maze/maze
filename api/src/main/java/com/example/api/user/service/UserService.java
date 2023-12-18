@@ -1,5 +1,6 @@
 package com.example.api.user.service;
 
+import com.example.api.activity.ActivityRepository;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.course.coursemember.CourseMemberService;
 import com.example.api.course.StudentNotEnrolledException;
@@ -48,10 +49,6 @@ import java.util.stream.Stream;
 @Transactional
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final GraphTaskRepository graphTaskRepository;
-    private final FileTaskRepository fileTaskRepository;
-    private final SurveyRepository surveyRepository;
-    private final InfoRepository infoRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
     private final LoggedInUserService authService;
     private final PasswordEncoder passwordEncoder;
@@ -61,6 +58,7 @@ public class UserService implements UserDetailsService {
     private final GroupService groupService;
     private final CourseMemberService courseMemberService;
     private final HeroRepository heroRepository;
+    private final ActivityRepository activityRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -236,16 +234,9 @@ public class UserService implements UserDetailsService {
     }
 
     private void changeUserForActivitiesAndAdditionalPoints(User from, User to){
-        Stream.of(graphTaskRepository.findAll(),
-                        fileTaskRepository.findAll(),
-                        surveyRepository.findAll(),
-                        infoRepository.findAll())
-                .flatMap(Collection::stream)
-                .filter(activity -> activity.getProfessor() == from)
-                .forEach(activity -> activity.setProfessor(to));
-        additionalPointsRepository.findAll()
-                .stream()
-                .filter(additionalPoint -> additionalPoint.getProfessorEmail().equals(from.getEmail()))
+        activityRepository.findAllByProfessor(from).forEach(activity -> activity.setProfessor(to));
+
+        additionalPointsRepository.findAllByProfessorEmail(from.getEmail())
                 .forEach(additionalPoint -> additionalPoint.setProfessorEmail(to.getEmail()));
     }
 
