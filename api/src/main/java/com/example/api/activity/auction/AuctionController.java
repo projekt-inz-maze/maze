@@ -21,7 +21,7 @@ public class AuctionController {
     }
 
     @PostMapping("/bid")
-    public ResponseEntity<?> bidForAuction(@RequestBody BidDTO bid) throws WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
+    public ResponseEntity<?> bidForAuction(@RequestBody BidDTO bid) throws WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException, BidTooLowException {
         auctionService.bidForAuction(bid);
         return ResponseEntity.ok().body(null);
     }
