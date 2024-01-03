@@ -4,11 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.api.group.GroupNameDTO;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.dto.request.*;
 import com.example.api.user.dto.response.BasicStudent;
 import com.example.api.error.exception.*;
 import com.example.api.group.Group;
+import com.example.api.user.dto.response.UserDTO;
 import com.example.api.user.model.User;
 import com.example.api.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,13 +50,13 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/user/current")
-    public ResponseEntity<User> getCurrentUser() {
-        return ResponseEntity.ok().body(authService.getCurrentUser());
+    public ResponseEntity<UserDTO> getCurrentUser() {
+        return ResponseEntity.ok().body(new UserDTO(authService.getCurrentUser()));
     }
 
     @GetMapping("/user/group")
-    public ResponseEntity<Group> getUserGroup(@RequestParam Long courseId) throws EntityNotFoundException {
-        return ResponseEntity.ok().body(userService.getCurrentUserGroup(courseId));
+    public ResponseEntity<GroupNameDTO> getUserGroup(@RequestParam Long courseId) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(new GroupNameDTO(userService.getCurrentUserGroup(courseId).getName()));
     }
 
     @GetMapping("/token/refresh")
@@ -90,13 +92,13 @@ public class UserController {
     }
 
     @PostMapping("/user/group/set")
-    public ResponseEntity<Group> setUserGroup(@RequestBody SetStudentGroupForm setStudentGroupForm)
+    public ResponseEntity<GroupNameDTO> setUserGroup(@RequestBody SetStudentGroupForm setStudentGroupForm)
             throws WrongUserTypeException, EntityNotFoundException {
-        return ResponseEntity.ok().body(userService.updateStudentGroup(setStudentGroupForm));
+        return ResponseEntity.ok().body(new GroupNameDTO(userService.updateStudentGroup(setStudentGroupForm).getName()));
     }
 
     @PostMapping("/user/group/join")
-    public ResponseEntity<Group> joinGroup(@RequestBody JoinGroupDTO dto)
+    public ResponseEntity<?> joinGroup(@RequestBody JoinGroupDTO dto)
             throws WrongUserTypeException, EntityNotFoundException {
         userService.addUserToGroup(dto.getInvitationCode(), dto.getHeroType());
         return ResponseEntity.ok().build();

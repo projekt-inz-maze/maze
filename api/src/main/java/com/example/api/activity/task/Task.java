@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -21,13 +23,14 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Task extends Activity {
 
     @NotNull
     private String taskContent;
 
     @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Auction auction;
 
     public Task(String name,

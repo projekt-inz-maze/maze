@@ -22,6 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@DiscriminatorColumn(name = "activity_activitytype")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Activity {
     @TableGenerator(name = "myGen", table = "ID_GEN", pkColumnName = "GEN_KEY", valueColumnName = "GEN_VALUE", pkColumnValue = "NEXT_ID", allocationSize = 1)
@@ -40,7 +41,9 @@ public abstract class Activity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<File> files = new LinkedList<>();
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Requirement> requirements = new LinkedList<>();
     private Boolean isBlocked = true;
 
@@ -53,6 +56,7 @@ public abstract class Activity {
 
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
 
     private Double maxPoints;

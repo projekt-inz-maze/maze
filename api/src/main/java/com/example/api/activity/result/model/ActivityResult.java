@@ -9,6 +9,8 @@ import com.example.api.error.exception.WrongUserTypeException;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -24,6 +26,7 @@ public abstract class ActivityResult {
     protected Long id;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public CourseMember member;
 
     protected Double points;
@@ -35,6 +38,7 @@ public abstract class ActivityResult {
 
     @ManyToOne
     @JoinColumn(name = "activity_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Activity activity;
 
     public ActivityResult() {

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.ManyToOne;
 
@@ -14,6 +16,7 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 public class UserHero {
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Hero hero;
     private Integer timesSuperPowerUsedInResult;
     private Long lastSuperPowerUsageTimeMillis;

@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -30,7 +32,7 @@ public class Chapter {
     @OneToOne
     private Chapter nextChapter;
 
-    @OneToOne
+    @OneToOne(cascade=CascadeType.REMOVE, orphanRemoval = true)
     private ActivityMap activityMap;
 
     @OneToMany
@@ -39,6 +41,7 @@ public class Chapter {
 
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
 
     public Chapter(String name, ActivityMap activityMap, Integer posX, Integer poxY, Course course) {
