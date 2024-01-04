@@ -79,9 +79,8 @@ public class TaskService {
     }
 
     private TaskToEvaluateResponse getFirstAnswerToEvaluateForFileTask(Activity task) {
-        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAll()
+        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByActivity(task)
                 .stream()
-                .filter(result -> Objects.equals(result.getFileTask().getId(), task.getId()))
                 .filter(result -> !result.isEvaluated())
                 .toList();
 

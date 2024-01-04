@@ -3,10 +3,7 @@ package com.example.api.file;
 import com.example.api.activity.Activity;
 import com.example.api.activity.ActivityService;
 import com.example.api.error.exception.EntityNotFoundException;
-import com.example.api.file.image.ChapterImageResponse;
-import com.example.api.file.image.Image;
-import com.example.api.file.image.ImageRepository;
-import com.example.api.file.image.ImageType;
+import com.example.api.file.image.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -35,14 +32,14 @@ public class FileService {
                 .toList();
     }
 
-    public Image getImage(Long id) throws EntityNotFoundException {
+    public ImageDTO getImage(Long id) throws EntityNotFoundException {
         log.info("Fetching image with id {}", id);
         Image image = imageRepository.findImageById(id);
         if (image == null) {
             log.error("Image with given id {} was not found", id);
             throw new EntityNotFoundException("Image with given id " + id + " was not found");
         }
-        return image;
+        return new ImageDTO(image);
     }
 
     public void addFile(ActivityFileDTO dto) throws EntityNotFoundException, IOException {

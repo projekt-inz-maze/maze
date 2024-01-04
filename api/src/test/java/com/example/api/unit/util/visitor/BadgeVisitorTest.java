@@ -101,13 +101,6 @@ public class BadgeVisitorTest {
         surveyResult.setMember(member);
         additionalPoints.setMember(member);
 
-        graphTaskResult1.setCourse(course);
-        graphTaskResult2.setCourse(course);
-        fileTaskResult1.setCourse(course);
-        fileTaskResult2.setCourse(course);
-        surveyResult.setCourse(course);
-        additionalPoints.setCourse(course);
-
         graphTaskResult1.setPoints(100d);
         graphTaskResult2.setPoints(20d);
         fileTaskResult1.setPoints(80d);
@@ -441,7 +434,6 @@ public class BadgeVisitorTest {
         GraphTaskResult graphTaskResult = new GraphTaskResult();
         graphTaskResult.setMember(member);
         graphTaskResult.setPoints(20d);
-        graphTaskResult.setCourse(course);
         results.add(graphTaskResult);
 
         List<User> users = List.of(new User(), new User(), new User(), new User(), new User());

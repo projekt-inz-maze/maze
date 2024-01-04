@@ -18,12 +18,6 @@ import javax.naming.TimeLimitExceededException;
 public class QuestionController {
     private final QuestionService questionService;
 
-    @GetMapping
-    public ResponseEntity<Question> getQuestion(@RequestParam Long questionId)
-            throws EntityNotFoundException {
-        return ResponseEntity.ok().body(questionService.getQuestion(questionId));
-    }
-
     @GetMapping("/get-info")
     public ResponseEntity<QuestionInfoResponse> getQuestionInfo(@RequestParam Long graphTaskId)
             throws RequestValidationException {

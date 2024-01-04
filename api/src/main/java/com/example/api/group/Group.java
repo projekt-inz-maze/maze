@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -36,13 +38,13 @@ public class Group {
     private List<User> users = Collections.synchronizedList(new ArrayList<>());
 
     @OneToMany(mappedBy = "group")
-    @JsonBackReference
     private List<CourseMember> members = Collections.synchronizedList(new ArrayList<>());
 
     private String invitationCode;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
 
     public Group(Long id, String name, String invitationCode, Course course) {

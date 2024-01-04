@@ -11,6 +11,8 @@ import com.example.api.user.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -31,7 +33,9 @@ public class Auction extends Activity {
     private Double maxBidding;
     private Double minScoreToGetPoints;
     private LocalDateTime resolutionDate;
-    @OneToOne private Task task;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToOne
+    private Task task;
     @OneToOne private Bid highestBid;
 
     public Auction(Long id,

@@ -67,7 +67,7 @@ public class AuctionService {
                 );
     }
 
-    public void bidForAuction(BidDTO dto) throws WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException {
+    public void bidForAuction(BidDTO dto) throws WrongUserTypeException, StudentNotEnrolledException, AuctionHasBeenResolvedException, BidTooLowException {
         Auction auction = repository.findById(dto.auctionId()).orElseThrow(EntityNotFoundException::new);
         CourseMember courseMember = userService
                 .getCurrentUserAndValidateStudentAccount()
@@ -75,6 +75,10 @@ public class AuctionService {
 
         if (auction.isResolved()) {
             throw new AuctionHasBeenResolvedException(auction.getResolutionDate());
+        }
+
+        if (dto.bidValue() <= auction.currentMinBiddingValue()) {
+            throw new BidTooLowException();
         }
 
         Bid bid = bidRepository.findByActivityAndMember(auction, courseMember)

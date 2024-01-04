@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.action.internal.OrphanRemovalAction;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -32,34 +33,28 @@ public class ActivityMap {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<GraphTask> graphTasks = new LinkedList<>();
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<FileTask> fileTasks = new LinkedList<>();
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Info> infos = new LinkedList<>();
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Survey> surveys = new LinkedList<>();
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Auction> auctions = new LinkedList<>();
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SubmitTask> submitTasks = new LinkedList<>();
 
     private Integer mapSizeX;

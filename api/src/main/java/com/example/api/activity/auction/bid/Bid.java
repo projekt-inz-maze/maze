@@ -18,7 +18,7 @@ import java.time.Instant;
 public class Bid extends ActivityResult {
 
     public Bid(CourseMember member, Activity auction, Double points) {
-        super(points, Instant.now().toEpochMilli(), auction.getCourse(), member);
+        super(points, Instant.now().toEpochMilli(), member);
         this.activity = auction;
     }
 

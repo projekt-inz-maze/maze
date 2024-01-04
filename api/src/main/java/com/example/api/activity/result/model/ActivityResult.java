@@ -9,6 +9,8 @@ import com.example.api.error.exception.WrongUserTypeException;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -24,10 +26,8 @@ public abstract class ActivityResult {
     protected Long id;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public CourseMember member;
-
-    @ManyToOne
-    protected Course course;
 
     protected Double points;
 
@@ -38,6 +38,7 @@ public abstract class ActivityResult {
 
     @ManyToOne
     @JoinColumn(name = "activity_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Activity activity;
 
     public ActivityResult() {
@@ -47,20 +48,18 @@ public abstract class ActivityResult {
 
     public ActivityResult(Long id, Double points, Long sendDateMillis, Course course, CourseMember courseMember)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
-        this(points, sendDateMillis, course, courseMember);
+        this(points, sendDateMillis, courseMember);
         this.id = id;
     }
 
-    public ActivityResult(Double points, Long sendDateMillis, Course course, CourseMember courseMember) {
+    public ActivityResult(Double points, Long sendDateMillis, CourseMember courseMember) {
         this.sendDateMillis = sendDateMillis;
-        this.course = course;
         this.member = courseMember;
         this.setPoints(points);
     }
 
     public ActivityResult(CourseMember courseMember, Activity activity) {
         this.sendDateMillis = Instant.now().toEpochMilli();
-        this.course = courseMember.getCourse();
         this.member = courseMember;
         this.activity = activity;
         this.points = 0D;

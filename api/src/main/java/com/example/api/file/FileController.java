@@ -3,6 +3,7 @@ package com.example.api.file;
 import com.example.api.file.image.ChapterImageResponse;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.file.image.Image;
+import com.example.api.file.image.ImageDTO;
 import com.example.api.util.RequestInterceptor;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class FileController {
     }
 
     @GetMapping
-    public ResponseEntity<Image> getImage(@RequestParam Long id) throws EntityNotFoundException {
+    public ResponseEntity<ImageDTO> getImage(@RequestParam Long id) throws EntityNotFoundException {
         return ResponseEntity.ok().body(fileService.getImage(id));
     }
 

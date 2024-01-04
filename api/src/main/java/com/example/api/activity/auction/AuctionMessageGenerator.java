@@ -13,4 +13,8 @@ public class AuctionMessageGenerator {
         return String.format("Licytacja została wygrana przez użytkownika %s %s",
                 winner.getFirstName(), winner.getLastName());
     }
+
+    public static String auctionTitle(String taskTitle) {
+        return "Licytacja - " + taskTitle;
+    }
 }

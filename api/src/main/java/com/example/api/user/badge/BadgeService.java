@@ -80,6 +80,7 @@ public class BadgeService {
                 .stream()
                 .filter(badge -> !studentBadges.contains(badge))
                 .toList();
+
         for (Badge badge: badges) {
             if (badge.isGranted(badgeVisitor)) {
                 UnlockedBadge unlockedBadge = new UnlockedBadge(badge, System.currentTimeMillis(), member);
