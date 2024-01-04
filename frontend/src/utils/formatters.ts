@@ -46,7 +46,7 @@ export const getGreetingForPersonality = (personality: QuizResults): string => {
     return 'Cześć, Zdobywco!'
   }
   if (maxValuePersonality === 'Towarzyski / Społecznościowiec') {
-    return 'Cześć, Towarzyszu!'
+    return 'Cześć, Społeczniku!'
   }
 
   return 'Cześć!'
