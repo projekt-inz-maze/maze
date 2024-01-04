@@ -15,7 +15,6 @@ type QuestionProps = {
 const Question = (props: QuestionProps) => {
   const [checked, setChecked] = useState<string>('')
 
-  // TODO: useHandleOnAnswer when switching to production
   const handleOnAnswer = () => {
     props.onAnswer(parseInt(checked, 10))
     setChecked('')
@@ -56,8 +55,7 @@ const Question = (props: QuestionProps) => {
         variant='primary'
         type='submit'
         className={`${styles.acceptButton} ${checked === '' ? 'disabled' : ''}`}
-        // TODO: useHandleOnAnswer when switching to production
-        onClick={() => props.onAnswer(parseInt(checked, 10))}
+        onClick={() => handleOnAnswer()}
       >
         Następne pytanie
       </Button>
