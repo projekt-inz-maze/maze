@@ -37,17 +37,13 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     @JsonBackReference
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Group> groups = new LinkedList<>();
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     @JsonBackReference
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<CourseMember> courseMembers = new LinkedList<>();
 
-    @OneToMany(mappedBy = "course")
-    @JsonBackReference
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "course", orphanRemoval = true)
     private List<Chapter> chapters = new LinkedList<>();
 
     public Course(Long id, String name, String description, User owner) {

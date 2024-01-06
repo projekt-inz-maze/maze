@@ -47,11 +47,11 @@ public class HeroVisitorTest {
         User user = new User("email", "Name", "LastName", AccountType.STUDENT);
 
         firstQuestion = new Question();
-        Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "", "", Difficulty.EASY, List.of(), 10.0, new LinkedList<>(), null, null);
-        Question question2 = new Question(QuestionType.SINGLE_CHOICE, "", "", Difficulty.MEDIUM, List.of(), 20.0, new LinkedList<>(), null, null);
-        Question question3 = new Question(QuestionType.OPENED, "", "", Difficulty.HARD, null, 30.0, new LinkedList<>(), "", null);
-        Question question4 = new Question(QuestionType.OPENED, "", "", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "", null);
-        Question question5 = new Question(QuestionType.OPENED, "", "", Difficulty.HARD, null, 30.0, new LinkedList<>(), "", null);
+        Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "", "", Difficulty.EASY, List.of(), 10.0, new LinkedList<>(), null);
+        Question question2 = new Question(QuestionType.SINGLE_CHOICE, "", "", Difficulty.MEDIUM, List.of(), 20.0, new LinkedList<>(), null);
+        Question question3 = new Question(QuestionType.OPENED, "", "", Difficulty.HARD, null, 30.0, new LinkedList<>(), "");
+        Question question4 = new Question(QuestionType.OPENED, "", "", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "");
+        Question question5 = new Question(QuestionType.OPENED, "", "", Difficulty.HARD, null, 30.0, new LinkedList<>(), "");
         firstQuestion.getNext().addAll(List.of(question1, question2, question3));
         question1.getNext().addAll(List.of(question2, question4));
         question3.getNext().add(question5);

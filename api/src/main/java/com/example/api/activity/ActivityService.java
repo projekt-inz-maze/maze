@@ -110,7 +110,12 @@ public class ActivityService {
     public void editActivity(Activity activity, EditActivityForm form) throws RequestValidationException {
         CreateActivityForm editForm = form.getActivityBody();
 
-        Chapter chapter = chapterRepository.findAll().stream().filter(ch -> ch.getActivityMap().hasActivity(activity)).findFirst().orElse(null);
+        Chapter chapter = chapterRepository.findAll()
+                .stream()
+                .filter(ch -> ch.getActivityMap().hasActivity(activity))
+                .findFirst()
+                .orElse(null);
+
         activity.setTitle(editForm.getTitle());
         activity.setDescription(editForm.getDescription());
         chapterValidator.validateChapterIsNotNull(chapter, null);

@@ -10,10 +10,13 @@ import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
 import com.example.api.util.message.HeroMessage;
 import com.example.api.user.hero.HeroVisitor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -34,6 +37,7 @@ public abstract class Hero {
 
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
 
     public Hero(HeroType type, Long coolDownTimeMillis, Course course) {

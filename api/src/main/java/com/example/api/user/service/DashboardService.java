@@ -191,7 +191,7 @@ public class DashboardService {
                 .filter(GraphTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getGraphTask().getMaxPoints())
                 .sum();
-        Double maxPointsFileTask = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
+        Double maxPointsFileTask = fileTaskResultRepository.findAllByMember_UserAndMember_Course(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getFileTask().getMaxPoints())

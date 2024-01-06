@@ -137,7 +137,7 @@ public class TaskResultService {
 
     public List<? extends ActivityResult> getGraphAndFileResultsForStudent(User student, Course course) {
         List<GraphTaskResult> graphTaskResults = graphTaskResultRepository.findAllByUserAndCourse(student, course);
-        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course);
+        List<FileTaskResult> fileTaskResults = fileTaskResultRepository.findAllByMember_UserAndMember_Course(student, course);
         return Stream.of(graphTaskResults, fileTaskResults)
                 .flatMap(Collection::stream)
                 .toList();

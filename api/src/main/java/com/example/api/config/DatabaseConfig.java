@@ -643,7 +643,6 @@ public class DatabaseConfig {
             addReceivedPointsForUser(result1Member, result1.getPoints());
             result1.setTimeSpentSec(60 * 10);
             calendar.set(2022, Calendar.APRIL, 28);
-            result1.setCourse(course1);
             result1.setStartDateMillis(calendar.getTimeInMillis());
             result1.setSendDateMillis(calendar.getTimeInMillis() + result1.getTimeSpentSec() / 1000);
             graphTaskResultService.saveGraphTaskResult(result1);
@@ -654,7 +653,6 @@ public class DatabaseConfig {
             result2.setMember(result2Member);
             result2.setPoints(10.0);
             addReceivedPointsForUser(result2Member, result2.getPoints());
-            result2.setCourse(course1);
             result2.setTimeSpentSec(60 * 10);
             calendar.set(2022, Calendar.APRIL, 13);
             result2.setStartDateMillis(calendar.getTimeInMillis());
@@ -668,7 +666,6 @@ public class DatabaseConfig {
             result3.setPoints(11.0);
             addReceivedPointsForUser(result3Member, result3.getPoints());
             result3.setTimeSpentSec(60 * 10);
-            result3.setCourse(course1);
             calendar.set(2022, Calendar.APRIL, 14);
             result3.setStartDateMillis(calendar.getTimeInMillis());
             result3.setSendDateMillis(calendar.getTimeInMillis() + result2.getTimeSpentSec() / 1000);
@@ -683,7 +680,6 @@ public class DatabaseConfig {
             result4.setTimeSpentSec(60 * 10);
             calendar.set(2022, Calendar.APRIL, 14);
             result4.setStartDateMillis(calendar.getTimeInMillis());
-            result4.setCourse(course1);
             result4.setSendDateMillis(calendar.getTimeInMillis() + result2.getTimeSpentSec() / 1000);
             graphTaskResultService.saveGraphTaskResult(result4);
 
@@ -696,7 +692,6 @@ public class DatabaseConfig {
             fileResult.setAnswer("Lorem ipsum");
             calendar.set(2022, Calendar.JUNE, 11);
             fileResult.setSendDateMillis(calendar.getTimeInMillis());
-            fileResult.setCourse(course1);
             fileTaskResultService.saveFileTaskResult(fileResult);
 
             Chapter chapter = new Chapter();
@@ -719,7 +714,6 @@ public class DatabaseConfig {
             additionalPoints.setProfessorEmail(professor1.getEmail());
             additionalPoints.setDescription("Good job");
             addReceivedPointsForUser(additionalPointsMember, additionalPoints.getPoints());
-            additionalPoints.setCourse(course1);
             additionalPointsRepository.save(additionalPoints);
 
             SurveyResult surveyResult1 = new SurveyResult();
@@ -731,7 +725,6 @@ public class DatabaseConfig {
             addReceivedPointsForUser(surveyResult1Member, surveyResult1.getPoints());
             calendar.set(2022, Calendar.JUNE, 16);
             surveyResult1.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResult1.setCourse(course1);
             surveyResultRepository.save(surveyResult1);
 
             SurveyResult surveyResult2 = new SurveyResult();
@@ -743,7 +736,6 @@ public class DatabaseConfig {
             addReceivedPointsForUser(surveyResult2Member, surveyResult2.getPoints());
             calendar.set(2022, Calendar.JUNE, 18);
             surveyResult2.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResult2.setCourse(course1);
             surveyResultRepository.save(surveyResult2);
 
             SurveyResult surveyResult3 = new SurveyResult();
@@ -755,7 +747,6 @@ public class DatabaseConfig {
             addReceivedPointsForUser(surveyResult3Member, surveyResult3.getPoints());
             calendar.set(2022, Calendar.JUNE, 19);
             surveyResult3.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResult3.setCourse(course1);
             surveyResultRepository.save(surveyResult3);
 
             File file = new File();
@@ -800,7 +791,7 @@ public class DatabaseConfig {
     }
 
     private void addToGroup(User user, Group group, Hero hero) {
-        UserHero userHero = userHero(hero, group.getCourse());
+        UserHero userHero = userHero(hero);
         CourseMember cm = new CourseMember(user, group, userHero);
         courseMemberRepository.save(cm);
         user.getCourseMemberships().add(cm);
@@ -1217,8 +1208,8 @@ public class DatabaseConfig {
         return student;
     }
 
-    private UserHero userHero(Hero hero, Course course) {
-        return new UserHero(hero, 0, 0L, course);
+    private UserHero userHero(Hero hero) {
+        return new UserHero(hero, 0, 0L);
     }
 
     private List<Question> addQuestionSet(Course course, QuestionService questionService, OptionService optionService) {
@@ -1234,15 +1225,15 @@ public class DatabaseConfig {
 
         Question startQuestion = new Question();
         Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
-                Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null, course);
+                Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null);
         Question question2 = new Question(QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
-                "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null, course);
+                "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null);
         Question question3 = new Question(QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
-                "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP", course);
+                "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP");
         Question question4 = new Question(QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
-                "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka", course);
+                "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka");
         Question question5 = new Question(QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
-                "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski", course);
+                "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski");
 
         List<Question> questions = List.of(startQuestion, question1, question2, question3, question4, question5);
 

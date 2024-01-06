@@ -293,7 +293,7 @@ public class SummaryService {
     }
 
     private List<? extends Activity> getAllProfessorActivitiesToAssess(User professor) { // without Info
-        return fileTaskRepository.findAll().stream().filter(activity -> isProfessorActivity(activity, professor)).toList();
+        return fileTaskRepository.findAllByProfessor(professor);
     }
 
 
