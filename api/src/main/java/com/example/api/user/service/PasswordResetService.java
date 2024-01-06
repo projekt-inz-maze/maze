@@ -56,7 +56,6 @@ public class PasswordResetService {
 
         log.info("Sending password reset email to {}", email);
         emailService.sendEmail(user, "Systematic Chaos - password reset", getPasswordResetEmailMessage(plainToken));
-
     }
 
     public void resetPassword(ResetPasswordForm form) throws RequestValidationException {

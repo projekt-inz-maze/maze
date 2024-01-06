@@ -88,10 +88,10 @@ function FeedbackTask(props) {
 
   return (
     <>
-      <Row className="m-0 pt-2">
+      <Row className='m-0 pt-2'>
         <Col>
           <GameCard
-            headerText="Informacje o aktywności"
+            headerText='Informacje o aktywności'
             content={
               task === undefined ? (
                 <Loader />
@@ -107,7 +107,7 @@ function FeedbackTask(props) {
                   <tbody>
                     {tableContent.map((row, index) => (
                       <tr key={index}>
-                        <th width="25%">{row.header}</th>
+                        <th width='25%'>{row.header}</th>
                         <td>{row.body}</td>
                       </tr>
                     ))}
@@ -118,10 +118,10 @@ function FeedbackTask(props) {
           />
         </Col>
       </Row>
-      <Row className="m-0 pt-2">
+      <Row className='m-0 pt-2'>
         <Col>
           <GameCard
-            headerText="Twoja odpowiedź"
+            headerText='Twoja odpowiedź'
             content={
               task === undefined ? (
                 <Loader />
@@ -132,7 +132,7 @@ function FeedbackTask(props) {
                   <FormGroup>
                     <FormLabel>Twoja opinia (wymagane)</FormLabel>
                     <FormControl
-                      as="textarea"
+                      as='textarea'
                       ref={feedbackRef}
                       rows={3}
                       defaultValue={task.feedback?.feedback ?? ''}
@@ -143,16 +143,16 @@ function FeedbackTask(props) {
                       }}
                     />
                   </FormGroup>
-                  <FormGroup className="my-3">
+                  <FormGroup className='my-3'>
                     <FormLabel>Twoja ocena (wymagane)</FormLabel>
-                    <div className="d-flex justify-content-between w-100 h5 mt-3">
+                    <div className='d-flex justify-content-between w-100 h5 mt-3'>
                       {icons.map((icon, index) => (
                         <FontAwesomeIcon key={index} icon={icon} />
                       ))}
                     </div>
                     <RangeSlider
                       ref={rateRef}
-                      type="range"
+                      type='range'
                       min={1}
                       max={5}
                       defaultValue={task.feedback?.rate ?? 1}
@@ -161,13 +161,13 @@ function FeedbackTask(props) {
                   </FormGroup>
                   <Button
                     onClick={sendAnswer}
-                    className="position-relative start-50 translate-middle-x mb-3"
+                    className='position-relative start-50 translate-middle-x mb-3'
                     style={{ borderColor: props.theme.success, backgroundColor: props.theme.success }}
                   >
-                    {isAnswerSending ? <Spinner animation="border" size="sm" /> : <span>Wyślij</span>}
+                    {isAnswerSending ? <Spinner animation='border' size='sm' /> : <span>Wyślij</span>}
                   </Button>
                   {errorMessage ? (
-                    <p style={{ color: props.theme.danger }} className="text-center">
+                    <p style={{ color: props.theme.danger }} className='text-center'>
                       {errorMessage}
                     </p>
                   ) : null}
@@ -177,13 +177,13 @@ function FeedbackTask(props) {
           />
         </Col>
       </Row>
-      <GoBackButton goTo={StudentRoutes.GAME_MAP.MAIN} />
+      <GoBackButton goTo={StudentRoutes.NEW_GAME_MAP.MAIN} />
     </>
   )
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }

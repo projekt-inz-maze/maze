@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -18,7 +19,7 @@ public class ProfessorRegisterTokenProvider {
     private final static int REFRESH_TIME_IN_MINUTES = 30;
     private final ProfessorRegisterToken professorRegisterToken;
 
-    @Scheduled(fixedRate = REFRESH_TIME_IN_MINUTES * 60 * 1_000)
+    @Scheduled(fixedRate = REFRESH_TIME_IN_MINUTES, timeUnit = TimeUnit.MINUTES)
     @Async
     public void updateProfessorRegisterToken() {
         professorRegisterToken.setToken(generateToken());

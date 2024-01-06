@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { Col, Row, Tab } from 'react-bootstrap'
+import {Col, Container, Row, Tab} from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import PercentageCircle from './ChartAndStats/PercentageCircle'
@@ -10,7 +10,6 @@ import LastPointsTable from './Tables/LastPointsTable'
 import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
-import { Content } from '../../App/AppGeneralStyles'
 import Loader from '../../general/Loader/Loader'
 
 function Points(props) {
@@ -45,7 +44,7 @@ function Points(props) {
   }, [])
 
   return (
-    <Content>
+    <Container fluid>
       {totalPointsData === undefined ? (
         <Loader />
       ) : totalPointsData == null ? (
@@ -89,7 +88,7 @@ function Points(props) {
           </Tab>
         </TabsContainer>
       </Row>
-    </Content>
+    </Container>
   )
 }
 

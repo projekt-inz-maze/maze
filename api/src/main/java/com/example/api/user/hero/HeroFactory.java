@@ -1,6 +1,6 @@
 package com.example.api.user.hero;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.user.hero.model.*;
 import org.springframework.stereotype.Component;
 

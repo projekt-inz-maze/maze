@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  p {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+span {
+  font-weight: bold;
+}
+
+.downloadButton {
+  margin-left: 1em;
+  border: none;
+}
+
+.downloadButton:hover {
+  opacity: 0.8;
+  transform: scale(1.01);
+}

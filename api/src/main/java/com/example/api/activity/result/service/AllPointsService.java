@@ -3,8 +3,9 @@ package com.example.api.activity.result.service;
 import com.example.api.activity.task.dto.response.result.AdditionalPointsListResponse;
 import com.example.api.activity.task.dto.response.result.TaskPointsStatisticsResponse;
 import com.example.api.activity.task.dto.response.result.TotalPointsResponse;
-import com.example.api.course.model.Course;
-import com.example.api.course.service.CourseService;
+import com.example.api.course.Course;
+import com.example.api.course.CourseService;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
@@ -60,32 +61,34 @@ public class AllPointsService {
     public TotalPointsResponse getAllPointsTotal(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
         Course course = courseService.getCourse(courseId);
+        CourseMember member = student.getCourseMember(courseId, true);
 
         log.info("Fetching student all points total {}", student.getEmail());
         AtomicReference<Double> totalPointsReceived = new AtomicReference<>(0D);
         AtomicReference<Double> totalPointsToReceive = new AtomicReference<>(0D);
         graphTaskResultRepository.findAllByUserAndCourse(student, course)
                 .stream()
-                .filter(graphTaskResult -> graphTaskResult.getPointsReceived() != null)
+                .filter(graphTaskResult -> graphTaskResult.getPoints() != null)
                 .forEach(graphTaskResult -> {
-                    totalPointsReceived.updateAndGet(v -> v + graphTaskResult.getPointsReceived());
+                    totalPointsReceived.updateAndGet(v -> v + graphTaskResult.getPoints());
                     totalPointsToReceive.updateAndGet(v -> v + graphTaskResult.getGraphTask().getMaxPoints());
                 });
-        fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
+        fileTaskResultRepository.findAllByMember_UserAndMember_Course(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .forEach(fileTaskResult -> {
-                    totalPointsReceived.updateAndGet(v -> v + fileTaskResult.getPointsReceived());
+                    totalPointsReceived.updateAndGet(v -> v + fileTaskResult.getPoints());
                     totalPointsToReceive.updateAndGet(v -> v + fileTaskResult.getFileTask().getMaxPoints());
                 });
         surveyResultRepository.findAllByUserAndCourse(student, course)
                 .forEach(surveyTaskResult -> {
-                    totalPointsReceived.updateAndGet(v -> v + surveyTaskResult.getPointsReceived());
-                    totalPointsToReceive.updateAndGet(v -> v + surveyTaskResult.getPointsReceived());
+                    totalPointsReceived.updateAndGet(v -> v + surveyTaskResult.getPoints());
+                    totalPointsToReceive.updateAndGet(v -> v + surveyTaskResult.getPoints());
                 });
         additionalPointsRepository.findAllByUserAndCourse(student, course)
-                .forEach(additionalPoints -> totalPointsReceived.updateAndGet(v -> v + additionalPoints.getPointsReceived()));
-        return new TotalPointsResponse(totalPointsReceived.get(), totalPointsToReceive.get());
+                .forEach(additionalPoints -> totalPointsReceived.updateAndGet(v -> v + additionalPoints.getPoints()));
+
+        return new TotalPointsResponse(member.getPoints(), totalPointsToReceive.get());
     }
 
     private List<?> getAllPointsList(Long courseId, String studentEmail) throws WrongUserTypeException, EntityNotFoundException {

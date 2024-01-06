@@ -1,9 +1,11 @@
 package com.example.api.user.service;
 
-import com.example.api.course.model.CourseMember;
-import com.example.api.course.service.CourseMemberService;
-import com.example.api.course.validator.exception.StudentNotEnrolledException;
-import com.example.api.group.service.GroupService;
+import com.example.api.activity.ActivityRepository;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.coursemember.CourseMemberService;
+import com.example.api.course.StudentNotEnrolledException;
+import com.example.api.group.GroupService;
+import com.example.api.personality.PersonalityType;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.hero.model.Hero;
 import com.example.api.user.hero.model.UserHero;
@@ -15,14 +17,14 @@ import com.example.api.user.dto.request.SetStudentGroupForm;
 import com.example.api.user.dto.request.SetStudentIndexForm;
 import com.example.api.user.dto.response.BasicStudent;
 import com.example.api.error.exception.*;
-import com.example.api.group.model.Group;
+import com.example.api.group.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
-import com.example.api.activity.task.repository.FileTaskRepository;
-import com.example.api.activity.task.repository.GraphTaskRepository;
-import com.example.api.activity.task.repository.InfoRepository;
-import com.example.api.activity.task.repository.SurveyRepository;
+import com.example.api.activity.task.filetask.FileTaskRepository;
+import com.example.api.activity.task.graphtask.GraphTaskRepository;
+import com.example.api.activity.info.InfoRepository;
+import com.example.api.activity.survey.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.PasswordValidator;
@@ -37,9 +39,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -48,10 +49,6 @@ import java.util.stream.Stream;
 @Transactional
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final GraphTaskRepository graphTaskRepository;
-    private final FileTaskRepository fileTaskRepository;
-    private final SurveyRepository surveyRepository;
-    private final InfoRepository infoRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
     private final LoggedInUserService authService;
     private final PasswordEncoder passwordEncoder;
@@ -61,6 +58,7 @@ public class UserService implements UserDetailsService {
     private final GroupService groupService;
     private final CourseMemberService courseMemberService;
     private final HeroRepository heroRepository;
+    private final ActivityRepository activityRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -184,7 +182,7 @@ public class UserService implements UserDetailsService {
         userValidator.validateUserNotInCourse(user, group.getCourse());
 
         Hero hero = heroRepository.findHeroByTypeAndCourse(heroType, group.getCourse());
-        UserHero userHero = new UserHero(hero, 0, 0L, group.getCourse());
+        UserHero userHero = new UserHero(hero, 0, 0L);
         CourseMember courseMember = courseMemberService.create(user, group, userHero);
         user.getCourseMemberships().add(courseMember);
         groupService.addUser(courseMember, group);
@@ -236,16 +234,9 @@ public class UserService implements UserDetailsService {
     }
 
     private void changeUserForActivitiesAndAdditionalPoints(User from, User to){
-        Stream.of(graphTaskRepository.findAll(),
-                        fileTaskRepository.findAll(),
-                        surveyRepository.findAll(),
-                        infoRepository.findAll())
-                .flatMap(Collection::stream)
-                .filter(activity -> activity.getProfessor() == from)
-                .forEach(activity -> activity.setProfessor(to));
-        additionalPointsRepository.findAll()
-                .stream()
-                .filter(additionalPoint -> additionalPoint.getProfessorEmail().equals(from.getEmail()))
+        activityRepository.findAllByProfessor(from).forEach(activity -> activity.setProfessor(to));
+
+        additionalPointsRepository.findAllByProfessorEmail(from.getEmail())
                 .forEach(additionalPoint -> additionalPoint.setProfessorEmail(to.getEmail()));
     }
 
@@ -268,5 +259,18 @@ public class UserService implements UserDetailsService {
         User user = authService.getCurrentUser();
         userValidator.validateProfessorAccount(user);
         return user;
+    }
+
+    public void setPersonalityForUser(User user, Map<PersonalityType, Integer> quizResult) {
+        int allAnswers = quizResult.values().stream().reduce(Integer::sum).orElseThrow();
+
+        Map<PersonalityType, Double> personality = quizResult
+                .entrySet()
+                .stream()
+                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), 100D * (double)e.getValue()/(double) allAnswers))
+                        .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+        user.setPersonality(personality);
+        userRepository.save(user);
     }
 }

@@ -4,11 +4,9 @@ import {
   faBullseye,
   faCertificate,
   faChessBoard,
-  faGear,
   faHouse,
   faListCheck,
   faRankingStar,
-  faRightFromBracket,
   faStar,
   faTerminal,
   faUser,
@@ -18,14 +16,36 @@ import {
 
 import { GeneralRoutes, StudentRoutes, TeacherRoutes } from '../routes/PageRoutes'
 
-export const sidebarTitles = [
+export const getUserSidebarTitles = (isStudent) => {
+  if (isStudent) {
+    return studentSidebarTitles
+  }
+  return professorSidebarTitles
+}
+
+export const studentSidebarTitles = [
   {
     name: 'Kursy',
     navigateTo: GeneralRoutes.COURSE_LIST
   },
   {
     name: 'Ustawienia',
-    navigateTo: GeneralRoutes.HOME // TODO: Change when settings view is completed.
+    navigateTo: GeneralRoutes.STUDENT_SETTINGS
+  },
+  {
+    name: 'Wyloguj',
+    navigateTo: GeneralRoutes.HOME
+  }
+]
+
+export const professorSidebarTitles = [
+  {
+    name: 'Kursy',
+    navigateTo: GeneralRoutes.COURSE_LIST
+  },
+  {
+    name: 'Ustawienia',
+    navigateTo: GeneralRoutes.PROFESSOR_SETTINGS
   },
   {
     name: 'Wyloguj',
@@ -39,10 +59,15 @@ export const studentSubtitles = [
     icon: faHouse,
     navigateTo: StudentRoutes.GAME_CARD
   },
+  // {
+  //   name: 'Mapa gry (stara)',
+  //   icon: faChessBoard,
+  //   navigateTo: StudentRoutes.GAME_MAP.MAIN
+  // },
   {
     name: 'Mapa gry',
     icon: faChessBoard,
-    navigateTo: StudentRoutes.GAME_MAP.MAIN
+    navigateTo: StudentRoutes.NEW_GAME_MAP.MAIN
   },
   {
     name: 'Punkty',
@@ -97,11 +122,6 @@ export const professorSubtitles = [
         icon: faTerminal,
         navigateTo: TeacherRoutes.GAME_MANAGEMENT.LOGS
       }
-      // {
-      //   name: 'Ustawienia gry',
-      //   icon: faPalette,
-      //   navigateTo: TeacherRoutes.GAME_MANAGEMENT.GAME_SETTINGS
-      // }
     ]
   },
   {
@@ -119,10 +139,5 @@ export const professorSubtitles = [
     name: 'Oceny',
     icon: fa5,
     navigateTo: TeacherRoutes.GRADES
-  },
-  {
-    name: 'Ustawienia',
-    icon: faGear,
-    navigateTo: TeacherRoutes.SETTINGS
   }
 ]

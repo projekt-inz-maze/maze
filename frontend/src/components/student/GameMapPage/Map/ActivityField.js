@@ -20,7 +20,6 @@ import {
 import { isStudent } from '../../../../utils/storageManager'
 import { Tooltip } from '../../BadgesPage/BadgesStyle'
 
-
 function ActivityField(props) {
   const { activity, colClickable, colSize, isCompletedActivityAround, allActivitiesCompleted } = props
   const student = isStudent(props.user)
@@ -61,11 +60,11 @@ function ActivityField(props) {
         name: 'Stan aktywności',
         value: activity?.isCompleted ? (
           <span>
-            Ukończona <FontAwesomeIcon icon={faCircleCheck} color={props.theme.success} size="lg" />
+            Ukończona <FontAwesomeIcon icon={faCircleCheck} color={props.theme.success} size='lg' />
           </span>
         ) : (
           <span>
-            Nieukończona <FontAwesomeIcon icon={faCircleXmark} color={props.theme.danger} size="lg" />
+            Nieukończona <FontAwesomeIcon icon={faCircleXmark} color={props.theme.danger} size='lg' />
           </span>
         )
       }
@@ -88,19 +87,19 @@ function ActivityField(props) {
           </tr>
           {requirements === undefined ? (
             <tr>
-              <td colSpan={2} className="text-center">
-                <Spinner animation="border" />
+              <td colSpan={2} className='text-center'>
+                <Spinner animation='border' />
               </td>
             </tr>
           ) : requirements == null ? (
             <tr>
-              <td colSpan={2} className="text-center">
+              <td colSpan={2} className='text-center'>
                 <p>{ERROR_OCCURRED}</p>
               </td>
             </tr>
           ) : !requirements.length ? (
             <tr>
-              <td colSpan={2} className="text-center">
+              <td colSpan={2} className='text-center'>
                 <p>Brak wymagań dla aktywności</p>
               </td>
             </tr>
@@ -144,7 +143,7 @@ function ActivityField(props) {
         $background={props.theme.secondary}
         $fontColor={props.theme.font}
         $filter={hexToCSSFilter(props.theme.font)}
-        placement="end"
+        placement='end'
         show={isOffcanvasOpen}
         onHide={() => setIsOffcanvasOpen(false)}
       >
@@ -157,7 +156,7 @@ function ActivityField(props) {
             <Button
               style={{ backgroundColor: 'transparent', borderColor: props.theme.warning, color: props.theme.warning }}
               disabled={!activity?.isFulfilled && !activity?.isCompleted}
-              className="position-relative start-50 translate-middle-x mt-3"
+              className='position-relative start-50 translate-middle-x mt-3'
               onClick={startActivity}
             >
               Rozpocznij
@@ -170,7 +169,7 @@ function ActivityField(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
   const { user } = state.auth
 
   return { theme, user }

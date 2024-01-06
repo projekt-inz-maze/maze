@@ -1,30 +1,28 @@
 package com.example.api.activity.result.service.ranking;
 
-import com.example.api.activity.ActivityService;
+import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.dto.response.SurveyAnswerResponse;
-import com.example.api.activity.result.service.ActivityResultService;
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
-import com.example.api.course.service.CourseMemberService;
-import com.example.api.course.service.CourseService;
-import com.example.api.course.validator.CourseValidator;
-import com.example.api.course.validator.exception.StudentNotEnrolledException;
-import com.example.api.error.exception.EntityNotFoundException;
-import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.group.model.Group;
-import com.example.api.security.LoggedInUserService;
-import com.example.api.user.model.Rank;
-import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
-import com.example.api.user.repository.UserRepository;
+import com.example.api.activity.result.service.ActivityResultService;
+import com.example.api.course.Course;
+import com.example.api.course.CourseService;
+import com.example.api.course.CourseValidator;
+import com.example.api.course.StudentNotEnrolledException;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.coursemember.CourseMemberService;
+import com.example.api.error.exception.EntityNotFoundException;
+import com.example.api.error.exception.WrongUserTypeException;
+import com.example.api.group.Group;
+import com.example.api.security.LoggedInUserService;
+import com.example.api.user.model.Rank;
+import com.example.api.user.model.User;
 import com.example.api.user.service.RankService;
 import com.example.api.user.service.UserService;
-import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,16 +40,13 @@ import java.util.stream.DoubleStream;
 @Slf4j
 @Transactional
 public class RankingService {
-    private final UserRepository userRepository;
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
-    private final UserValidator userValidator;
     private final UserService userService;
     private final RankService rankService;
     private final CourseService courseService;
-    private final ActivityService activityService;
     private final CourseValidator courseValidator;
     private final ActivityResultService activityResultService;
     private final CourseMemberService courseMemberService;
@@ -118,22 +113,22 @@ public class RankingService {
         return rankingList;
     }
 
-    public List<RankingResponse> getActivityRanking(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
+    public List<RankingResponse> getActivityRanking(Long activityID) throws WrongUserTypeException {
         userService.getCurrentUserAndValidateProfessorAccount();
 
         List<RankingResponse> rankingList = activityResultService.getResultsForActivity(activityID)
                 .stream()
-                .map(result -> new RankingResponse(
-                        result.getMember().getUser().getEmail(),
-                        result.getMember().getUser().getFirstName(),
-                        result.getMember().getUser().getLastName(),
-                        result.getMember().getGroup().getName(),
-                        result.getMember().getHeroType(),
-                        result.getPointsReceived(),
-                        null,
-                        rankService.getCurrentRank(result.getMember()).getName(),
-                        result.getMember().getUnlockedBadges().size(),
-                        (result instanceof SurveyResult) ? new SurveyAnswerResponse((SurveyResult) result) : null))
+                .map(result -> {
+                    RankingResponse response = new RankingResponse(
+                            rankService.getCurrentRank(result.getMember()).getName(),
+                            result.getMember(),
+                            result.getPoints());
+
+                    if (result.getActivity().getActivityType().equals(ActivityType.SURVEY)) {
+                        response.setStudentAnswer(new SurveyAnswerResponse((SurveyResult) result));
+                    }
+                    return response;
+                })
                 .sorted(Comparator.comparing(RankingResponse::getPoints).reversed())
                 .toList();
 
@@ -141,7 +136,7 @@ public class RankingService {
         return rankingList;
     }
 
-    public List<RankingResponse> getActivityRankingSearch(Long activityID, String search) throws WrongUserTypeException, EntityNotFoundException {
+    public List<RankingResponse> getActivityRankingSearch(Long activityID, String search) throws WrongUserTypeException {
         String searchLower = search.toLowerCase().replaceAll("\\s",""); // removing whitespaces
         List<RankingResponse> rankingList = getActivityRanking(activityID)
                 .stream()
@@ -171,7 +166,7 @@ public class RankingService {
         }
     }
 
-    public Integer getRankingPosition(Long courseId) throws WrongUserTypeException, UsernameNotFoundException, EntityNotFoundException {
+    public Integer getRankingPosition(Long courseId) throws WrongUserTypeException, UsernameNotFoundException {
         User student = userService.getCurrentUserAndValidateStudentAccount();
         return getPositionFromRanking(getRanking(courseId), student.getEmail());
     }
@@ -194,14 +189,13 @@ public class RankingService {
 
     private RankingResponse studentToRankingEntry(CourseMember member) throws EntityNotFoundException {
         String rankName = Optional.ofNullable(rankService.getCurrentRank(member)).map(Rank::getName).orElse(null);
-        RankingResponse rankingResponse = new RankingResponse(rankName, member, getStudentPoints(member));
-        return rankingResponse;
+        return new RankingResponse(rankName, member, getStudentPoints(member));
     }
 
     private Double getGraphTaskPoints(CourseMember member) {
         return graphTaskResultRepository.findAllByMember(member)
                 .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
                 .mapToDouble(d -> d)
                 .sum();
     }
@@ -209,7 +203,7 @@ public class RankingService {
     private Double getFileTaskPoints(CourseMember member) {
         return fileTaskResultRepository.findAllByMember(member)
                 .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
                 .mapToDouble(d -> d)
                 .sum();
     }
@@ -217,7 +211,7 @@ public class RankingService {
     private Double getAdditionalPoints(CourseMember member) {
         return additionalPointsRepository.findAllByMember(member)
                 .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
                 .mapToDouble(d -> d)
                 .sum();
     }
@@ -225,7 +219,7 @@ public class RankingService {
     private Double getSurveyPoints(CourseMember member) {
         return surveyResultRepository.findAllByMember(member)
                 .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPointsReceived()).stream())
+                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
                 .mapToDouble(d -> d)
                 .sum();
     }

@@ -1,6 +1,6 @@
 package com.example.api.activity.result.dto.response;
 
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;

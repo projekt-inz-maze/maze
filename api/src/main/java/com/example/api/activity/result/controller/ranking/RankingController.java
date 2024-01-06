@@ -2,7 +2,6 @@ package com.example.api.activity.result.controller.ranking;
 
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.error.exception.EntityNotFoundException;
-import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.service.ranking.RankingService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -24,7 +23,7 @@ public class RankingController {
     private final RankingService rankingService;
 
     @GetMapping
-    public ResponseEntity<List<RankingResponse>> getRanking(@RequestParam Long courseId) throws EntityNotFoundException {
+    public ResponseEntity<List<RankingResponse>> getRanking(@RequestParam Long courseId) {
         return ResponseEntity.ok().body(rankingService.getRanking(courseId));
     }
 
@@ -47,12 +46,12 @@ public class RankingController {
 
     @GetMapping("/group/position")
     public ResponseEntity<Integer> getGroupRankingPosition(@RequestParam Long courseId)
-            throws WrongUserTypeException, MissingAttributeException, UsernameNotFoundException, EntityNotFoundException {
+            throws WrongUserTypeException, UsernameNotFoundException, EntityNotFoundException {
         return ResponseEntity.ok().body(rankingService.getGroupRankingPosition(courseId));
     }
 
     @GetMapping("/activity")
-    public ResponseEntity<List<RankingResponse>> getAllPointsActivityList(@RequestParam Long activityID) throws WrongUserTypeException, EntityNotFoundException {
+    public ResponseEntity<List<RankingResponse>> getAllPointsActivityList(@RequestParam Long activityID) throws WrongUserTypeException {
         return ResponseEntity.ok().body(rankingService.getActivityRanking(activityID));
     }
 
@@ -60,7 +59,7 @@ public class RankingController {
     public ResponseEntity<List<RankingResponse>> getAllPointsActivityListSearch(
             @RequestParam Long activityID,
             @RequestParam String search
-    ) throws WrongUserTypeException, EntityNotFoundException {
+    ) throws WrongUserTypeException {
         return ResponseEntity.ok().body(rankingService.getActivityRankingSearch(activityID, search));
     }
 }

@@ -1,8 +1,7 @@
 package com.example.api.activity.result.model;
 
-import com.example.api.activity.task.model.Activity;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.util.model.File;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.file.File;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class FileTaskResult extends TaskResult {
+public class FileTaskResult extends ActivityResult {
     @OneToMany
     @JoinColumn
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -30,20 +29,23 @@ public class FileTaskResult extends TaskResult {
     @Lob
     private String answer;
 
-    @ManyToOne
-    @JoinColumn(name = "fileTask_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private FileTask fileTask;
+    public boolean isEvaluated = false;
 
-    public boolean isEvaluated;
+    public FileTask getFileTask() {
+        return (FileTask) activity;
+    }
 
-    @Override
-    public Activity getActivity() {
-        return fileTask;
+    public void setFileTask(FileTask fileTask) {
+        this.activity = fileTask;
+    }
+
+    public void setPoints(double points) {
+        super.setPoints(points);
+        this.isEvaluated = true;
     }
 
     @Override
     public boolean isEvaluated() {
-        return this.getPointsReceived() != null;
+        return this.getPoints() != null;
     }
 }

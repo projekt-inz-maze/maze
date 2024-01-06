@@ -1,6 +1,6 @@
 package com.example.api.user.repository;
 
-import com.example.api.course.model.Course;
+import com.example.api.course.Course;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.Rank;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +12,6 @@ import java.util.List;
 public interface RankRepository extends JpaRepository<Rank, Long> {
     Rank findRankById(Long id);
     List<Rank> findAllByCourseIs(Course course);
+    List<Rank> findAllByHeroTypeAndAndCourse_Id(HeroType type, Long courseId);
     List<Rank> findAllByCourseIsAndHeroTypeIs(Course course, HeroType heroType);
 }

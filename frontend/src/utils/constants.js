@@ -1,13 +1,24 @@
 import moment from 'moment'
 
+import heroImg from './resources/achiever_type.png'
+import achieverImg from './resources/achieverImg.png'
+import AuctionImg from './resources/activities/auctionTaskIcon.png'
 import TaskImg from './resources/activities/fileTaskIcon.png'
 import ExpeditionImg from './resources/activities/graphTaskIcon.png'
 import InformationImg from './resources/activities/infoTaskIcon.png'
+import SubmitImg from './resources/activities/submitTaskIcon.png'
 import SurveyImg from './resources/activities/surveyTaskIcon.png'
+import explorerImg from './resources/explorerImg.png'
 import priestImg from './resources/heroes/pope.png'
 import rogueImg from './resources/heroes/rogue.png'
 import warriorImg from './resources/heroes/warrior.png'
 import wizardImg from './resources/heroes/wizard.png'
+import killerImg from './resources/killerImg.png'
+import newMage from './resources/newHeroes/mage.png'
+import newPriest from './resources/newHeroes/priest.png'
+import newRogue from './resources/newHeroes/rouge.png'
+import newWarrior from './resources/newHeroes/warrior.png'
+import socializerImg from './resources/socializerImg.png'
 import warrior1 from './resources/warrior/0.png'
 import warrior2 from './resources/warrior/1.png'
 import warrior11 from './resources/warrior/10.png'
@@ -52,11 +63,15 @@ export const GRAPH_NODE_SPECIAL_SIZE = 40
 
 export const base64Header = 'data:image/jpeg;base64,'
 
+export const getBackgroundImage = (id) => `/backgrounds/bg_${id % 11}.png`
+
 export const Activity = {
   EXPEDITION: 'EXPEDITION',
   INFO: 'INFO',
   SURVEY: 'SURVEY',
   TASK: 'TASK',
+  AUCTION: 'AUCTION',
+  SUBMIT: 'SUBMIT',
   ADDITIONAL: 'ADDITIONAL'
 }
 
@@ -64,6 +79,42 @@ export const QuestionType = {
   SINGLE_CHOICE: 'SINGLE_CHOICE',
   MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
   OPEN_QUESTION: 'OPENED'
+}
+
+export const PersonalityName = {
+  KILLER: 'KILLER',
+  ACHIEVER: 'ACHIEVER',
+  EXPLORER: 'EXPLORER',
+  SOCIALIZER: 'SOCIALIZER'
+}
+
+export const getPersonalityName = (personality) => {
+  switch (personality) {
+    case PersonalityName.ACHIEVER:
+      return 'ZDOBYWCA'
+    case PersonalityName.EXPLORER:
+      return 'ODKRYWCA'
+    case PersonalityName.SOCIALIZER:
+      return 'TOWARZYSKI'
+    case PersonalityName.KILLER:
+      return 'ZABÓJCA'
+    default:
+  }
+}
+
+export const getPersonalityImage = (personality) => {
+  switch (personality) {
+    case PersonalityName.ACHIEVER:
+      return achieverImg
+    case PersonalityName.EXPLORER:
+      return explorerImg
+    case PersonalityName.SOCIALIZER:
+      return socializerImg
+    case PersonalityName.KILLER:
+      return killerImg
+    default:
+      return heroImg
+  }
 }
 
 export const getActivityImg = (type) => {
@@ -76,8 +127,11 @@ export const getActivityImg = (type) => {
       return SurveyImg
     case Activity.TASK:
       return TaskImg
+    case Activity.AUCTION:
+      return AuctionImg
+    case Activity.SUBMIT:
+      return SubmitImg
     default:
-
   }
 }
 
@@ -91,10 +145,13 @@ export const getActivityTypeName = (type) => {
       return 'Sondaż'
     case Activity.TASK:
       return 'Zadanie bojowe'
+    case Activity.AUCTION:
+      return 'Licytacja'
+    case Activity.SUBMIT:
+      return 'Propozycja'
     case Activity.ADDITIONAL:
       return 'Bonus'
     default:
-
   }
 }
 
@@ -109,9 +166,37 @@ export const getActivityPath = (type) => {
     case Activity.INFO:
       return StudentRoutes.GAME_MAP.INFO_TASK
     default:
-
   }
 }
+
+export const personalityQuizIntro = [
+  {
+    type: 'KILLER',
+    name: 'Zabójców',
+    nameEng: '(Killers)',
+    description: 'Gracze, którzy największą przyjemność czerpią z pokonywania innych graczy.'
+  },
+  {
+    type: 'ACHIEVER',
+    name: 'Zdobywców',
+    nameEng: '(Achievers)',
+    description:
+      'Gracze, którzy największą przyjemność czerpią z osiągania różnych sukcesów - przejście do kolejnego poziomu, zdobycie wyższej rangi, znalezienie wszystkich "znajdziek".'
+  },
+  {
+    type: 'EXPLORER',
+    name: 'Odkrywców',
+    nameEng: '(Explorers)',
+    description:
+      'Gracze, którzy lubią odkrywać świat i mechaniki gry - lubią szukać ukrytych przejść, easter eggów oraz ograniczeń.'
+  },
+  {
+    type: 'SOCIALIZER',
+    name: 'Towarzyskich / Społecznościowców',
+    nameEng: '(Socializers)',
+    description: 'Gracze, którzy najwięcej przyjemności czerpią z interakcji z innymi graczami.'
+  }
+]
 
 export const RegistrationLabelsAndTypes = {
   firstName: ['Imię', 'text'],
@@ -139,10 +224,10 @@ export const HeroDescriptions = {
 }
 
 export const HeroImg = {
-  WARRIOR: warriorImg,
-  WIZARD: wizardImg,
-  PRIEST: priestImg,
-  ROGUE: rogueImg
+  WARRIOR: newWarrior,
+  WIZARD: newMage,
+  PRIEST: newPriest,
+  ROGUE: newRogue
 }
 
 export const HeroDataset = {
@@ -178,11 +263,10 @@ export const percentagesToGrade = (percentages) => {
 
   if (percentages < MIN_PERCENTAGE_FOR_POSITIVE_GRADE) return FAILING_GRADE
 
-    return (
-      MIN_POSITIVE_GRADE +
-      Math.floor((percentages - MIN_PERCENTAGE_FOR_POSITIVE_GRADE) / PERCENTAGE_FOR_HIGHER_GRADE) * HIGHER_GRADE_STEP
-    )
-
+  return (
+    MIN_POSITIVE_GRADE +
+    Math.floor((percentages - MIN_PERCENTAGE_FOR_POSITIVE_GRADE) / PERCENTAGE_FOR_HIGHER_GRADE) * HIGHER_GRADE_STEP
+  )
 }
 
 export const getHeroName = (heroName) => {
@@ -196,7 +280,6 @@ export const getHeroName = (heroName) => {
     case HeroType.WIZARD:
       return 'Czarodziej'
     default:
-
   }
 }
 

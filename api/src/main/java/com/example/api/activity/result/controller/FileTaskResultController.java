@@ -1,6 +1,6 @@
 package com.example.api.activity.result.controller;
 
-import com.example.api.activity.task.dto.request.SaveFileToFileTaskResultForm;
+import com.example.api.activity.result.dto.SaveFileToFileTaskResultForm;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.service.FileTaskResultService;
@@ -21,7 +21,7 @@ public class FileTaskResultController {
     private final FileTaskResultService fileTaskResultService;
 
     @PostMapping(path="/file/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Long> saveFileToFileTaskResult(@ModelAttribute SaveFileToFileTaskResultForm form)
+    public ResponseEntity<Long> saveFileTaskResult(@ModelAttribute SaveFileToFileTaskResultForm form)
             throws EntityNotFoundException, WrongUserTypeException, IOException {
         return ResponseEntity.ok().body(fileTaskResultService.saveFileToFileTaskResult(form));
     }

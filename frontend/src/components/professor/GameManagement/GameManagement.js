@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import ChapterModal from './ChapterModal/ChapterModal'
 import GameButton from './GameButton'
 import GameLoaderModal from './GameLoader/GameLoaderModal'
+import styles from './GameManagement.module.scss'
 import SuperPowerEditionModal from './GameSettings/SuperPowerEditionModal'
 import ManagementCard from './ManagementCard'
 import { TableBodyRow } from './TableStyles'
@@ -14,8 +15,6 @@ import { useAppSelector } from '../../../hooks/hooks'
 import { TeacherRoutes } from '../../../routes/PageRoutes'
 import ChapterService from '../../../services/chapter.service'
 import { ERROR_OCCURRED } from '../../../utils/constants'
-import { isMobileView } from '../../../utils/mobileHelper'
-import { Content } from '../../App/AppGeneralStyles'
 import { GameCardOptionPick } from '../../general/GameCardStyles'
 import { CustomTooltip } from '../ChapterDetails/ChapterDetailsStyles'
 
@@ -47,7 +46,7 @@ function GameManagement(props) {
   }
 
   const goToChapterDetailsView = (chapterName, chapterId) => {
-    navigate(`${TeacherRoutes.GAME_MANAGEMENT.CHAPTER.MAIN  }/${chapterName}/${chapterId}`)
+    navigate(`${TeacherRoutes.GAME_MANAGEMENT.CHAPTER.MAIN}/${chapterName}/${chapterId}`)
   }
 
   const downloadBackupFile = () => {
@@ -55,16 +54,16 @@ function GameManagement(props) {
   }
 
   return (
-    <Content>
+    <Container fluid className={styles.container}>
       <h4 className='text-center pt-3'>Witaj w panelu zarządzania grą!</h4>
       <p className='text-center'>
         Tutaj możesz dostosować wygląd, fabułę i sposób działania rozgrywki zgodnie ze swoimi potrzebami.
       </p>
-      <Container style={{ marginBottom: isMobileView() ? 85 : 0 }}>
-        <Row style={{ height: '50vh' }}>
-          <Col style={{ maxHeight: '50vh' }}>
+      <Container>
+        <Row>
+          <Col>
             <GameCardOptionPick
-              className="d-flex flex-column justify-content-between"
+              className='d-flex flex-column justify-content-between'
               $background={props.theme.secondary}
               $fontColor={props.theme.font}
             >
@@ -84,13 +83,13 @@ function GameManagement(props) {
                     <tbody>
                       {chapterList === undefined ? (
                         <tr>
-                          <td colSpan='100%' className="text-center">
-                            <Spinner animation="border" />
+                          <td colSpan='100%' className='text-center'>
+                            <Spinner animation='border' />
                           </td>
                         </tr>
                       ) : chapterList == null || chapterList.length === 0 ? (
                         <tr>
-                          <td colSpan='100%' className="text-center">
+                          <td colSpan='100%' className='text-center'>
                             <p>{chapterList == null ? ERROR_OCCURRED : 'Lista rozdziałów jest pusta'}</p>
                           </td>
                         </tr>
@@ -126,8 +125,8 @@ function GameManagement(props) {
               </div>
 
               <GameButton
-                text="Nowy rozdział"
-                customWidth="auto"
+                text='Nowy rozdział'
+                customWidth='auto'
                 callback={() => {
                   setShowAddChapterModal(true)
                   setShouldLoadAddChapterModal(true)
@@ -136,51 +135,51 @@ function GameManagement(props) {
             </GameCardOptionPick>
           </Col>
         </Row>
-        <Row className="py-2 text-center">
-          <Col md={4} className="py-2">
+        <Row className='py-2 text-center'>
+          <Col md={4} className='py-2'>
             <ManagementCard
-              header="Grupy"
-              description="Sprawdź listę grup zajęciowych i ich kody dostępu."
+              header='Grupy'
+              description='Sprawdź listę grup zajęciowych i ich kody dostępu.'
               routePath={TeacherRoutes.GAME_MANAGEMENT.GROUPS}
             />
           </Col>
-          <Col md={4} className="py-2">
+          <Col md={4} className='py-2'>
             <ManagementCard
-              header="Rangi i odznaki"
-              description="Personalizuj nazwy odznak i sposób ich przyznawania."
+              header='Rangi i odznaki'
+              description='Personalizuj nazwy odznak i sposób ich przyznawania.'
               routePath={TeacherRoutes.GAME_MANAGEMENT.RANKS_AND_BADGES}
             />
           </Col>
-          <Col md={4} className="py-2">
+          <Col md={4} className='py-2'>
             {/* <ManagementCard */}
             {/*  header={'Ustawienia gry'} */}
             {/*  description={'Dopasuj temat fabuły i wygląd całej gry oraz całego systemu.'} */}
             {/*  routePath={TeacherRoutes.GAME_MANAGEMENT.GAME_SETTINGS} */}
             {/* /> */}
             <ManagementCard
-              header="Umiejętności postaci"
-              description="Zmiana ustawienia umiejętności postaci ."
+              header='Umiejętności postaci'
+              description='Zmiana ustawienia umiejętności postaci .'
               callback={() => setIsSuperpowerModalVisible(true)}
             />
           </Col>
-          <Col md={4} className="py-2">
+          <Col md={4} className='py-2'>
             <ManagementCard
-              header="Wczytaj konfigurację gry"
-              description="Wyczyść cały stan bazy danych i wczytaj stan od nowa podając plik zawierający backup."
+              header='Wczytaj konfigurację gry'
+              description='Wyczyść cały stan bazy danych i wczytaj stan od nowa podając plik zawierający backup.'
               callback={() => setShowConfigModal(true)}
             />
           </Col>
-          <Col md={4} className="py-2">
+          <Col md={4} className='py-2'>
             <ManagementCard
-              header="Kopia zapasowa"
-              description="Pobierz kopię zapasową bazy danych, żeby móc wczytać konfigurację z tego pliku."
+              header='Kopia zapasowa'
+              description='Pobierz kopię zapasową bazy danych, żeby móc wczytać konfigurację z tego pliku.'
               callback={downloadBackupFile}
             />
           </Col>
-          <Col md={4} className="py-2">
+          <Col md={4} className='py-2'>
             <ManagementCard
-              header="Lista logów serwera"
-              description="Pobierz listę logów z serwera zbieranych od początku istnienia aplikacji."
+              header='Lista logów serwera'
+              description='Pobierz listę logów z serwera zbieranych od początku istnienia aplikacji.'
               routePath={TeacherRoutes.GAME_MANAGEMENT.LOGS}
             />
           </Col>
@@ -194,12 +193,12 @@ function GameManagement(props) {
         isLoaded={shouldLoadAddChapterModal}
       />
       <SuperPowerEditionModal isModalVisible={isSuperpowerModalVisible} setModalVisible={setIsSuperpowerModalVisible} />
-    </Content>
+    </Container>
   )
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
   return {
     theme
   }

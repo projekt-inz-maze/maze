@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import AddCombatTask from './AddActivity/AddCombatTask'
 import AddGraphTask from './AddActivity/AddGraphTask'
 import AddInfoTask from './AddActivity/AddInfoTask'
+import AddSubmitTask from './AddActivity/AddSubmitTask'
 import AddSurveyTask from './AddActivity/AddSurveyTask'
 import { Activity, getActivityTypeName } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
@@ -32,6 +33,8 @@ function AddActivityModal(props) {
           return <AddInfoTask chapterId={props.chapterId} onSuccess={onSuccess} onCancel={onCancel} />
         case Activity.SURVEY:
           return <AddSurveyTask chapterId={props.chapterId} onSuccess={onSuccess} onCancel={onCancel} />
+        case Activity.SUBMIT:
+          return <AddSubmitTask chapterId={props.chapterId} onSuccess={onSuccess} onCancel={onCancel} />
         default:
           return <></>
       }
@@ -46,7 +49,7 @@ function AddActivityModal(props) {
 
   return (
     <>
-      <Modal show={props.showModal} onHide={() => props.setShow(false)} size="xl">
+      <Modal show={props.showModal} onHide={() => props.setShow(false)} size='xl'>
         <ModalHeader closeButton>
           <h5>Dodaj nową aktywność</h5>
         </ModalHeader>
@@ -59,7 +62,8 @@ function AddActivityModal(props) {
           >
             {activities.map(
               (activity, index) =>
-                activity !== Activity.ADDITIONAL && (
+                activity !== Activity.ADDITIONAL &&
+                activity !== Activity.AUCTION && (
                   <Tab title={getActivityTypeName(activity)} eventKey={activity} key={index + Date.now()}>
                     {getActivityTab(activity)}
                   </Tab>
@@ -84,9 +88,10 @@ function AddActivityModal(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
   return {
     theme
   }
 }
+
 export default connect(mapStateToProps)(AddActivityModal)

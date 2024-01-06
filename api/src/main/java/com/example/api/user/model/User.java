@@ -1,7 +1,9 @@
 package com.example.api.user.model;
 
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.StudentNotEnrolledException;
+import com.example.api.personality.PersonalityType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,11 +51,31 @@ public class User {
     @JsonBackReference
     private List<Course> courses = new LinkedList<>();
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @MapKeyClass(PersonalityType.class)
+    @MapKeyEnumerated(EnumType.STRING)
+    private Map<PersonalityType, Double> personality;
+
     public Optional<CourseMember> getCourseMember(Long courseId) {
         return courseMemberships.stream()
                 .filter(member -> member.getCourse().getId().equals(courseId))
                 .findAny();
     }
+
+    public CourseMember getCourseMember(Long courseId, boolean bool) throws StudentNotEnrolledException {
+        return courseMemberships.stream()
+                .filter(member -> member.getCourse().getId().equals(courseId))
+                .findAny()
+                .orElseThrow(() -> new StudentNotEnrolledException(this, courseId));
+    }
+
+    public CourseMember getCourseMember(Course course, boolean bool) throws StudentNotEnrolledException {
+        return courseMemberships.stream()
+                .filter(member -> member.getCourse().equals(course))
+                .findAny()
+                .orElseThrow(() -> new StudentNotEnrolledException(this, course.getId()));
+    }
+
     public Optional<CourseMember> getCourseMember(Course course) {
         return courseMemberships.stream()
                 .filter(member -> member.getCourse().equals(course))

@@ -6,12 +6,12 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;
-import com.example.api.activity.result.model.TaskResult;
-import com.example.api.question.model.Answer;
-import com.example.api.question.model.Option;
-import com.example.api.question.model.Question;
-import com.example.api.question.model.QuestionType;
-import com.example.api.question.repository.OptionRepository;
+import com.example.api.activity.result.model.ActivityResult;
+import com.example.api.question.answer.Answer;
+import com.example.api.question.option.Option;
+import com.example.api.question.Question;
+import com.example.api.question.QuestionType;
+import com.example.api.question.option.OptionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -81,7 +81,7 @@ public class ResultValidator {
         }
     }
 
-    public void validateResultIsNotNull(TaskResult result, Long id, String email) throws EntityNotFoundException {
+    public void validateResultIsNotNull(ActivityResult result, Long id, String email) throws EntityNotFoundException {
         if (result == null) {
             log.error("GraphTaskResult for GraphTask with id {} and user {} not found", id, email);
             throw new EntityNotFoundException("GraphTaskResult for GraphTask with id " + id +

@@ -1,33 +1,39 @@
 package com.example.api.user.service;
 
+import com.example.api.activity.Activity;
+import com.example.api.activity.info.Info;
+import com.example.api.activity.info.InfoService;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.result.model.TaskResult;
+import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.result.service.ActivityResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
-import com.example.api.activity.task.model.*;
-import com.example.api.activity.task.service.FileTaskService;
-import com.example.api.activity.task.service.GraphTaskService;
-import com.example.api.activity.task.service.InfoService;
-import com.example.api.activity.task.service.SurveyService;
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
-import com.example.api.course.service.CourseService;
-import com.example.api.course.validator.CourseValidator;
+import com.example.api.activity.survey.Survey;
+import com.example.api.activity.survey.SurveyService;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.activity.task.filetask.FileTaskService;
+import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.activity.task.graphtask.GraphTaskService;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.CourseService;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.map.dto.response.task.ActivityType;
-import com.example.api.map.model.Chapter;
-import com.example.api.map.model.requirement.Requirement;
-import com.example.api.map.service.ChapterService;
-import com.example.api.user.dto.response.dashboard.*;
+import com.example.api.activity.ActivityType;
+import com.example.api.chapter.Chapter;
+import com.example.api.chapter.requirement.model.Requirement;
+import com.example.api.chapter.ChapterService;
+import com.example.api.user.badge.BadgeService;
+import com.example.api.user.dto.response.dashboard.DashboardResponse;
+import com.example.api.user.dto.response.dashboard.GeneralStats;
+import com.example.api.user.dto.response.dashboard.LastAddedActivity;
 import com.example.api.user.hero.HeroStatsDTO;
 import com.example.api.user.hero.HeroTypeStatsDTO;
 import com.example.api.user.model.Rank;
@@ -63,12 +69,12 @@ public class DashboardService {
     private final BadgeService badgeService;
     private final UserService userService;
     private final CourseService courseService;
-    private final CourseValidator courseValidator;
     private final ActivityResultService activityResultService;
 
     private final long MAX_LAST_ACTIVITIES_IN_DASHBOARD = 8;
 
     public DashboardResponse getStudentDashboard(Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+        log.info("getStudentDashboard");
         User student = userService.getCurrentUserAndValidateStudentAccount();
         CourseMember member = student.getCourseMember(courseId).orElseThrow();
         Course course = courseService.getCourse(courseId);
@@ -77,13 +83,14 @@ public class DashboardService {
 
         return new DashboardResponse(
                 getHeroTypeStats(member),
-                getGeneralStats(student, course),
+                getGeneralStats(student, course, member),
                 getLastAddedActivities(course),
                 getHeroStats(member)
         );
     }
 
     private HeroTypeStatsDTO getHeroTypeStats(CourseMember member) throws EntityNotFoundException {
+        log.info("getHeroTypeStats");
         String heroType = String.valueOf(member.getHeroType());
 
         List<RankingResponse> ranking = rankingService.getRanking(member.getCourse().getId());
@@ -110,17 +117,15 @@ public class DashboardService {
                 .orElse(null);
     }
 
-    private GeneralStats getGeneralStats(User student, Course course) {
+    private GeneralStats getGeneralStats(User student, Course course, CourseMember member) {
         log.info("getGeneralStats");
 
-        Double avgGraphTask = getAvgGraphTask(student, course);
-        Double avgFileTask = getAvgFileTask(student, course);
-        Long surveysNumber = getSurveysNumber(student, course);
-        Double graphTaskPoints = getGraphTaskPoints(student, course);
-        Double fileTaskPoints = getFileTaskPoints(student, course);
-        Double additionalPoints =  getAdditionalPoints(student, course);
-        Double surveyPoints = getSurveyPoints(student, course);
-        Double allPoints = graphTaskPoints + fileTaskPoints + additionalPoints + surveyPoints;
+        Double avgGraphTask = getAvgGraphTask(member);
+        Double avgFileTask = getAvgFileTask(member);
+        Long surveysNumber = getSurveysNumber(member);
+        Double graphTaskPoints = getGraphTaskPoints(member);
+        Double fileTaskPoints = getFileTaskPoints(member);
+        Double userPoints = member.getPoints();
         Double maxPoints = getMaxPoints(student, course);
 
         return new GeneralStats(
@@ -129,54 +134,54 @@ public class DashboardService {
                 surveysNumber,
                 graphTaskPoints,
                 fileTaskPoints,
-                allPoints,
+                userPoints,
                 maxPoints
         );
     }
 
-    private Double getAvgGraphTask(User student, Course course) {
-        OptionalDouble avg = graphTaskResultRepository.findAllByUserAndCourse(student, course)
+    private Double getAvgGraphTask(CourseMember member) {
+        OptionalDouble avg = graphTaskResultRepository.findAllByMember(member)
                 .stream()
                 .filter(GraphTaskResult::isEvaluated)
-                .mapToDouble(result -> 100 * result.getPointsReceived() / result.getGraphTask().getMaxPoints())
+                .mapToDouble(result -> 100 * result.getPoints() / result.getGraphTask().getMaxPoints())
                 .average();
         return avg.isPresent() ? PointsCalculator.round(avg.getAsDouble(), 2) : null;
     }
 
-    private Double getAvgFileTask(User student, Course course) {
-        OptionalDouble avg = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
+    private Double getAvgFileTask(CourseMember member) {
+        OptionalDouble avg = fileTaskResultRepository.findAllByMember(member)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
-                .mapToDouble(result -> 100 * result.getPointsReceived() / result.getFileTask().getMaxPoints())
+                .mapToDouble(result -> 100 * result.getPoints() / result.getFileTask().getMaxPoints())
                 .average();
         return avg.isPresent() ? PointsCalculator.round(avg.getAsDouble(), 2) : null;
     }
 
-    private Long getSurveysNumber(User student, Course course) {
-        return surveyResultRepository.countAllByMember_UserAndCourse(student, course);
+    private Long getSurveysNumber(CourseMember member) {
+        return surveyResultRepository.countAllByMember(member);
     }
 
-    private Double getGraphTaskPoints(User student, Course course) {
-        return getTaskPoints(graphTaskResultRepository.findAllByUserAndCourse(student, course));
+    private Double getGraphTaskPoints(CourseMember member) {
+        return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
     }
 
-    private Double getFileTaskPoints(User student, Course course) {
-        return getTaskPoints(fileTaskResultRepository.findAllByMember_UserAndCourse(student, course));
+    private Double getFileTaskPoints(CourseMember member) {
+        return getTaskPoints(fileTaskResultRepository.findAllByMember(member));
     }
 
-    private Double getAdditionalPoints(User student, Course course) {
-        return getTaskPoints(additionalPointsRepository.findAllByUserAndCourse(student, course));
+    private Double getAdditionalPoints(CourseMember member) {
+        return getTaskPoints(additionalPointsRepository.findAllByMember(member));
     }
 
-    private Double getSurveyPoints(User student, Course course) {
-        return getTaskPoints(surveyResultRepository.findAllByUserAndCourse(student, course));
+    private Double getSurveyPoints(CourseMember member) {
+        return getTaskPoints(surveyResultRepository.findAllByMember(member));
     }
 
-    private Double getTaskPoints(List<? extends TaskResult> taskResults) {
+    private Double getTaskPoints(List<? extends ActivityResult> taskResults) {
         return taskResults
                 .stream()
-                .filter(TaskResult::isEvaluated)
-                .mapToDouble(TaskResult::getPointsReceived)
+                .filter(ActivityResult::isEvaluated)
+                .mapToDouble(ActivityResult::getPoints)
                 .sum();
     }
 
@@ -186,7 +191,7 @@ public class DashboardService {
                 .filter(GraphTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getGraphTask().getMaxPoints())
                 .sum();
-        Double maxPointsFileTask = fileTaskResultRepository.findAllByMember_UserAndCourse(student, course)
+        Double maxPointsFileTask = fileTaskResultRepository.findAllByMember_UserAndMember_Course(student, course)
                 .stream()
                 .filter(FileTaskResult::isEvaluated)
                 .mapToDouble(result -> result.getFileTask().getMaxPoints())

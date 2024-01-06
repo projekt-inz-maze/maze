@@ -1,13 +1,12 @@
 import {
-  GET_TASK_FILE,
   DELETE_TASK_FILE_RESULT_FILE,
-  GET_TASK_FILE_RESULT_FILE,
-  POST_TASK_FILE_RESULT_FILE,
+  GET_TASK_FILE,
+  GET_TASK_FILE_CREATE,
   POST_TASK_FILE_CREATE,
-  GET_TASK_FILE_CREATE
+  POST_TASK_FILE_RESULT_FILE
 } from './urls'
-import { axiosApiDelete, axiosApiDownloadFile, axiosApiGet, axiosApiPost, axiosApiMultipartPost } from '../utils/axios'
-
+import { BASE_URL } from '../api/api'
+import { axiosApiDelete, axiosApiDownloadFile, axiosApiGet, axiosApiMultipartPost, axiosApiPost } from '../utils/axios'
 
 class CombatTaskService {
   getCombatTask(taskId) {
@@ -19,8 +18,8 @@ class CombatTaskService {
   }
 
   getCombatFile(fileApiId) {
-    return axiosApiDownloadFile(GET_TASK_FILE_RESULT_FILE, {
-      fileId: fileApiId
+    return axiosApiDownloadFile(`${BASE_URL}/file/download`, {
+      id: fileApiId
     }).catch(() => {})
   }
 

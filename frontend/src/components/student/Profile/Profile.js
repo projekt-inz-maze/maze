@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { Col, Row, Spinner, Table } from 'react-bootstrap'
+import { Col, Container, Row, Spinner, Table } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import DeleteAccountModal from './DeleteAccountModal'
@@ -9,33 +9,36 @@ import EditPasswordModal from './EditPasswordModal'
 import ProfileCard from './ProfileCard'
 import { useAppSelector } from '../../../hooks/hooks'
 import UserService from '../../../services/user.service'
-import { ERROR_OCCURRED, getHeroName, HeroImg } from '../../../utils/constants'
+import { ERROR_OCCURRED } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
-import { Content } from '../../App/AppGeneralStyles'
 
 function Profile(props) {
   const isMobileDisplay = isMobileView()
 
+  const courseId = useAppSelector((state) => state.user.courseId)
+
   const [userData, setUserData] = useState(undefined)
-  const [isEditIndexModalOpen, setIsEditIndexModalOpen] = useState(false)
   const [indexNumber, setIndexNumber] = useState(undefined)
+  const [user, setUser] = useState(undefined)
+
+  const [isEditIndexModalOpen, setIsEditIndexModalOpen] = useState(false)
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-
-  const courseId = useAppSelector((state) => state.user.courseId)
 
   useEffect(() => {
     UserService.getUserData()
       .then((response) => {
         setIndexNumber(response.indexNumber)
+        setUser(response)
       })
       .catch(() => {
         setIndexNumber(null)
       })
     UserService.getUserGroup(courseId)
       .then((response) => {
-      setUserData(response)
-    }).catch(() => setUserData(null))
+        setUserData(response)
+      })
+      .catch(() => setUserData(null))
   }, [])
 
   const userInfoBody = useMemo(() => {
@@ -47,61 +50,32 @@ function Profile(props) {
     }
 
     const tableHeaders = [
-      { text: 'Imię', value: userData.firstName },
-      { text: 'Nazwisko', value: userData.lastName },
-      { text: 'Email', value: userData.email },
-      { text: 'Numer indeksu', value: indexNumber },
-      { text: 'Grupa zajęciowa', value: userData.name },
-      { text: 'Typ bohatera', value: getHeroName(userData.heroType) }
+      { text: 'Imię', value: user.firstName },
+      { text: 'Nazwisko', value: user.lastName },
+      { text: 'Email', value: user.email },
+      { text: 'Numer indeksu', value: user.indexNumber }
     ]
     return (
       <Table>
         <tbody>
-        {tableHeaders.map((header, index) => (
-          <tr key={index + Date.now()}>
-            <td>
-              <strong>{header.text}</strong>
-            </td>
-            <td>{header.value}</td>
-          </tr>
-        ))}
+          {tableHeaders.map((header, index) => (
+            <tr key={index + Date.now()}>
+              <td>
+                <strong>{header.text}</strong>
+              </td>
+              <td>{header.value}</td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     )
   }, [userData, indexNumber])
 
-  const heroInfoCard = useMemo(() => {
-    const cardBody =
-      userData === undefined ? (
-        <Spinner animation='border' />
-      ) : userData == null ? (
-        <p>{ERROR_OCCURRED}</p>
-      ) : (
-        <img style={{ maxWidth: '100%' }} height='90%' src={HeroImg[userData.heroType]} alt='Your hero' />
-      )
-    return (
-      <ProfileCard
-        header={
-          <>
-            <span>Wybrana postać </span>
-            <strong>{userData && getHeroName(userData.heroType)}</strong>
-          </>
-        }
-        body={cardBody}
-      />
-    )
-  }, [userData])
-
   return (
-    <Content>
+    <Container fluid>
       <h3 className='text-center py-3'>Mój profil</h3>
       <Row className='px-0 mx-0'>
-        <Col md={6} className={isMobileDisplay ? 'mb-3' : 'mb-0'}>
-          <ProfileCard header='Informacje o profilu' body={userInfoBody} />
-        </Col>
-        <Col md={6} className={isMobileDisplay ? 'mb-2' : 'mb-0'}>
-          {heroInfoCard}
-        </Col>
+        <ProfileCard header='Informacje o profilu' body={userInfoBody} />
       </Row>
       <Row className='px-0 mx-0 py-2' style={{ marginBottom: isMobileDisplay ? '30px' : 'aut   o' }}>
         <Col md={4} className={isMobileDisplay ? 'mb-3' : 'mb-0'}>
@@ -143,7 +117,7 @@ function Profile(props) {
       />
       <EditPasswordModal show={isEditPasswordModalOpen} setModalOpen={setIsEditPasswordModalOpen} />
       <DeleteAccountModal show={isDeleteModalOpen} setModalOpen={setIsDeleteModalOpen} />
-    </Content>
+    </Container>
   )
 }
 

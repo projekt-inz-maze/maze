@@ -1,17 +1,17 @@
 package com.example.api.validator;
 
-import com.example.api.course.model.Course;
-import com.example.api.map.dto.request.ChapterForm;
+import com.example.api.course.Course;
+import com.example.api.chapter.ChapterForm;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.activity.task.model.Activity;
-import com.example.api.map.model.ActivityMap;
-import com.example.api.map.model.Chapter;
-import com.example.api.map.repository.ChapterRepository;
+import com.example.api.activity.Activity;
+import com.example.api.map.ActivityMap;
+import com.example.api.chapter.Chapter;
+import com.example.api.chapter.ChapterRepository;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.util.repository.FileRepository;
+import com.example.api.file.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -36,7 +36,7 @@ public class ChapterValidator {
     }
 
     public void validateChapterCreation(ChapterForm form) throws RequestValidationException {
-        List<Chapter> chapters = chapterRepository.findAll();
+        List<Chapter> chapters = chapterRepository.findAllByCourse_Id(form.getCourseId());
         if (chapters.stream()
                 .anyMatch(chapter ->
                                 Objects.equals(chapter.getPosX(), form.getPosX()) &&

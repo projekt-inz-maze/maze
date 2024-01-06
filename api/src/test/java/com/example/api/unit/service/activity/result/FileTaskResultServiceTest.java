@@ -1,19 +1,18 @@
 package com.example.api.unit.service.activity.result;
 
-import com.example.api.activity.task.dto.request.SaveFileToFileTaskResultForm;
+import com.example.api.activity.result.dto.SaveFileToFileTaskResultForm;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.task.model.FileTask;
+import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.security.AuthenticationService;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
-import com.example.api.util.model.File;
+import com.example.api.file.File;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.activity.task.repository.FileTaskRepository;
+import com.example.api.activity.task.filetask.FileTaskRepository;
 import com.example.api.user.repository.UserRepository;
-import com.example.api.util.repository.FileRepository;
-import com.example.api.security.LoggedInUserService;
+import com.example.api.file.FileRepository;
 import com.example.api.activity.result.service.FileTaskResultService;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
@@ -29,7 +28,6 @@ import org.springframework.security.core.Authentication;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

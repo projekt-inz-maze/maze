@@ -1,20 +1,20 @@
 package com.example.api.validator;
 
-import com.example.api.activity.feedback.dto.request.SaveProfessorFeedbackForm;
-import com.example.api.course.model.CourseMember;
+import com.example.api.activity.auction.Auction;
+import com.example.api.activity.feedback.SaveProfessorFeedbackForm;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongPointsNumberException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.activity.feedback.model.ProfessorFeedback;
+import com.example.api.activity.feedback.ProfessorFeedback;
 import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.task.model.FileTask;
+import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.user.model.User;
-import com.example.api.util.model.File;
-import com.example.api.activity.feedback.repository.ProfessorFeedbackRepository;
+import com.example.api.file.File;
+import com.example.api.activity.feedback.ProfessorFeedbackRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.util.repository.FileRepository;
+import com.example.api.file.FileRepository;
 import com.example.api.security.LoggedInUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +53,8 @@ public class FeedbackValidator {
         }
         ProfessorFeedback feedback = professorFeedbackRepository.findProfessorFeedbackByFileTaskResult(fileTaskResult);
 
+        FileTask task = fileTaskResult.getFileTask();
+
         if (feedback == null) {
             feedback = new ProfessorFeedback();
             feedback.setFrom(professor);
@@ -63,33 +65,29 @@ public class FeedbackValidator {
             feedback.setContent(form.getContent());
         }
 
-        if(form.getPoints() != null) {
-            if (form.getPoints() < 0 || form.getPoints() > fileTaskResult.getFileTask().getMaxPoints()) {
-                throw new WrongPointsNumberException("Wrong points number", form.getPoints(), fileTaskResult.getFileTask().getMaxPoints());
+        if (form.getPoints() != null) {
+            if (form.getPoints() < 0 || form.getPoints() > task.getMaxPoints()) {
+                throw new WrongPointsNumberException("Wrong points number", form.getPoints(), task.getMaxPoints());
             }
             feedback.setPoints(form.getPoints());
-            fileTaskResult.setPointsReceived(form.getPoints());
+            fileTaskResult.setPoints(form.getPoints());
             fileTaskResultRepository.save(fileTaskResult);
-            //badgeService.checkAllBadges(professor);
+
+            task.getAuction().flatMap(Auction::getHighestBid).ifPresent(bid -> bid.returnPoints(form.getPoints()));
+            task.getAuthoredByStudent().ifPresent(authored -> authored.setPoints(form.getPoints()));
         }
 
         // Feedback file can be set only once
         if(feedback.getFeedbackFile() == null && form.getFile() != null) {
-            File file = new File(null, form.getFileName(), fileTaskResult.getCourse(), form.getFile().getBytes());
+            File file = new File(null, form.getFileName(), form.getFile().getBytes());
             fileRepository.save(file);
             feedback.setFeedbackFile(file);
         }
 
         fileTaskResult.setEvaluated(true);
         fileTaskResultRepository.save(fileTaskResult);
-        return professorFeedbackRepository.save(feedback);
-    }
 
-    public void validateFeedbackIsNotNull(SurveyResult feedback, Long id, String email) throws EntityNotFoundException {
-        if(feedback == null) {
-            log.error("SurveyResult for survey with id {} and user {} not found in database", id, email);
-            throw new EntityNotFoundException("SurveyResult for survey with id " + id + " and user " + email + " not found in database");
-        }
+        return professorFeedbackRepository.save(feedback);
     }
 
     public void validateFeedbackForInfoResponse(ProfessorFeedback professorFeedback,

@@ -1,0 +1,12 @@
+.appContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.content {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

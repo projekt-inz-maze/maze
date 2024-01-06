@@ -16,7 +16,6 @@ import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 import { CustomTable } from '../../../student/GameCardPage/gameCardContentsStyle'
 import 'react-datepicker/dist/react-datepicker.css'
 
-
 registerLocale('pl', pl)
 
 function Requirements(props) {
@@ -80,10 +79,10 @@ function Requirements(props) {
       }
 
       const requirementsToSend = requirementsList.map((r) => ({
-          id: r.id,
-          selected: r.selected,
-          value: getAnswer(r)
-        }))
+        id: r.id,
+        selected: r.selected,
+        value: getAnswer(r)
+      }))
       props
         .updateRequirementsCallback(props.id, requirementsToSend, blockadeRef?.current?.checked ?? false)
         .then(() => {
@@ -110,9 +109,9 @@ function Requirements(props) {
             selected={date instanceof Date && !isNaN(date.getTime()) ? date : new Date()}
             onChange={(date) => onInputChange(requirement.id, date, setRequirementsList)}
             showTimeSelect
-            timeFormat="p"
-            dateFormat="dd.MM.yyyy, HH:mm"
-            locale="pl"
+            timeFormat='p'
+            dateFormat='dd.MM.yyyy, HH:mm'
+            locale='pl'
           />
         )
       case RequirementType.MULTI_SELECT:
@@ -141,8 +140,8 @@ function Requirements(props) {
   return (
     <>
       <Row
-        className="m-0 d-flex flex-column align-items-center"
-        style={{ height: '85vh', overflowY: 'auto', padding: isMobileView() ? 0 : '0 1rem' }}
+        className='m-0 d-flex flex-column align-items-center'
+        style={{ overflowY: 'auto', padding: isMobileView() ? 0 : '0 1rem' }}
       >
         <Row>
           <CustomTable
@@ -151,15 +150,15 @@ function Requirements(props) {
             $background={props.theme.secondary}
           >
             <tbody>
-              <tr className="position-sticky top-0" style={{ zIndex: 100 }}>
-                <th className="text-center" colSpan={3}>
+              <tr className='position-sticky top-0' style={{ zIndex: 100 }}>
+                <th className='text-center' colSpan={3}>
                   {props.tableTitle}
                 </th>
               </tr>
               {requirementsList === undefined ? (
                 <tr>
-                  <td colSpan={3} className="text-center">
-                    <Spinner animation="border" />
+                  <td colSpan={3} className='text-center'>
+                    <Spinner animation='border' />
                   </td>
                 </tr>
               ) : requirementsList == null ? (
@@ -168,11 +167,11 @@ function Requirements(props) {
                 </tr>
               ) : (
                 requirementsList.map((requirement, index) => (
-                  <tr key={`req${  index}`}>
+                  <tr key={`req${index}`}>
                     <td>
                       <CheckBox requirement={requirement} onChangeCallback={setRequirementsList} />
                     </td>
-                    <td className="w-50">{requirement.name}</td>
+                    <td className='w-50'>{requirement.name}</td>
                     <td style={{ width: '45%', maxWidth: '45%', wordBreak: 'break-word' }}>
                       {inputContent(requirement)}
                     </td>
@@ -183,27 +182,27 @@ function Requirements(props) {
           </CustomTable>
           <Form.Check
             ref={blockadeRef}
-            className="pt-3"
+            className='pt-3'
             checked={isElementBlocked}
             onChange={(e) => setIsElementBlocked(e.target.checked)}
-            label="Zablokuj dostęp studentom"
-           />
+            label='Zablokuj dostęp studentom'
+          />
         </Row>
       </Row>
       {onSaveError && (
-        <p className="w-100 text-center" style={{ color: props.theme.danger }}>
+        <p className='w-100 text-center' style={{ color: props.theme.danger }}>
           {onSaveError}
         </p>
       )}
 
-      <div className="d-flex justify-content-center gap-2">
+      <div className='d-flex justify-content-center gap-2'>
         <GoBackButton
-          goTo={`${TeacherRoutes.GAME_MANAGEMENT.CHAPTER.MAIN  }/${chapterName}/${chapterId}`}
-          customClass="mt-3"
+          goTo={`${TeacherRoutes.GAME_MANAGEMENT.CHAPTER.MAIN}/${chapterName}/${chapterId}`}
+          customClass='mt-3'
         />
 
-        <Button className="w-auto mt-3" onClick={saveRequirements}>
-          {isSaving ? <Spinner animation="border" size="sm" /> : <span>Zapisz zmiany</span>}
+        <Button className='w-auto mt-3' onClick={saveRequirements}>
+          {isSaving ? <Spinner animation='border' size='sm' /> : <span>Zapisz zmiany</span>}
         </Button>
       </div>
     </>
@@ -211,7 +210,7 @@ function Requirements(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }

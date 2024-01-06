@@ -1,6 +1,6 @@
 package com.example.api.user.dto.response.badge;
 
-import com.example.api.user.model.badge.UnlockedBadge;
+import com.example.api.user.badge.unlockedbadge.UnlockedBadge;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

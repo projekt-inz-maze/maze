@@ -1,23 +1,27 @@
 package com.example.api.activity.validator;
 
-import com.example.api.activity.task.dto.request.create.*;
-import com.example.api.activity.task.model.Info;
+import com.example.api.activity.CreateActivityForm;
+import com.example.api.activity.info.CreateInfoForm;
+import com.example.api.activity.survey.CreateSurveyForm;
+import com.example.api.activity.survey.SurveyValidator;
+import com.example.api.activity.task.filetask.CreateFileTaskForm;
+import com.example.api.activity.task.filetask.FileTaskValidator;
+import com.example.api.activity.task.graphtask.CreateGraphTaskForm;
+import com.example.api.activity.task.graphtask.GraphTaskValidator;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.EntityRequiredAttributeNullException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.result.model.TaskResult;
-import com.example.api.activity.task.model.Activity;
-import com.example.api.activity.task.model.FileTask;
-import com.example.api.activity.task.model.GraphTask;
-import com.example.api.map.model.ActivityMap;
-import com.example.api.map.model.Chapter;
-import com.example.api.map.model.requirement.Requirement;
-import com.example.api.question.model.Difficulty;
-import com.example.api.question.model.QuestionType;
+import com.example.api.activity.result.model.ActivityResult;
+import com.example.api.activity.Activity;
+import com.example.api.activity.task.filetask.FileTask;
+import com.example.api.map.ActivityMap;
+import com.example.api.chapter.Chapter;
+import com.example.api.question.Difficulty;
+import com.example.api.question.QuestionType;
 import com.example.api.user.model.User;
-import com.example.api.util.model.File;
+import com.example.api.file.File;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -51,15 +55,15 @@ public class ActivityValidator {
         }
     }
 
-    public void validateTaskResultIsNotNull(TaskResult taskResult, Long id) throws EntityNotFoundException {
-        if(taskResult == null) {
+    public void validateTaskResultIsNotNull(ActivityResult activityResult, Long id) throws EntityNotFoundException {
+        if(activityResult == null) {
             log.error("Task result with id {} not found in database", id);
             throw new EntityNotFoundException("Task result with id" + id + " not found in database");
         }
     }
 
-    public void validateTaskResultIsNotNull(TaskResult taskResult, User user, FileTask fileTask) throws EntityNotFoundException {
-        if(taskResult == null) {
+    public void validateTaskResultIsNotNull(ActivityResult activityResult, User user, FileTask fileTask) throws EntityNotFoundException {
+        if(activityResult == null) {
             log.error("Task result for user {} and file task {} not found in database", user.getEmail(), fileTask.getId());
             throw new EntityNotFoundException("Task result for user " + user.getEmail() +
                     " and file task " + fileTask.getId() + " not found in database");
@@ -151,18 +155,27 @@ public class ActivityValidator {
         }
     }
 
-    public void validateGraphTaskTitle(String title, List<GraphTask> graphTasks) throws RequestValidationException {
-        graphTaskValidator.validateGraphTaskTitle(title, graphTasks);
+    public void validateActivityTitle(String title, List<? extends Activity> activities) throws RequestValidationException {
+        int idx = title.indexOf(";");
+        if (idx != -1) {
+            log.error("Title cannot contain a semicolon!");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_CONTAINS_SEMICOLON);
+        }
+        if (activities.stream().anyMatch(fileTask -> fileTask.getTitle().equals(title))) {
+            log.error("Activity has to have unique title");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_NOT_UNIQUE);
+        }
     }
 
-    public void validateFileTaskTitle(String title, List<FileTask> fileTasks) throws RequestValidationException {
-        fileTaskValidator.validateFileTaskTitle(title, fileTasks);
-    }
-
-    public void validateRequirementsHasDateTo(List<Requirement> requirements) throws EntityRequiredAttributeNullException {
-        if (requirements.size() != 1) {
-            log.error("Requirements should have one requirement with type DATE_TO");
-            throw new EntityRequiredAttributeNullException("Requirements should have one requirement with type DATE_TO");
+    public void validateActivityTitle(String title, Boolean titleExists) throws RequestValidationException {
+        int idx = title.indexOf(";");
+        if (idx != -1) {
+            log.error("Title cannot contain a semicolon!");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_CONTAINS_SEMICOLON);
+        }
+        if (titleExists) {
+            log.error("Activity has to have unique title");
+            throw new RequestValidationException(ExceptionMessage.ACTIVITY_TITLE_NOT_UNIQUE);
         }
     }
 }

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface userState {
   courseId: number
+  selectedChapterId?: number
 }
 
 const initialState: userState = {
@@ -14,9 +15,12 @@ export const userSlice = createSlice({
   reducers: {
     setCourseId: (state, action: PayloadAction<number>) => {
       state.courseId = action.payload
+    },
+    setSelectedChapterId: (state, action: PayloadAction<number>) => {
+      state.selectedChapterId = action.payload
     }
   }
 })
 
-export const { setCourseId } = userSlice.actions
+export const { setCourseId, setSelectedChapterId } = userSlice.actions
 export default userSlice.reducer

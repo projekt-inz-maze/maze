@@ -1,0 +1,509 @@
+[
+{
+  "question": "Grając w grę typu MMORGP, czujesz się bardziej komfortowo:",
+  "answers": [
+    {
+      "content": "Rozmawiając ze znajomymi w tawernie?",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Samotnie polując na potwory i zdobywając punkty doświadczenia?",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Co sprawia Ci większą przyjemność?",
+  "answers": [
+    {
+      "content": "Zabijanie dużych potworów",
+      "personalityType": "ACHIEVER"
+    },
+    {
+      "content": "Chwalenie się tym przed znajomymi",
+      "personalityType": "SOCIALIZER"
+    }
+  ]
+},
+{
+  "question": "Co podoba Ci się bardziej w zadaniach/questach w grach?",
+  "answers": [
+    {
+      "content": "Zagłębianie się w fabułę",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Zdobywanie nagród za wykonanie zadania",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "W grze typu MMORPG wolałbyś_wolałabyś być znany_znana z:",
+  "answers": [
+    {
+      "content": "Swojego ekwipunku",
+      "personalityType": "ACHIEVER"
+    },
+    {
+      "content": "Swojej osobowości",
+      "personalityType": "SOCIALIZER"
+    }
+  ]
+},
+{
+  "question": "W grach tego typu ważniejsze jest dla Ciebie:",
+  "answers": [
+    {
+      "content": "Bycie popularnym",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Byciem bogatym",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Grając w grę, co sprawia Ci większą przyjemnośc?",
+  "answers": [
+    {
+      "content": "Dowiadywanie się o najnowszych plotkach",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Zdobywanie najnowszych przedmiotów",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Jako gracz, wolałbyś_wolałabyś mieć:",
+  "answers": [
+    {
+      "content": "Prywatny kanał do komunikacji w grze z Twoimi znajomymi",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Twój własny dom o bardzo dużej wartości",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Co sprawiałoby Ci większą przyjemność?",
+  "answers": [
+    {
+      "content": "Prowadzenie swojej własnej tawerny",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Tworzenie własnoręcznie zrobionych map",
+      "personalityType": "EXPLORER"
+    }
+  ]
+},
+{
+  "question": "Co jest dla Ciebie ważniejsze w grach?",
+  "answers": [
+    {
+      "content": "Liczba grających osób",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Liczba obszarów do eksploracji",
+      "personalityType": "EXPLORER"
+    }
+  ]
+},
+{
+  "question": "Co jest dla Ciebie ważniejsze?",
+  "answers": [
+    {
+      "content": "Umiejętne wcielanie się graczy w swoje postacie",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Unikalne cechy i mechanika gry",
+      "personalityType": "EXPLORER"
+    }
+  ]
+},
+{
+  "question": "W grze śledzi Cię potwór. Co robisz?",
+  "answers": [
+    {
+      "content": "Pytasz znajomego o pomoc w zabiciu go",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Chowasz się w miejscu, gdzie potwór Cię nie znajdzie",
+      "personalityType": "EXPLORER"
+    }
+  ]
+},
+{
+  "question": "Chcesz zawalczyć z bardzo trudnym do pokonania smokiem. Co zrobisz w tej sytuacji?",
+  "answers": [
+    {
+      "content": "Zbierzesz dużą grupę graczy, aby wspólnie go pokonać",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Użyjesz wielu rodzajów broni, aż znajdziesz jego słabość",
+      "personalityType": "EXPLORER"
+    }
+  ]
+},
+{
+  "question": "Wyruszasz do niezbadanego wcześniej lochu. Ze sobą możesz wziąć jeszcze jedną osobę. Wybierzesz:",
+  "answers": [
+    {
+      "content": "Barda, który jest Twoim dobrym znajomym i który tworzy dobrą atmosferę dla Ciebie i dla Twoich znajomych",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Czarodzieja, który potrafi identyfikować przedmioty z lochu",
+      "personalityType": "EXPLORER"
+    }
+  ]
+},
+{
+  "question": "Uważasz, że lepiej jest być:",
+  "answers": [
+    {
+      "content": "Kimś, kogo inni się boją",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Kimś, kogo inni uwielbiają",
+      "personalityType": "SOCIALIZER"
+    }
+  ]
+},
+{
+  "question": "Ktoś permamentnie zabił Twoją postać w grzę. Wolisz:",
+  "answers": [
+    {
+      "content": "Dowiedzieć się dlaczego i przekonać ją, żeby nie robiła tego nigdy więcej",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Zaplanować swoją zemstę",
+      "personalityType": "KILLER"
+    }
+  ]
+},
+{
+  "question": "Co jest dla Ciebie bardziej ekscytujące?",
+  "answers": [
+    {
+      "content": "Dobrze zagrany scenariusz (role-play)",
+      "personalityType": "SOCIALIZER"
+    },
+    {
+      "content": "Krwawa bitwa",
+      "personalityType": "KILLER"
+    }
+  ]
+},
+{
+  "question": "Co sprawiłoby Ci większą przyjemność?",
+  "answers": [
+    {
+      "content": "Wygranie pojedynku z innym graczem",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Zostanie zaakceptowanym przez klan",
+      "personalityType": "SOCIALIZER"
+    }
+  ]
+},
+{
+  "question": "Co sprawiłoby Ci większą przyjemność?",
+  "answers": [
+    {
+      "content": "Pokonywanie swoich przeciwników",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Przekonywanie swoich przeciwników, żeby pracowali z Tobą",
+      "personalityType": "SOCIALIZER"
+    }
+  ]
+},
+{
+  "question": "Co Twoim zdaniem jest gorsze w kontekście gier?",
+  "answers": [
+    {
+      "content": "Brak mocy",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Brak znajomych",
+      "personalityType": "SOCIALIZER"
+    }
+  ]
+},
+{
+  "question": "Co wolałbyś_wolałabyć zrobić?",
+  "answers": [
+    {
+      "content": "Pokazać komuś innemu ostrze swojej broni",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Posłuchać, co ktoś inny ma do powiedzenia",
+      "personalityType": "SOCIALIZER"
+    }
+  ]
+},
+{
+  "question": "W grze odblokowuje się nowy obszar. Czego nie możesz się doczekać?",
+  "answers": [
+    {
+      "content": "Eksplorowania nowego obszaru i dowiadywania się jego historii",
+      "personalityType": "EXPLORER"
+    },
+    {
+      "content": "Byciem pierwszą osobą, która zdobędzie nowy ekwipunek z tego obszaru",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "W grze wolałbyś_wolałabyć być znany_znana jako:",
+  "answers": [
+    {
+      "content": "Ktoś, kto zna się na rzeczy, np. swobodnie przemieszcza się między dwoma miejscami",
+      "personalityType": "EXPLORER"
+    },
+    {
+      "content": "Ktoś z najlepszym i najbardziej unikalnym ekwipunkiem w grze",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Wolałbyś_wolałabyś",
+  "answers": [
+    {
+      "content": "Znać więcej sekretów i easter eggów niż Twoi znajomi",
+      "personalityType": "EXPLORER"
+    },
+    {
+      "content": "Osiągnąć najwyższy poziom szybciej niż Twoi znajomi",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Wolałbyś_wolałabyś",
+  "answers": [
+    {
+      "content": "Wiedzieć, gdzie znajdować rzeczy",
+      "personalityType": "EXPLORER"
+    },
+    {
+      "content": "Wiedzieć, jak znajdować rzeczy",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Co sprawiłoby Ci większą przyjemność?",
+  "answers": [
+    {
+      "content": "Rozwiązać łamigłówkę, której nikt wcześniej nie rozwiązał",
+      "personalityType": "EXPLORER"
+    },
+    {
+      "content": "Zdobyć wysoki poziom doświadczenia wcześniej niż ktokolwiek inny",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Zazwyczaj:",
+  "answers": [
+    {
+      "content": "Wiesz rzeczy, których nikt inny nie wie",
+      "personalityType": "EXPLORER"
+    },
+    {
+      "content": "Posiadasz przedmioty, których nikt inny nie ma",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "W grze wolałbyś_wolałabyć dołączyć do gildii:",
+  "answers": [
+    {
+      "content": "Uczonych",
+      "personalityType": "EXPLORER"
+    },
+    {
+      "content": "Asasynów",
+      "personalityType": "KILLER"
+    }
+  ]
+},
+{
+  "question": "Wolałbyś_wolałabyś wygrać:",
+  "answers": [
+    {
+      "content": "Konkurs wiedzy ogólnej",
+      "personalityType": "EXPLORER"
+    },
+    {
+      "content": "Bitwę na arenie",
+      "personalityType": "KILLER"
+    }
+  ]
+},
+{
+  "question": "Jeśli jesteś sam_sama na danym obszarze, to myślisz, że:",
+  "answers": [
+    {
+      "content": "to dobry moment na jego eksplorację",
+      "personalityType": "EXPLORER"
+    },
+    {
+      "content": "to złe miejsce na polowanie",
+      "personalityType": "KILLER"
+    }
+  ]
+},
+{
+  "question": "W grze wolałbyś_wolałabyś być znany_znana z:",
+  "answers": [
+    {
+      "content": "Wiedzy",
+      "personalityType": "EXPLORER"
+    },
+    {
+      "content": "mocy",
+      "personalityType": "KILLER"
+    }
+  ]
+},
+{
+  "question": "Wolałbyś_wolałabyś:",
+  "answers": [
+    {
+      "content": "Pokonać przeciwnika",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Eksplorować nowy obszar",
+      "personalityType": "EXPLORER"
+    }
+  ]
+},
+{
+  "question": "Dowiaduje się, że inny gracz planuje Cię zaatakować i zabić. Co robisz?",
+  "answers": [
+    {
+      "content": "Atakujesz go zanim on zaatakuje Ciebie",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Idziesz do obszaru, z którym Twój przeciwnik nie jest obeznany i przygotowujesz się do walki",
+      "personalityType": "EXPLORER"
+    }
+  ]
+},
+{
+  "question": "Poznajesz nowego gracza. Myślisz o nim jak:",
+  "answers": [
+    {
+      "content": "O kimś, kto może docenić Twoje obeznanie z grą",
+      "personalityType": "EXPLORER"
+    },
+    {
+      "content": "O potencjalnej ofierze",
+      "personalityType": "KILLER"
+    }
+  ]
+},
+{
+  "question": "W grze wolałbyś_wolałabyś:",
+  "answers": [
+    {
+      "content": "Mieć miecz dwa razy silniejszy niż każdy inny w grze",
+      "personalityType": "ACHIEVER"
+    },
+    {
+      "content": "Być osobą, której każdy się boi",
+      "personalityType": "KILLER"
+    }
+  ]
+},
+{
+  "question": "W grze chętniej chwaliłbyś_chwaliłabyś się:",
+  "answers": [
+    {
+      "content": "Liczbą graczy, których zabiłeś_zabiłaś",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Twoim ekwipunkiem",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Wolałbyś_wolałabyś mieć:",
+  "answers": [
+    {
+      "content": "Czar, który zadaje obrażenia innym graczom",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Czar, który zwiększa tempo, z którym zdobywasz punkty doświadczenia",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Wolałbyś_wolałabyś dostać:",
+  "answers": [
+    {
+      "content": "Amulet, który zwiększa obrażenia, które zadajesz innym graczom o 10%",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Dwa dodatkowe poziomy doświadczenia",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Jako nagroda za wykonanie zadania, wolałbyś_wolałabyś dostać:",
+  "answers": [
+    {
+      "content": "Różdźkę z trzema ładunkami czaru, który pozwala Ci kontrolować innych graczy wbrew ich woli",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Punkty doświadczenia",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+},
+{
+  "question": "Grając w grę, bardziej przyjemne jest:",
+  "answers": [
+    {
+      "content": "Pokonać Twojego najlepszego znajomego w pojedynku jeden-na-jeden?",
+      "personalityType": "KILLER"
+    },
+    {
+      "content": "Mieć największy wynik w rankingu",
+      "personalityType": "ACHIEVER"
+    }
+  ]
+}
+]

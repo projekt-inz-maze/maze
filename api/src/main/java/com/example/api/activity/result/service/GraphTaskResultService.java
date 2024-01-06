@@ -2,18 +2,19 @@ package com.example.api.activity.result.service;
 
 import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
-import com.example.api.course.model.Course;
-import com.example.api.course.model.CourseMember;
+import com.example.api.activity.result.repository.ActivityResultRepository;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.*;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;
-import com.example.api.activity.task.model.GraphTask;
-import com.example.api.question.model.Question;
+import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.question.Question;
 import com.example.api.user.model.User;
 import com.example.api.user.hero.model.Hero;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
-import com.example.api.activity.task.repository.GraphTaskRepository;
-import com.example.api.question.repository.QuestionRepository;
+import com.example.api.activity.task.graphtask.GraphTaskRepository;
+import com.example.api.question.QuestionRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.service.UserService;
 import com.example.api.validator.ResultValidator;
@@ -47,6 +48,7 @@ public class GraphTaskResultService {
     private final UserService userService;
     private final ActivityValidator activityValidator;
     private final HeroVisitor heroVisitor;
+    private final ActivityResultRepository taskResultRepository;
 
     public Long getGraphTaskResultId(Long graphTaskId)
             throws WrongUserTypeException, EntityNotFoundException {
@@ -68,10 +70,9 @@ public class GraphTaskResultService {
         activityValidator.validateActivityIsNotNull(graphTask, id);
 
         CourseMember member = userService.getCurrentUserAndValidateStudentAccount()
-                .getCourseMember(graphTask.getCourse())
-                .orElseThrow();
+                .getCourseMember(graphTask.getCourse(), true);
 
-        if (graphTaskResultRepository.existsByGraphTaskAndMember(graphTask, member)) {
+        if (graphTaskResultRepository.existsByActivityAndMember(graphTask, member)) {
             throw new EntityAlreadyInDatabaseException(graphTaskResultAlreadyExists(id, member.getUser().getId()));
         }
 
@@ -102,7 +103,7 @@ public class GraphTaskResultService {
         log.info("Fetching points from graph task result with id {}", id);
         GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultById(id);
         activityValidator.validateTaskResultIsNotNull(result, id);
-        return result.getPointsReceived();
+        return result.getPoints();
     }
 
     public Double getMaxAvailablePoints(Long id) throws EntityNotFoundException {
@@ -186,8 +187,7 @@ public class GraphTaskResultService {
     }
 
     public GraphTaskResult getGraphTaskResultWithGraphTaskAndUser(Long graphTaskId, User user) throws EntityNotFoundException {
-        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskIdAndUser(graphTaskId, user);
-        resultValidator.validateResultIsNotNull(result, graphTaskId, user.getEmail());
-        return result;
+        return (GraphTaskResult) taskResultRepository.findByActivity_IdAndMember_User(graphTaskId, user)
+                .orElseThrow(() -> new EntityNotFoundException("GraphTaskResult not found"));
     }
 }

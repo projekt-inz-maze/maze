@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const Content = styled.div`
   min-height: 100vh;
+  box-sizing: border-box;
   padding: 0;
   width: 100%;
 `

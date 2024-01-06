@@ -1,6 +1,10 @@
 package com.example.api.error;
 
+import com.example.api.activity.auction.AuctionHasBeenResolvedException;
+import com.example.api.activity.auction.InvalidBidValueException;
+import com.example.api.activity.task.CannotEditRequirementsForAuctionedTaskException;
 import com.example.api.error.exception.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -19,6 +23,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
+@Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UsernameNotFoundException.class)
@@ -92,6 +97,24 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(TimeLimitExceededException.class)
     public ResponseEntity<Object> handleTimeLimitExceededException(TimeLimitExceededException ex) {
         return handleExceptionWithStatusCode(REQUEST_TIMEOUT, ex);
+    }
+
+    @ExceptionHandler(CannotEditRequirementsForAuctionedTaskException.class)
+    public ResponseEntity<Object> handleCannotEditRequirementsForAuctionedTaskException(CannotEditRequirementsForAuctionedTaskException ex) {
+        log.warn(ex.message);
+        return  handleExceptionWithStatusCode(BAD_REQUEST, ex);
+    }
+
+    @ExceptionHandler(InvalidBidValueException.class)
+    public ResponseEntity<Object> handleTooLowBidException(InvalidBidValueException ex) {
+        log.warn(ex.getMessage());
+        return  handleExceptionWithStatusCode(BAD_REQUEST, ex);
+    }
+
+    @ExceptionHandler(AuctionHasBeenResolvedException.class)
+    public ResponseEntity<Object> handleAuctionHasBeenResolvedException(AuctionHasBeenResolvedException ex) {
+        log.warn(ex.getMessage());
+        return  handleExceptionWithStatusCode(BAD_REQUEST, ex);
     }
 
     private ResponseEntity<Object> handleExceptionWithStatusCode(HttpStatus httpStatus, Exception ex) {

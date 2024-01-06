@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import { debounce } from 'lodash/function'
-import { Form } from 'react-bootstrap'
+import {Container, Form} from 'react-bootstrap'
 
 import StudentPointsModal from './StudentPointsModal'
 import { useAppSelector } from '../../../hooks/hooks'
 import RankingService from '../../../services/ranking.service'
-import { Content } from '../../App/AppGeneralStyles'
 import Ranking from '../../general/Ranking/Ranking'
 
 function StudentsRanking() {
@@ -54,7 +53,7 @@ function StudentsRanking() {
   }, 300)
 
   return (
-    <Content>
+    <Container fluid>
       <Form.Group className="py-3 px-4">
         <Form.Control
           type="text"
@@ -68,7 +67,7 @@ function StudentsRanking() {
         setModalOpen={setIsStudentPointsModalOpen}
         studentEmail={chosenStudentEmail}
       />
-    </Content>
+    </Container>
   )
 }
 

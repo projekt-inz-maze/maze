@@ -1,25 +1,26 @@
 import {
-  POST_TASK_RESULT_CSV,
+  ADD_FILE,
+  DELETE_USER_PROFESSOR,
+  GET_FILE_LOG,
+  GET_GRADES,
+  GET_POINTS_ALL_LIST_PROFESSOR,
+  GET_PROFESSOR_EMAILS,
+  GET_PROFESSOR_REGISTER_TOKEN,
+  GET_SUMMARY,
   GET_TASK_EVALUATE_ALL,
   GET_TASK_EVALUATE_FIRST,
-  POST_FEEDBACK_PROFESSOR,
   POST_ADDITIONAL_POINTS,
-  GET_POINTS_ALL_LIST_PROFESSOR,
-  GET_SUMMARY,
-  GET_PROFESSOR_REGISTER_TOKEN,
-  GET_GRADES,
-  DELETE_USER_PROFESSOR,
-  GET_PROFESSOR_EMAILS,
-  PUT_HERO,
-  GET_FILE_LOG
+  POST_FEEDBACK_PROFESSOR,
+  POST_TASK_RESULT_CSV,
+  PUT_HERO
 } from './urls'
 import { parseJwt } from '../utils/Api'
 import {
+  axiosApiDelete,
   axiosApiGet,
   axiosApiGetFile,
-  axiosApiPost,
   axiosApiMultipartPost,
-  axiosApiDelete,
+  axiosApiPost,
   axiosApiPut
 } from '../utils/axios'
 
@@ -126,6 +127,10 @@ class ProfessorService {
     return axiosApiGet(GET_FILE_LOG).catch((error) => {
       throw error
     })
+  }
+
+  addAttachmentFileTask(body: any) {
+    return axiosApiMultipartPost(ADD_FILE, body)
   }
 }
 

@@ -11,30 +11,44 @@ import {
   useGetAllCoursesQuery,
   useJoinCourseGroupMutation
 } from '../../../api/apiCourses'
-import { AddCourseRequest, Course } from '../../../api/types'
+import { useGetPersonalityQuery } from '../../../api/apiPersonality'
+import { AddCourseRequest, Course, QuizResults } from '../../../api/types'
 import CourseCard from '../../../common/components/CourseCard/CourseCard'
 import { useAppDispatch } from '../../../hooks/hooks'
 import { setCourseId } from '../../../reducers/userSlice'
 import { joinGroupRequest } from '../../../services/types/serviceTypes'
+import { getGreetingForPersonality } from '../../../utils/formatters'
 import { Role } from '../../../utils/userRole'
-import CourseNav from '../CourseNav/CourseNav'
+import PersonalityQuiz from '../../student/PersonalityQuiz/PersonalityQuiz'
+import CourseNav from '../Navbars/CourseNavbar/CourseNav'
 
-const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
+type CourseListProps = {
+  showNavbar: (show: boolean) => void
+  isStudent: boolean
+  isProfessor: boolean
+}
+
+const CourseList = (props: CourseListProps) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const role = isStudent ? Role.LOGGED_IN_AS_STUDENT : Role.LOGGED_IN_AS_TEACHER
+  const role = props.isStudent ? Role.LOGGED_IN_AS_STUDENT : Role.LOGGED_IN_AS_TEACHER
 
   const [coursesList, setCoursesList] = useState<Course[]>([])
+  const [userPersonality, setUserPersonality] = useState<QuizResults>()
+  const [showQuiz, setShowQuiz] = useState<boolean>(false)
 
   const { data: courses, isSuccess: coursesSuccess } = useGetAllCoursesQuery()
+  const { data: personality, isSuccess: personalitySuccess } = useGetPersonalityQuery(undefined, {
+    skip: role === Role.LOGGED_IN_AS_TEACHER
+  })
   const [addNewCourse] = useAddNewCourseMutation()
   const [deleteCourse] = useDeleteCourseMutation()
   const [joinCourseGroup] = useJoinCourseGroupMutation()
 
   useEffect(() => {
-    showNavbar(false)
+    props.showNavbar(false)
     return () => {
-      showNavbar(true)
+      props.showNavbar(true)
     }
   }, [])
 
@@ -45,25 +59,32 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
     setCoursesList(courses)
   }, [courses, coursesSuccess])
 
+  useEffect(() => {
+    if (!personalitySuccess) {
+      return
+    }
+    setUserPersonality(personality)
+  }, [personality, personalitySuccess])
+
   const handleClick = (courseId: number) => {
     dispatch(setCourseId(courseId))
-    if (isStudent) {
+    if (props.isStudent) {
       navigate('/game-card')
-    } else if (isProfessor) {
+    } else if (props.isProfessor) {
       navigate('/game-summary')
     }
   }
 
-  const handleAddNewCourse = async (props: AddCourseRequest) => {
-    await addNewCourse(props).unwrap()
+  const handleAddNewCourse = async (requestBody: AddCourseRequest) => {
+    await addNewCourse(requestBody).unwrap()
   }
 
   const handleDeleteCourse = async (courseId: number) => {
     await deleteCourse(courseId).unwrap()
   }
 
-  const handleJoinCourseGroup = async (props: joinGroupRequest) => {
-    await joinCourseGroup(props).unwrap()
+  const handleJoinCourseGroup = async (requestBody: joinGroupRequest) => {
+    await joinCourseGroup(requestBody).unwrap()
   }
 
   return (
@@ -72,8 +93,19 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
       <Container className={styles.mainContainer}>
         <Col>
           <Row className={styles.headerRow}>
-            <h1>Cześć!</h1>
-            <h2>Twoje kursy</h2>
+            {personality?.ACHIEVER || personality?.EXPLORER || personality?.KILLER || personality?.SOCIALIZER ? (
+              <p className={styles.greeting}>{getGreetingForPersonality(personality)}</p>
+            ) : (
+              <p className={styles.greeting}>
+                <span>Cześć!</span>
+                {role !== Role.LOGGED_IN_AS_TEACHER && (
+                  <button type='button' className={styles.actionButton} onClick={() => setShowQuiz(true)}>
+                    Poznaj swój typ osobowości!
+                  </button>
+                )}
+              </p>
+            )}
+            <p className={styles.courseInfo}>Twoje kursy</p>
           </Row>
 
           <Row>
@@ -90,20 +122,16 @@ const CourseList = ({ showNavbar, isStudent, isProfessor }: any) => {
                 ))
               ) : (
                 <>
-                  <p className='text-white'>No courses found. Displaying mock card</p>
-                  <CourseCard
-                    key={1}
-                    course={{ id: 1, name: 'Mock course', description: 'Mock description' }}
-                    role={role}
-                    onEnterCourse={() => handleClick(1)}
-                    onDeleteCourse={() => handleDeleteCourse(1)}
-                  />
+                  <p className='text-white'>
+                    <span>No courses found.</span>
+                  </p>
                 </>
               )}
             </Stack>
           </Row>
         </Col>
       </Container>
+      <PersonalityQuiz showModal={showQuiz} setShowModal={setShowQuiz} />
     </div>
   )
 }

@@ -5,6 +5,7 @@ import { Card, Dropdown } from 'react-bootstrap'
 import 'holderjs'
 import style from './CourseCard.module.scss'
 import { Course } from '../../../api/types'
+import { getBackgroundImage } from '../../../utils/constants'
 import { Role } from '../../../utils/userRole'
 import CustomDropdownToggle from '../CustomDropdownToggle/CustomDropdownToggle'
 
@@ -28,19 +29,22 @@ type CourseCardProps = {
 }
 
 const CourseCard = (props: CourseCardProps) => {
-  const cardImg = getRandomImageURL()
+  const cardImg = getBackgroundImage(props.course.id)
+
   return (
     <>
       <Card style={{ width: '14rem' }} className={style.mainCard}>
         <Card.Img variant='top' src={cardImg} onClick={props.onEnterCourse} className={style.clickableImg} />
-        {props.role === Role.LOGGED_IN_AS_TEACHER ? (<Dropdown className={style.menu}>
-          <Dropdown.Toggle as={CustomDropdownToggle} id='course-menu' />
-          <Dropdown.Menu className={style.dropdownMenu}>
-            <Dropdown.Item>Zarchiwizuj kurs</Dropdown.Item>
-            <Dropdown.Item onClick={() => props.onDeleteCourse(props.course.id)}>Usuń kurs</Dropdown.Item>
-            <Dropdown.Item>Ustawienia</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>) : <></>}
+        {props.role === Role.LOGGED_IN_AS_TEACHER ? (
+          <Dropdown className={style.menu}>
+            <Dropdown.Toggle as={CustomDropdownToggle} id='course-menu' />
+            <Dropdown.Menu className={style.dropdownMenu}>
+              <Dropdown.Item onClick={() => props.onDeleteCourse(props.course.id)}>Usuń kurs</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        ) : (
+          <></>
+        )}
         <Card.Body className={style.clickable}>
           <Card.Title onClick={props.onEnterCourse}>{props.course.name}</Card.Title>
           <Card.Text>{props.course.description}</Card.Text>

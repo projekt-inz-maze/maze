@@ -18,7 +18,7 @@ function LoginAndRegistration(props) {
           <Logo $logoColor={props.theme.font}>
             <FontAwesomeIcon icon={faFire} />
             <br />
-            Systematic Chaos
+            Maze
           </Logo>
           <AuthTabs />
         </AuthFormContainer>
@@ -28,7 +28,7 @@ function LoginAndRegistration(props) {
 }
 
 function mapStateToProps(state) {
-  const {theme} = state
+  const { theme } = state
 
   return { theme }
 }

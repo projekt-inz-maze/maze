@@ -1,0 +1,28 @@
+// TODO: Get rid of this
+.questCard {
+  height: auto;
+  width: auto;
+}
+
+.questItem {
+  background-image: url('../../../../../public/map/single-quest.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  width: 200px;
+  height: 280px;
+  text-decoration: none;
+  border: none;
+
+  p {
+    color: black;
+    font-size: 1.2rem;
+  }
+}
+
+.questItem:hover,
+.questItem:focus {
+  cursor: pointer;
+  background-color: transparent;
+  transform: scale(1.05);
+}

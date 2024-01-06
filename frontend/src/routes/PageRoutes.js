@@ -2,11 +2,28 @@ export const GeneralRoutes = {
   HOME: '/',
   PASSWORD_RESET: '/password-reset',
   CANVAS: '/canvas', // other case
-  COURSE_LIST: '/courses'
+  COURSE_LIST: '/courses',
+  PROFESSOR_SETTINGS: '/settings/professor',
+  STUDENT_SETTINGS: '/settings/student'
 }
 
 export const StudentRoutes = {
   GAME_CARD: '/game-card',
+  NEW_GAME_MAP: {
+    MAIN: '/map',
+    QUESTBOARD: '/map/quests',
+    GRAPH_TASK: {
+      MAIN: '/game-map/expedition',
+      INFO: '/game-map/expedition/info',
+      QUESTION_SELECTION: '/game-map/expedition/doors-selection',
+      QUESTION_CONTENT: '/game-map/expedition/question',
+      SUMMARY: '/game-map/expedition/summary',
+      EXPEDITION_WRAPPER: '/game-map/expedition/test'
+    },
+    COMBAT_TASK: '/game-map/combat-task',
+    SURVEY_TASK: '/game-map/survey-task',
+    INFO_TASK: '/game-map/information'
+  },
   GAME_MAP: {
     MAIN: '/game-map',
     GRAPH_TASK: {
@@ -46,6 +63,5 @@ export const TeacherRoutes = {
     LIST: '/assessment/list',
     ACTIVITY: '/assessment/activity-assessment'
   },
-  GRADES: '/grades',
-  SETTINGS: '/settings'
+  GRADES: '/grades'
 }

@@ -1,0 +1,176 @@
+p {
+  margin: 0;
+  padding-top: 0;
+}
+
+span {
+  font-weight: bold;
+}
+
+// Override the default modal styles (border bottom)
+.modalHeader {
+  border-bottom: none !important;
+  padding-bottom: 0;
+
+  .customButtonClose {
+    padding: calc(var(--bs-modal-header-padding-y) * .5) calc(var(--bs-modal-header-padding-x) * .5);
+    margin: calc(var(--bs-modal-header-padding-y) * -.5) calc(var(--bs-modal-header-padding-x) * -.5) calc(var(--bs-modal-header-padding-y) * -.5) auto;
+    background-color: transparent;
+    border: 0;
+    width: 50px;
+
+    span {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: black;
+    }
+  }
+
+  .customButtonClose:hover {
+    transform: scale(1.1);
+  }
+}
+
+// Override the default modal styles (border top)
+.modalFooter {
+  border-top: none !important;
+  display: flex;
+  justify-content: center;
+}
+
+.modalContainer {
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.modalTitle {
+  font-weight: 600 !important;
+  font-size: 1.6rem !important;
+}
+
+.modalInfoSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 1em;
+  font-size: 0.9rem;
+
+  div {
+    p {
+      padding-bottom: 0.25em;
+    }
+  }
+}
+
+.dateInfo {
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-right: 1em;
+  }
+
+  p {
+    padding-right: 1.5em !important;
+  }
+}
+
+.modalTaskDescription {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 1em 0.75em;
+
+  p:first-child {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding-bottom: 0.25em;
+  }
+}
+
+.modalTaskRequirements {
+  font-size: 0.9rem;
+  padding: 1em 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .mainFlexContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .firstRow span,
+  .secondRow span {
+    padding-top: 5em
+  }
+
+  .firstRow {
+    display: flex;
+    flex-direction: column;
+
+    span {
+      padding-right: 4em;
+    }
+
+    div:first-child {
+      padding-bottom: 1em;
+    }
+  }
+
+  .secondRow {
+    display: flex;
+    flex-direction: column;
+
+    div:first-child {
+      padding-bottom: 1em;
+    }
+  }
+
+  .imgSection {
+    display: flex;
+    align-items: center;
+    margin-right: 2em;
+
+    img {
+      width: 35px;
+      height: 35px;
+      margin-right: 0.5em;
+    }
+
+    .hazardText {
+      font-weight: bold;
+      color: #FF0000;
+    }
+  }
+}
+
+.resultField,
+.resultFieldCompleted {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding: 1em 1em;
+  margin: 0 3em;
+  min-width: 150px;
+}
+
+.resultField {
+  border: 1px solid black;
+}
+
+.resultFieldCompleted {
+  border: 2px solid #34A5BE;
+  background-color: #E0F4F9;
+}
+
+.startActivityButton {
+  background-color: #FFB21C;
+  color: black;
+  border: none;
+  padding: 0.5em 1em;
+  font-weight: bold;
+}
