@@ -74,7 +74,7 @@ const StudentSettings = () => {
                   Zdobywca
                 </Dropdown.Item>
                 <Dropdown.Item href='#/action-4' onClick={() => handleChangeType('SOCIALIZER')}>
-                  Towarzyski
+                  Społecznik
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
